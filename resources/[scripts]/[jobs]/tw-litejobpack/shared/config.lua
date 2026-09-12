@@ -348,6 +348,76 @@ Config.VehicleRecovery           = {
 
 Config.Vehiclekey                = true -- true = give vehicle keys for job vehicles | false = no keys
 
+local pendingQbxKeyRequests = {}
+
+local function hasQbxVehicleKey(vehicle)
+    local ok, hasKey = pcall(function()
+        return exports.qbx_vehiclekeys:HasKeys(vehicle)
+    end)
+
+    return ok and hasKey == true
+end
+
+local function requestQbxVehicleKey(vehicle, shouldGive)
+    if not vehicle or vehicle == 0 or not DoesEntityExist(vehicle) then return end
+
+    -- A new request replaces an old one for the same entity. This also prevents a
+    -- pending give loop from restoring a key after the job has removed it.
+    local requestId = (pendingQbxKeyRequests[vehicle] or 0) + 1
+    pendingQbxKeyRequests[vehicle] = requestId
+
+    CreateThread(function()
+        local deadline = GetGameTimer() + (shouldGive and 120000 or 10000)
+        local nextRequestAt = 0
+
+        while pendingQbxKeyRequests[vehicle] == requestId and GetGameTimer() < deadline do
+            if not DoesEntityExist(vehicle) then break end
+
+            if GetResourceState('qbx_vehiclekeys') == 'started' then
+                if not NetworkGetEntityIsNetworked(vehicle) then
+                    NetworkRegisterEntityAsNetworked(vehicle)
+                end
+
+                local netId = NetworkGetNetworkIdFromEntity(vehicle)
+                if netId and netId > 0 then
+                    SetNetworkIdCanMigrate(netId, true)
+
+                    if not shouldGive then
+                        TriggerServerEvent('tw-litejobpack:server:obscuriaQbxVehicleKey', netId, false)
+                        pendingQbxKeyRequests[vehicle] = nil
+                        return
+                    end
+
+                    if hasQbxVehicleKey(vehicle) then
+                        pendingQbxKeyRequests[vehicle] = nil
+                        return
+                    end
+
+                    -- qbx_vehiclekeys validates proximity server-side. Waiting here
+                    -- makes keys reliable even when the job vehicle spawns across a lot.
+                    local playerPed = PlayerPedId()
+                    local isNear = playerPed ~= 0
+                        and #(GetEntityCoords(playerPed) - GetEntityCoords(vehicle)) <= 7.0
+
+                    if isNear and GetGameTimer() >= nextRequestAt then
+                        TriggerServerEvent('tw-litejobpack:server:obscuriaQbxVehicleKey', netId, true)
+                        nextRequestAt = GetGameTimer() + 1500
+                    end
+                end
+            end
+
+            Wait(200)
+        end
+
+        if pendingQbxKeyRequests[vehicle] == requestId then
+            pendingQbxKeyRequests[vehicle] = nil
+            if shouldGive and DoesEntityExist(vehicle) and not hasQbxVehicleKey(vehicle) then
+                print(('[tw-litejobpack] qbx_vehiclekeys: key delivery timed out for vehicle %s'):format(vehicle))
+            end
+        end
+    end)
+end
+
 Config.GiveVehicleKey            = function(plate, model, vehicle)
     if not Config.Vehiclekey then return end
 
@@ -358,7 +428,7 @@ Config.GiveVehicleKey            = function(plate, model, vehicle)
     -- before the blank-plate guard so they still work when only a netId is known.
     if GetResourceState("qbx_vehiclekeys") == "started" then
         if hasVeh then
-            TriggerServerEvent('tw-litejobpack:server:obscuriaQbxVehicleKey', VehToNet(vehicle), true)
+            requestQbxVehicleKey(vehicle, true)
         end
         return
     elseif GetResourceState("cd_garage") == "started" then
@@ -423,7 +493,7 @@ Config.RemoveVehiclekey          = function(plate, model, vehicle)
     -- blank-plate guard below must not block them.
     if GetResourceState("qbx_vehiclekeys") == "started" then
         if hasVeh then
-            TriggerServerEvent('tw-litejobpack:server:obscuriaQbxVehicleKey', VehToNet(vehicle), false)
+            requestQbxVehicleKey(vehicle, false)
         end
         return
     elseif GetResourceState("cd_garage") == "started" then
