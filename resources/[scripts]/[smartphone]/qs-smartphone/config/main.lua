@@ -436,7 +436,7 @@ Config.Clock                    = {
 --        When disabled, phone data is tied to player identifier.
 --──────────────────────────────────────────────────────────────────────────────
 Config.MetaSystem               = {
-    enabled = true,            -- [EDIT] Enable unique phone metadata per item.
+    enabled = false,            -- [EDIT] Enable unique phone metadata per item.
     phoneNumberPrefix = '01', -- [EDIT] Prefix for generated phone numbers. MUST be a string (use '06' not 06).
     phoneNumberLength = 7,     -- [EDIT] Length of the random part (excluding prefix).
     -- [EDIT] On-screen grouping mask (X = digit). Must match total digits = prefix + phoneNumberLength.
