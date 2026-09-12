@@ -103,32 +103,32 @@ return {
         },
     },
     ['ambulance'] = {
-        label = 'EMS',
+        label = 'Médico',
         type = 'ems',
         defaultDuty = true,
         offDutyPay = false,
         grades = {
             [0] = {
-                name = 'Recruit',
-                payment = 50
+                name = 'Recruta',
+                payment = 1000
             },
             [1] = {
-                name = 'Paramedic',
-                payment = 75
+                name = 'Paramedico',
+                payment = 1250
             },
             [2] = {
-                name = 'Doctor',
-                payment = 100
+                name = 'Doutor',
+                payment = 1500
             },
             [3] = {
-                name = 'Surgeon',
-                payment = 125
+                name = 'Cirurgião',
+                payment = 1500
             },
             [4] = {
-                name = 'Chief',
+                name = 'Diretor',
                 isboss = true,
                 bankAuth = true,
-                payment = 150
+                payment = 1500
             },
         },
     },
