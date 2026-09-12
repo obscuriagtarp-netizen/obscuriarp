@@ -16,7 +16,7 @@ _G.webhook = {
 _G.fivemanage = {
     -- If you want to use camera, voice recorder, and video recorder, you need to set a fivemanage token here.
     -- If you have custom server. You can edit the qs-smartphone/web/build/custom-upload.js file to use your own upload function.
-    token = ''
+    token = 'IYWf9UNcl6Qao3oe7PqzBvohkGfvNwC3'
 }
 
 -- FiveMesh CDN (https://docs.fivemesh.io) — alternative media host for camera / voice / video uploads.
