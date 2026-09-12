@@ -25,6 +25,9 @@ end)
 CreateThread(function() -- all these should only need to be called once
     if config.disable.ambience then
         StartAudioScene('CHARACTER_CHANGE_IN_SKY_SCENE')
+        StartAudioScene('DLC_MPHEIST_TRANSITION_TO_APT_FADE_IN_RADIO_SCENE')
+        StartAudioScene('FBI_HEIST_H5_MUTE_AMBIENCE_SCENE')
+        SetAudioFlag('DisableFlightMusic', true)
     end
     SetAudioFlag('PoliceScannerDisabled', true)
     SetGarbageTrucks(false)
