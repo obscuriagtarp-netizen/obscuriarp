@@ -78,7 +78,7 @@ return {
 			{ loc = vec3(-658.04, -853.88, 23.49), length = 0.5, width = 0.5, heading = 96.0, minZ = 46.4, maxZ = 46.8, distance = 1.5 },
 			{ loc = vec3(393.3, -832.38, 28.29), length = 0.5, width = 0.5, heading = 96.0, minZ = 46.4, maxZ = 46.8, distance = 1.5 },
 			{ loc = vec3(1137.51, -470.96, 65.65), length = 0.5, width = 0.5, heading = 96.0, minZ = 46.4, maxZ = 46.8, distance = 1.5 },
-			{ loc = vec3(-509.8, 278.38, 82.31), length = 0.5, width = 0.5, heading = 96.0, minZ = 46.4, maxZ = 46.8, distance = 1.5 }, --COLOCAR COORDENADAS AQUI, SÓ COLOCAR NA MESMA ORDEM DA DE CIMA.
+			{ loc = vec3(-509.8, 278.38, 82.31), length = 0.5, width = 0.5, heading = 96.0, minZ = 46.4, maxZ = 46.8, distance = 1.5 }, 
 		}
 	},
 
@@ -147,8 +147,9 @@ return {
 			{ name = 'medical_kit', price = 10 },
 			{ name = 'medical_stretcher', price = 10 },
 		}, locations = {
-			vec3(-1039.55, -423.06, 38.61), -- COLOCAR CDS EM ALGUM LUGAR BOM NO HOSPITAL PARA ELES COMPRAREM. 
+			vec3(-1039.55, -423.06, 38.61),
 		}, targets = {
+			{ loc = vec3(-1039.55, -423.06, 38.61), length = 0.5, width = 3.0, heading = 270.0, minZ = 30.5, maxZ = 32.0, distance = 6 },
 
 		}
 	},
