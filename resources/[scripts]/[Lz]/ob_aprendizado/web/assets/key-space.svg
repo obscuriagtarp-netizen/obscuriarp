@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 48" role="img" aria-label="Espaco">
+  <rect x="3" y="3" width="90" height="42" rx="9" fill="#080a0e" stroke="#eee8dc" stroke-width="4"/>
+  <rect x="9" y="9" width="78" height="30" rx="5" fill="none" stroke="#a96bff" stroke-opacity="0.72" stroke-width="2"/>
+  <text x="48" y="30" fill="#fff8e8" font-family="Arial, sans-serif" font-size="16" font-weight="700" text-anchor="middle">ESPACO</text>
+</svg>

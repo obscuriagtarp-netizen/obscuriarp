@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Obscuria Crafting</title>
+    <link rel="stylesheet" href="styles.css?v=11" />
+</head>
+<body>
+    <main id="app" class="craft-app is-hidden" aria-live="polite">
+        <section id="craftShell" class="craft-shell">
+            <header class="craft-header">
+                <div class="station-seal" aria-hidden="true">
+                    <svg class="station-glyph station-glyph--kitchen" viewBox="0 0 24 24"><path d="M3 2v7a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V2M7 2v20M21 15V2a5 5 0 0 0-5 5v6a2 2 0 0 0 2 2h3Zm0 0v7"/></svg>
+                    <svg class="station-glyph station-glyph--weapons" viewBox="0 0 24 24"><path d="m14.7 6.3 3 3M5 21l5.6-5.6M7.4 3.4a5 5 0 0 0 6.7 6.7l6.5 6.5a2.1 2.1 0 0 1-3 3l-6.5-6.5a5 5 0 0 1-6.7-6.7L8 11l3-3Z"/></svg>
+                    <svg class="station-glyph station-glyph--narcotics" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5.5 9.5A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.5-2.5L14 9V3M8 15h8"/></svg>
+                    <svg class="station-glyph station-glyph--utility" viewBox="0 0 24 24"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9ZM4.5 7.8 12 12l7.5-4.2M12 12v9"/></svg>
+                </div>
+                <div class="station-heading">
+                    <small id="kindEyebrow">Mise en place</small>
+                    <h1 id="stationName">Bancada Ravenwood</h1>
+                    <p id="kindDescription">Prepare cada receita com ordem, tempo e precisão.</p>
+                </div>
+                <div class="station-status"><i></i><span>Bancada disponível</span></div>
+                <button id="closeButton" class="icon-button" type="button" aria-label="Fechar" title="Fechar">×</button>
+            </header>
+
+            <div id="catalogView" class="catalog-view">
+                <aside class="recipe-browser">
+                    <div class="section-heading">
+                        <small>Produção</small>
+                        <strong>Receitas disponíveis</strong>
+                    </div>
+                    <label class="search-field">
+                        <span aria-hidden="true">⌕</span>
+                        <input id="searchInput" type="search" placeholder="Buscar receita" autocomplete="off" />
+                    </label>
+                    <div id="recipeList" class="recipe-list"></div>
+                    <div class="browser-footer"><span id="recipeCount">0 receitas</span><i></i><span>Obscuria</span></div>
+                </aside>
+
+                <section class="recipe-focus">
+                    <div class="focus-copy">
+                        <div>
+                            <small id="recipeCategory">Receita selecionada</small>
+                            <h2 id="recipeName">Selecione uma receita</h2>
+                        </div>
+                        <div class="focus-controls">
+                            <span id="recipeTime" class="time-badge">0s</span>
+                            <div class="quantity-stepper" aria-label="Quantidade para produzir">
+                                <button id="quantityDecrease" type="button" aria-label="Diminuir quantidade" title="Diminuir quantidade">−</button>
+                                <span><small>Quantidade</small><b id="quantityValue">1</b></span>
+                                <button id="quantityIncrease" type="button" aria-label="Aumentar quantidade" title="Aumentar quantidade">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="work-surface">
+                        <div class="surface-visual">
+                            <div class="output-halo" aria-hidden="true"></div>
+                            <div id="outputFallback" class="output-fallback" aria-hidden="true">OB</div>
+                            <img id="outputImage" class="output-image" alt="" />
+                            <span id="outputAmount" class="output-amount">1×</span>
+                        </div>
+                        <div class="surface-details">
+                            <small>Produto final</small>
+                            <h3 id="outputLabel">Resultado da receita</h3>
+                            <p id="recipeDescription" class="recipe-description">Escolha uma receita para consultar os ingredientes e iniciar o preparo.</p>
+                            <div class="process-heading"><span>Roteiro de preparo</span><b id="processCount">0 etapas</b></div>
+                            <div id="processTrack" class="process-track"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <aside class="requirements-panel">
+                    <div class="section-heading">
+                        <small>Inventário</small>
+                        <strong>Ingredientes</strong>
+                    </div>
+                    <div id="ingredientList" class="ingredient-list"></div>
+                    <div class="craft-summary">
+                        <div><span>Tempo estimado</span><strong id="summaryTime">0 segundos</strong></div>
+                        <div><span>Rendimento</span><strong id="summaryYield">1 unidade</strong></div>
+                    </div>
+                    <button id="prepareButton" class="primary-button" type="button" disabled>
+                        <span>Iniciar preparo</span><b aria-hidden="true">→</b>
+                    </button>
+                    <p id="availabilityMessage" class="availability-message">Selecione uma receita.</p>
+                </aside>
+            </div>
+
+            <section id="compactView" class="compact-view is-hidden">
+                <div class="compact-visual"><img id="compactImage" alt="" /><span id="compactFallback">OB</span></div>
+                <div class="compact-copy">
+                    <small>Em produção</small>
+                    <strong id="compactName">Receita</strong>
+                    <span id="compactStep" class="compact-step">Preparando bancada</span>
+                    <div class="compact-progress"><i id="compactBar"></i></div>
+                    <span id="compactTimer">0s restantes</span>
+                </div>
+            </section>
+        </section>
+        <div id="toast" class="toast" role="status"></div>
+    </main>
+    <script src="app.js?v=11"></script>
+</body>
+</html>

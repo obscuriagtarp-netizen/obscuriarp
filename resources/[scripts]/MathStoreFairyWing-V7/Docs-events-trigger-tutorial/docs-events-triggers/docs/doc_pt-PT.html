@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathStore: Fairy Wing V7 | Documentacao Tecnica</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #000; color: #e0e0e0; line-height: 1.8; }
+
+        /* HERO */
+        .hero { position: relative; text-align: center; padding: 100px 40px 60px; background: radial-gradient(ellipse at 50% 0%, rgba(50,130,255,0.12) 0%, transparent 60%); border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .hero-badge { display: inline-block; padding: 6px 18px; border: 1px solid rgba(80,150,255,0.4); border-radius: 20px; font-size: 0.75rem; font-weight: 600; color: #6bb5ff; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 20px; }
+        .hero h1 { font-size: 3rem; font-weight: 800; color: #fff; letter-spacing: -0.02em; margin-bottom: 8px; }
+        .hero h1 span { background: linear-gradient(135deg, #6bb5ff, #2a7ac9, #87b8ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero .subtitle { font-size: 1.15rem; color: #888; font-weight: 400; max-width: 650px; margin: 0 auto; }
+
+        /* NAV */
+        .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(0,0,0,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 0 40px; display: flex; align-items: center; height: 50px; gap: 24px; overflow-x: auto; }
+        .nav a { color: #888; font-size: 0.78rem; font-weight: 500; text-decoration: none; white-space: nowrap; transition: color 0.15s; letter-spacing: 0.02em; }
+        .nav a:hover { color: #6bb5ff; }
+        .nav .brand { color: #6bb5ff; font-weight: 700; font-size: 0.8rem; margin-right: 12px; flex-shrink: 0; }
+
+        /* CONTAINER */
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 40px; }
+
+        /* SECTION */
+        .section { padding: 80px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+        .section:last-child { border-bottom: none; }
+        .section-label { display: inline-block; font-size: 0.7rem; font-weight: 700; color: #6bb5ff; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 12px; }
+        .section h2 { font-size: 2rem; font-weight: 700; color: #fff; margin-bottom: 16px; }
+        .section p { font-size: 1rem; color: #999; margin-bottom: 20px; max-width: 750px; }
+        .section h3 { font-size: 1.25rem; font-weight: 600; color: #fff; margin-top: 48px; margin-bottom: 12px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.04); }
+        .section h3:first-of-type { border-top: none; padding-top: 0; }
+        .section h4 { font-size: 1rem; font-weight: 600; color: #ddd; margin-top: 28px; margin-bottom: 8px; }
+        .section ul, .section ol { margin: 12px 0 20px 24px; color: #aaa; }
+        .section li { margin-bottom: 6px; }
+
+        /* CODE */
+        pre { background: #0a0a0a; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 20px; overflow-x: auto; margin: 16px 0; font-size: 0.84rem; line-height: 1.7; position: relative; }
+        pre .lang-tag { position: absolute; top: 8px; right: 12px; font-size: 0.65rem; font-weight: 600; color: #555; text-transform: uppercase; letter-spacing: 0.08em; font-family: 'Inter', sans-serif; }
+        code { font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace; color: #e6edf3; }
+        p code, li code, td code { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); border-radius: 4px; padding: 2px 7px; font-size: 0.85em; color: #87b8ff; }
+
+        /* Syntax highlight classes */
+        .cm { color: #6a737d; } .kw { color: #ff7b72; } .str { color: #a5d6ff; }
+        .fn { color: #d2a8ff; } .num { color: #79c0ff; } .bool { color: #ff7b72; }
+        .cmt { color: #8b949e; font-style: italic; }
+
+        /* TABLE */
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        th { color: #fff; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid rgba(255,255,255,0.12); }
+        td { color: #aaa; font-size: 0.9rem; }
+        tr:hover td { color: #ddd; }
+
+        /* ALERTS */
+        .alert { padding: 16px 20px; border-radius: 8px; margin: 20px 0; border-left: 3px solid; font-size: 0.92rem; }
+        .alert-tip { background: rgba(46,160,67,0.08); border-color: #2ea043; color: #56d364; }
+        .alert-warn { background: rgba(210,153,34,0.08); border-color: #d29922; color: #e3b341; }
+        .alert-info { background: rgba(82,150,250,0.08); border-color: #3170e0; color: #6bb5ff; }
+        .alert strong { display: block; margin-bottom: 4px; }
+
+        /* CARDS GRID */
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 32px; }
+        .feature-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 28px; transition: border-color 0.2s, background 0.2s; }
+        .feature-card:hover { border-color: rgba(82,150,250,0.3); background: rgba(82,150,250,0.04); }
+        .feature-card .icon { font-size: 1.5rem; margin-bottom: 12px; }
+        .feature-card h4 { color: #fff; font-size: 1rem; font-weight: 600; margin-bottom: 8px; margin-top: 0; }
+        .feature-card p { color: #777; font-size: 0.88rem; line-height: 1.6; margin-bottom: 0; }
+
+        /* FLOW DIAGRAM */
+        .flow { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 28px; margin: 24px 0; font-family: 'Cascadia Code', monospace; font-size: 0.82rem; line-height: 2; color: #bbb; white-space: pre-wrap; }
+        .flow .arrow { color: #6bb5ff; } .flow .check { color: #e3b341; }
+        .flow .ok { color: #56d364; } .flow .fail { color: #f85149; }
+
+        /* Scenario box */
+        .scenario { background: rgba(82,150,250,0.03); border: 1px solid rgba(82,150,250,0.12); border-radius: 12px; padding: 28px; margin: 28px 0; }
+        .scenario-title { display: flex; align-items: center; gap: 10px; color: #fff; font-weight: 600; font-size: 1.05rem; margin-bottom: 12px; }
+        .scenario-title .tag { font-size: 0.65rem; padding: 3px 10px; border-radius: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+        .tag-esx { background: rgba(255,123,114,0.15); color: #ff7b72; }
+        .tag-qb { background: rgba(121,192,255,0.15); color: #79c0ff; }
+        .tag-vrp { background: rgba(86,211,100,0.15); color: #56d364; }
+        .tag-all { background: rgba(82,150,250,0.15); color: #6bb5ff; }
+        .scenario-desc { color: #888; font-size: 0.9rem; margin-bottom: 16px; }
+
+        /* Section divider */
+        .divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(82,150,250,0.2), transparent); margin: 60px 0; }
+
+        /* FOOTER */
+        .footer { text-align: center; padding: 60px 40px; color: #444; font-size: 0.8rem; border-top: 1px solid rgba(255,255,255,0.04); }
+        .footer a { color: #6bb5ff; text-decoration: none; }
+
+        html { scroll-behavior: smooth; scroll-padding-top: 60px; }
+
+        @media (max-width: 768px) { .hero { padding: 80px 20px 40px; } .hero h1 { font-size: 2rem; } .container { padding: 0 20px; } .section { padding: 50px 0; } .features-grid { grid-template-columns: 1fr; } .nav { padding: 0 16px; gap: 16px; } }
+    </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     NAVEGACAO FIXA
+     ═══════════════════════════════════════════════════════════════ -->
+<nav class="nav">
+    <span class="brand">Fairy Wing V7</span>
+    <a href="#instalacao">Instalacao</a>
+    <a href="#config">Config</a>
+    <a href="#bridge">Bridge</a>
+    <a href="#permissoes">Permissoes</a>
+    <a href="#callbacks">Callbacks</a>
+    <a href="#eventos">Eventos</a>
+    <a href="#comandos">Comandos</a>
+    <a href="#avancado">Avancado</a>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     HERO
+     ═══════════════════════════════════════════════════════════════ -->
+<header class="hero" style="padding-top: 120px;">
+    <div class="hero-badge">Documentacao Tecnica para Programadores e Administradores</div>
+    <h1>MathStore: <span>Fairy Wing V7</span></h1>
+    <p class="subtitle">Guia completo de integracao, eventos, callbacks, permissoes e configuracao para o sistema de asas de fada. Tudo o que necessita para implementar o resource na sua cidade.</p>
+</header>
+
+<div class="container">
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         VISAO GERAL
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="section" id="visao-geral">
+        <span class="section-label">Visao Geral</span>
+        <h2>O que vai encontrar aqui?</h2>
+        <p>Esta documentacao destina-se a <strong style="color:#fff;">programadores e administradores</strong> que precisam de instalar, integrar ou personalizar o resource no servidor FiveM. Cada seccao e independente, nao necessita de regressar ao topo para compreender o que esta a ler.</p>
+
+        <div class="features-grid">
+            <div class="feature-card"><div class="icon">🔧</div><h4>Instalacao + Licenca</h4><p>Tudo num unico local: extrair, configurar a key/convar no server.cfg, dependencias. Pronto para executar.</p></div>
+            <div class="feature-card"><div class="icon">⚙️</div><h4>Configuracao Completa</h4><p>Todos os campos do config.lua, comandos renomeaveis, keybinds, cooldowns, idiomas, notificacoes.</p></div>
+            <div class="feature-card"><div class="icon">🌉</div><h4>Bridge Multi-Framework</h4><p>Como funciona a deteccao automatica de QBX, QB-Core, ESX, vRP e Standalone.</p></div>
+            <div class="feature-card"><div class="icon">🔐</div><h4>Permissoes</h4><p>8 camadas de permissao: ACE, grupos, jobs, citizenid, vRP, sets. Exemplos para cada framework.</p></div>
+            <div class="feature-card"><div class="icon">🔗</div><h4>Callbacks</h4><p>5 callbacks para injectar logica do SEU servidor: exigir item, verificar quest, desbloquear habilidade, e mais.</p></div>
+            <div class="feature-card"><div class="icon">📡</div><h4>Eventos</h4><p>Lista completa de eventos server/client. Como escutar a partir de outro resource, como integrar com o seu sistema.</p></div>
+        </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         ==============================================================
+         SECCAO 1: INSTALACAO + KEY/CONVAR (TUDO JUNTO)
+         ==============================================================
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="section" id="instalacao">
+        <span class="section-label">Setup Completo</span>
+        <h2>Instalacao e Licenca</h2>
+        <p>Tudo o que necessita para colocar o resource em funcionamento. A licenca (key) faz parte da instalacao, por isso esta tudo junto aqui.</p>
+
+        <h3>1. Extrair o resource</h3>
+        <p>Coloque a pasta <code>MathStoreFairyWing-V7</code> dentro da sua pasta <code>resources/</code>.</p>
+        <div class="alert alert-warn"><strong>Nome da pasta</strong>O nome da pasta tem de ser exactamente <code>MathStoreFairyWing-V7</code>. Keybinds, eventos internos e state bags dependem deste nome.</div>
+
+        <h3>2. Configurar a Key (Convar)</h3>
+        <p>Cada servidor necessita de uma key unica para o resource funcionar. Esta key e configurada como uma <strong style="color:#fff;">convar</strong> no seu <code>server.cfg</code>, e deve vir <strong style="color:#fff;">antes</strong> do <code>ensure</code>.</p>
+<pre><code><span class="lang-tag">server.cfg</span>
+<span class="cmt">## ─── MathStore Fairy Wing V7 ───</span>
+
+<span class="cmt"># 1. Defina a key (ANTES do ensure)</span>
+<span class="kw">set</span> <span class="str">mathstore_key_fairyv7</span> <span class="str">"AP-XXXX-XXXX-XXXX"</span>
+
+<span class="cmt"># 2. Inicie o resource</span>
+<span class="kw">ensure</span> MathStoreFairyWing-V7</code></pre>
+
+        <div class="alert alert-warn"><strong>Cuidado com a key</strong>Nao partilhe a sua key. Cada key esta vinculada ao IP do servidor. Se mudar de alojamento, entre em contacto para efectuar a migracao.</div>
+
+        <h3>3. Dependencias</h3>
+        <table>
+            <thead><tr><th>Resource</th><th>Estado</th><th>Funcao</th></tr></thead>
+            <tbody>
+                <tr><td style="color:#fff;">ox_lib</td><td>Opcional</td><td>Comandos com sugestoes, notificacoes estilizadas. Activa em <code>Config.UseOxLib</code></td></tr>
+                <tr><td style="color:#fff;">qb-core / qbx_core</td><td>Auto-detectado</td><td>Bridge QB/QBX para permissoes e player data</td></tr>
+                <tr><td style="color:#fff;">es_extended</td><td>Auto-detectado</td><td>Bridge ESX para permissoes e player data</td></tr>
+                <tr><td style="color:#fff;">vrp</td><td>Auto-detectado</td><td>Bridge vRP para grupos, permissoes e identidade</td></tr>
+            </tbody>
+        </table>
+        <div class="alert alert-info"><strong>Modo Standalone</strong>Se nenhum framework for detectado, o resource funciona sozinho. Tudo opera normalmente, apenas sem integracao de permissoes nativas do framework.</div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         ==============================================================
+         SECCAO 2: CONFIGURACAO
+         ==============================================================
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="section" id="config">
+        <span class="section-label">Configuracao</span>
+        <h2>Config.lua</h2>
+        <p>O ficheiro <code>config/config.lua</code> centraliza todas as opcoes do resource. Tudo o que pode alterar encontra-se aqui.</p>
+
+        <h3>Framework e Geral</h3>
+<pre><code><span class="lang-tag">config.lua</span>
+<span class="cmt">-- Deteccao automatica do framework</span>
+Config.Framework = <span class="str">'auto'</span>     <span class="cmt">-- 'auto' | 'qbx' | 'qb' | 'esx' | 'vrp' | 'standalone'</span>
+
+<span class="cmt">-- Utilizar ox_lib para comandos e notificacoes</span>
+Config.UseOxLib = <span class="bool">true</span>
+
+<span class="cmt">-- Idioma do sistema (notificacoes, keybinds, HUD)</span>
+Config.Locale = <span class="str">'pt-BR'</span>      <span class="cmt">-- 'pt-BR' | 'en-US' | 'es' | 'fr' | 'pt-PT' | 'th'</span></code></pre>
+        <div class="alert alert-tip"><strong>Dica</strong>Com <code>Config.Framework = 'auto'</code>, o resource detecta sozinho qual framework esta em execucao. Force manualmente apenas se existir algum conflito.</div>
+
+        <h3>Notificacoes</h3>
+<pre><code><span class="lang-tag">config.lua</span>
+Config.Notifications = {
+    type     = <span class="str">'auto'</span>,    <span class="cmt">-- 'auto' | 'ox_lib' | 'qb' | 'esx' | 'vrp' | 'native'</span>
+    duration = <span class="num">5000</span>,     <span class="cmt">-- Duracao em milissegundos</span>
+}</code></pre>
+        <table>
+            <thead><tr><th>Valor</th><th>Comportamento</th></tr></thead>
+            <tbody>
+                <tr><td style="color:#fff;"><code>'auto'</code></td><td>Detecta: ox_lib > framework > native (por esta ordem)</td></tr>
+                <tr><td style="color:#fff;"><code>'ox_lib'</code></td><td>Forca ox_lib:notify</td></tr>
+                <tr><td style="color:#fff;"><code>'qb'</code></td><td>Forca QBCore notification</td></tr>
+                <tr><td style="color:#fff;"><code>'esx'</code></td><td>Forca ESX.ShowNotification</td></tr>
+                <tr><td style="color:#fff;"><code>'vrp'</code></td><td>Forca vRP notification</td></tr>
+                <tr><td style="color:#fff;"><code>'native'</code></td><td>Notificacao nativa do GTA V</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Keybinds</h3>
+<pre><code><span class="lang-tag">config.lua</span>
+Config.Keybinds = {
+    toggle = <span class="str">''</span>,      <span class="cmt">-- Abrir/fechar asas (vazio = sem tecla predefinida)</span>
+    fly    = <span class="bool">false</span>,    <span class="cmt">-- false = keybind desactivado</span>
+    hud    = <span class="str">''</span>,      <span class="cmt">-- HUD radial (vazio = jogador configura)</span>
+}</code></pre>
+        <div class="alert alert-info"><strong>Como funciona</strong>Quando o valor e <code>''</code> (vazio), nenhuma tecla e atribuida por predefinicao. O jogador acede a <strong>Definicoes > Teclado > FiveM</strong> e escolhe a tecla que pretender. O texto que aparece la altera-se conforme o <code>Config.Locale</code>.</div>
+
+        <h3>Cooldowns</h3>
+<pre><code><span class="lang-tag">config.lua</span>
+Config.Cooldowns = {}
+<span class="cmt">-- Fairy Wing V7 nao possui cooldowns por predefinicao</span>
+<span class="cmt">-- Adicione campos aqui se necessario (ex: { fly = 3 })</span></code></pre>
+
+        <h3>Idiomas (Locales)</h3>
+        <p>O idioma definido em <code>Config.Locale</code> afecta notificacoes, texto dos keybinds e toda a HUD radial. Tudo e traduzido em <code>config/locales.lua</code>.</p>
+        <table>
+            <thead><tr><th>Codigo</th><th>Idioma</th></tr></thead>
+            <tbody>
+                <tr><td style="color:#fff;"><code>'pt-BR'</code></td><td>Portugues (Brasil)</td></tr>
+                <tr><td style="color:#fff;"><code>'en-US'</code></td><td>Ingles (EUA)</td></tr>
+                <tr><td style="color:#fff;"><code>'es'</code></td><td>Espanhol</td></tr>
+                <tr><td style="color:#fff;"><code>'fr'</code></td><td>Frances</td></tr>
+                <tr><td style="color:#fff;"><code>'pt-PT'</code></td><td>Portugues (Portugal)</td></tr>
+                <tr><td style="color:#fff;"><code>'th'</code></td><td>Tailandes</td></tr>
+            </tbody>
+        </table>
+        <p>O sistema utiliza a funcao <code>L()</code> para obter strings traduzidas:</p>
+<pre><code><span class="lang-tag">lua</span>
+<span class="cmt">-- Funcao L() obtem a string no locale activo</span>
+<span class="kw">local</span> msg = <span class="fn">L</span>(<span class="str">'wings_equipped'</span>, cor)
+<span class="cmt">-- pt-BR: "Asas equipadas! (cor 5)"</span>
+<span class="cmt">-- en-US: "Wings equipped! (color 5)"</span>
+
+<span class="cmt">-- Keybinds tambem utilizam L():</span>
+<span class="fn">RegisterKeyMapping</span>(<span class="str">'+wings_hud'</span>, <span class="fn">L</span>(<span class="str">'keybind_hud'</span>), <span class="str">'keyboard'</span>, <span class="str">''</span>)
+<span class="cmt">-- pt-BR: "Abrir/Fechar HUD Asas"</span>
+<span class="cmt">-- en-US: "Open/Close Wing HUD"</span></code></pre>
+
+        <h3>Comandos (Todos Renomeaveis)</h3>
+        <p>Qualquer comando pode ser renomeado. O jogador ve o nome que definir. A lista completa de comandos com parametros e permissoes encontra-se mais abaixo na <a href="#comandos" style="color:#6bb5ff;">seccao Comandos</a>.</p>
+<pre><code><span class="lang-tag">config.lua</span>
+Config.Commands = {
+    <span class="cmt">-- Basicos</span>
+    equip       = <span class="str">'asas7'</span>,          <span class="cmt">-- /asas7 [1-30]</span>
+    remove      = <span class="str">'remover7'</span>,
+    toggle      = <span class="str">'asastg7'</span>,
+    fly         = <span class="str">'asasvoar7'</span>,
+    color       = <span class="str">'asascor7'</span>,       <span class="cmt">-- /asascor7 [num]</span>
+    cleanup     = <span class="str">'asaslimpar7'</span>,    <span class="cmt">-- Admin: remove TODAS</span>
+    cleanup2    = <span class="str">'asaslimpar27'</span>,   <span class="cmt">-- Remove orfas proximo</span>
+
+    <span class="cmt">-- Animacoes no chao</span>
+    abrir       = <span class="str">'abrir7'</span>,
+    fechar      = <span class="str">'fechar7'</span>,
+    bater       = <span class="str">'bater7'</span>,
+}
+
+Config.HudCommand = <span class="str">'hud7'</span>     <span class="cmt">-- /hud7</span></code></pre>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         ==============================================================
+         SECCAO 3: BRIDGE MULTI-FRAMEWORK
+         ==============================================================
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="section" id="bridge">
+        <span class="section-label">Multi-Framework</span>
+        <h2>Sistema Bridge</h2>
+        <p>O resource detecta automaticamente o framework do servidor e adapta todas as funcoes internas. Na maioria dos casos, nao precisa de configurar nada.</p>
+
+        <h3>Como a deteccao funciona</h3>
+        <p>Em <code>bridge/shared.lua</code>, o sistema verifica quais resources estao em execucao e selecciona o bridge correcto:</p>
+        <table>
+            <thead><tr><th>Framework</th><th>Resource Detectado</th><th>Resultado</th></tr></thead>
+            <tbody>
+                <tr><td style="color:#fff;">QBX (Qbox)</td><td><code>qbx_core</code></td><td><code>'qbx'</code></td></tr>
+                <tr><td style="color:#fff;">QB-Core</td><td><code>qb-core</code></td><td><code>'qb'</code></td></tr>
+                <tr><td style="color:#fff;">ESX</td><td><code>es_extended</code></td><td><code>'esx'</code></td></tr>
+                <tr><td style="color:#fff;">vRP</td><td><code>vrp</code></td><td><code>'vrp'</code></td></tr>
+                <tr><td style="color:#fff;">Nenhum</td><td>-</td><td><code>'standalone'</code></td></tr>
+            </tbody>
+        </table>
+
+        <h3>Funcoes do Bridge (Server-side)</h3>
+        <p>Funcoes disponiveis no server para interagir com os dados do jogador:</p>
+<pre><code><span class="lang-tag">server</span>
+<span class="cmt">-- Obter o objecto do jogador no framework</span>
+<span class="kw">local</span> player = Bridge.<span class="fn">GetPlayer</span>(source)
+
+<span class="cmt">-- Obter identificador unico (citizenid, identifier, user_id)</span>
+<span class="kw">local</span> cid = Bridge.<span class="fn">GetCitizenId</span>(source)
+
+<span class="cmt">-- Nome do personagem no framework</span>
+<span class="kw">local</span> name = Bridge.<span class="fn">GetPlayerName</span>(source)
+
+<span class="cmt">-- Job actual (nome + grade)</span>
+<span class="kw">local</span> job = Bridge.<span class="fn">GetJob</span>(source)
+
+<span class="cmt">-- Verificar permissao (sistema multi-layer)</span>
+<span class="kw">local</span> allowed = Bridge.<span class="fn">HasPermission</span>(source, <span class="str">'use'</span>)
+
+<span class="cmt">-- Enviar notificacao (adapta ao framework detectado)</span>
+Bridge.<span class="fn">Notify</span>(source, <span class="str">'Mensagem'</span>, <span class="str">'success'</span>)
+
+<span class="cmt">-- Executar callback definido no config</span>
+Bridge.<span class="fn">ExecuteCallback</span>(<span class="str">'CanEquipWings'</span>, source, cor)</code></pre>
+
+        <h3>Funcoes do Bridge (Client-side)</h3>
+        <p>Funcoes disponiveis no client:</p>
+<pre><code><span class="lang-tag">client</span>
+<span class="cmt">-- Dados do jogador no framework</span>
+<span class="kw">local</span> data = Bridge.<span class="fn">GetPlayerData</span>()
+
+<span class="cmt">-- Jogador ja terminou de carregar?</span>
+<span class="kw">local</span> loaded = Bridge.<span class="fn">IsPlayerLoaded</span>()
+
+<span class="cmt">-- Notificacao client-side</span>
+Bridge.<span class="fn">ShowNotification</span>(<span class="str">'Texto'</span>, <span class="str">'info'</span>, <span class="num">5000</span>)
+
+<span class="cmt">-- ox_lib esta disponivel no servidor?</span>
+<span class="kw">local</span> has = Bridge.<span class="fn">HasOxLib</span>()</code></pre>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         ==============================================================
+         SECCAO 4: PERMISSOES (COMPLETA E AUTO-CONTIDA)
+         ==============================================================
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="section" id="permissoes">
+        <span class="section-label">Controlo de Acesso</span>
+        <h2>Sistema de Permissoes</h2>
+        <p>Controla quem pode utilizar cada funcionalidade do resource. O sistema possui 8 camadas de verificacao, analisadas por ordem. Quando qualquer camada da uma resposta definitiva (permitir ou negar), as seguintes nao sao verificadas.</p>
+
+        <h3>Chaves de Permissao</h3>
+        <p>Existem duas chaves utilizadas em todo o sistema:</p>
+        <table>
+            <thead><tr><th>Chave</th><th>Onde e utilizada</th><th>Descricao</th></tr></thead>
+            <tbody>
+                <tr><td style="color:#fff;"><code>'use'</code></td><td>Todos os comandos de asas, HUD, animacoes</td><td>Permissao geral para utilizar o resource</td></tr>
+                <tr><td style="color:#fff;"><code>'admin_cleanup'</code></td><td><code>/asaslimpar7</code></td><td>Permissao admin para limpar todas as asas do servidor</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Fluxo completo de verificacao (8 camadas)</h3>
+        <p>Quando um jogador executa qualquer comando, a permissao e verificada nesta ordem:</p>
+        <div class="flow"><span class="num">1.</span> <span class="fn">Config.Callbacks.HasPermission</span>(source, permission)
+   <span class="cmt">→ Retorna true/false? Utiliza e para aqui</span>
+   <span class="cmt">→ Retorna nil? Continua para a proxima camada</span>
+
+<span class="num">2.</span> ACE Permission: <span class="fn">IsPlayerAceAllowed</span>(source, Permissions.Ace[perm])
+   <span class="cmt">→ Ex: 'MathStoreFairyWing-V7.use' (gerado automaticamente)</span>
+
+<span class="num">3.</span> Feature Config: Permissions.Features[perm].enabled
+   <span class="cmt">→ Se enabled = false, TODOS tem acesso (sem restricao)</span>
+
+<span class="num">4.</span> CitizenID: Permissions.Features[perm].citizenids
+   <span class="cmt">→ Lista de IDs especificos permitidos</span>
+
+<span class="num">5.</span> vRP Groups: Permissions.VRP[perm]
+   <span class="cmt">→ Ex: {'Fada', 'Admin'}</span>
+
+<span class="num">6.</span> Sets (QBX): Permissions.Features[perm].sets
+
+<span class="num">7.</span> ACE Groups: Permissions.Groups[grupo]
+   <span class="cmt">→ Verifica group.admin, group.vip, etc.</span>
+
+<span class="num">8.</span> Jobs: Permissions.Features[perm].jobs
+   <span class="cmt">→ Ex: {'police', 'ambulance'}</span></div>
+
+        <h3>Permitir para todos (sem nenhuma restricao)</h3>
+<pre><code><span class="lang-tag">permissions.lua</span>
+Permissions.Features = {
+    use = {
+        enabled = <span class="bool">false</span>,    <span class="cmt">-- false = TODOS podem utilizar, sem verificacao</span>
+    },
+}</code></pre>
+
+        <h3>Restringir por grupo vRP</h3>
+<pre><code><span class="lang-tag">permissions.lua</span>
+Permissions.VRP = {
+    use = { <span class="str">'Fada'</span>, <span class="str">'Admin'</span> },            <span class="cmt">-- Nomes exactos dos grupos vRP</span>
+    admin_cleanup = { <span class="str">'Admin'</span> },
+}</code></pre>
+
+        <h3>Restringir por ACE Permission</h3>
+        <p>O resource gera os nomes ACE automaticamente utilizando <code>GetCurrentResourceName()</code>. Ou seja, se a pasta e <code>MathStoreFairyWing-V7</code>, os ACEs ficam:</p>
+<pre><code><span class="lang-tag">permissions.lua</span>
+Permissions.Ace = {
+    use = GetCurrentResourceName() .. <span class="str">'.use'</span>,             <span class="cmt">-- 'MathStoreFairyWing-V7.use'</span>
+    admin_cleanup = GetCurrentResourceName() .. <span class="str">'.admin'</span>,  <span class="cmt">-- 'MathStoreFairyWing-V7.admin'</span>
+}</code></pre>
+<pre><code><span class="lang-tag">server.cfg</span>
+<span class="cmt"># Liberar utilizacao para grupo VIP</span>
+<span class="kw">add_ace</span> group.vip MathStoreFairyWing-V7.use allow
+
+<span class="cmt"># Liberar admin cleanup</span>
+<span class="kw">add_ace</span> group.admin MathStoreFairyWing-V7.admin allow</code></pre>
+
+        <h3>Restringir por Job (QB/ESX)</h3>
+<pre><code><span class="lang-tag">permissions.lua</span>
+Permissions.Features = {
+    use = {
+        enabled = <span class="bool">true</span>,
+        jobs = { <span class="str">'police'</span>, <span class="str">'ambulance'</span> },   <span class="cmt">-- Nome do job no framework</span>
+    },
+}</code></pre>
+
+        <h3>Restringir por CitizenID especifico</h3>
+<pre><code><span class="lang-tag">permissions.lua</span>
+Permissions.Features = {
+    use = {
+        enabled = <span class="bool">true</span>,
+        citizenids = { <span class="str">'ABC12345'</span>, <span class="str">'XYZ67890'</span> },
+    },
+}</code></pre>
+
+        <h3>Grupos ACE personalizados</h3>
+        <p>Mapeia nomes amigaveis para os ACE groups reais do seu servidor:</p>
+<pre><code><span class="lang-tag">permissions.lua</span>
+Permissions.Groups = {
+    admin     = { <span class="str">'group.admin'</span>, <span class="str">'group.god'</span>, <span class="str">'group.superadmin'</span> },
+    moderator = { <span class="str">'group.mod'</span>, <span class="str">'group.moderator'</span> },
+    vip       = { <span class="str">'group.vip'</span>, <span class="str">'group.diamond'</span> },
+}</code></pre>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         ==============================================================
+         SECCAO 5: CALLBACKS (COMPLETA COM CENARIOS)
+         ==============================================================
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="section" id="callbacks">
+        <span class="section-label">Callbacks</span>
+        <h2>Callbacks: Injectando Logica do Seu Servidor</h2>
+        <p>Os callbacks permitem que escreva a sua propria logica dentro do fluxo do resource, sem editar nenhum ficheiro interno. Tudo fica em <code>config/config.lua</code>. Utilize-os para decidir quem pode utilizar, o que acontece ao equipar, o que acontece ao remover, e qualquer regra personalizada do seu servidor.</p>
+
+        <h3>Tabela de Callbacks</h3>
+        <table>
+            <thead><tr><th>Callback</th><th>Parametros</th><th>Retorno</th><th>Momento da chamada</th></tr></thead>
+            <tbody>
+                <tr><td style="color:#fff;"><code>CanOpenHUD</code></td><td><code>source</code></td><td><code>true/false</code></td><td>Antes de abrir a HUD radial</td></tr>
+                <tr><td style="color:#fff;"><code>CanEquipWings</code></td><td><code>source, cor</code></td><td><code>true/false</code></td><td>Antes de equipar asas</td></tr>
+                <tr><td style="color:#fff;"><code>OnWingsEquipped</code></td><td><code>source, cor</code></td><td>nenhum</td><td>Depois de equipar asas</td></tr>
+                <tr><td style="color:#fff;"><code>OnWingsRemoved</code></td><td><code>source</code></td><td>nenhum</td><td>Depois de remover asas</td></tr>
+                <tr><td style="color:#fff;"><code>HasPermission</code></td><td><code>source, permission</code></td><td><code>true/false/nil</code></td><td>Antes de qualquer verificacao de permissao</td></tr>
+            </tbody>
+        </table>
+
+        <div class="alert alert-info"><strong>Sobre o CanEquipWings</strong>O parametro <code>cor</code> pode ser <code>nil</code> ou um <code>number</code>. Quando e <code>nil</code>, o server esta a verificar se o botao "Pegar Asa" da HUD deve ficar activo. Quando e um numero, e uma tentativa real de equipar. Trate ambos os casos no seu callback.</div>
+
+        <div class="divider"></div>
+
+        <!-- ── CENARIO: Exigir item ESX ── -->
+        <h3>Cenarios com exemplos completos</h3>
+        <p>Cada cenario abaixo e completo e auto-contido. Copie o que fizer sentido para o seu servidor.</p>
+
+        <div class="scenario">
+            <div class="scenario-title">
+                <span>Exigir item no inventario para equipar (e devolver ao remover)</span>
+                <span class="tag tag-esx">ESX</span>
+            </div>
+            <p class="scenario-desc">O jogador necessita de ter o item <code>fairy_essence</code> no inventario. Ao equipar, o item e consumido. Ao remover as asas, o item regressa ao inventario.</p>
+<pre><code><span class="lang-tag">config.lua</span>
+Config.Callbacks = {
+    <span class="fn">CanEquipWings</span> = <span class="kw">function</span>(source, cor)
+        <span class="kw">if</span> cor <span class="kw">then</span>
+            <span class="cmt">-- Tentativa real de equipar: verificar item</span>
+            <span class="kw">local</span> xPlayer = ESX.GetPlayerFromId(source)
+            <span class="kw">local</span> item = xPlayer.getInventoryItem(<span class="str">'fairy_essence'</span>)
+            <span class="kw">if</span> <span class="kw">not</span> item <span class="kw">or</span> item.count < <span class="num">1</span> <span class="kw">then</span>
+                Bridge.<span class="fn">Notify</span>(source, <span class="str">'Necessita de Essencia de Fada!'</span>, <span class="str">'error'</span>)
+                <span class="kw">return</span> <span class="bool">false</span>
+            <span class="kw">end</span>
+            <span class="kw">return</span> <span class="bool">true</span>
+        <span class="kw">end</span>
+        <span class="cmt">-- cor = nil: apenas a verificar se a HUD mostra o botao</span>
+        <span class="kw">return</span> <span class="bool">true</span>
+    <span class="kw">end</span>,
+
+    <span class="fn">OnWingsEquipped</span> = <span class="kw">function</span>(source, cor)
+        <span class="cmt">-- Remover item do inventario apos equipar</span>
+        <span class="kw">local</span> xPlayer = ESX.GetPlayerFromId(source)
+        xPlayer.removeInventoryItem(<span class="str">'fairy_essence'</span>, <span class="num">1</span>)
+    <span class="kw">end</span>,
+
+    <span class="fn">OnWingsRemoved</span> = <span class="kw">function</span>(source)
+        <span class="cmt">-- Devolver item ao remover</span>
+        <span class="kw">local</span> xPlayer = ESX.GetPlayerFromId(source)
+        xPlayer.addInventoryItem(<span class="str">'fairy_essence'</span>, <span class="num">1</span>)
+    <span class="kw">end</span>,
+}</code></pre>
+        </div>
+
+        <!-- ── CENARIO: Exigir item QB ── -->
+        <div class="scenario">
+            <div class="scenario-title">
+                <span>Exigir item no inventario para equipar (e devolver ao remover)</span>
+                <span class="tag tag-qb">QB-Core</span>
+            </div>
+            <p class="scenario-desc">Mesma logica do ESX, mas utilizando as funcoes do QB-Core.</p>
+<pre><code><span class="lang-tag">config.lua</span>
+Config.Callbacks = {
+    <span class="fn">CanEquipWings</span> = <span class="kw">function</span>(source, cor)
+        <span class="kw">if</span> cor <span class="kw">then</span>
+            <span class="kw">local</span> Player = QBCore.Functions.GetPlayer(source)
+            <span class="kw">local</span> item = Player.Functions.GetItemByName(<span class="str">'fairy_essence'</span>)
+            <span class="kw">if</span> <span class="kw">not</span> item <span class="kw">then</span>
+                TriggerClientEvent(<span class="str">'QBCore:Notify'</span>, source, <span class="str">'Necessita de Essencia de Fada!'</span>, <span class="str">'error'</span>)
+                <span class="kw">return</span> <span class="bool">false</span>
+            <span class="kw">end</span>
+            <span class="kw">return</span> <span class="bool">true</span>
+        <span class="kw">end</span>
+        <span class="kw">return</span> <span class="bool">true</span>
+    <span class="kw">end</span>,
+
+    <span class="fn">OnWingsEquipped</span> = <span class="kw">function</span>(source, cor)
+        <span class="kw">local</span> Player = QBCore.Functions.GetPlayer(source)
+        Player.Functions.RemoveItem(<span class="str">'fairy_essence'</span>, <span class="num">1</span>)
+    <span class="kw">end</span>,
+
+    <span class="fn">OnWingsRemoved</span> = <span class="kw">function</span>(source)
+        <span class="kw">local</span> Player = QBCore.Functions.GetPlayer(source)
+        Player.Functions.AddItem(<span class="str">'fairy_essence'</span>, <span class="num">1</span>)
+    <span class="kw">end</span>,
+}</code></pre>
+        </div>
+
+        <!-- ── CENARIO: Exigir item vRP ── -->
+        <div class="scenario">
+            <div class="scenario-title">
+                <span>Exigir item no inventario para equipar (e devolver ao remover)</span>
+                <span class="tag tag-vrp">vRP</span>
+            </div>
+            <p class="scenario-desc">Mesma logica utilizando funcoes do vRP.</p>
+<pre><code><span class="lang-tag">config.lua</span>
+Config.Callbacks = {
+    <span class="fn">CanEquipWings</span> = <span class="kw">function</span>(source, cor)
+        <span class="kw">if</span> cor <span class="kw">then</span>
+            <span class="kw">local</span> user_id = vRP.getUserId(source)
+            <span class="kw">if</span> <span class="kw">not</span> user_id <span class="kw">then</span> <span class="kw">return</span> <span class="bool">false</span> <span class="kw">end</span>
+            <span class="kw">local</span> amount = vRP.getInventoryItemAmount(user_id, <span class="str">'essencia_fada'</span>)
+            <span class="kw">if</span> amount < <span class="num">1</span> <span class="kw">then</span>
+                vRP.sendServiceNotif(source, <span class="str">'Necessita de Essencia de Fada!'</span>)
+                <span class="kw">return</span> <span class="bool">false</span>
+            <span class="kw">end</span>
+            <span class="kw">return</span> <span class="bool">true</span>
+        <span class="kw">end</span>
+        <span class="kw">return</span> <span class="bool">true</span>
+    <span class="kw">end</span>,
+
+    <span class="fn">OnWingsEquipped</span> = <span class="kw">function</span>(source, cor)
+        <span class="kw">local</span> user_id = vRP.getUserId(source)
+        vRP.tryGetInventoryItem(user_id, <span class="str">'essencia_fada'</span>, <span class="num">1</span>)
+    <span class="kw">end</span>,
+
+    <span class="fn">OnWingsRemoved</span> = <span class="kw">function</span>(source)
+        <span class="kw">local</span> user_id = vRP.getUserId(source)
+        vRP.tryGiveInventoryItem(user_id, <span class="str">'essencia_fada'</span>, <span class="num">1</span>)
+    <span class="kw">end</span>,
+}</code></pre>
+        </div>
+
+        <!-- ── CENARIO: Localizacao ── -->
+        <div class="scenario">
+            <div class="scenario-title">
+                <span>Jogador precisa de estar num local especifico</span>
+                <span class="tag tag-all">Qualquer Framework</span>
+            </div>
+            <p class="scenario-desc">O jogador so pode equipar se estiver dentro de uma area definida. Util para criar "templos", altares ou zonas magicas onde as asas sao desbloqueadas.</p>
+<pre><code><span class="lang-tag">config.lua</span>
+<span class="cmt">-- Area permitida (coordenadas centrais + raio)</span>
+<span class="kw">local</span> ZONA_ALTAR = { x = <span class="num">-1042.5</span>, y = <span class="num">-2745.3</span>, z = <span class="num">13.9</span>, raio = <span class="num">15.0</span> }
+
+Config.Callbacks = {
+    <span class="fn">CanEquipWings</span> = <span class="kw">function</span>(source, cor)
+        <span class="kw">if</span> cor <span class="kw">then</span>
+            <span class="cmt">-- Obter a posicao actual do jogador</span>
+            <span class="kw">local</span> ped = GetPlayerPed(source)
+            <span class="kw">local</span> coords = GetEntityCoords(ped)
+
+            <span class="cmt">-- Calcular distancia ate ao altar</span>
+            <span class="kw">local</span> dx = coords.x - ZONA_ALTAR.x
+            <span class="kw">local</span> dy = coords.y - ZONA_ALTAR.y
+            <span class="kw">local</span> dz = coords.z - ZONA_ALTAR.z
+            <span class="kw">local</span> dist = math.sqrt(dx*dx + dy*dy + dz*dz)
+
+            <span class="kw">if</span> dist > ZONA_ALTAR.raio <span class="kw">then</span>
+                Bridge.<span class="fn">Notify</span>(source, <span class="str">'Tem de estar no Altar das Fadas!'</span>, <span class="str">'error'</span>)
+                <span class="kw">return</span> <span class="bool">false</span>
+            <span class="kw">end</span>
+        <span class="kw">end</span>
+        <span class="kw">return</span> <span class="bool">true</span>
+    <span class="kw">end</span>,
+}</code></pre>
+        </div>
+
+        <!-- ── CENARIO: Quest / progressao ── -->
+        <div class="scenario">
+            <div class="scenario-title">
+                <span>Jogador precisa de ter completado uma quest ou progressao</span>
+                <span class="tag tag-all">Qualquer Framework</span>
+            </div>
+            <p class="scenario-desc">Se o seu servidor tem sistema de quests ou progressao, pode verificar se o jogador completou uma etapa antes de desbloquear as asas. Este exemplo utiliza exports de um resource de quests generico, adapte para o sistema do seu servidor.</p>
+<pre><code><span class="lang-tag">config.lua</span>
+Config.Callbacks = {
+    <span class="fn">CanEquipWings</span> = <span class="kw">function</span>(source, cor)
+        <span class="kw">if</span> cor <span class="kw">then</span>
+            <span class="cmt">-- Exemplo generico: chamar export do resource de quest</span>
+            <span class="kw">local</span> completed = exports[<span class="str">'meu_quest_system'</span>]:<span class="fn">isQuestComplete</span>(source, <span class="str">'fairy_quest_01'</span>)
+            <span class="kw">if</span> <span class="kw">not</span> completed <span class="kw">then</span>
+                Bridge.<span class="fn">Notify</span>(source, <span class="str">'Complete a quest "O Despertar da Fada" primeiro!'</span>, <span class="str">'error'</span>)
+                <span class="kw">return</span> <span class="bool">false</span>
+            <span class="kw">end</span>
+        <span class="kw">end</span>
+        <span class="kw">return</span> <span class="bool">true</span>
+    <span class="kw">end</span>,
+
+    <span class="fn">OnWingsEquipped</span> = <span class="kw">function</span>(source, cor)
+        <span class="cmt">-- Registar no sistema de progressao que desbloqueou</span>
+        exports[<span class="str">'meu_quest_system'</span>]:<span class="fn">addProgress</span>(source, <span class="str">'fairy_mastery'</span>, <span class="num">10</span>)
+    <span class="kw">end</span>,
+}</code></pre>
+        </div>
+
+        <!-- ── CENARIO: Habilidade desbloqueada ── -->
+        <div class="scenario">
+            <div class="scenario-title">
+                <span>Jogador precisa de ter desbloqueado uma habilidade (skill tree)</span>
+                <span class="tag tag-all">Qualquer Framework</span>
+            </div>
+            <p class="scenario-desc">Se o servidor utiliza sistema de habilidades, arvore de skills, ou progressao por nivel, pode condicionar a utilizacao das asas a uma skill especifica.</p>
+<pre><code><span class="lang-tag">config.lua</span>
+Config.Callbacks = {
+    <span class="fn">CanEquipWings</span> = <span class="kw">function</span>(source, cor)
+        <span class="kw">if</span> cor <span class="kw">then</span>
+            <span class="cmt">-- Exemplo: export do sistema de skills do servidor</span>
+            <span class="kw">local</span> has = exports[<span class="str">'meu_skill_system'</span>]:<span class="fn">hasSkill</span>(source, <span class="str">'voo_fada'</span>)
+            <span class="kw">if</span> <span class="kw">not</span> has <span class="kw">then</span>
+                Bridge.<span class="fn">Notify</span>(source, <span class="str">'Desbloqueie a habilidade "Voo Encantado" primeiro!'</span>, <span class="str">'error'</span>)
+                <span class="kw">return</span> <span class="bool">false</span>
+            <span class="kw">end</span>
+        <span class="kw">end</span>
+        <span class="kw">return</span> <span class="bool">true</span>
+    <span class="kw">end</span>,
+
+    <span class="fn">CanOpenHUD</span> = <span class="kw">function</span>(source)
+        <span class="cmt">-- Tambem pode bloquear a HUD se nao tem a skill</span>
+        <span class="kw">local</span> has = exports[<span class="str">'meu_skill_system'</span>]:<span class="fn">hasSkill</span>(source, <span class="str">'voo_fada'</span>)
+        <span class="kw">if</span> <span class="kw">not</span> has <span class="kw">then</span>
+            Bridge.<span class="fn">Notify</span>(source, <span class="str">'Ainda nao tem acesso ao Poder Encantado'</span>, <span class="str">'error'</span>)
+        <span class="kw">end</span>
+        <span class="kw">return</span> has
+    <span class="kw">end</span>,
+}</code></pre>
+        </div>
+
+        <!-- ── CENARIO: Apenas VIP ── -->
+        <div class="scenario">
+            <div class="scenario-title">
+                <span>Asas somente para VIPs (ou qualquer ACE group)</span>
+                <span class="tag tag-all">Qualquer Framework</span>
+            </div>
+            <p class="scenario-desc">Bloquear tanto a HUD como o equipar para quem nao e VIP. Pode utilizar com qualquer grupo ACE do seu servidor.</p>
+<pre><code><span class="lang-tag">config.lua</span>
+Config.Callbacks = {
+    <span class="fn">HasPermission</span> = <span class="kw">function</span>(source, permission)
+        <span class="kw">if</span> permission == <span class="str">'use'</span> <span class="kw">then</span>
+            <span class="kw">return</span> IsPlayerAceAllowed(source, <span class="str">'group.vip'</span>)
+        <span class="kw">end</span>
+        <span class="kw">return</span> <span class="bool">nil</span>  <span class="cmt">-- Outras permissoes: utilizar sistema predefinido</span>
+    <span class="kw">end</span>,
+
+    <span class="fn">CanOpenHUD</span> = <span class="kw">function</span>(source)
+        <span class="kw">if</span> <span class="kw">not</span> IsPlayerAceAllowed(source, <span class="str">'group.vip'</span>) <span class="kw">then</span>
+            Bridge.<span class="fn">Notify</span>(source, <span class="str">'As Asas de Fada sao exclusivas para VIPs!'</span>, <span class="str">'error'</span>)
+            <span class="kw">return</span> <span class="bool">false</span>
+        <span class="kw">end</span>
+        <span class="kw">return</span> <span class="bool">true</span>
+    <span class="kw">end</span>,
+}</code></pre>
+        </div>
+
+        <!-- ── CENARIO: Combinar regras ── -->
+        <div class="scenario">
+            <div class="scenario-title">
+                <span>Combinar varias regras: item + local + nivel</span>
+                <span class="tag tag-esx">ESX</span>
+            </div>
+            <p class="scenario-desc">Exemplo completo combinando varias condicoes. O jogador necessita de ter um item, estar num local especifico e ter nivel minimo. Demonstra como compor regras complexas num unico callback.</p>
+<pre><code><span class="lang-tag">config.lua</span>
+<span class="kw">local</span> ALTAR = { x = <span class="num">-1042.5</span>, y = <span class="num">-2745.3</span>, z = <span class="num">13.9</span>, raio = <span class="num">15.0</span> }
+
+Config.Callbacks = {
+    <span class="fn">CanEquipWings</span> = <span class="kw">function</span>(source, cor)
+        <span class="kw">if</span> <span class="kw">not</span> cor <span class="kw">then</span> <span class="kw">return</span> <span class="bool">true</span> <span class="kw">end</span>  <span class="cmt">-- HUD check: permitir visual</span>
+
+        <span class="cmt">-- Regra 1: Necessita do item</span>
+        <span class="kw">local</span> xPlayer = ESX.GetPlayerFromId(source)
+        <span class="kw">local</span> item = xPlayer.getInventoryItem(<span class="str">'fairy_essence'</span>)
+        <span class="kw">if</span> <span class="kw">not</span> item <span class="kw">or</span> item.count < <span class="num">1</span> <span class="kw">then</span>
+            Bridge.<span class="fn">Notify</span>(source, <span class="str">'Necessita de Essencia de Fada!'</span>, <span class="str">'error'</span>)
+            <span class="kw">return</span> <span class="bool">false</span>
+        <span class="kw">end</span>
+
+        <span class="cmt">-- Regra 2: Necessita de estar no altar</span>
+        <span class="kw">local</span> ped = GetPlayerPed(source)
+        <span class="kw">local</span> c = GetEntityCoords(ped)
+        <span class="kw">local</span> dist = #(vector3(c.x, c.y, c.z) - vector3(ALTAR.x, ALTAR.y, ALTAR.z))
+        <span class="kw">if</span> dist > ALTAR.raio <span class="kw">then</span>
+            Bridge.<span class="fn">Notify</span>(source, <span class="str">'Dirija-se ao Altar das Fadas!'</span>, <span class="str">'error'</span>)
+            <span class="kw">return</span> <span class="bool">false</span>
+        <span class="kw">end</span>
+
+        <span class="cmt">-- Regra 3: Nivel minimo (export do seu sistema)</span>
+        <span class="kw">local</span> level = exports[<span class="str">'meu_level_system'</span>]:<span class="fn">getLevel</span>(source)
+        <span class="kw">if</span> level < <span class="num">30</span> <span class="kw">then</span>
+            Bridge.<span class="fn">Notify</span>(source, <span class="str">'Necessita de ser nivel 30!'</span>, <span class="str">'error'</span>)
+            <span class="kw">return</span> <span class="bool">false</span>
+        <span class="kw">end</span>
+
+        <span class="kw">return</span> <span class="bool">true</span>
+    <span class="kw">end</span>,
+
+    <span class="fn">OnWingsEquipped</span> = <span class="kw">function</span>(source, cor)
+        <span class="kw">local</span> xPlayer = ESX.GetPlayerFromId(source)
+        xPlayer.removeInventoryItem(<span class="str">'fairy_essence'</span>, <span class="num">1</span>)
+        exports[<span class="str">'meu_level_system'</span>]:<span class="fn">addXP</span>(source, <span class="num">50</span>)
+    <span class="kw">end</span>,
+}</code></pre>
+        </div>
+
+        <!-- ── CENARIO: HasPermission override ── -->
+        <div class="scenario">
+            <div class="scenario-title">
+                <span>Override total da permissao com logica propria</span>
+                <span class="tag tag-all">Qualquer Framework</span>
+            </div>
+            <p class="scenario-desc">Se possui um sistema de permissao proprio no servidor e pretende ignorar completamente o sistema de 8 camadas, utilize o callback <code>HasPermission</code>. Retornar <code>true</code> ou <code>false</code> salta todas as verificacoes predefinidas. Retornar <code>nil</code> permite que o sistema continue normalmente.</p>
+<pre><code><span class="lang-tag">config.lua</span>
+Config.Callbacks = {
+    <span class="fn">HasPermission</span> = <span class="kw">function</span>(source, permission)
+        <span class="kw">if</span> permission == <span class="str">'use'</span> <span class="kw">then</span>
+            <span class="cmt">-- Utilizar o seu proprio sistema de permissao</span>
+            <span class="kw">return</span> exports[<span class="str">'meu_perm_system'</span>]:<span class="fn">hasPermission</span>(source, <span class="str">'fairy_wings'</span>)
+        <span class="kw">end</span>
+
+        <span class="kw">if</span> permission == <span class="str">'admin_cleanup'</span> <span class="kw">then</span>
+            <span class="kw">return</span> IsPlayerAceAllowed(source, <span class="str">'group.admin'</span>)
+        <span class="kw">end</span>
+
+        <span class="kw">return</span> <span class="bool">nil</span>  <span class="cmt">-- Para qualquer permissao desconhecida, utilizar predefinido</span>
+    <span class="kw">end</span>,
+}</code></pre>
+        </div>
+
+        <!-- ── CENARIO: Permissao por cargo Discord ── -->
+        <div class="scenario">
+            <div class="scenario-title">
+                <span>Permissao baseada em cargos do Discord</span>
+                <span class="tag tag-all">Qualquer Framework</span>
+            </div>
+            <p class="scenario-desc">Suponhamos que pretende basear o seu sistema de permissao em <strong style="color:#fff;">cargos do Discord</strong>. Isso e possivel! Basta ter um resource de integracao Discord no servidor (como <code>badger_discord_api</code>, <code>discord_perms</code>, <code>deek_discord</code>, etc.) que forneca um export para verificar cargo. O callback <code>HasPermission</code> trata do resto.</p>
+<pre><code><span class="lang-tag">config.lua</span>
+Config.Callbacks = {
+    <span class="fn">HasPermission</span> = <span class="kw">function</span>(source, permission)
+        <span class="kw">if</span> permission == <span class="str">'use'</span> <span class="kw">then</span>
+            <span class="cmt">-- ID do cargo "Fada" no Discord (clique direito no cargo > Copiar ID)</span>
+            <span class="kw">local</span> hasCargo = exports[<span class="str">'badger_discord_api'</span>]:<span class="fn">isRolePresent</span>(source, <span class="num">1234567890123456</span>)
+            <span class="kw">return</span> hasCargo  <span class="cmt">-- true = tem cargo, false = nao tem</span>
+        <span class="kw">end</span>
+
+        <span class="kw">if</span> permission == <span class="str">'admin_cleanup'</span> <span class="kw">then</span>
+            <span class="cmt">-- ID do cargo "Admin" no Discord</span>
+            <span class="kw">return</span> exports[<span class="str">'badger_discord_api'</span>]:<span class="fn">isRolePresent</span>(source, <span class="num">9876543210987654</span>)
+        <span class="kw">end</span>
+
+        <span class="kw">return</span> <span class="bool">nil</span>  <span class="cmt">-- outras permissoes: utilizar sistema predefinido</span>
+    <span class="kw">end</span>,
+}</code></pre>
+            <div class="alert alert-tip"><strong>Combinando Discord + sistema predefinido</strong>Se pretender que o jogador tenha acesso caso possua o cargo do Discord <strong>OU</strong> caso passe no sistema predefinido (vRP, ACE, job, etc.), basta retornar <code>nil</code> quando o cargo nao for encontrado. Assim o sistema continua a verificar as outras 7 camadas normalmente:</div>
+<pre><code><span class="lang-tag">config.lua</span>
+Config.Callbacks = {
+    <span class="fn">HasPermission</span> = <span class="kw">function</span>(source, permission)
+        <span class="kw">if</span> permission == <span class="str">'use'</span> <span class="kw">then</span>
+            <span class="kw">local</span> discordOk = exports[<span class="str">'badger_discord_api'</span>]:<span class="fn">isRolePresent</span>(source, <span class="num">1234567890123456</span>)
+            <span class="kw">if</span> discordOk <span class="kw">then</span> <span class="kw">return</span> <span class="bool">true</span> <span class="kw">end</span>
+            <span class="kw">return</span> <span class="bool">nil</span>  <span class="cmt">-- nao tem cargo Discord? deixa o sistema predefinido verificar vRP/ACE/etc</span>
+        <span class="kw">end</span>
+        <span class="kw">return</span> <span class="bool">nil</span>
+    <span class="kw">end</span>,
+}</code></pre>
+        </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         ==============================================================
+         SECCAO 6: EVENTOS (COMPLETA COM CENARIOS)
+         ==============================================================
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="section" id="eventos">
+        <span class="section-label">Eventos e Integracao</span>
+        <h2>Eventos: Escutar e Integrar</h2>
+        <p>O resource dispara diversos eventos ao longo do ciclo de vida das asas. Pode escutar estes eventos a partir de outros resources para criar integracoes, sincronizar sistemas, ou reagir quando algo acontece.</p>
+
+        <h3>Nomenclatura dos eventos</h3>
+        <p>Todos os eventos sao prefixados automaticamente com o nome do resource para evitar conflitos. O prefixo segue o formato:</p>
+<pre><code><span class="lang-tag">lua</span>
+<span class="cmt">-- Formato: NomeDoResource:tipo:accao</span>
+<span class="cmt">-- Exemplo:</span>
+<span class="str">'MathStoreFairyWing-V7:spawn'</span>          <span class="cmt">-- Comando (server → client)</span>
+<span class="str">'MathStoreFairyWing-V7:sync:spawned'</span>   <span class="cmt">-- Sincronizacao (client → server)</span>
+<span class="str">'MathStoreFairyWing-V7:sync:spawn'</span>     <span class="cmt">-- Broadcast (server → outros clients)</span></code></pre>
+
+        <div class="alert alert-info"><strong>Sobre os nomes</strong>Os nomes exactos sao gerados automaticamente em <code>bridge/shared.lua</code> utilizando <code>GetCurrentResourceName()</code>. Abaixo, utilizamos o nome predefinido <code>MathStoreFairyWing-V7</code>.</div>
+
+        <div class="divider"></div>
+
+        <h3>Eventos Client → Server (Sincronizacao)</h3>
+        <p>Quando o jogador efectua algo localmente, o client envia estes eventos para o server para que outros jogadores vejam:</p>
+        <table>
+            <thead><tr><th>Evento</th><th>Parametros</th><th>Quando e enviado</th></tr></thead>
+            <tbody>
+                <tr><td style="color:#fff;"><code>MathStoreFairyWing-V7:sync:spawned</code></td><td><code>cor, initialState</code></td><td>Asas criadas localmente</td></tr>
+                <tr><td style="color:#fff;"><code>MathStoreFairyWing-V7:sync:animChanged</code></td><td><code>animKey</code></td><td>Animacao da asa alterou</td></tr>
+                <tr><td style="color:#fff;"><code>MathStoreFairyWing-V7:sync:removed</code></td><td>-</td><td>Asas removidas localmente</td></tr>
+                <tr><td style="color:#fff;"><code>MathStoreFairyWing-V7:sync:requestBulk</code></td><td>-</td><td>Jogador solicita estado actual (ao conectar)</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Eventos Server → Client (Comandos)</h3>
+        <p>Quando um comando e validado no server (permissoes + callbacks), o server envia para o client executar. Estes sao direccionados ao jogador que executou o comando:</p>
+        <table>
+            <thead><tr><th>Evento</th><th>Parametros</th><th>Accao</th></tr></thead>
+            <tbody>
+                <tr><td style="color:#fff;"><code>MathStoreFairyWing-V7:spawn</code></td><td><code>cor</code></td><td>Equipar asas</td></tr>
+                <tr><td style="color:#fff;"><code>MathStoreFairyWing-V7:remove</code></td><td>-</td><td>Remover asas</td></tr>
+                <tr><td style="color:#fff;"><code>MathStoreFairyWing-V7:toggle</code></td><td>-</td><td>Abrir/fechar asas</td></tr>
+                <tr><td style="color:#fff;"><code>MathStoreFairyWing-V7:fly</code></td><td>-</td><td>Toggle voo</td></tr>
+                <tr><td style="color:#fff;"><code>MathStoreFairyWing-V7:changeColor</code></td><td><code>cor</code></td><td>Alterar cor das asas</td></tr>
+                <tr><td style="color:#fff;"><code>MathStoreFairyWing-V7:hud</code></td><td><code>canEquip</code></td><td>Abrir/fechar HUD</td></tr>
+                <tr><td style="color:#fff;"><code>MathStoreFairyWing-V7:deleteMassive</code></td><td>-</td><td>Eliminar TODAS (admin, broadcast -1)</td></tr>
+                <tr><td style="color:#fff;"><code>MathStoreFairyWing-V7:deleteNearby</code></td><td>-</td><td>Eliminar orfas proximo</td></tr>
+                <tr><td style="color:#fff;"><code>MathStoreFairyWing-V7:abrir</code></td><td>-</td><td>Animacao abrir asas</td></tr>
+                <tr><td style="color:#fff;"><code>MathStoreFairyWing-V7:fechar</code></td><td>-</td><td>Animacao fechar asas</td></tr>
+                <tr><td style="color:#fff;"><code>MathStoreFairyWing-V7:bater</code></td><td>-</td><td>Animacao bater asas</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Eventos de Broadcast (Server → Todos no Bucket)</h3>
+        <p>Quando um jogador equipa/remove asas ou cauda, o server envia para todos os outros jogadores no mesmo routing bucket:</p>
+        <table>
+            <thead><tr><th>Evento</th><th>Parametros</th><th>Accao</th></tr></thead>
+            <tbody>
+                <tr><td style="color:#fff;"><code>MathStoreFairyWing-V7:sync:spawn</code></td><td><code>serverId, cor, state</code></td><td>Outro player equipou asas</td></tr>
+                <tr><td style="color:#fff;"><code>MathStoreFairyWing-V7:sync:anim</code></td><td><code>serverId, animKey</code></td><td>Animacao de outro player alterou</td></tr>
+                <tr><td style="color:#fff;"><code>MathStoreFairyWing-V7:sync:remove</code></td><td><code>serverId</code></td><td>Outro player removeu asas</td></tr>
+                <tr><td style="color:#fff;"><code>MathStoreFairyWing-V7:sync:bulk</code></td><td><code>allWings (tabela)</code></td><td>Estado completo do bucket (asas)</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Eventos locais do Client (escutaveis por outros resources)</h3>
+        <p>O client emite eventos locais utilizando <code>TriggerEvent</code> (nao sao net events, sao locais do client). Outros resources podem escutar estes eventos com <code>AddEventHandler</code>:</p>
+        <table>
+            <thead><tr><th>Evento</th><th>Parametros</th><th>Quando</th></tr></thead>
+            <tbody>
+                <tr><td style="color:#fff;"><code>flight:start</code></td><td><code>playerId</code></td><td>Jogador comecou a voar</td></tr>
+                <tr><td style="color:#fff;"><code>flight:end</code></td><td><code>playerId</code></td><td>Jogador parou de voar</td></tr>
+                <tr><td style="color:#fff;"><code>flight:animationChange</code></td><td><code>playerId, state</code></td><td>Estado da animacao de voo alterou</td></tr>
+                <tr><td style="color:#fff;"><code>wing:rasanteActive</code></td><td><code>active (bool)</code></td><td>Modo rasante activou/desactivou</td></tr>
+                <tr><td style="color:#fff;"><code>wing:subidaActive</code></td><td><code>active (bool)</code></td><td>Modo subida activou/desactivou</td></tr>
+            </tbody>
+        </table>
+
+        <div class="divider"></div>
+
+        <h3>Cenarios de integracao com exemplos completos</h3>
+        <p>Cada cenario abaixo demonstra como escutar ou reagir a eventos do resource a partir de <strong style="color:#fff;">outro resource</strong> do seu servidor.</p>
+
+        <!-- ── CENARIO: Escutar voo ── -->
+        <div class="scenario">
+            <div class="scenario-title">
+                <span>Reagir quando um jogador comeca ou para de voar</span>
+                <span class="tag tag-all">Client - Outro Resource</span>
+            </div>
+            <p class="scenario-desc">O seu resource de HUD ou sistema de status pode escutar o inicio/fim do voo para apresentar um indicador, aplicar efeito, ou alterar a camera.</p>
+<pre><code><span class="lang-tag">client.lua (outro resource)</span>
+<span class="cmt">-- Jogador comecou a voar</span>
+<span class="fn">AddEventHandler</span>(<span class="str">'flight:start'</span>, <span class="kw">function</span>(playerId)
+    <span class="fn">print</span>(<span class="str">'[MeuHUD] Player a voar: '</span> .. playerId)
+    <span class="cmt">-- Activar indicador de voo na HUD</span>
+    SendNUIMessage({ action = <span class="str">'showFlightIndicator'</span>, active = <span class="bool">true</span> })
+<span class="kw">end</span>)
+
+<span class="cmt">-- Jogador parou de voar</span>
+<span class="fn">AddEventHandler</span>(<span class="str">'flight:end'</span>, <span class="kw">function</span>(playerId)
+    <span class="fn">print</span>(<span class="str">'[MeuHUD] Player aterrou: '</span> .. playerId)
+    SendNUIMessage({ action = <span class="str">'showFlightIndicator'</span>, active = <span class="bool">false</span> })
+<span class="kw">end</span>)
+
+<span class="cmt">-- Animacao de voo alterou (ex: a planar, a bater asas, a descer)</span>
+<span class="fn">AddEventHandler</span>(<span class="str">'flight:animationChange'</span>, <span class="kw">function</span>(playerId, state)
+    <span class="fn">print</span>(<span class="str">'[MeuHUD] Animacao voo: '</span> .. state)
+<span class="kw">end</span>)</code></pre>
+        </div>
+
+        <!-- ── CENARIO: Escutar mode rasante/subida ── -->
+        <div class="scenario">
+            <div class="scenario-title">
+                <span>Detectar modo de voo especifico (rasante, subida)</span>
+                <span class="tag tag-all">Client - Outro Resource</span>
+            </div>
+            <p class="scenario-desc">Se pretende aplicar efeitos visuais diferentes conforme o tipo de manobra que o jogador efectua no ar.</p>
+<pre><code><span class="lang-tag">client.lua (outro resource)</span>
+<span class="cmt">-- Modo rasante (voo baixo rapido)</span>
+<span class="fn">AddEventHandler</span>(<span class="str">'wing:rasanteActive'</span>, <span class="kw">function</span>(active)
+    <span class="kw">if</span> active <span class="kw">then</span>
+        <span class="cmt">-- Aplicar efeito de velocidade, motion blur, etc.</span>
+        SetTimecycleModifier(<span class="str">'spectator5'</span>)
+    <span class="kw">else</span>
+        ClearTimecycleModifier()
+    <span class="kw">end</span>
+<span class="kw">end</span>)
+
+<span class="cmt">-- Modo subida (a ganhar altitude)</span>
+<span class="fn">AddEventHandler</span>(<span class="str">'wing:subidaActive'</span>, <span class="kw">function</span>(active)
+    <span class="kw">if</span> active <span class="kw">then</span>
+        <span class="cmt">-- Particulas de vento, trail, etc.</span>
+    <span class="kw">end</span>
+<span class="kw">end</span>)</code></pre>
+        </div>
+
+        <!-- ── CENARIO: Escutar sync events server-side ── -->
+        <div class="scenario">
+            <div class="scenario-title">
+                <span>Escutar no server quando alguem equipa/remove asas</span>
+                <span class="tag tag-all">Server - Outro Resource</span>
+            </div>
+            <p class="scenario-desc">A partir de outro resource no server, pode escutar os eventos de sync para registar em log, atribuir recompensa, notificar Discord, etc.</p>
+<pre><code><span class="lang-tag">server.lua (outro resource)</span>
+<span class="cmt">-- Escutar quando alguem equipou asas</span>
+<span class="fn">RegisterNetEvent</span>(<span class="str">'MathStoreFairyWing-V7:sync:spawned'</span>)
+<span class="fn">AddEventHandler</span>(<span class="str">'MathStoreFairyWing-V7:sync:spawned'</span>, <span class="kw">function</span>(cor, initialState)
+    <span class="kw">local</span> src = source
+    <span class="fn">print</span>(<span class="str">'[Log] Player '</span> .. src .. <span class="str">' equipou asas cor '</span> .. cor)
+
+    <span class="cmt">-- Exemplo: enviar para o Discord</span>
+    exports[<span class="str">'discord_log'</span>]:<span class="fn">sendLog</span>(<span class="str">'wings'</span>, 
+        GetPlayerName(src) .. <span class="str">' equipou asas (cor '</span> .. cor .. <span class="str">')'</span>
+    )
+<span class="kw">end</span>)
+
+<span class="cmt">-- Escutar quando alguem removeu asas</span>
+<span class="fn">RegisterNetEvent</span>(<span class="str">'MathStoreFairyWing-V7:sync:removed'</span>)
+<span class="fn">AddEventHandler</span>(<span class="str">'MathStoreFairyWing-V7:sync:removed'</span>, <span class="kw">function</span>()
+    <span class="kw">local</span> src = source
+    <span class="fn">print</span>(<span class="str">'[Log] Player '</span> .. src .. <span class="str">' removeu asas'</span>)
+<span class="kw">end</span>)</code></pre>
+
+            <div class="alert alert-warn"><strong>Sobre escutar net events</strong>Quando regista um <code>RegisterNetEvent</code> de outro resource, esta a escutar o mesmo evento que o Fairy Wing V7 ja escuta internamente. O FiveM permite multiplos handlers. A sua logica e executada em conjunto, sem interferir no resource original.</div>
+        </div>
+
+        <!-- ── CENARIO: Escutar animacao ── -->
+        <div class="scenario">
+            <div class="scenario-title">
+                <span>Reagir a alteracoes de animacao de outro jogador</span>
+                <span class="tag tag-all">Client - Outro Resource</span>
+            </div>
+            <p class="scenario-desc">Quando outro jogador troca de animacao (ex: abre asas), o broadcast chega ao seu client. Pode utilizar para criar efeitos visuais sincronizados.</p>
+<pre><code><span class="lang-tag">client.lua (outro resource)</span>
+<span class="fn">RegisterNetEvent</span>(<span class="str">'MathStoreFairyWing-V7:sync:anim'</span>)
+<span class="fn">AddEventHandler</span>(<span class="str">'MathStoreFairyWing-V7:sync:anim'</span>, <span class="kw">function</span>(serverId, animKey)
+    <span class="fn">print</span>(<span class="str">'[Sync] Player '</span> .. serverId .. <span class="str">' trocou animacao para: '</span> .. animKey)
+
+    <span class="cmt">-- Exemplo: Criar particulas ao redor quando alguem abre asas</span>
+    <span class="kw">if</span> animKey == <span class="str">'open'</span> <span class="kw">or</span> animKey == <span class="str">'bater'</span> <span class="kw">then</span>
+        <span class="kw">local</span> ped = GetPlayerPed(GetPlayerFromServerId(serverId))
+        <span class="kw">if</span> ped <span class="kw">and</span> ped ~= <span class="num">0</span> <span class="kw">then</span>
+            <span class="cmt">-- Adicionar particula no ped</span>
+        <span class="kw">end</span>
+    <span class="kw">end</span>
+<span class="kw">end</span>)</code></pre>
+        </div>
+
+        <div class="divider"></div>
+
+        <h3>Disparando eventos do Fairy Wing V7 a partir de outro resource</h3>
+        <p>Os cenarios acima demonstram como <strong style="color:#fff;">escutar</strong> eventos. Contudo, tambem pode <strong style="color:#fff;">disparar</strong> eventos do Fairy Wing V7 directamente a partir do seu resource, sem depender de comandos. Isto e util quando o fluxo comeca fora do Fairy Wing V7 (loja, item, NPC, quest, etc.).</p>
+
+        <div class="alert alert-warn"><strong>Importante</strong>Quando dispara o evento directamente, salta o sistema de permissoes e callbacks do Fairy Wing V7. A responsabilidade de verificar se o jogador pode ou nao utilizar fica no SEU resource. Utilize isto apenas quando pretender controlo total do fluxo.</div>
+
+        <!-- ── CENARIO: Loja / NPC da dar asas ── -->
+        <div class="scenario">
+            <div class="scenario-title">
+                <span>Loja ou NPC que atribui asas ao jogador ao comprar</span>
+                <span class="tag tag-all">Server - Outro Resource</span>
+            </div>
+            <p class="scenario-desc">O jogador interage com um NPC ou loja, paga, e recebe as asas directamente. A partir do server do seu resource, envia o evento <code>:spawn</code> para o client do jogador.</p>
+<pre><code><span class="lang-tag">server.lua (outro resource - ex: loja)</span>
+<span class="cmt">-- Jogador comprou asas na loja, cor 5</span>
+<span class="fn">RegisterNetEvent</span>(<span class="str">'minhaLoja:comprarAsas'</span>)
+<span class="fn">AddEventHandler</span>(<span class="str">'minhaLoja:comprarAsas'</span>, <span class="kw">function</span>(cor)
+    <span class="kw">local</span> src = source
+
+    <span class="cmt">-- A sua logica de pagamento</span>
+    <span class="kw">local</span> xPlayer = ESX.GetPlayerFromId(src)
+    <span class="kw">if</span> xPlayer.getMoney() < <span class="num">5000</span> <span class="kw">then</span>
+        TriggerClientEvent(<span class="str">'esx:showNotification'</span>, src, <span class="str">'Dinheiro insuficiente!'</span>)
+        <span class="kw">return</span>
+    <span class="kw">end</span>
+    xPlayer.removeMoney(<span class="num">5000</span>)
+
+    <span class="cmt">-- Atribuir as asas ao jogador (dispara directamente no Fairy Wing V7)</span>
+    TriggerClientEvent(<span class="str">'MathStoreFairyWing-V7:spawn'</span>, src, cor)
+<span class="kw">end</span>)</code></pre>
+        </div>
+
+        <!-- ── CENARIO: Item usavel que equipa asas ── -->
+        <div class="scenario">
+            <div class="scenario-title">
+                <span>Item utilizavel que equipa asas ao usar</span>
+                <span class="tag tag-esx">ESX</span>
+            </div>
+            <p class="scenario-desc">Regista um item utilizavel no server. Quando o jogador utiliza o item, as asas sao equipadas automaticamente e o item e consumido.</p>
+<pre><code><span class="lang-tag">server.lua (outro resource - ex: items)</span>
+<span class="cmt">-- Registar item utilizavel 'asas_de_fada'</span>
+ESX.RegisterUsableItem(<span class="str">'asas_de_fada'</span>, <span class="kw">function</span>(source)
+    <span class="kw">local</span> src = source
+    <span class="kw">local</span> xPlayer = ESX.GetPlayerFromId(src)
+
+    <span class="cmt">-- Consumir o item</span>
+    xPlayer.removeInventoryItem(<span class="str">'asas_de_fada'</span>, <span class="num">1</span>)
+
+    <span class="cmt">-- Equipar asas cor 1</span>
+    TriggerClientEvent(<span class="str">'MathStoreFairyWing-V7:spawn'</span>, src, <span class="num">1</span>)
+<span class="kw">end</span>)</code></pre>
+        </div>
+
+        <!-- ── CENARIO: Item usavel QB ── -->
+        <div class="scenario">
+            <div class="scenario-title">
+                <span>Item utilizavel que equipa asas ao usar</span>
+                <span class="tag tag-qb">QB-Core</span>
+            </div>
+            <p class="scenario-desc">Mesma logica do ESX, mas utilizando QB-Core.</p>
+<pre><code><span class="lang-tag">server.lua (outro resource - ex: items)</span>
+<span class="cmt">-- Registar item utilizavel 'asas_de_fada'</span>
+QBCore.Functions.CreateUseableItem(<span class="str">'asas_de_fada'</span>, <span class="kw">function</span>(source)
+    <span class="kw">local</span> src = source
+    <span class="kw">local</span> Player = QBCore.Functions.GetPlayer(src)
+
+    <span class="cmt">-- Consumir o item</span>
+    Player.Functions.RemoveItem(<span class="str">'asas_de_fada'</span>, <span class="num">1</span>)
+
+    <span class="cmt">-- Equipar asas cor 1</span>
+    TriggerClientEvent(<span class="str">'MathStoreFairyWing-V7:spawn'</span>, src, <span class="num">1</span>)
+<span class="kw">end</span>)</code></pre>
+        </div>
+
+        <!-- ── CENARIO: Remover asas de outro resource ── -->
+        <div class="scenario">
+            <div class="scenario-title">
+                <span>Remover asas de um jogador a partir de outro resource</span>
+                <span class="tag tag-all">Server - Outro Resource</span>
+            </div>
+            <p class="scenario-desc">Se o jogador morreu, foi preso, entrou numa zona restrita, ou qualquer outra condicao do seu servidor, pode forcar a remocao das asas.</p>
+<pre><code><span class="lang-tag">server.lua (outro resource)</span>
+<span class="cmt">-- Exemplo: jogador morreu, remover asas</span>
+<span class="fn">AddEventHandler</span>(<span class="str">'esx:onPlayerDeath'</span>, <span class="kw">function</span>(data)
+    <span class="kw">local</span> src = source
+    <span class="cmt">-- Remover asas do jogador</span>
+    TriggerClientEvent(<span class="str">'MathStoreFairyWing-V7:remove'</span>, src)
+<span class="kw">end</span>)
+
+<span class="cmt">-- Exemplo: jogador entrou em zona proibida (do client de outro resource)</span>
+<span class="cmt">-- Tambem pode disparar a partir do client, uma vez que o client do Fairy Wing V7</span>
+<span class="cmt">-- escuta estes eventos localmente</span></code></pre>
+        </div>
+
+        <!-- ── CENARIO: Trocar cor de outro resource ── -->
+        <div class="scenario">
+            <div class="scenario-title">
+                <span>Trocar a cor das asas a partir de outro resource</span>
+                <span class="tag tag-all">Server - Outro Resource</span>
+            </div>
+            <p class="scenario-desc">O jogador ja tem asas equipadas e pretende alterar a cor sem remover e re-equipar. Util para sistema de evolucao, recompensas, ou loja de cosmeticos.</p>
+<pre><code><span class="lang-tag">server.lua (outro resource)</span>
+<span class="cmt">-- Jogador desbloqueou cor rara, trocar automaticamente</span>
+<span class="kw">local</span> targetSource = <span class="num">1</span>  <span class="cmt">-- ID do jogador</span>
+<span class="kw">local</span> novaCor = <span class="num">15</span>       <span class="cmt">-- Cor nova (1-30)</span>
+
+TriggerClientEvent(<span class="str">'MathStoreFairyWing-V7:changeColor'</span>, targetSource, novaCor)</code></pre>
+        </div>
+
+        <!-- ── CENARIO: Quest completa = dar asas ── -->
+        <div class="scenario">
+            <div class="scenario-title">
+                <span>Quest ou evento do servidor que recompensa com asas</span>
+                <span class="tag tag-all">Server - Outro Resource</span>
+            </div>
+            <p class="scenario-desc">O jogador completou uma quest, um evento sazonal, ou um boss fight, e a recompensa consiste em receber asas com uma cor especial.</p>
+<pre><code><span class="lang-tag">server.lua (outro resource - ex: quest system)</span>
+<span class="cmt">-- Jogador completou a quest final</span>
+<span class="kw">local</span> <span class="kw">function</span> <span class="fn">onQuestComplete</span>(src, questId)
+    <span class="kw">if</span> questId == <span class="str">'despertar_da_fada'</span> <span class="kw">then</span>
+        <span class="cmt">-- Equipar asas (cor 20 = cor especial da quest)</span>
+        TriggerClientEvent(<span class="str">'MathStoreFairyWing-V7:spawn'</span>, src, <span class="num">20</span>)
+    <span class="kw">end</span>
+<span class="kw">end</span></code></pre>
+        </div>
+
+        <!-- ── CENARIO: Ativar voo de outro resource ── -->
+        <div class="scenario">
+            <div class="scenario-title">
+                <span>Activar/desactivar voo ou abrir HUD a partir de outro resource</span>
+                <span class="tag tag-all">Server - Outro Resource</span>
+            </div>
+            <p class="scenario-desc">Pode controlar qualquer funcionalidade do Fairy Wing V7 remotamente. Exemplos com varios eventos uteis:</p>
+<pre><code><span class="lang-tag">server.lua (outro resource)</span>
+<span class="kw">local</span> src = targetSource
+
+<span class="cmt">-- Activar/desactivar voo</span>
+TriggerClientEvent(<span class="str">'MathStoreFairyWing-V7:fly'</span>, src)
+
+<span class="cmt">-- Abrir/fechar asas</span>
+TriggerClientEvent(<span class="str">'MathStoreFairyWing-V7:toggle'</span>, src)
+
+<span class="cmt">-- Abrir HUD (true = jogador pode equipar)</span>
+TriggerClientEvent(<span class="str">'MathStoreFairyWing-V7:hud'</span>, src, <span class="bool">true</span>)</code></pre>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- ── CENARIO: Fluxo completo visual ── -->
+        <h3>Fluxo completo: do comando ate a sincronizacao</h3>
+        <p>Para compreender como tudo se interliga, segue o fluxo completo de quando um jogador introduz <code>/asas7 5</code>:</p>
+        <div class="flow"><span class="arrow">Jogador:</span> /asas7 5
+  <span class="arrow">↓</span>
+<span class="arrow">Server:</span> Recebe comando registado
+  <span class="arrow">↓</span>
+  Bridge.<span class="fn">HasPermission</span>(source, <span class="str">'use'</span>)
+  <span class="check">→ Verificacao de 8 camadas (ver seccao Permissoes)</span>
+  <span class="arrow">↓</span>
+<span class="check">SEM permissao?</span> <span class="arrow">→</span> <span class="fail">Bridge.Notify() + STOP</span>
+  <span class="arrow">↓</span>
+  Bridge.<span class="fn">ExecuteCallback</span>(<span class="str">'CanEquipWings'</span>, source, <span class="num">5</span>)
+  <span class="check">→ Executa o callback do seu config.lua</span>
+  <span class="arrow">↓</span>
+<span class="check">Callback retornou false?</span> <span class="arrow">→</span> <span class="fail">STOP</span>
+  <span class="arrow">↓</span>
+<span class="ok">TriggerClientEvent</span>(<span class="str">':spawn'</span>, source, <span class="num">5</span>)
+  <span class="arrow">↓</span>
+<span class="arrow">Client:</span> Cria a entidade da asa, aplica cor 5
+  <span class="arrow">↓</span>
+  <span class="fn">TriggerServerEvent</span>(<span class="str">':sync:spawned'</span>, <span class="num">5</span>, <span class="str">'idle'</span>)
+  <span class="arrow">↓</span>
+<span class="arrow">Server:</span> Guarda em activeWings[source]
+  Bridge.<span class="fn">ExecuteCallback</span>(<span class="str">'OnWingsEquipped'</span>, source, <span class="num">5</span>)
+  <span class="arrow">↓</span>
+  <span class="fn">broadcastBucket</span>(<span class="str">':sync:spawn'</span>, bucket, source, src, <span class="num">5</span>, <span class="str">'idle'</span>)
+  <span class="arrow">↓</span>
+<span class="ok">Outros jogadores no mesmo bucket veem as asas surgirem</span></div>
+
+        <h3>HUD e NUI</h3>
+        <p>A HUD radial utiliza o sistema NUI do FiveM. Quando o jogador abre a HUD, o client envia dados para o navegador embutido:</p>
+<pre><code><span class="lang-tag">client (interno)</span>
+<span class="cmt">-- Abrir HUD</span>
+SendNUIMessage({
+    action       = <span class="str">'openHud'</span>,
+    hasWing      = <span class="bool">true</span>,            <span class="cmt">-- Jogador tem asas equipadas?</span>
+    canEquip     = <span class="bool">true</span>,            <span class="cmt">-- Pode equipar? (resultado do CanEquipWings)</span>
+    locale       = HudLocales[...], <span class="cmt">-- Textos traduzidos (i18n)</span>
+})
+
+<span class="cmt">-- Fechar HUD</span>
+SendNUIMessage({ action = <span class="str">'closeHud'</span> })</code></pre>
+
+        <p>Os botoes da HUD disparam NUI Callbacks:</p>
+<pre><code><span class="lang-tag">client (interno)</span>
+<span class="fn">RegisterNUICallback</span>(<span class="str">'hudAction'</span>, <span class="kw">function</span>(data, cb)
+    <span class="cmt">-- data.action pode ser:</span>
+    <span class="cmt">-- 'pegarambos'</span>
+    <span class="cmt">-- 'bater', 'abrir', 'fechar'</span>
+<span class="kw">end</span>)</code></pre>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         ==============================================================
+         SECCAO 7: COMANDOS (REFERENCIA)
+         ==============================================================
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="section" id="comandos">
+        <span class="section-label">Referencia Completa</span>
+        <h2>Lista de Comandos</h2>
+        <p>Todos os comandos abaixo utilizam os nomes predefinidos. Todos podem ser renomeados no <code>Config.Commands</code> (<a href="#config" style="color:#6bb5ff;">seccao Config</a>).</p>
+
+        <h4>Basicos (Asas)</h4>
+        <table>
+            <thead><tr><th>Comando</th><th>Parametro</th><th>Permissao</th><th>Descricao</th></tr></thead>
+            <tbody>
+                <tr><td style="color:#fff;"><code>/asas7</code></td><td><code>[1-30]</code></td><td><code>use</code></td><td>Equipar asas com cor</td></tr>
+                <tr><td style="color:#fff;"><code>/remover7</code></td><td>-</td><td><code>use</code></td><td>Remover asas</td></tr>
+                <tr><td style="color:#fff;"><code>/asastg7</code></td><td>-</td><td><code>use</code></td><td>Abrir/fechar asas</td></tr>
+                <tr><td style="color:#fff;"><code>/asasvoar7</code></td><td>-</td><td><code>use</code></td><td>Toggle modo de voo</td></tr>
+                <tr><td style="color:#fff;"><code>/asascor7</code></td><td><code>[num]</code></td><td><code>use</code></td><td>Trocar cor sem remover</td></tr>
+                <tr><td style="color:#fff;"><code>/hud7</code></td><td>-</td><td><code>use</code></td><td>Abrir/fechar HUD radial</td></tr>
+            </tbody>
+        </table>
+
+        <h4>Animacoes no chao (Asas)</h4>
+        <table>
+            <thead><tr><th>Comando</th><th>Permissao</th><th>Descricao</th></tr></thead>
+            <tbody>
+                <tr><td style="color:#fff;"><code>/abrir7</code></td><td><code>use</code></td><td>Abrir asas</td></tr>
+                <tr><td style="color:#fff;"><code>/fechar7</code></td><td><code>use</code></td><td>Fechar asas</td></tr>
+                <tr><td style="color:#fff;"><code>/bater7</code></td><td><code>use</code></td><td>Bater asas</td></tr>
+            </tbody>
+        </table>
+
+        <h4>Admin</h4>
+        <table>
+            <thead><tr><th>Comando</th><th>Permissao</th><th>Descricao</th></tr></thead>
+            <tbody>
+                <tr><td style="color:#fff;"><code>/asaslimpar7</code></td><td><code>admin_cleanup</code></td><td>Remover TODAS as asas do servidor (broadcast global)</td></tr>
+                <tr><td style="color:#fff;"><code>/asaslimpar27</code></td><td><code>use</code></td><td>Remover asas orfas (bugged) proximo de si</td></tr>
+            </tbody>
+        </table>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         ==============================================================
+         SECCAO 8: TOPICOS AVANCADOS
+         ==============================================================
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="section" id="avancado">
+        <span class="section-label">Topicos Avancados</span>
+        <h2>Routing Buckets, StateBag e Estado Interno</h2>
+        <p>Informacoes avancadas sobre como o resource gere sincronizacao, conflitos multi-resource e estado interno.</p>
+
+        <h3>Routing Buckets</h3>
+        <p>O resource respeita routing buckets do FiveM. Jogadores em buckets diferentes nao veem as asas uns dos outros. Toda a sincronizacao e filtrada por bucket.</p>
+
+<pre><code><span class="lang-tag">server (interno)</span>
+<span class="cmt">-- Cada jogador com asas tem o seu bucket rastreado</span>
+activeWings[serverId] = {
+    cor    = <span class="num">5</span>,
+    state  = <span class="str">'idle'</span>,
+    bucket = <span class="num">0</span>,
+}
+
+<span class="cmt">-- Broadcasts so enviam para jogadores no mesmo bucket</span>
+<span class="fn">broadcastBucket</span>(eventName, bucket, excludeSource, ...)
+
+<span class="cmt">-- Quando o bucket muda (verificado a cada 2s):</span>
+<span class="cmt">-- Jogador muda bucket 0 → bucket 5</span>
+<span class="cmt">--   Players no bucket 0: recebem :sync:remove</span>
+<span class="cmt">--   Players no bucket 5: recebem :sync:spawn + estado</span></code></pre>
+
+        <div class="alert alert-info"><strong>Na pratica</strong>Se utiliza apartamentos, instancias, ou qualquer sistema baseado em routing buckets (ex: qb-apartments, esx_property), as asas funcionam correctamente em cada instancia sem interferir nas restantes.</div>
+
+        <h3>StateBag (Multi-Resource)</h3>
+        <p>Se o servidor possui multiplos resources de asas da MathStore (ex: DragonWings + DemonWings), o sistema utiliza <strong style="color:#fff;">StateBag</strong> para evitar conflitos. Apenas um resource pode ter asas activas por jogador.</p>
+
+<pre><code><span class="lang-tag">lua</span>
+<span class="cmt">-- Chave utilizada no state bag</span>
+WING_STATE_KEY = <span class="str">'activeWingResource'</span>
+
+<span class="cmt">-- Ao equipar asas, o server define:</span>
+Player(src).state:<span class="fn">set</span>(WING_STATE_KEY, RES_NAME, <span class="bool">true</span>)
+
+<span class="cmt">-- Se outro resource de asas tentar equipar no mesmo jogador:</span>
+<span class="cmt">-- Verifica se ja existe um resource activo</span>
+<span class="cmt">-- Se existir, pode auto-remover o anterior</span>
+
+<span class="cmt">-- O client escuta alteracoes via:</span>
+<span class="fn">AddStateBagChangeHandler</span>(WING_STATE_KEY, ...)</code></pre>
+
+        <h3>Estado interno do Server</h3>
+        <p>O server mantem tabelas de estado que rastreiam tudo o que esta activo. Util para compreender debug e comportamento:</p>
+
+<pre><code><span class="lang-tag">server (interno)</span>
+<span class="cmt">-- 1. Asas activas (indexado por server ID)</span>
+activeWings[serverId] = {
+    cor    = <span class="num">5</span>,
+    state  = <span class="str">'idle'</span>,
+    bucket = <span class="num">0</span>,
+}
+
+<span class="cmt">-- Tudo e limpo automaticamente quando o jogador desconecta</span></code></pre>
+    </section>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     FOOTER
+     ═══════════════════════════════════════════════════════════════ -->
+<footer class="footer">
+    <p>MathStore: Fairy Wing V7 | Documentacao Tecnica</p>
+    <p style="margin-top: 8px;">Desenvolvido por <a href="#">MathStore</a> | Contacto: math0001 no Discord</p>
+</footer>
+
+</body>
+</html>

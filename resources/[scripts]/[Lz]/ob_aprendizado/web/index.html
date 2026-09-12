@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aprendizado Runico</title>
+    <style>
+        html, body { margin: 0; background: transparent !important; }
+        #lesson:not(.is-visible) { display: none !important; }
+    </style>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main id="lesson" class="lesson" aria-hidden="true" tabindex="-1">
+        <div class="ritual-backdrop" aria-hidden="true"></div>
+        <div class="ritual-haze" aria-hidden="true"></div>
+
+        <button id="closeButton" class="close-button" type="button" aria-label="Fechar aprendizado">&times;</button>
+
+        <header class="ritual-header">
+            <span class="eyebrow">RITUAL DE APRENDIZADO</span>
+            <div class="title-rule" aria-hidden="true"><i></i></div>
+            <h1 id="spellName">BLINK</h1>
+            <span id="spellIndex" class="spell-index">I / VIII</span>
+        </header>
+
+        <section class="trace-stage" aria-label="Sequencia da runa">
+            <canvas id="traceCanvas"></canvas>
+            <div class="current-instruction" aria-live="polite">
+                <img id="currentKeyImage" class="current-key" src="assets/key-space.svg" alt="Espaco">
+                <span id="statusText">Execute a primeira marca</span>
+            </div>
+
+            <div id="resultSeal" class="result-seal" aria-hidden="true">
+                <span class="result-kicker">RUNA DOMINADA</span>
+                <strong id="resultSpellName">BLINK</strong>
+            </div>
+            <img id="spellIcon" class="spell-preload" src="assets/spell-blink.png" alt="">
+        </section>
+
+    </main>
+    <script src="app.js"></script>
+</body>
+</html>

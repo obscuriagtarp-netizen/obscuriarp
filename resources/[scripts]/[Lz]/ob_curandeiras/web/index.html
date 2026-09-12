@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coleções de Asas</title>
+    <style>
+        html, body { background: transparent !important; }
+        body.nui-booting > * { display: none !important; }
+    </style>
+    <link rel="stylesheet" href="style.css?v=5">
+</head>
+<body class="nui-booting">
+    <main id="wingApp" class="wing-app" aria-hidden="true">
+        <section class="wing-panel" aria-label="Coleções etéreas de asas">
+            <header class="panel-header">
+                <span class="header-sigil" aria-hidden="true"></span>
+                <div class="header-copy">
+                    <p>Vínculo etéreo</p>
+                    <h1>Coleções de asas</h1>
+                </div>
+                <span id="collectionCount" class="collection-count">001 / 140</span>
+                <button id="closeMenu" class="icon-button close-button" type="button" aria-label="Fechar">×</button>
+            </header>
+
+            <div class="panel-content">
+                <figure id="wingVisual" class="wing-visual">
+                    <span class="visual-orbit" aria-hidden="true"></span>
+                    <img id="wingImage" src="assets/wings/aurora.png" alt="Asa selecionada">
+                    <figcaption>
+                        <span id="wingState" class="state-chip">Liberada</span>
+                        <span id="wingColorLabel" class="color-label">Essência vital</span>
+                    </figcaption>
+                </figure>
+
+                <section class="wing-information" aria-live="polite">
+                    <div class="wing-heading">
+                        <div>
+                            <p id="wingTier" class="eyebrow">Curandeira</p>
+                            <h2 id="wingName">Asas da Aurora</h2>
+                        </div>
+                        <span id="colorSwatch" class="color-swatch" aria-hidden="true"></span>
+                    </div>
+
+                    <p id="wingDescription" class="wing-description">
+                        A manifestação vital concedida a todas as Curandeiras.
+                    </p>
+
+                    <div id="lockNotice" class="lock-notice" hidden>
+                        <span class="lock-symbol" aria-hidden="true">◇</span>
+                        <div>
+                            <strong id="lockTitle">Bloqueado</strong>
+                            <p id="lockDescription">Esta asa ainda não pertence às suas coleções.</p>
+                        </div>
+                    </div>
+
+                    <button id="equipWing" class="equip-button" type="button">
+                        <span class="equip-gem" aria-hidden="true"></span>
+                        <span id="equipLabel">Manifestar asas</span>
+                    </button>
+
+                    <div class="wing-actions" aria-label="Movimentos das asas">
+                        <button class="action-button" type="button" data-action="open" title="Abrir asas">
+                            <img src="assets/actions/open.png" alt=""><span>Abrir</span>
+                        </button>
+                        <button class="action-button" type="button" data-action="flap" title="Bater asas">
+                            <img src="assets/actions/flap.png" alt=""><span>Bater</span>
+                        </button>
+                        <button class="action-button" type="button" data-action="close" title="Recolher asas">
+                            <img src="assets/actions/close.png" alt=""><span>Recolher</span>
+                        </button>
+                        <button class="action-button danger" type="button" data-action="hide" title="Ocultar asas">
+                            <img src="assets/actions/hide.png" alt=""><span>Ocultar</span>
+                        </button>
+                    </div>
+                </section>
+            </div>
+
+            <footer id="wingSelector" class="wing-selector">
+                <button id="previousWing" class="selector-arrow" type="button" aria-label="Asa anterior">‹</button>
+                <div id="wingList" class="wing-list" role="listbox" aria-label="Coleções de asas"></div>
+                <button id="nextWing" class="selector-arrow" type="button" aria-label="Próxima asa">›</button>
+            </footer>
+
+            <p id="menuFeedback" class="menu-feedback" aria-live="polite"></p>
+        </section>
+    </main>
+    <script src="app.js?v=7"></script>
+</body>
+</html>

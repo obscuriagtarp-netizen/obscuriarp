@@ -1,0 +1,61 @@
+Config.RegisterSpell("blink", {
+    order = 10,
+    label = "Blink",
+    shortLabel = "Blink",
+    description = "Segure para carregar a distancia e solte para cruzar o espaco na direcao da mira.",
+    item = "livro_blink",
+    essenceCost = 12,
+    distance = 120.0,
+    maxDistance = 120.0,
+    minDistance = 14.0,
+    holdToCharge = true,
+    holdChargeMs = 1400,
+    flightHeight = 5.0,
+    flightSpeed = 40.0,
+    minFlightMs = 850,
+    maxFlightMs = 2600,
+    landingOffsetZ = 0.95,
+    groundProbeDepth = 160.0,
+    pathRadius = 0.38,
+    clearanceRadius = 0.36,
+    wallClearance = 1.05,
+    landingRetreatStep = 0.5,
+    landingRetreatLimit = 3.0,
+    collisionSegments = 24,
+    walkableNormalZ = 0.55,
+    descentSpeed = 28.0,
+    minImpactDescentMs = 350,
+    maxImpactDescentMs = 3200,
+    castReleaseDelay = 1433,
+    selfDamage = 5,
+    cooldown = 15000,
+    icon = "assets/spell-blink.png",
+    actionPrimary = {
+        key = "Segurar mouse esquerdo",
+        label = "Carregar distancia"
+    },
+    animation = {
+        resource = "grimorio_victoria",
+        dict = "grimorio_victoria",
+        anim = "cast_upper",
+        flag = 48,
+        duration = 1800,
+        loadTimeout = 8000,
+        blendIn = 4.0,
+        blendOut = 2.0,
+        playbackRate = 1.0
+    },
+    flightAnimation = {
+        dict = "export@nib@super@basicflight_fast_botharmsback",
+        anim = "nib@super@basicflight_fast_botharmsback",
+        flag = 49,
+        loadTimeout = 3000
+    },
+    landingAnimation = {
+        dict = "export@nib@peacemaker@basicflight_fast_to_idle",
+        anim = "nib@super@basicflight_fast_to_idle",
+        flag = 0,
+        duration = 900,
+        loadTimeout = 3000
+    }
+})

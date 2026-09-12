@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Magic Spells</title>
+    <link rel="stylesheet" href="style.css?v=7" />
+</head>
+<body>
+    <div id="magic-crosshair" class="magic-crosshair hidden">
+        <div class="crosshair-ring">
+            <div id="crosshair-charge" class="crosshair-charge"></div>
+        </div>
+        <div class="crosshair-dot"></div>
+        <div id="crosshair-label" class="crosshair-label"></div>
+    </div>
+
+    <div id="magic-hints" class="magic-hints hidden"></div>
+
+    <section id="magic-hud" class="magic-hud hidden" aria-hidden="true">
+        <img class="grimoire-art" src="assets/grimorio.png" alt="" />
+
+        <div class="grimoire-page page-left">
+            <div class="spell-emblem">
+                <img id="spell-icon" src="" alt="" />
+                <div id="spell-cooldown" class="spell-cooldown"></div>
+                <div id="spell-cooldown-label" class="spell-cooldown-label"></div>
+            </div>
+            <div class="spell-actions">
+                <div class="spell-action-row">
+                    <small id="spell-action-primary-key">Mouse esquerdo</small>
+                    <span id="spell-action-primary-label">Conjurar</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="page-right" class="grimoire-page page-right">
+            <div class="page-eyebrow">Grimorio ativo</div>
+            <h1 id="spell-title">Magia</h1>
+            <p id="spell-description">Puxe a varinha para abrir o grimorio.</p>
+
+            <div id="spell-action-secondary" class="spell-action-row secondary right-action hidden">
+                <small id="spell-action-secondary-key">Mouse direito</small>
+                <span id="spell-action-secondary-label">Auto conjurar</span>
+            </div>
+
+            <div class="page-footer">
+                <span id="spell-counter">0 / 0</span>
+                <span id="spell-shortcut">ESQ/DIR</span>
+            </div>
+        </div>
+
+        <div id="page-turn" class="page-turn" aria-hidden="true">
+            <div id="page-turn-sheet" class="page-turn-sheet">
+                <div class="page-turn-face page-turn-front"></div>
+                <div class="page-turn-face page-turn-back"></div>
+            </div>
+        </div>
+
+        <div class="grimoire-nav nav-prev">
+            <strong id="nav-prev-key">ESQ</strong>
+            <span>Anterior</span>
+        </div>
+
+        <div class="grimoire-nav nav-next">
+            <span>Proxima</span>
+            <strong id="nav-next-key">DIR</strong>
+        </div>
+
+        <div id="magic-cancel-tip" class="magic-cancel-tip hidden">U para cancelar</div>
+    </section>
+
+    <section id="portus-menu" class="portus-menu hidden" aria-label="Runas Portus">
+        <div id="portus-list" class="portus-list"></div>
+        <div id="portus-mode-label" class="portus-mode-label">Escolha uma runa</div>
+    </section>
+
+    <script src="script.js?v=7"></script>
+</body>
+</html>

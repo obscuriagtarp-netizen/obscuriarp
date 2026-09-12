@@ -1,0 +1,5110 @@
+{
+    "name": "中文",
+    "intl": {
+        "locales": "zh-CN",
+        "options": {
+            "style": "currency",
+            "currency": "USD",
+            "minimumFractionDigits": 0
+        }
+    },
+    "no_have_phone": "您没有手机",
+    "phone_revoked": "您无法再使用这部手机。您的资料已转移到另一台设备。",
+    "powered_off": {
+        "low_status": "低",
+        "title": "电池电量不足",
+        "hint": "连接电源以重新启动。"
+    },
+    "battery": {
+        "client": {
+            "drawtext_place": "[E] 将手机放在充电站上",
+            "drawtext_take": "[E] 从充电站取出手机"
+        },
+        "server": {
+            "charging_stopped_left_area": "充电已停止（已离开充电站区域）。",
+            "already_full": "电池已满。",
+            "stop_station_first": "请先停止充电站充电。",
+            "powerbank_missing": "缺少移动电源物品。",
+            "powerbank_started": "已开始使用移动电源充电。",
+            "station_completed": "充电站充电已完成。"
+        }
+    },
+    "earbuds": {
+        "server": {
+            "no_phone": "未找到可配对耳机的手机。",
+            "item_missing": "缺少耳机物品。",
+            "paired_success": "耳机已与您的手机配对。"
+        }
+    },
+    "simcard": {
+        "server": {
+            "no_active_phone": "没有可用手机来注册此 SIM 卡。",
+            "remove_item_failed": "无法从背包中移除 SIM 卡物品。",
+            "registered_success": "SIM 卡已注册到此手机。"
+        }
+    },
+    "iframe": {
+        "loadError": "无法在手机浏览器中加载此页面。"
+    },
+    "shared": {
+        "nearby_give_key": {
+            "title": "传递钥匙",
+            "action": "传递钥匙",
+            "row_footer": "选择您想传递钥匙的附近玩家。",
+            "search_placeholder": "按名称或ID搜索",
+            "empty": "附近没有人。",
+            "load_failed": "无法加载附近玩家。",
+            "retry": "重试",
+            "giving": "正在传递…",
+            "server_id_label": "ID {{id}}",
+            "confirm_title": "传递钥匙",
+            "confirm_message": "将钥匙传递给 {{name}} (ID {{id}})？",
+            "selected": "已选择"
+        }
+    },
+    "apps": {
+        "phone_home": {
+            "uninstall_title": "卸载应用？",
+            "uninstall_message": "要卸载 „{{name}}“ 吗？您可以从 App Store 重新安装。",
+            "switcher_close_all": "关闭全部",
+            "search": "搜索",
+            "search_aria": "打开应用搜索",
+            "app_library_search_placeholder": "库中的应用",
+            "app_library_empty": "未找到应用",
+            "edit_done": "完成",
+            "icon_theme_sheet_aria": "自定义主屏幕",
+            "icon_theme_title": "个性化",
+            "icon_variant_default": "默认",
+            "icon_variant_dark": "深色",
+            "app_labels": {
+                "calendar": "日历"
+            }
+        },
+        "share_sheet": {
+            "title_contact": "分享联系人",
+            "title_image": "分享照片",
+            "title_video": "分享视频",
+            "bluetooth_off": "在设置中开启 Bluetooth，以便附近玩家可以接收您的文件。",
+            "open_settings": "打开设置",
+            "empty_peers": "附近没有设备",
+            "loading": "正在搜索附近…",
+            "sending": "正在发送…",
+            "working": "请稍等…",
+            "accepted": "已接受",
+            "rejected": "已拒绝",
+            "timeout": "超时",
+            "send_failed": "发送失败",
+            "close": "完成",
+            "incoming_title": "想要分享",
+            "incoming_contact": "联系人",
+            "incoming_image": "照片",
+            "incoming_video": "视频",
+            "accept": "接受",
+            "decline": "拒绝",
+            "unknown_sender": "某人",
+            "island_bluetooth_share": "Bluetooth",
+            "island_would_share_photo": "{{name}} 想要分享一张照片",
+            "island_would_share_photo_many": "{{name}} 想要分享 {{count}} 张照片",
+            "island_would_share_video": "{{name}} 想要分享一段视频",
+            "island_would_share_video_many": "{{name}} 想要分享 {{count}} 段视频",
+            "island_would_share_contact": "{{name}} 想要分享一个联系人"
+        },
+        "shared": {
+            "recover": {
+                "page_title": "恢复账户",
+                "list_title": "此手机上的账户",
+                "empty": "此手机上未找到任何账户。",
+                "recovering": "正在恢复…",
+                "recover_failed": "无法恢复账户。",
+                "open_action": "恢复账户"
+            },
+            "avatar": {
+                "sheet_title": "个人资料照片",
+                "enter_url": "输入图片 URL",
+                "url_dialog_title": "图片 URL",
+                "url_placeholder": "https://…",
+                "choose_from_gallery": "从图库选择",
+                "clear": "删除图片",
+                "cancel": "取消",
+                "video_no_poster": "此视频没有封面。请选择一张照片。"
+            },
+            "banner": {
+                "sheet_title": "横幅照片",
+                "enter_url": "输入图片 URL",
+                "url_dialog_title": "图片 URL",
+                "url_placeholder": "https://…",
+                "choose_from_gallery": "从图库选择",
+                "clear": "删除横幅",
+                "cancel": "取消",
+                "video_no_poster": "此视频没有封面。请选择一张照片。"
+            }
+        },
+        "notes": {
+            "title": "备忘录",
+            "pages": {
+                "folders": "文件夹",
+                "notes": "备忘录",
+                "note": "备忘录",
+                "folder": "文件夹",
+                "edit_note": "编辑备忘录",
+                "new_note": "新建备忘录",
+                "edit_folder": "编辑文件夹",
+                "new_folder": "新建文件夹"
+            },
+            "labels": {
+                "cloud": "云端",
+                "recent_notes": "最近备忘录",
+                "folder": "文件夹",
+                "color": "颜色"
+            },
+            "actions": {
+                "new_folder": "新建文件夹",
+                "new_note": "新建备忘录",
+                "edit": "编辑",
+                "done": "完成",
+                "save": "保存",
+                "delete": "删除",
+                "delete_folder": "删除文件夹",
+                "pin": "置顶",
+                "pinned": "已置顶"
+            },
+            "inputs": {
+                "search": "搜索",
+                "title": "标题",
+                "start_writing": "开始书写",
+                "folder_name": "文件夹名称"
+            },
+            "empty": {
+                "no_folders": "您还没有文件夹。",
+                "start_first_note": "从创建第一条备忘录开始。",
+                "no_notes_in_folder": "此文件夹中没有备忘录。"
+            },
+            "states": {
+                "saving": "正在保存…"
+            },
+            "defaults": {
+                "new_folder_name": "新建文件夹"
+            },
+            "notifications": {
+                "note_updated": "备忘录已更新",
+                "note_created": "备忘录已创建",
+                "note_removed": "备忘录已删除",
+                "folder_updated": "文件夹已更新",
+                "folder_created": "文件夹已创建",
+                "folder_removed": "文件夹已删除",
+                "folder_required": "请先创建或选择一个文件夹。",
+                "save_note_failed": "无法保存备忘录",
+                "delete_note_failed": "无法删除备忘录",
+                "save_folder_failed": "无法保存文件夹",
+                "delete_folder_failed": "无法删除文件夹"
+            },
+            "errors": {
+                "invalid_name": "文件夹名称无效。",
+                "invalid_title": "备忘录标题无效。",
+                "invalid_folder": "文件夹无效。",
+                "invalid_id": "记录 ID 无效。",
+                "invalid_ids": "记录 ID 无效。",
+                "not_found": "未找到请求的记录。"
+            }
+        },
+        "reminders": {
+            "title": "提醒事项",
+            "pages": {
+                "new_reminder": "新建提醒",
+                "edit_reminder": "编辑提醒"
+            },
+            "sections": {
+                "my_list": "我的列表"
+            },
+            "cards": {
+                "total": "总计",
+                "today": "今天",
+                "week": "本周",
+                "month": "本月",
+                "completed": "已完成 ({{count}})"
+            },
+            "actions": {
+                "new_reminder": "新建提醒",
+                "delete": "删除"
+            },
+            "inputs": {
+                "search": "搜索",
+                "title": "标题",
+                "notes": "备注",
+                "due_date": "到期日期",
+                "list": "列表",
+                "mark_completed": "标记为已完成"
+            },
+            "date_picker": {
+                "title": "到期日期",
+                "time": "时间",
+                "clear": "清除日期",
+                "done": "完成"
+            },
+            "defaults": {
+                "default_list": "提醒事项"
+            },
+            "empty": {
+                "no_reminders": "未找到提醒事项。"
+            },
+            "notifications": {
+                "reminder_updated": "提醒已更新",
+                "reminder_created": "提醒已创建",
+                "reminder_removed": "提醒已删除",
+                "save_reminder_failed": "无法保存提醒",
+                "delete_reminder_failed": "无法删除提醒"
+            },
+            "errors": {
+                "invalid_name": "列表名称无效。",
+                "invalid_title": "提醒标题无效。",
+                "invalid_notes": "提醒备注无效。",
+                "invalid_id": "记录 ID 无效。",
+                "invalid_ids": "记录 ID 无效。",
+                "not_found": "未找到请求的记录。"
+            }
+        },
+        "health": {
+            "title": "健康",
+            "cards": {
+                "steps": "步数",
+                "health": "健康",
+                "hunger": "饥饿",
+                "thirst": "口渴"
+            },
+            "status": {
+                "title": "当前状态",
+                "description": "跟踪您的身体指标并将其保持在安全范围内。",
+                "stable": "稳定",
+                "need_attention": "需要关注"
+            },
+            "actions": {
+                "open_insights": "打开分析",
+                "save": "保存",
+                "saving": "正在保存…"
+            },
+            "settings": {
+                "title": "健康提醒",
+                "threshold": "阈值",
+                "notice_items": {
+                    "health": {
+                        "title": "健康提醒",
+                        "description": "当健康值低于所选阈值时提醒。"
+                    },
+                    "hungry": {
+                        "title": "饥饿提醒",
+                        "description": "当饥饿值低于所选阈值时提醒。"
+                    },
+                    "thirsty": {
+                        "title": "口渴提醒",
+                        "description": "当口渴值低于所选阈值时提醒。"
+                    }
+                }
+            },
+            "insights": {
+                "title": "分析",
+                "empty_title": "暂无分析",
+                "empty_description": "当后端分析连接后，健康趋势将显示在这里。"
+            },
+            "notifications": {
+                "settings_saved_title": "健康",
+                "settings_saved_subtitle": "提醒设置已保存。"
+            },
+            "errors": {
+                "invalid_notice_payload": "健康提醒内容无效。",
+                "invalid_warning_type": "健康提醒类型无效。",
+                "push_unavailable": "推送系统不可用。",
+                "push_failed": "无法发送健康提醒。"
+            },
+            "backend": {
+                "notifications": {
+                    "title": "健康提醒",
+                    "health_low": "您的健康值较低 ({{current}} %)。阈值：{{threshold}} %。",
+                    "hunger_low": "您的饥饿值较低 ({{current}} %)。阈值：{{threshold}} %。",
+                    "thirst_low": "您的口渴值较低 ({{current}} %)。阈值：{{threshold}} %。"
+                },
+                "insights": {
+                    "steps_label": "每日步数",
+                    "steps_description": "此手机上保存的总步数。",
+                    "vitality_label": "生命力",
+                    "vitality_description": "基于当前健康水平的整体身体状态。",
+                    "needs_label": "需求",
+                    "needs_description": "饥饿 {{hunger}}，口渴 {{thirst}}。",
+                    "high": "高",
+                    "medium": "中",
+                    "stable": "稳定",
+                    "low": "低"
+                }
+            }
+        },
+        "messages": {
+            "title": "信息",
+            "location_shared": "已分享位置",
+            "location_label": "位置 ({{x}}, {{y}})",
+            "location_map_marked": "已在地图上标记。",
+            "pages": {
+                "new_conversation": "新信息"
+            },
+            "inputs": {
+                "search": "搜索",
+                "search_people": "搜索联系人",
+                "message": "信息",
+                "message_or_send": "添加评论或发送",
+                "group_title": "群组名称",
+                "group_title_placeholder": "可选",
+                "image_url": "图片 URL",
+                "location_shared": "已分享位置",
+                "location_label": "位置 ({{x}}, {{y}})"
+            },
+            "actions": {
+                "start_chat": "开始聊天",
+                "add_photo": "添加照片",
+                "cancel": "取消",
+                "composer_menu": "附件",
+                "composer_gallery": "图库",
+                "composer_gif": "GIF",
+                "composer_link": "链接",
+                "composer_location": "位置",
+                "composer_send_money": "发送金钱",
+                "edit": "编辑",
+                "done": "完成",
+                "mark_read": "标记为已读",
+                "mark_read_all": "全部标记为已读"
+            },
+            "media_picker": {
+                "title": "从图库选择",
+                "empty": "您的图库中没有照片或视频。",
+                "empty_photos": "您的图库中没有照片。",
+                "empty_videos": "您的图库中没有视频。",
+                "filter_all": "全部",
+                "filter_photos": "照片",
+                "filter_videos": "视频",
+                "load_failed": "无法加载图库。"
+            },
+            "media_lightbox": {
+                "video_title": "视频",
+                "image_title": "照片"
+            },
+            "gif_picker": {
+                "title": "GIF",
+                "search_placeholder": "在 Giphy 中搜索",
+                "empty": "未找到 GIF。",
+                "search_failed": "GIF 搜索失败。请在 Config.Messages.Gif 中设置 Giphy API 密钥。"
+            },
+            "wallet": {
+                "title": "Peach Cash",
+                "send": "发送",
+                "pick_recipient": "选择收件人",
+                "payment_sent": "付款已发送",
+                "payment_failed": "付款失败",
+                "errors": {
+                    "RECIPIENT_OFFLINE": "收款人不在线。",
+                    "INSUFFICIENT_FUNDS": "你的钱不够。",
+                    "INVALID_AMOUNT": "请输入有效金额。",
+                    "INVALID_RECIPIENT": "请选择有效的收款人。",
+                    "RECIPIENT_NOT_IN_THREAD": "该用户不在此对话中。",
+                    "RECIPIENT_ERROR": "找不到收款人。",
+                    "THREAD_ACCESS_DENIED": "你不在此对话中。",
+                    "INVALID_THREAD_ID": "此对话无效。",
+                    "PARTICIPANT_ERROR": "无法验证你的账户。",
+                    "PAYMENT_FAILED": "无法处理付款。"
+                }
+            },
+            "send_failed": "发送失败。请重试。",
+            "dialogs": {
+                "delete_selected_threads": "删除选定的对话？",
+                "mark_all_read": "将所有对话标记为已读？"
+            },
+            "options": {
+                "title": "对话信息",
+                "participants_count": "{{count}} 位参与者",
+                "manage_members_title": "管理成员",
+                "current_members": "当前成员",
+                "add_people": "添加人员",
+                "member_badge": "成员",
+                "apply_member_changes": "应用更改",
+                "coming_soon_call": "通话功能即将推出。",
+                "coming_soon_video_call": "视频通话功能即将推出。",
+                "group_calls_unsupported": "不支持群组通话和视频通话。请开始私人通话或使用电话应用。",
+                "peer_number_missing": "此联系人没有电话号码，因此无法拨打。",
+                "sections": {
+                    "group": "群组",
+                    "danger_zone": "危险区域"
+                },
+                "prompts": {
+                    "group_name": "群组名称",
+                    "group_avatar": "群组头像 URL"
+                },
+                "dialogs": {
+                    "delete_group": "删除此群组？",
+                    "delete_chat": "删除此对话？",
+                    "clear_messages": "删除此对话中的所有信息？",
+                    "action_failed": "操作失败。请重试。"
+                },
+                "actions": {
+                    "call": "拨打",
+                    "video_call": "视频通话",
+                    "toggle_mute": "静音/取消静音",
+                    "toggle_pin": "置顶/取消置顶",
+                    "mute_chat": "静音对话",
+                    "unmute_chat": "取消静音",
+                    "pin_chat": "置顶对话",
+                    "unpin_chat": "取消置顶",
+                    "change_group_avatar": "更改群组头像",
+                    "change_group_name": "更改群组名称",
+                    "manage_members": "添加/移除成员",
+                    "delete_group": "删除群组",
+                    "delete_chat": "删除对话",
+                    "clear_all_messages": "清除所有信息"
+                },
+                "status": {
+                    "muted": "状态：已静音",
+                    "sound_on": "状态：声音开启",
+                    "pinned": "状态：已置顶",
+                    "normal": "状态：正常"
+                },
+                "notifications": {
+                    "chat_muted": "对话已静音",
+                    "chat_unmuted": "已取消静音",
+                    "chat_pinned": "对话已置顶",
+                    "chat_unpinned": "已取消置顶",
+                    "group_deleted": "群组对话已删除",
+                    "chat_deleted": "对话已删除",
+                    "messages_cleared": "所有信息已清除"
+                }
+            },
+            "labels": {
+                "selected": "已选择"
+            },
+            "states": {
+                "typing": "{{names}} 正在输入…",
+                "creating": "正在创建…"
+            },
+            "backend": {
+                "verification": {
+                    "system_fallback": "系统",
+                    "message_body": "{{appLabel}} 验证码：{{code}}\n{{expires_hint}}",
+                    "expires_in_one_minute": "点击复制验证码。有效期 1 分钟。",
+                    "expires_in_minutes": "点击复制验证码。有效期 {{minutes}} 分钟。",
+                    "push_text": "验证码：{{code}}"
+                }
+            },
+            "empty": {
+                "no_threads": "还没有对话。",
+                "no_selected": "未选择收件人。"
+            },
+            "sos": {
+                "sender_label": "🆘 紧急 SOS",
+                "message_body": "🆘 {{name}} 需要帮助，可能处于危险之中！最后已知位置：{{street}}。",
+                "push_title": "🆘 紧急 SOS",
+                "push_text": "{{name}} 触发了紧急 SOS",
+                "unknown_location": "未知位置",
+                "slide_title": "看起来你遇到了事故。",
+                "slide_description": "手机检测到以下位置出现故障：",
+                "emergency_call": "紧急呼叫",
+                "slide_to_power_off": "滑动以关机",
+                "swipe_hint": "滑动以呼叫紧急服务",
+                "cancel": "取消"
+            }
+        },
+        "gallery": {
+            "title": "图库",
+            "no_thumbnail": "没有缩略图",
+            "pages": {
+                "all_photos": "所有照片",
+                "albums": "相册"
+            },
+            "sections": {
+                "my_albums": "我的相册",
+                "media_types": "媒体类型",
+                "utilities": "工具"
+            },
+            "rows": {
+                "favorites": "收藏",
+                "favorites_footer": "您收藏的照片和视频。",
+                "videos": "视频",
+                "videos_footer": "您图库中的所有视频文件。",
+                "recently_deleted": "最近删除",
+                "recently_deleted_footer": "已删除的项目会临时保存在这里。"
+            },
+            "labels": {
+                "selected_count_one": "已选择 {{count}} 张照片",
+                "selected_count_other": "已选择 {{count}} 张照片",
+                "unsorted": "未排序",
+                "unknown": "未知",
+                "yes": "是",
+                "no": "否"
+            },
+            "meta": {
+                "id": "ID",
+                "type": "类型",
+                "location": "位置",
+                "album": "相册",
+                "created": "创建于",
+                "captured": "拍摄于",
+                "favorite": "收藏",
+                "duration": "时长",
+                "duration_value": "{{seconds}} 秒"
+            },
+            "dialogs": {
+                "media_information": "媒体信息",
+                "delete_selected_confirm": "删除所选媒体？",
+                "delete_media_confirm": "删除此媒体？"
+            },
+            "actions": {
+                "select": "选择",
+                "cancel": "取消",
+                "delete": "删除",
+                "share_selected_media": "分享所选媒体",
+                "delete_selected_media": "删除所选媒体",
+                "move_selected_to_album": "将所选项目移至相册"
+            },
+            "albums": {
+                "actions": {
+                    "choose_album_title": "选择相册",
+                    "create_new": "创建新相册",
+                    "rename": "重命名相册",
+                    "dissolve": "解散相册"
+                },
+                "prompt": {
+                    "name_placeholder": "相册名称",
+                    "create_title": "创建相册",
+                    "rename_placeholder": "新相册名称",
+                    "rename_title": "重命名相册"
+                },
+                "dialogs": {
+                    "dissolve_confirm": "将 „{{album}}“ 中的所有项目移至相机？"
+                },
+                "notifications": {
+                    "title": "相册",
+                    "name_required": "请输入相册名称。",
+                    "selection_not_found": "未找到所选项目。",
+                    "partial_selection": "无法移动 {{count}} 个项目。",
+                    "items_moved": "已将 {{count}} 个项目移至相册 „{{album}}“。",
+                    "update_failed": "无法移动所选项目。",
+                    "rename_failed": "无法重命名相册。",
+                    "dissolve_failed": "无法解散相册。"
+                }
+            },
+            "empty": {
+                "no_media_in_collection": "此集合中没有媒体。"
+            },
+            "viewer": {
+                "play_video": "播放视频",
+                "pause_video": "暂停视频",
+                "mute_video": "静音视频",
+                "unmute_video": "取消静音",
+                "video_progress": "视频进度"
+            },
+            "notifications": {
+                "share_title": "分享",
+                "share_not_active": "此功能尚未激活。",
+                "share_photos_only": "只能与附近的人分享照片。",
+                "share_one_at_a_time": "一次只能与附近的人分享一张照片。",
+                "share_mixed_types": "要共同分享，请仅选择照片或仅选择视频。",
+                "share_mixed_types_kept_photos": "正在分享 {{shared}} 张照片。{{skipped}} 段视频可以单独发送。",
+                "share_mixed_types_kept_videos": "正在分享 {{shared}} 段视频。{{skipped}} 张照片可以单独发送。",
+                "share_partial_selection": "所选 {{count}} 个项目无法加载并被跳过。",
+                "share_resolve_failed": "无法加载所选媒体。",
+                "share_limit": "一次最多只能分享 {{count}} 个项目。",
+                "share_missing_url": "无法分享此照片（缺少链接）。",
+                "insufficient_storage": "存储空间不足。请释放空间或在 Peach Store 购买更多。"
+            }
+        },
+        "music": {
+            "title": "音乐",
+            "tabs": {
+                "listen_now": "立即收听",
+                "browse": "浏览",
+                "library": "库",
+                "search": "搜索"
+            },
+            "pages": {
+                "listen_now": "立即收听",
+                "browse": "浏览",
+                "library": "库",
+                "search": "搜索"
+            },
+            "sections": {
+                "top_picks": "精选",
+                "recently_played": "最近播放",
+                "recently_added": "最近添加",
+                "categories": "分类"
+            },
+            "actions": {
+                "see_all": "查看全部"
+            },
+            "library": {
+                "categories": {
+                    "favorites": "收藏",
+                    "playlists": "播放列表",
+                    "songs": "歌曲"
+                }
+            },
+            "loading": {
+                "home": "正在加载您的音乐…",
+                "browse": "正在加载浏览…",
+                "library": "正在加载库…"
+            },
+            "search": {
+                "placeholder": "艺术家、歌曲或视频链接",
+                "busy": "正在搜索…",
+                "empty_hint": "查找歌曲并立即播放。",
+                "subtitle": "搜索你的曲库，或粘贴 YouTube / YouTube Music 链接。",
+                "empty_no_results": "未找到匹配的曲目。请尝试其他关键词或其他链接。",
+                "invalid_link": "无法解析该链接。请粘贴有效的 YouTube 视频链接。"
+            },
+            "empty": {
+                "favorites": "还没有收藏。点击心形图标添加歌曲。",
+                "no_songs": "未找到歌曲。",
+                "no_playlists": "还没有播放列表。"
+            },
+            "player": {
+                "queue_title": "接下来",
+                "queue_subtitle": "您的队列",
+                "time_unknown": "--:--",
+                "loading_track": "正在加载曲目"
+            },
+            "island": {
+                "artwork_alt": "正在播放的专辑封面",
+                "unknown_track": "未知曲目",
+                "unknown_artist": "未知艺术家",
+                "now_playing_fallback": "正在播放",
+                "previous_track": "上一首",
+                "next_track": "下一首",
+                "pause_playback": "暂停播放",
+                "resume_playback": "继续播放"
+            },
+            "errors": {
+                "home_unavailable": "音乐首页不可用",
+                "browse_unavailable": "音乐浏览不可用",
+                "library_unavailable": "音乐库不可用",
+                "search_failed": "音乐搜索失败",
+                "queue_unavailable": "音乐队列不可用",
+                "favorite_toggle_failed": "切换收藏失败",
+                "recently_played_failed": "无法更新最近播放"
+            },
+            "backend": {
+                "top_picks": "精选",
+                "songs_count": "{{count}} 首歌曲",
+                "errors": {
+                    "track_not_found": "未找到曲目"
+                }
+            },
+            "app_store": {
+                "label": "音乐",
+                "creator": "Music Inc",
+                "description": "收听和播放专辑",
+                "category": "娱乐",
+                "whats_new": "性能改进和错误修复。",
+                "detail_header": "音乐",
+                "detail_head": "使用 Music，您可以轻松快速地收听您喜爱的艺术家的歌曲和精选播放列表",
+                "detail_footer": "Music 是您在手机上收听喜爱歌曲和播放列表的最佳平台",
+                "age_rating": "3+"
+            }
+        },
+        "finder": {
+            "title": "Pairly",
+            "tagline": "在城市中寻找您的另一半。",
+            "tabs": {
+                "discover": "发现",
+                "chats": "聊天",
+                "profile": "个人资料"
+            },
+            "auth": {
+                "username": "用户名",
+                "password": "密码",
+                "sign_in": "登录",
+                "signing_in": "正在登录…",
+                "create_account": "创建账户",
+                "forgot_account": "忘记账户？",
+                "fill_username_password": "请填写用户名和密码。",
+                "welcome_back": "欢迎回来。",
+                "login_failed": "登录失败。"
+            },
+            "toasts": {
+                "swipe_failed": "滑动失败。"
+            },
+            "dialogs": {
+                "delete_account_message": "删除 Pairly 账户？",
+                "logout": "退出登录",
+                "delete_account": "删除账户",
+                "close": "关闭"
+            },
+            "register": {
+                "steps": {
+                    "identity": "身份信息",
+                    "account": "账户",
+                    "preferences": "偏好",
+                    "photos": "照片"
+                },
+                "step_progress": "步骤 {{current}} / {{total}}",
+                "display_name": "显示名称",
+                "birthdate": "出生日期",
+                "bio": "简介",
+                "gender": "性别",
+                "interested_in": "感兴趣",
+                "photos_title": "照片",
+                "photos_footer": "点击 + 从图库或 URL 添加。",
+                "add": "添加",
+                "back": "返回",
+                "next": "下一步",
+                "creating": "正在创建…",
+                "create_account_submit": "创建账户",
+                "complete_required": "请填写所有必填字段。",
+                "registration_failed": "注册失败",
+                "name_birthdate_required": "姓名和出生日期为必填项。",
+                "username_password_required": "用户名和密码为必填项。",
+                "only_images_photos": "只能使用图片作为个人资料照片。",
+                "photo_alt": "注册照片 {{index}}",
+                "gender_male": "男性",
+                "gender_female": "女性",
+                "gender_non_binary": "非二元",
+                "interest_men": "男性",
+                "interest_women": "女性",
+                "interest_everyone": "所有人"
+            },
+            "forgot": {
+                "title": "恢复 Pairly 账户",
+                "linked_accounts": "与此角色关联的账户：",
+                "rescue": "恢复",
+                "rescue_failed": "恢复失败",
+                "could_not_rescue": "无法恢复账户。"
+            },
+            "password": {
+                "title": "更改密码",
+                "new_password": "新密码",
+                "confirm_password": "确认密码",
+                "too_short": "密码必须至少包含 4 个字符。",
+                "mismatch": "密码不匹配。",
+                "updated": "密码已更新。",
+                "update_failed": "无法更新密码。",
+                "saving": "正在保存…",
+                "update_button": "更新密码"
+            },
+            "chat": {
+                "thread_title": "Pairly 聊天",
+                "peer_fallback": "Pairly 聊天",
+                "composer_menu": "撰写菜单",
+                "photo_video": "照片 / 视频",
+                "gif": "GIF",
+                "image_url": "图片 URL",
+                "cancel": "取消",
+                "paste_image_url": "粘贴图片 URL",
+                "add_photo_title": "添加照片",
+                "placeholder": "写信息",
+                "placeholder_with_attachments": "写信息或发送",
+                "shared_location": "已分享位置：{{x}}, {{y}}",
+                "send_failed": "发送失败",
+                "gif_send_failed": "GIF 发送失败",
+                "no_thumbnail": "没有缩略图"
+            },
+            "match": {
+                "title": "匹配成功！",
+                "subtitle": "您和 {{name}} 互相喜欢",
+                "hint": "立即开始聊天。",
+                "send_message": "发送消息"
+            },
+            "discover": {
+                "empty": "附近没有更多个人资料。",
+                "like": "喜欢",
+                "nope": "不喜欢",
+                "distance_km": "距离您 {{km}} 公里"
+            },
+            "chats_tab": {
+                "empty": "还没有聊天。开始滑动以找到匹配。",
+                "search_placeholder": "搜索聊天",
+                "say_hi": "打招呼",
+                "no_results": "没有符合您搜索的聊天。"
+            },
+            "profile": {
+                "name": "姓名",
+                "username": "用户名",
+                "bio": "简介",
+                "gender": "性别",
+                "interested_in": "感兴趣",
+                "change_password": "更改密码",
+                "photos_title": "照片",
+                "photos_footer": "点击 + 从图库或 URL 添加。",
+                "add": "添加",
+                "save_profile": "保存个人资料",
+                "saving": "正在保存…",
+                "required_fields": "姓名、用户名和至少一张照片为必填项。",
+                "photo_alt": "个人资料照片 {{index}}",
+                "only_images": "只能使用图片作为个人资料照片。",
+                "gender_male": "男性",
+                "gender_female": "女性",
+                "gender_non_binary": "非二元",
+                "interest_men": "男性",
+                "interest_women": "女性",
+                "interest_everyone": "所有人"
+            },
+            "actions": {
+                "add_photo": "添加照片",
+                "choose_from_gallery": "从图库选择",
+                "add_with_url": "通过 URL 添加"
+            },
+            "errors": {
+                "request_failed": "Pairly 请求失败",
+                "register_failed": "无法创建 Pairly 账户",
+                "invalid_credentials": "用户名或密码错误",
+                "logout_failed": "登出失败",
+                "mark_read_failed": "无法标记聊天为已读",
+                "profile_update_failed": "无法更新个人资料",
+                "password_update_failed": "无法更新密码",
+                "delete_failed": "无法删除账户",
+                "mock_unknown_users": "未知用户"
+            },
+            "backend": {
+                "message_preview_photo": "照片",
+                "message_preview_video": "视频",
+                "message_preview_gif": "GIF",
+                "message_preview_location": "位置",
+                "location_message_text": "位置",
+                "errors": {
+                    "session_required": "需要会话。",
+                    "session_expired": "会话已过期。",
+                    "invalid_registration": "注册资料无效。",
+                    "username_taken": "用户名已被占用。",
+                    "photos_required": "至少需要一张照片。",
+                    "could_not_create_account": "无法创建账户。",
+                    "could_not_load_account": "无法加载账户。",
+                    "invalid_credentials": "用户名或密码错误。",
+                    "invalid_input": "输入无效。",
+                    "invalid_swipe": "滑动操作无效。",
+                    "target_not_found": "未找到目标账户。",
+                    "peer_required": "需要伙伴。",
+                    "peer_not_found": "未找到伙伴账户。",
+                    "thread_not_found": "未找到线程。",
+                    "account_not_found": "未找到账户。",
+                    "chat_id_required": "需要聊天 ID。",
+                    "invalid_content_type": "内容类型无效。",
+                    "empty_message": "消息不能为空。",
+                    "chat_not_found": "未找到聊天。",
+                    "access_denied_chat": "您无权访问此聊天。",
+                    "missing_location": "缺少位置数据。",
+                    "invalid_profile": "个人资料资料无效。",
+                    "password_too_short": "密码太短。",
+                    "could_not_update_password": "无法更新密码。",
+                    "could_not_rescue": "无法恢复账户。"
+                }
+            },
+            "app_store": {
+                "label": "Pairly",
+                "creator": "4Love",
+                "description": "寻找伴侣并结识他人",
+                "category": "社交",
+                "whats_new": "性能改进和错误修复。",
+                "detail_header": "Pairly",
+                "detail_head": "正在寻找伴侣？开放关系？",
+                "detail_footer": "超过 700 亿次匹配。Pairly 是最好的免费约会应用，也是结识他人的最佳地方",
+                "age_rating": "18+"
+            }
+        },
+        "beatzy": {
+            "title": "Beatzy",
+            "title_short": "BZ",
+            "tabs": {
+                "home": "首页",
+                "create": "创建",
+                "profile": "个人资料"
+            },
+            "actions": {
+                "close": "关闭",
+                "save": "保存",
+                "post": "发布",
+                "cancel": "取消"
+            },
+            "states": {
+                "loading": "正在加载…",
+                "saving": "正在保存…",
+                "posting": "正在发布…"
+            },
+            "auth": {
+                "welcome_title": "欢迎来到 Beatzy",
+                "welcome_subtitle": "登录以查看您的动态。",
+                "sign_in": "登录",
+                "create_account": "创建账户",
+                "recover_hint": "忘记密码？别担心，我们会帮助您恢复账户。",
+                "recover_account": "恢复账户",
+                "login_title": "Beatzy 登录",
+                "create_account_title": "创建 Beatzy 账户",
+                "recover_title": "恢复 Beatzy 账户",
+                "your_accounts": "您的账户",
+                "display_name": "显示名称",
+                "username": "用户名",
+                "password": "密码",
+                "signing_in": "正在登录…",
+                "creating": "正在创建…"
+            },
+            "feed": {
+                "empty": "动态为空。"
+            },
+            "comments": {
+                "title_with_count": "评论 ({{count}})",
+                "empty": "还没有评论。",
+                "user_fallback": "用户",
+                "unknown_user": "未知",
+                "add_placeholder": "添加评论…"
+            },
+            "profile": {
+                "title": "个人资料",
+                "my_profile": "我的个人资料",
+                "edit_title": "编辑个人资料",
+                "account": "账户",
+                "avatar": "头像",
+                "avatar_url": "头像 URL",
+                "bio": "简介",
+                "no_bio": "还没有简介。",
+                "not_found": "未找到个人资料。",
+                "updated": "个人资料已更新",
+                "followed": "已关注",
+                "default_bio": "新的 Beatzy 用户。",
+                "user_fallback": "Beatzy 用户",
+                "videos": "视频",
+                "followers": "{{count}} 位关注者",
+                "following": "正在关注 {{count}}",
+                "delete_confirm": "您确定要删除您的 Beatzy 账户吗？",
+                "actions": {
+                    "edit_profile": "编辑个人资料",
+                    "follow": "关注",
+                    "logout": "退出登录",
+                    "delete_account": "删除账户"
+                }
+            },
+            "create": {
+                "title": "创建视频",
+                "caption": "标题",
+                "video": "视频",
+                "poster": "封面",
+                "music": "音乐",
+                "preview": "预览",
+                "pick": "选择",
+                "selected": "已选择",
+                "pick_music": "选择音乐",
+                "search_songs": "搜索歌曲",
+                "original_sound": "原声",
+                "cover": "封面",
+                "tap_to_choose": "点击选择",
+                "poster_image": "封面图片",
+                "post_video": "发布视频",
+                "select_video": "选择视频",
+                "select_image": "选择图片",
+                "loading_music_catalog": "正在加载音乐目录…",
+                "preview_paused": "预览已暂停",
+                "cover_auto_generate_failed": "自动生成封面失败。请从图库选择封面。",
+                "poster_footer_custom": "使用自己的图片",
+                "poster_footer_default": "默认 - 图库缩略图或视频图片",
+                "poster_status": {
+                    "custom": "自定义",
+                    "generating": "正在生成…",
+                    "auto": "自动",
+                    "pick": "选择"
+                },
+                "poster_desc": {
+                    "custom": "来自图库的自定义图片",
+                    "creating": "正在从视频创建封面…",
+                    "generated": "来自图库缩略图或视频图片 — 点击更换",
+                    "pick": "从图库选择图片"
+                }
+            },
+            "errors": {
+                "login_failed": "登录失败",
+                "register_failed": "注册失败",
+                "recovery_failed": "恢复失败",
+                "profile_update_failed": "无法更新个人资料",
+                "follow_failed": "关注失败",
+                "music_list_load_failed": "无法加载音乐列表"
+            },
+            "backend": {
+                "defaults": {
+                    "original_sound": "原声"
+                },
+                "errors": {
+                    "sign_in_required": "请先登录",
+                    "session_expired": "会话已过期",
+                    "username_password_required": "需要用户名和密码",
+                    "invalid_credentials": "登录信息无效",
+                    "username_3_40_pattern": "用户名必须为 3–40 个字符 [a-z0-9_]",
+                    "username_min_3": "用户名必须至少包含 3 个字符",
+                    "password_min_4": "密码必须至少包含 4 个字符",
+                    "username_exists": "用户名已存在",
+                    "secure_password_failed": "无法保护密码",
+                    "create_account_failed": "无法创建账户",
+                    "invalid_account_selected": "所选账户无效",
+                    "account_not_found": "未找到账户",
+                    "username_required": "需要用户名",
+                    "user_not_found": "未找到用户",
+                    "video_caption_required": "需要视频 URL 和标题",
+                    "create_video_failed": "无法创建视频",
+                    "invalid_video": "视频无效",
+                    "video_comment_required": "需要视频和评论文本",
+                    "create_comment_failed": "无法创建评论",
+                    "comment_empty": "评论不能为空",
+                    "like_update_failed": "无法更新点赞",
+                    "display_name_required": "需要显示名称",
+                    "profile_update_failed": "无法更新个人资料",
+                    "invalid_user": "用户无效",
+                    "follow_update_failed": "无法更新关注"
+                }
+            }
+        },
+        "pictagram": {
+            "title": "Pictagram",
+            "tabs": {
+                "home": "首页",
+                "search": "搜索",
+                "alerts": "提醒",
+                "profile": "个人资料"
+            },
+            "actions": {
+                "close": "关闭",
+                "cancel": "取消",
+                "start": "开始",
+                "next": "下一步",
+                "share": "分享",
+                "send": "发送",
+                "post": "发布",
+                "end": "结束",
+                "save": "保存"
+            },
+            "states": {
+                "saving": "正在保存…",
+                "updating": "正在更新…"
+            },
+            "common": {
+                "time_ago": "{{time}} 前"
+            },
+            "search": {
+                "placeholder": "搜索用户"
+            },
+            "notifications": {
+                "title": "通知"
+            },
+            "auth": {
+                "welcome_title": "捕捉并分享您的时刻。",
+                "welcome_subtitle": "登录以查看您的动态、故事和消息。",
+                "login": "登录",
+                "create_account": "创建账户",
+                "login_title": "Pictagram 登录",
+                "create_account_title": "创建 Pictagram 账户",
+                "display_name": "显示名称",
+                "username": "用户名",
+                "password": "密码",
+                "signing_in": "正在登录…",
+                "sign_in": "登录",
+                "recover_by_username": "按用户名恢复",
+                "creating": "正在创建…"
+            },
+            "profile": {
+                "title": "个人资料",
+                "not_found": "未找到个人资料。",
+                "empty": "未找到个人资料。",
+                "edit_title": "编辑个人资料",
+                "account_section": "账户",
+                "display_name": "显示名称",
+                "username": "用户名",
+                "avatar_url": "头像 URL",
+                "bio": "简介",
+                "change_password": "更改密码",
+                "save_profile": "保存个人资料",
+                "updated": "个人资料已更新",
+                "default_bio": "新的 Pictagram 用户",
+                "delete_confirm": "此操作将永久删除您的账户。继续？",
+                "stats": {
+                    "posts": "帖子",
+                    "followers": "关注者",
+                    "following": "正在关注"
+                },
+                "actions": {
+                    "edit_profile": "编辑个人资料",
+                    "following": "正在关注",
+                    "follow": "关注",
+                    "logout": "退出登录",
+                    "delete_account": "删除账户"
+                }
+            },
+            "create": {
+                "go_live": "开始直播",
+                "new_post": "新帖子",
+                "select_media": "选择媒体",
+                "start_live_title": "开始直播",
+                "start_live_subtitle": "添加简短标题并立即为您的关注者直播。",
+                "live_title_placeholder": "您在直播什么？",
+                "loading_gallery": "正在加载图库…",
+                "loading_more": "正在加载更多…",
+                "link_list_item": "自定义链接",
+                "link_dialog_title": "图片 URL",
+                "link_prompt_placeholder": "输入图片 URL (https)",
+                "link_remove": "移除附加图片",
+                "link_invalid_url": "请输入有效的 http(s) 图片链接。",
+                "link_duplicate": "此链接已添加。",
+                "no_photos": "您的图库中没有照片。",
+                "gallery_multi": "来自您的图库 — 点击选择多个（最多 10 张）",
+                "max_photos_toast": "一篇帖子最多只能添加 10 张照片。",
+                "gallery_single": "来自您的图库 — 选择一张",
+                "selected_media_alt": "已选媒体",
+                "selected": "已选择",
+                "modes": {
+                    "post": "帖子",
+                    "story": "故事",
+                    "live": "直播"
+                },
+                "default_location": "Los Santos",
+                "select_at_least_one_photo": "请选择至少一张照片",
+                "post_shared": "帖子已分享",
+                "story_shared": "故事已分享",
+                "share_post": "分享帖子",
+                "share_story": "分享故事",
+                "caption_placeholder": "写一段描述…",
+                "location_placeholder": "位置",
+                "story_expire_notice": "您的故事将在 24 小时后消失。",
+                "preview_alt": "预览",
+                "no_media_selected": "未选择媒体",
+                "filters": {
+                    "normal": "普通",
+                    "vivid": "生动",
+                    "warm": "温暖",
+                    "cold": "冷色",
+                    "mono": "单色",
+                    "film": "胶片"
+                },
+                "take_photo_list_item": "拍照",
+                "camera_pick_busy": "相机正在被使用，请先关闭它。"
+            },
+            "comments": {
+                "title": "评论",
+                "sheet_title": "评论 ({{count}})",
+                "empty": "还没有评论。",
+                "add_comment_placeholder": "添加评论…",
+                "user_fallback": "用户",
+                "unknown_user": "未知"
+            },
+            "messages": {
+                "title": "消息",
+                "search_placeholder": "搜索消息",
+                "no_active_account": "没有活跃账户。",
+                "preview_photo": "照片",
+                "preview_gif": "GIF",
+                "preview_video": "视频",
+                "preview_location": "位置",
+                "preview_media": "媒体"
+            },
+            "chat": {
+                "title": "聊天",
+                "composer": "撰写",
+                "photo": "照片",
+                "gif": "GIF",
+                "location": "位置",
+                "message_placeholder": "消息"
+            },
+            "post": {
+                "title": "帖子",
+                "posts": "帖子",
+                "not_found": "未找到帖子。",
+                "no_posts_found": "未找到帖子。",
+                "no_media": "没有媒体",
+                "edit_title": "编辑帖子",
+                "edit_media_hint": "更新此帖子的照片、说明和位置。",
+                "delete_confirm": "永久删除此帖子？此操作无法撤销。",
+                "updated": "帖子已更新",
+                "deleted": "帖子已删除",
+                "actions": {
+                    "menu": "帖子选项",
+                    "edit": "编辑",
+                    "delete": "删除"
+                }
+            },
+            "story": {
+                "no_stories": "没有故事。",
+                "delete": "删除故事",
+                "delete_confirm": "永久删除此故事？此操作无法撤销。",
+                "deleted": "故事已删除"
+            },
+            "change_password": {
+                "title": "更改密码",
+                "current_password": "当前密码",
+                "new_password": "新密码",
+                "confirm_new_password": "确认新密码",
+                "update_password": "更新密码",
+                "fill_all": "请填写所有密码字段。",
+                "new_password_min": "新密码必须至少包含 4 个字符。",
+                "passwords_not_match": "新密码不匹配。",
+                "updated": "密码已更新。"
+            },
+            "live": {
+                "default_title": "Pictagram 直播",
+                "started": "直播已开始",
+                "ended": "直播已结束",
+                "broadcast_title": "直播",
+                "watching_title": "正在观看直播",
+                "watching_count": "{{count}} 人正在观看",
+                "connecting": "正在连接流…",
+                "host_fallback": "主持人",
+                "host_badge": "主持人",
+                "comment_placeholder": "留下评论…",
+                "target_missing": "直播目标缺失",
+                "unavailable": "直播不可用"
+            },
+            "errors": {
+                "load_gallery_failed": "无法加载图库",
+                "create_failed": "创建失败",
+                "share_failed": "分享失败",
+                "login_failed": "登录失败",
+                "recover_failed": "恢复失败",
+                "register_failed": "注册失败",
+                "password_update_failed": "无法更新密码",
+                "delete_story_failed": "无法删除故事",
+                "update_post_failed": "无法更新帖子",
+                "delete_post_failed": "无法删除帖子"
+            },
+            "backend": {
+                "live": {
+                    "default_title": "Pictagram 直播"
+                },
+                "notifications": {
+                    "commented_post": "评论了您的帖子",
+                    "commented_post_with_user": "{{user}} 评论了您的帖子",
+                    "liked_post": "点赞了您的帖子",
+                    "liked_photo": "{{user}} 点赞了您的照片",
+                    "started_following": "开始关注您",
+                    "started_following_with_user": "{{user}} 开始关注您"
+                },
+                "errors": {
+                    "sign_in_required": "请先登录",
+                    "session_expired": "会话已过期",
+                    "username_password_required": "需要用户名和密码",
+                    "invalid_credentials": "用户名或密码错误",
+                    "invalid_account_selected": "所选账户无效。",
+                    "username_3_40": "用户名必须为 3–40 个字符",
+                    "username_min_3": "用户名必须至少包含 3 个字符",
+                    "username_required": "需要用户名",
+                    "username_exists": "用户名已存在",
+                    "password_min_4": "密码必须至少包含 4 个字符",
+                    "new_password_min_4": "新密码必须至少包含 4 个字符",
+                    "display_name_required": "需要显示名称",
+                    "secure_password_failed": "无法保护密码",
+                    "create_account_failed": "无法创建账户",
+                    "recovery_denied": "无法在此设备上恢复用户",
+                    "post_id_required": "需要帖子 ID",
+                    "comment_required": "需要评论文本",
+                    "create_comment_failed": "无法创建评论",
+                    "like_update_failed": "无法更新点赞",
+                    "target_user_required": "需要目标用户",
+                    "follow_update_failed": "无法更新关注",
+                    "thread_id_required": "需要线程 ID",
+                    "thread_access_denied": "您不是此线程的成员",
+                    "message_required": "需要消息文本",
+                    "message_empty": "消息不能为空",
+                    "send_message_failed": "无法发送消息",
+                    "only_photo_supported": "目前只能分享照片",
+                    "media_url_required": "需要媒体 URL",
+                    "media_max_photos": "一篇帖子最多只能添加 10 张照片。",
+                    "create_post_failed": "无法创建帖子",
+                    "create_story_failed": "无法创建故事",
+                    "story_id_required": "需要故事 ID",
+                    "story_not_found": "未找到故事",
+                    "not_story_owner": "您只能删除自己的故事",
+                    "delete_story_failed": "无法删除故事",
+                    "resolve_source_failed": "无法解析来源",
+                    "live_unavailable": "直播不可用",
+                    "live_full": "直播已满",
+                    "live_stop_forbidden": "只有主持人才能停止此直播",
+                    "live_participant_required": "您未参与此直播",
+                    "invalid_webrtc_kind": "WebRTC 信号类型无效",
+                    "profile_update_failed": "无法更新个人资料",
+                    "current_new_password_required": "需要当前密码和新密码",
+                    "current_password_incorrect": "当前密码错误",
+                    "password_change_failed": "无法更改密码",
+                    "account_delete_failed": "无法删除账户",
+                    "update_post_failed": "无法更新帖子",
+                    "delete_post_failed": "无法删除帖子",
+                    "post_not_found": "未找到帖子",
+                    "not_post_owner": "你只能管理自己的帖子"
+                }
+            }
+        },
+        "tweedle": {
+            "title": "Chirpy",
+            "auth_tagline": "城市开始对话的地方。",
+            "create_account": "创建账户",
+            "log_in": "登录",
+            "recover_account": "恢复账户",
+            "recover_account_subtitle": "忘记密码？点击此处恢复账户",
+            "recover_list": "与您角色关联的账户",
+            "recover": "恢复",
+            "name": "姓名",
+            "username": "用户名",
+            "password": "密码",
+            "bio": "简介",
+            "tabs": {
+                "home": "首页",
+                "search": "搜索",
+                "notifications": "通知",
+                "messages": "消息",
+                "profile": "个人资料"
+            },
+            "filters": {
+                "all": "全部",
+                "following": "正在关注"
+            },
+            "search_title": "浏览",
+            "search_placeholder": "搜索 Chirpy 或用户",
+            "search_posts": "帖子",
+            "search_people": "用户",
+            "search_hint": "开始输入以查找热门对话和账户。",
+            "notifications_title": "通知",
+            "messages_title": "消息",
+            "profile_title": "个人资料",
+            "profile_posts": "帖子",
+            "profile_replies": "回复",
+            "profile_media": "媒体",
+            "profile_likes": "点赞",
+            "profile_empty": "还没有内容。",
+            "follow": "关注",
+            "following": "正在关注",
+            "send_message": "发送消息",
+            "logout": "退出登录",
+            "compose": "撰写",
+            "compose_placeholder": "正在发生什么？",
+            "compose_empty": "请先写点什么",
+            "publish": "发布",
+            "reply": "回复",
+            "replies": "回复",
+            "reply_placeholder": "写下您的回复",
+            "send_reply": "发送回复",
+            "media_url": "媒体 URL（可选）",
+            "post_detail": "Chirpy",
+            "post_missing": "此帖子已不存在。",
+            "reply_failed": "回复失败",
+            "loading_replies": "正在加载回复…",
+            "chat": "聊天",
+            "loading_messages": "正在加载消息…",
+            "message_placeholder": "写消息",
+            "send": "发送",
+            "edit_profile": "编辑个人资料",
+            "avatar_url": "头像 URL",
+            "banner_url": "横幅 URL",
+            "save_profile": "保存个人资料",
+            "account_section": "账户",
+            "security_section": "安全",
+            "saving": "正在保存…",
+            "working": "正在处理…",
+            "change_password": "更改密码",
+            "current_password": "当前密码",
+            "new_password": "新密码",
+            "password_changed_mock": "密码已更新（测试模式）。",
+            "delete_account": "删除账户",
+            "delete_account_confirm": "您真的要删除此账户吗？",
+            "delete_account_mock_notice": "测试模式下删除账户。",
+            "cancel": "取消",
+            "auth_fill_fields": "请填写用户名和密码",
+            "auth_fill_required": "请填写所有必填字段",
+            "register_success": "您已注册。欢迎来到 Chirpy！",
+            "empty_notifications": "还没有通知。",
+            "empty_messages": "还没有私信。",
+            "unknown_user": "未知用户",
+            "badge_new": "新",
+            "notification_body": {
+                "like": "点赞了您的帖子",
+                "reply": "回复了您的帖子",
+                "follow": "开始关注您",
+                "repost": "转发了您的帖子",
+                "mention": "提到了您"
+            },
+            "followers_count": "{{value}} 位关注者",
+            "following_count": "正在关注 {{value}}",
+            "app_store": {
+                "label": "Chirpy",
+                "creator": "Chirpy Corp",
+                "description": "分享您的一天并与朋友一起玩乐",
+                "category": "社交",
+                "whats_new": "性能改进和错误修复。",
+                "detail_header": "Chirpy",
+                "detail_head": "Chirpy 应用是为每个人提供的可靠全球数字市场",
+                "detail_footer": "分享内容，让每个人都能看到并参与公开对话",
+                "age_rating": "16+"
+            },
+            "profile_posts_empty": "暂无帖子。",
+            "profile_replies_empty": "暂无回复。",
+            "reposted_by": "{{username}} 转发了"
+        },
+        "tips": {
+            "title": "提示",
+            "subtitle": "探索这部手机能做什么 — 查看所有主题。",
+            "section_topics": "主题",
+            "empty_categories": "还没有配置提示。",
+            "empty_slides": "此主题没有幻灯片。",
+            "slide_hint": "左右滑动以查看",
+            "topic_slide_count": "{{count}} 张幻灯片"
+        },
+        "clock": {
+            "title": "时钟",
+            "tabs": {
+                "world_time": "世界",
+                "alarm": "闹钟",
+                "stopwatch": "秒表",
+                "timer": "计时器"
+            },
+            "sections": {
+                "alarms": "闹钟",
+                "laps": "圈数",
+                "timer_setup": "计时器设置"
+            },
+            "pages": {
+                "add_alarm": "添加闹钟",
+                "edit_alarm": "编辑闹钟",
+                "repeat": "重复",
+                "label": "标签"
+            },
+            "fields": {
+                "repeat": "重复",
+                "label": "标签"
+            },
+            "labels": {
+                "minutes": "分钟",
+                "seconds": "秒",
+                "selected_duration": "{{minutes}} 分 {{seconds}} 秒",
+                "default_alarm": "闹钟",
+                "alarm_repeat_format": "{{label}}，{{repeat}}",
+                "lap_item": "第 {{number}} 圈"
+            },
+            "actions": {
+                "new_alarm": "新建闹钟",
+                "delete": "删除",
+                "edit": "编辑",
+                "done": "完成",
+                "edit_alarm_list": "编辑",
+                "save": "保存",
+                "back": "返回",
+                "flow": "流程",
+                "start": "开始",
+                "stop": "停止",
+                "lap": "圈",
+                "clear": "清除",
+                "reset": "重置",
+                "pause": "暂停",
+                "resume": "继续",
+                "apply_duration": "应用时长"
+            },
+            "prompts": {
+                "create_alarm": "以 HH:MM 标签格式设置闹钟",
+                "update_alarm": "以 HH:MM 标签格式更新闹钟"
+            },
+            "timer": {
+                "title_timers": "计时器",
+                "island_title": "计时器",
+                "island_restart": "重新开始计时器",
+                "island_dismiss": "关闭计时器",
+                "cancel": "取消",
+                "pause": "暂停",
+                "resume": "继续",
+                "stop_alarm": "停止",
+                "ringing_title": "计时器结束",
+                "ringing_hint": "停止闹钟或使用 Dynamic Island。",
+                "default_label": "计时器",
+                "when_ends": "计时器结束时",
+                "end_sound_name": "闹钟",
+                "unit_hours": "小时",
+                "unit_minutes": "分钟",
+                "unit_seconds": "秒"
+            },
+            "cycles": {
+                "everyday": "每天",
+                "weekdays": "工作日",
+                "weekend": "周末",
+                "once": "仅一次"
+            },
+            "repeat": {
+                "everyday": "每天",
+                "weekdays": "工作日",
+                "weekend": "周末",
+                "once": "仅一次",
+                "monday": "周一",
+                "tuesday": "周二",
+                "wednesday": "周三",
+                "thursday": "周四",
+                "friday": "周五",
+                "saturday": "周六",
+                "sunday": "周日"
+            },
+            "empty": {
+                "no_laps": "还没有圈数。"
+            },
+            "errors": {
+                "invalid_alarm_format": "请使用格式：HH:MM 标签"
+            },
+            "world_time": {
+                "screen_title": "世界时间",
+                "empty": "还未设置世界时间。",
+                "today_gmt": "今天，GMT {{offset}}"
+            },
+            "a11y": {
+                "alarm_time_picker": "闹钟时间选择器"
+            }
+        },
+        "calendar": {
+            "title": "日历",
+            "nav": {
+                "prev_month": "上个月",
+                "next_month": "下个月"
+            },
+            "events": {
+                "none": "没有事件",
+                "hint": "点击 + 在这一天添加事件。",
+                "loading": "正在加载事件…",
+                "for_day": "已安排",
+                "span": "{{start}} – {{end}}"
+            },
+            "editor": {
+                "create_title": "新事件",
+                "edit_title": "编辑事件",
+                "sheet_handle": "调整面板大小",
+                "field_title": "标题",
+                "field_notes": "备注",
+                "field_start": "开始",
+                "field_end": "结束（可选）",
+                "end_hint": "全天事件请留空结束时间，或为多天事件选择最后一天。",
+                "color": "颜色",
+                "save": "保存",
+                "delete": "删除事件",
+                "preview_title": "摘要"
+            },
+            "colors": {
+                "blue": "蓝色",
+                "green": "绿色",
+                "orange": "橙色",
+                "purple": "紫色",
+                "rose": "粉色",
+                "amber": "琥珀色"
+            },
+            "errors": {
+                "invalid_range": "日期范围无效。",
+                "invalid_title": "请输入标题。",
+                "invalid_date": "日期无效。",
+                "invalid_id": "事件无效。",
+                "not_found": "未找到事件。",
+                "span_too_long": "事件不能超过 90 天。",
+                "end_before_start": "结束日期必须等于或晚于开始日期。",
+                "save_failed": "无法保存事件。",
+                "delete_failed": "无法删除事件。",
+                "load_failed": "无法加载事件。"
+            }
+        },
+        "houses": {
+            "title": "房屋",
+            "detail": {
+                "loading_title": "房屋"
+            },
+            "sections": {
+                "my_homes": "我的房屋",
+                "access": "访问权限",
+                "location": "位置",
+                "people": "人员"
+            },
+            "labels": {
+                "id_hash": "#{{id}}",
+                "door_lock": "门锁",
+                "status_locked": "已锁定",
+                "status_unlocked": "已解锁",
+                "owner_badge": "所有者",
+                "directions_subtitle": "在您的地图上为此房屋设置导航点。",
+                "server_id_label": "ID {{id}}",
+                "selected_player": "已选择",
+                "owned_badge": "已拥有"
+            },
+            "hints": {
+                "mlo_no_smart_lock": "此房产没有可用的智能锁。"
+            },
+            "actions": {
+                "retry": "重试",
+                "back": "返回",
+                "set_gps": "导航",
+                "remove_access": "移除访问权限",
+                "cancel": "取消",
+                "confirm": "确认",
+                "add": "添加",
+                "remove": "移除"
+            },
+            "empty": {
+                "title": "还没有房屋",
+                "subtitle": "此处将显示您拥有或持有钥匙的房产。"
+            },
+            "dialogs": {
+                "door_title": "更改锁？",
+                "door_message": "这将更新此房屋的智能锁。",
+                "door_will_lock": "门将上锁。",
+                "door_will_unlock": "门将解锁。",
+                "remove_key_title": "移除钥匙？",
+                "remove_key_message": "此人将失去钥匙，无法再进入此房屋。"
+            },
+            "notifications": {
+                "waypoint_set": "已在您的地图上设置导航点。",
+                "door_locked": "门现在已上锁。",
+                "door_unlocked": "门现在已解锁。",
+                "key_given": "钥匙已成功交付。",
+                "key_removed": "访问权限已移除。"
+            },
+            "errors": {
+                "load_failed": "无法加载房屋。",
+                "house_not_found": "此房屋已不存在。",
+                "door_failed": "无法更新锁。",
+                "waypoint_failed": "无法设置导航点。",
+                "invalid_player_id": "请输入有效的服务器 ID。",
+                "give_key_failed": "无法交付钥匙。",
+                "remove_key_failed": "无法移除访问权限。"
+            }
+        },
+        "houses_qs": {
+            "tab_general": "房屋",
+            "tab_money": "付款",
+            "tab_deliveries": "配送",
+            "tab_dancers": "舞者",
+            "tab_lights": "灯光",
+            "tab_cameras": "摄像头",
+            "tab_keys": "钥匙",
+            "tab_money_empty": "此房产没有账单或租金。",
+            "deliveries": "配送",
+            "deliveries_disabled": "此服务器上已禁用送餐服务。",
+            "deliveries_active": "您的订单",
+            "deliveries_none": "没有进行中的配送。",
+            "deliveries_order": "订购食物",
+            "deliveries_order_confirm": "订购 {{title}} 价格 ${{price}}？",
+            "deliveries_ordered": "订单已发送",
+            "deliveries_status_pending": "正在配送",
+            "deliveries_ready_collect": "已准备好 — 点击领取",
+            "deliveries_collected": "已领取配送",
+            "dancers": "舞者",
+            "dancers_disabled": "此服务器上已禁用私人舞者。",
+            "dancers_active": "您的预订",
+            "dancers_none": "没有进行中的预订。",
+            "dancers_book": "预订",
+            "dancers_order_confirm": "预订 {{title}} 价格 ${{price}}？",
+            "dancers_ordered": "请求已发送",
+            "cameras": "监控摄像头",
+            "cameras_need_upgrade": "为此房产安装摄像头升级，以便通过手机使用 CCTV。",
+            "cameras_inside_only": "进入房产内部以查看您的监控摄像头。",
+            "cameras_none": "此室内空间未安装监控摄像头。",
+            "camera_feed": "摄像头 #{{id}}",
+            "camera_watch_hint": "在游戏中打开实时视图",
+            "tab_homes": "房屋",
+            "tab_market": "市场",
+            "market_title": "房地产市场",
+            "my_homes_section": "您的房产",
+            "map_title": "房产地图",
+            "map_set_waypoint": "设置 GPS",
+            "map_badge_sold": "已售出",
+            "map_badge_listing": "待售",
+            "map_badge_player_sale": "玩家出售",
+            "map_badge_sale": "待售",
+            "buy": "购买",
+            "rent": "出租",
+            "bills": "账单",
+            "rents": "租金计划",
+            "paid": "已支付",
+            "unpaid": "未支付",
+            "pay_all_bills": "支付所有账单",
+            "lights": "灯光",
+            "lights_on": "开启",
+            "lights_off": "关闭",
+            "metakey": "元钥匙",
+            "metakey_create": "创建元钥匙",
+            "metakey_delete_confirm": "删除此元钥匙？",
+            "action_ok": "完成",
+            "action_failed": "出了点问题"
+        },
+        "camera": {
+            "title": "相机",
+            "gallery_recent": "最近照片",
+            "modes": {
+                "video": "视频",
+                "photo": "照片",
+                "landscape": "横向"
+            },
+            "helper": {
+                "press": "按下",
+                "enter": "拍摄照片",
+                "alt": "切换鼠标",
+                "flip": "翻转相机"
+            },
+            "notifications": {
+                "photo_uploaded_title": "照片已上传",
+                "photo_saved": "照片已保存",
+                "photo_uploaded_fallback_text": "照片已上传到 FiveManage。",
+                "photo_upload_failed_title": "照片上传失败",
+                "video_recording_failed_title": "视频录制失败",
+                "video_upload_failed_title": "视频上传失败",
+                "video_bridge_not_ready": "游戏渲染桥接尚未准备好。",
+                "video_saved": "视频已保存到您的手机。",
+                "video_saved_max_duration": "已达到最大时长。视频已保存到您的手机。",
+                "mode_not_ready_title": "模式未就绪",
+                "mode_not_ready_text": "此相机模式尚不可用。",
+                "video_microphone_unavailable": "麦克风不可用。请在 F8 中允许麦克风访问权限后重试。"
+            }
+        },
+        "crypto": {
+            "title": "加密货币",
+            "search_placeholder": "搜索加密货币",
+            "summary": {
+                "total_balance": "总余额",
+                "cash": "现金",
+                "in_assets": "资产中"
+            },
+            "sections": {
+                "markets": "市场"
+            },
+            "activity": {
+                "title": "活动",
+                "row_title": "交易历史",
+                "loading": "正在加载…",
+                "error": "无法加载活动。",
+                "empty": "还没有交易。",
+                "types": {
+                    "buy": "买入",
+                    "sell": "卖出",
+                    "transfer": "转账"
+                }
+            },
+            "detail": {
+                "holding": "您持有",
+                "high_24h": "24 小时最高",
+                "low_24h": "24 小时最低",
+                "actions_section": "交易",
+                "buy_footer": "使用您当前的现金余额按当前价格。",
+                "sell_footer": "将您的资产兑换成现金。",
+                "transfer_footer": "通过手机将加密货币发送给其他玩家。"
+            },
+            "trade": {
+                "title_buy": "买入",
+                "title_sell": "卖出",
+                "amount_label": "数量（加密货币）",
+                "amount_placeholder": "0",
+                "price": "价格",
+                "gross": "总额",
+                "fee": "手续费 ({{pct}} %)",
+                "total_pay": "总支付",
+                "total_receive": "您将收到",
+                "balances": "现金 {{fiat}} · {{coin}} {{symbol}}",
+                "working": "正在处理…",
+                "invalid_amount": "请输入有效数量。"
+            },
+            "transfer": {
+                "title": "转账",
+                "phone_label": "收件人电话",
+                "phone_placeholder": "555-0123",
+                "amount_label": "数量（加密货币）",
+                "fee_label": "网络手续费",
+                "fee_hint": "手续费将从您钱包的现金中扣除。",
+                "send": "发送",
+                "working": "正在发送…",
+                "invalid_phone": "请输入有效电话号码。"
+            },
+            "actions": {
+                "buy": "买入",
+                "sell": "卖出",
+                "transfer": "转账",
+                "confirm": "确定",
+                "back": "返回",
+                "retry": "重试"
+            },
+            "empty": {
+                "no_matches": "未找到符合您搜索的加密货币。"
+            },
+            "errors": {
+                "service_unavailable_title": "交易不可用",
+                "service_unavailable_body": "此应用需要服务器端加密货币回调。直到添加后，市场才会实时加载。",
+                "stale_warning": "无法更新最新价格。正在显示最后已知数据。",
+                "generic": "出了点问题。",
+                "insufficient_fiat": "现金不足。",
+                "insufficient_coin": "加密货币不足。",
+                "position_limit": "此加密货币的仓位限制已超出。",
+                "below_min_trade": "交易规模低于最小值。",
+                "above_max_trade": "交易规模超过最大值。",
+                "transfer_fee_fiat": "现金不足以支付转账手续费。",
+                "coin_not_found": "未找到加密货币。"
+            },
+            "notifications": {
+                "trade_ok_title": "交易完成",
+                "trade_ok_subtitle": "{{side}} · {{symbol}}",
+                "transfer_ok_title": "转账已发送",
+                "transfer_ok_subtitle": "{{amount}} {{symbol}}"
+            }
+        },
+        "weazel": {
+            "title": "新闻",
+            "search_placeholder": "搜索文章",
+            "breaking": {
+                "badge": "突发新闻",
+                "short": "直播"
+            },
+            "sections": {
+                "latest": "最新"
+            },
+            "empty": {
+                "feed": "此部分还没有文章。"
+            },
+            "actions": {
+                "load_more": "加载更多"
+            },
+            "article": {
+                "title": "文章",
+                "updated": "已更新",
+                "save_bookmark": "保存文章",
+                "remove_bookmark": "从已保存中移除",
+                "share": "分享",
+                "delete": "删除文章"
+            },
+            "compose": {
+                "title": "新文章",
+                "section_content": "内容",
+                "section_category": "分类",
+                "section_options": "选项",
+                "field_title": "标题",
+                "field_subtitle": "副标题",
+                "field_body": "完整文本",
+                "field_image": "图片 URL（可选）",
+                "field_breaking": "标记为突发新闻",
+                "footer_title": "保持简洁；读者将在动态中首先看到它。",
+                "footer_subtitle": "标题下方卡片中显示的一两行。",
+                "footer_body": "文章中的完整文本。换行符为读者保留。",
+                "footer_image": "可选封面图片。使用指向图片文件的直接 HTTPS 链接。",
+                "footer_category_local": "城市、地区和市政新闻。",
+                "footer_category_politics": "政府、政治和公共事务。",
+                "footer_category_sports": "比赛、球队、比分和体育。",
+                "footer_category_breaking": "突发和时间敏感新闻部分。",
+                "footer_category_generic": "点击在此动态部分发布。",
+                "footer_category_selected": "此分类已为此文章选择。",
+                "footer_breaking": "如果启用，文章可能会出现在突发新闻行中。",
+                "no_permission": "您的工作不允许发布新闻。",
+                "validation_required": "标题和完整文本为必填项。",
+                "validation_category": "请选择一个分类。"
+            },
+            "dialogs": {
+                "delete_confirm": "删除此文章？此操作无法撤消。"
+            },
+            "toasts": {
+                "bookmark_saved": "已添加到已保存",
+                "bookmark_removed": "已从已保存中移除",
+                "share_soon": "当服务器支持时分享将可用。",
+                "published": "文章已发布",
+                "publish_failed": "发布失败。请重试。",
+                "deleted": "文章已删除"
+            },
+            "errors": {
+                "invalid_id": "文章 ID 无效。",
+                "not_found": "未找到文章。",
+                "no_publish": "您的工作不允许发布新闻。",
+                "not_owner": "您只能编辑自己的文章。",
+                "invalid_title": "标题无效。",
+                "invalid_subtitle": "副标题太长。",
+                "invalid_body": "文章文本无效。",
+                "invalid_category": "分类不允许。",
+                "invalid_image": "图片 URL 太长。",
+                "create_failed": "无法保存文章。",
+                "bookmarks_failed": "无法更新已保存文章。"
+            }
+        },
+        "yellowpages": {
+            "title": "Findly",
+            "search_placeholder": "搜索广告",
+            "sections": {
+                "feed": "广告"
+            },
+            "empty": {
+                "list": "还没有广告。点击 + 发布第一条。"
+            },
+            "card": {
+                "from": "来自",
+                "no_price": "未标价",
+                "contact": "联系",
+                "delete": "删除"
+            },
+            "detail": {
+                "title": "广告",
+                "not_found": "此广告已不存在。",
+                "back": "返回",
+                "section_description": "描述",
+                "no_photos": "纯文本广告 — 未添加照片。"
+            },
+            "actions": {
+                "cancel": "取消",
+                "load_more": "加载更多"
+            },
+            "contact": {
+                "sheet_title": "联系卖家",
+                "call": "拨打",
+                "message": "消息"
+            },
+            "compose": {
+                "title": "新广告",
+                "section_listing": "广告",
+                "section_photos": "照片",
+                "field_title": "标题",
+                "field_description": "描述",
+                "field_price": "价格（可选）",
+                "footer_title": "在动态中显示的简短标题。",
+                "footer_description": "描述您提供或正在寻找的内容。",
+                "footer_price": "如果价格不固定，请留空。",
+                "photos_add": "添加",
+                "photos_section_hint": "可选。图库从您的胶卷添加；URL 打开直接图片链接窗口。",
+                "photos_from_gallery": "图库",
+                "photos_add_url_row": "图片 URL",
+                "photos_url_dialog_title": "添加图片 URL",
+                "photos_url_dialog_placeholder": "粘贴图片的直接 https 链接",
+                "photos_pick_row_gallery": "从图库选择",
+                "photos_row_tap_replace": "点击从图库替换",
+                "photos_images_only": "广告中只能使用图片。",
+                "photos_empty_hint": "使用上方的图库或图片 URL。点击图片以从图库替换。",
+                "photo_url_label": "图片 URL {{index}}",
+                "photo_remove": "移除",
+                "validation_required": "标题和描述为必填项。",
+                "validation_price": "输入有效价格或留空。",
+                "validation_photos_max": "最多可添加 {{max}} 张照片。"
+            },
+            "dialogs": {
+                "delete_title": "删除广告",
+                "delete_confirm": "删除此广告？此操作无法撤消。"
+            },
+            "toasts": {
+                "posted": "广告已发布",
+                "post_failed": "发布失败。请重试。",
+                "deleted": "广告已删除",
+                "delete_failed": "删除失败。请重试。",
+                "message_no_participant": "无法与此号码开始聊天。",
+                "message_failed": "无法打开消息。"
+            }
+        },
+        "aventon": {
+            "title": "Aventon",
+            "search_placeholder": "搜索车辆",
+            "sections": {
+                "fleet": "可用车队",
+                "featured_badge": "精选"
+            },
+            "empty": {
+                "fleet": "没有符合您筛选条件的车辆。",
+                "fleet_hint": "尝试其他类别或搜索词。"
+            },
+            "detail": {
+                "title": "车辆",
+                "summary_section": "详情",
+                "not_found": "此车辆不可用。",
+                "rent": "立即租用",
+                "list_daily_rate": "每日价格",
+                "list_pickup": "取车",
+                "list_pickup_hint": "付款后在 Aventon 场地取车。"
+            },
+            "dialogs": {
+                "rent_confirm": "以 {{price}} 租用 {{label}}？付款将立即扣除。在 Aventon 场地取车。"
+            },
+            "toasts": {
+                "rent_ok": "{{label}} 已准备好取车。",
+                "rent_fail": "租用失败。请检查余额和位置。"
+            },
+            "errors": {
+                "config": "Aventon 配置不正确。",
+                "too_far": "要租用，您必须在 Aventon 取车点。我们已为您设置 waypoint。",
+                "invalid_vehicle": "车辆无效。",
+                "cooldown": "请在下次租用前稍等片刻。",
+                "ped": "无法验证角色。",
+                "no_money": "所选账户资金不足。",
+                "payment_failed": "无法处理付款。"
+            },
+            "client": {
+                "spawn_ok": "您的租赁已就绪。",
+                "spawn_failed": "无法生成车辆。资金已扣除 — 如果问题持续，请联系支持。"
+            }
+        },
+        "icar": {
+            "title": "车库",
+            "search_placeholder": "按名称或牌照搜索",
+            "filters": {
+                "all": "全部",
+                "in_garage": "在车库",
+                "outside": "在车库外"
+            },
+            "dealership_waypoint": "前往经销商 GPS",
+            "valet_disabled_hint": "此服务器上 valet 服务已禁用。",
+            "section_shortcuts": "快捷方式",
+            "section_vehicles": "车辆",
+            "empty_title": "没有车辆",
+            "empty_subtitle": "尝试其他筛选器或清除搜索。",
+            "status": {
+                "in_garage": "在车库",
+                "outside": "在车库外"
+            },
+            "detail": {
+                "title": "车辆",
+                "summary_section": "详情",
+                "not_found": "此车辆不在您的列表中。",
+                "row_garage": "位置",
+                "row_condition": "状况",
+                "condition_summary": "引擎 {{engine}} % · 车身 {{body}} %",
+                "metrics_section": "车辆状况",
+                "engine_level": "引擎",
+                "body_level": "车身",
+                "row_fuel": "燃料",
+                "fuel_level": "燃料等级",
+                "fuel_percent": "{{value}} %",
+                "valet_cta": "呼叫 valet · {{price}}",
+                "valet_title": "Valet",
+                "valet_only_stored": "valet 服务仅适用于存储在车库中的车辆。"
+            },
+            "dialogs": {
+                "valet_confirm": "以 {{price}} 预订 valet 送货？司机出发时您将付款。"
+            },
+            "toasts": {
+                "waypoint_ok": "经销商已在地图上标记。",
+                "waypoint_fail": "无法设置 waypoint。",
+                "valet_ok": "Valet 正在路上。",
+                "valet_fail": "无法预订 valet。"
+            },
+            "backend": {
+                "valet_disabled": "valet 服务已禁用。",
+                "invalid_plate": "牌照无效。",
+                "vehicle_not_found": "未找到车辆。",
+                "no_money": "资金不足。",
+                "payment_failed": "无法处理付款。"
+            },
+            "client": {
+                "valet_paid": "valet 费用已支付：{{amount}}",
+                "spawn_failed": "无法生成 valet 车辆。",
+                "no_advanced_garages": "qs-advancedgarages 未激活。",
+                "valet_disabled": "valet 服务已禁用。",
+                "valet_busy": "valet 已在路上。",
+                "not_in_garage": "此车辆不在车库中。",
+                "no_money": "valet 资金不足。",
+                "waypoint_set": "车辆位置已在地图上标记。"
+            }
+        },
+        "wallet": {
+            "title": "钱包",
+            "balance_label": "余额",
+            "recent_section": "最近活动",
+            "all_transactions": "所有交易",
+            "empty_recent": "还没有转账。向联系人或电话号码发送金钱。",
+            "empty_recent_hint": "点击右上角的“发送”进行付款。",
+            "transactions_title": "所有交易",
+            "empty_transactions": "此期间没有交易。",
+            "load_more": "加载更多",
+            "filter": {
+                "7d": "7 天",
+                "30d": "30 天",
+                "all": "全部",
+                "direction_all": "全部",
+                "direction_sent": "已发送",
+                "direction_received": "已收到"
+            },
+            "transactions_search_placeholder": "按名称、号码或备注搜索",
+            "detail": {
+                "title": "交易",
+                "load_error": "无法加载此交易。",
+                "direction_sent": "您已发送",
+                "direction_received": "您已收到",
+                "section_when": "日期和时间",
+                "section_note": "备注",
+                "memo_empty": "此转账没有备注。"
+            },
+            "actions": {
+                "send": "发送",
+                "cancel": "取消",
+                "confirm_send": "发送金钱",
+                "confirm": "确认"
+            },
+            "send": {
+                "title": "发送金钱",
+                "phone_label": "电话号码",
+                "phone_placeholder": "输入号码",
+                "pick_contact": "从联系人中选择",
+                "pick_contact_empty": "没有符合您搜索的联系人。",
+                "amount_label": "金额",
+                "amount_input_label": "输入金额",
+                "amount_input_placeholder": "例如 250",
+                "recent_recipients": "再次发送",
+                "invalid_phone": "请输入有效电话号码。",
+                "memo_label": "备注（可选）",
+                "memo_placeholder": "为自己添加简短备注",
+                "confirm_title": "确认付款",
+                "confirm_to": "收款人",
+                "confirm_amount": "金额",
+                "confirm_note": "备注",
+                "confirm_note_none": "无",
+                "sheet_swipe_hint": "向上滑动查看详情",
+                "sheet_details_title": "付款详情",
+                "sheet_total_label": "总计"
+            },
+            "toasts": {
+                "send_ok": "付款已发送。",
+                "send_fail": "付款失败。",
+                "load_more_fail": "无法加载更多。"
+            },
+            "tabs": {
+                "transfer": "转账",
+                "bills": "账单"
+            },
+            "bills": {
+                "title": "账单",
+                "section": "未付账单",
+                "empty": "没有未付账单。",
+                "empty_hint": "工作和服务产生的账单将显示在此处。",
+                "pay_title": "支付账单",
+                "pay_confirm": "支付 {{amount}} 用于 {{title}}？",
+                "pay_ok": "账单已支付。",
+                "pay_fail": "无法支付此账单。"
+            }
+        },
+        "jobcenter": {
+            "title": "就业中心",
+            "subtitle": "立即寻找新工作 — 通过手机提交申请或在工作地点设置 GPS 标记。",
+            "section_list": "开放职位",
+            "empty": "服务器设置中没有注册的工作。",
+            "empty_title": "没有开放职位",
+            "empty_subtitle": "服务器设置中没有注册的工作。",
+            "toasts": {
+                "waypoint_ok": "GPS 已设置在您的地图上。",
+                "waypoint_fail": "无法设置 waypoint。",
+                "apply_fail": "无法提交此工作的申请。"
+            },
+            "backend": {
+                "invalid_request": "无效的工作请求。",
+                "invalid_job": "此工作无法通过就业中心获得。",
+                "framework_unavailable": "工作切换不可用（框架未加载）。",
+                "set_job_failed": "无法更新您的工作。",
+                "push_title": "就业中心",
+                "push_body": "恭喜，您的工作已更改为 {{label}}"
+            },
+            "client": {
+                "waypoint_ok": "GPS 已设置在您的地图上"
+            }
+        },
+        "peachstore": {
+            "title": "Peach Store",
+            "subtitle": "为您手机挑选的配件 — 选择能量和声音。",
+            "hero_kicker": "配件",
+            "hero_headline": "专为您的日子设计。",
+            "hero_body": "优质必需品，轻松付款。",
+            "section_products": "推荐",
+            "buy": "购买",
+            "confirm_buy": "立即付款",
+            "sheet_total": "总计",
+            "sheet_payment": "付款方式",
+            "sheet_balance": "余额",
+            "sheet_hint": "向上滑动查看详情",
+            "sheet_details": "订单摘要",
+            "accounts": {
+                "money": "现金",
+                "bank": "银行"
+            },
+            "toasts": {
+                "purchase_ok": "购买完成。",
+                "purchase_fail": "购买失败。"
+            },
+            "errors": {
+                "INSUFFICIENT_FUNDS": "此账户余额不足。",
+                "INVALID_ACCOUNT": "付款方式无效。",
+                "INVALID_PRODUCT": "此商品不可用。",
+                "ITEM_GIVE_FAILED": "付款已退回 — 库存可能已满。",
+                "PAYMENT_FAILED": "无法处理付款。",
+                "CONFIG_ERROR": "商店在服务器上配置错误。",
+                "FRAMEWORK": "服务器框架尚未就绪。"
+            }
+        },
+        "youlink": {
+            "title": "媒体",
+            "home_subtitle": "观看来自城市的精选剪辑。点击缩略图播放。",
+            "search_subtitle": "按关键词搜索视频或粘贴完整链接播放。",
+            "search_hint_keywords": "关键词搜索在启用时使用服务器目录 API。",
+            "search_hint_link": "您始终可以粘贴直接视频链接 — 无需 API 密钥。",
+            "section_featured": "推荐",
+            "empty_search": "输入关键词或粘贴视频链接，然后按 Enter 或搜索。",
+            "empty_search_no_results": "未找到匹配视频。请尝试其他词或链接。",
+            "tabs": {
+                "home": "首页",
+                "search": "搜索"
+            },
+            "search_placeholder": "搜索或粘贴视频链接",
+            "search_action": "搜索",
+            "loading": "正在加载视频…",
+            "searching": "正在搜索…",
+            "empty_home": "未设置推荐视频。",
+            "volume": "音量",
+            "toasts": {
+                "invalid_link": "此视频链接不受支持。",
+                "search_unconfigured": "关键词搜索已禁用。粘贴完整 URL 播放，或要求服务器管理员设置视频目录 API 密钥。",
+                "search_failed": "搜索失败。请稍后重试。"
+            }
+        },
+        "mail": {
+            "title": "邮件",
+            "loading": "正在加载…",
+            "no_subject": "(无主题)",
+            "search_placeholder": "搜索邮件",
+            "folders": {
+                "inbox": "收件箱",
+                "sent": "已发送",
+                "trash": "垃圾箱"
+            },
+            "tabs": {
+                "mailbox": "邮箱",
+                "profile": "个人资料"
+            },
+            "dialogs": {
+                "sign_out_confirm": "从此手机的邮件中退出？您随时可以重新登录。",
+                "delete_selected_title": "邮件",
+                "delete_selected_confirm_move": "将 {{count}} 条消息移至垃圾箱？",
+                "delete_selected_confirm_permanent": "永久删除 {{count}} 条消息？"
+            },
+            "profile": {
+                "title": "个人资料",
+                "section_account": "账户",
+                "section_password": "安全",
+                "display_name": "显示名称",
+                "display_name_ph": "您的姓名",
+                "change_avatar": "更改照片",
+                "avatar_url": "头像 URL",
+                "avatar_url_ph": "https://…",
+                "avatar_footer": "使用指向方形图片的直接 HTTPS 链接或从图库选择。留空以使用首字母。",
+                "save_profile": "保存个人资料",
+                "saving": "正在保存…",
+                "change_password_nav": "更改密码",
+                "change_password_page_title": "更改密码",
+                "current_password": "当前密码",
+                "current_password_ph": "更改密码所需",
+                "new_password": "新密码",
+                "new_password_ph": "至少 4 个字符",
+                "new_password_footer": "使用您不在其他地方使用的密码。",
+                "confirm_password": "确认新密码",
+                "confirm_password_ph": "再次输入新密码",
+                "change_password": "更新密码",
+                "updating_password": "正在更新…",
+                "signing_out": "正在退出…",
+                "validation_display_name": "显示名称不能为空。",
+                "validation_password_length": "新密码必须至少包含 4 个字符。",
+                "validation_password_match": "新密码不匹配。"
+            },
+            "actions": {
+                "sign_out": "退出登录",
+                "load_more": "加载更多",
+                "loading": "正在加载…"
+            },
+            "auth": {
+                "title": "邮件登录",
+                "sign_in": "登录",
+                "create_account": "创建账户",
+                "display_name": "显示名称",
+                "display_name_ph": "您的姓名",
+                "mailbox": "电子邮件",
+                "mailbox_ph": "电子邮件",
+                "invalid_local": "仅使用字母、数字或 . _ + -（无空格或 @）。",
+                "password": "密码",
+                "password_ph": "密码",
+                "working": "请稍等…",
+                "submit_login": "登录",
+                "submit_register": "创建账户"
+            },
+            "empty": {
+                "folder": "此文件夹中没有消息。"
+            },
+            "compose": {
+                "title": "新消息",
+                "send": "发送",
+                "sending": "正在发送…",
+                "section_headers": "收件人",
+                "section_body": "消息",
+                "to": "收件人",
+                "to_ph": "收件人",
+                "cc": "抄送",
+                "cc_ph": "可选",
+                "subject": "主题",
+                "subject_ph": "主题",
+                "body": "内容",
+                "body_ph": "写您的消息",
+                "validation_to": "至少添加一位收件人。",
+                "wrote": "写道",
+                "forward_header": "---------- 转发消息 ----------",
+                "forward_from": "发件人：",
+                "forward_subject": "主题：",
+                "footer_to": "仅在左侧写邮箱名称。右侧域名由服务器固定，并在发送时自动添加。",
+                "footer_cc": "可选。以完整电子邮件地址添加更多收件人。如果您的邮件服务器支持抄送，请用逗号分隔多个地址。",
+                "footer_subject": "此行将出现在收件人的收件箱中以及打开的消息顶部。使用简短清晰的摘要，以便收件人立即认出。",
+                "footer_body": "在此处写完整消息。换行符保留。停止书写时您的草稿将自动保存。"
+            },
+            "detail": {
+                "title": "消息",
+                "from": "发件人：",
+                "to": "收件人：",
+                "cc": "抄送：",
+                "actions_section": "操作",
+                "reply": "回复",
+                "forward": "转发",
+                "move_trash": "移至垃圾箱"
+            },
+            "toasts": {
+                "registered": "账户已创建",
+                "signed_in": "登录成功",
+                "signed_out": "退出成功",
+                "sent": "消息已发送",
+                "send_failed": "发送失败",
+                "generic_error": "出了点问题",
+                "profile_saved": "个人资料已更新",
+                "password_updated": "密码已更新",
+                "messages_removed": "消息已更新"
+            }
+        },
+        "map": {
+            "title": "地图",
+            "loading": "正在加载地图…",
+            "load_error": "无法加载地图数据",
+            "tooltips": {
+                "follow_on": "跟随玩家（开启）",
+                "follow_off": "跟随玩家（关闭）",
+                "center": "转到我的位置",
+                "style": "样式：{{label}}"
+            },
+            "toolbar": {
+                "follow_title": "跟随",
+                "follow_desc_on": "移动时地图将保持以您为中心。再次点击以自由移动。",
+                "follow_desc_off": "点击以在行走或驾驶时将地图锁定在您的位置。",
+                "center_title": "我的位置",
+                "center_desc": "立即将地图以您为中心。缩放级别保持不变。",
+                "style_title": "地图样式",
+                "style_desc": "如果有多个样式可用，则更改地图图块。当前：{{label}}。"
+            },
+            "aria": {
+                "follow": "跟随玩家",
+                "center": "转到我的位置",
+                "style": "更改地图样式"
+            },
+            "style_default": "默认",
+            "markers": {
+                "delete": "删除标记",
+                "your_location": "您的位置"
+            },
+            "dialogs": {
+                "new_marker_title": "新标记",
+                "new_marker_text": "输入标记名称",
+                "icon_title": "标记图标",
+                "icon_text": "输入 PNG URL（可选）"
+            }
+        },
+        "darkchat": {
+            "title": "Dark Chat",
+            "loading": "正在加载…",
+            "badges": {
+                "owner": "所有者"
+            },
+            "dialogs": {
+                "sign_out_confirm": "从此手机的 Dark Chat 退出登录？",
+                "leave_channel_confirm": "离开频道？如果您有邀请码，您可以返回。",
+                "leave_channel_title": "离开频道",
+                "delete_channel_confirm": "为所有人删除此频道？此操作无法撤消。",
+                "delete_channel_title": "删除频道"
+            },
+            "auth": {
+                "title": "Dark Chat",
+                "sign_in": "登录",
+                "create_account": "创建账户",
+                "display_name": "显示名称",
+                "display_name_ph": "您的姓名",
+                "display_name_required": "显示名称为必填项。",
+                "handle": "用户名",
+                "handle_ph": "用户名",
+                "handle_footer": "3–24 个字符：仅限字母、数字、下划线。",
+                "invalid_handle": "用户名必须为 3–24 个字符（字母、数字、_）。",
+                "password": "密码",
+                "password_ph": "密码",
+                "working": "请稍等…",
+                "submit_login": "登录",
+                "submit_register": "创建账户"
+            },
+            "empty": {
+                "channels": "还没有频道。创建一个或使用邀请码加入。",
+                "no_messages": "还没有消息"
+            },
+            "actions": {
+                "sign_out": "退出登录",
+                "loading": "正在加载…",
+                "load_more": "加载更多",
+                "invite_sheet_hint": "邀请码 — 点击下方复制",
+                "invite_code_title": "邀请码",
+                "delete_channel": "删除频道",
+                "leave_channel": "离开频道",
+                "cancel": "取消"
+            },
+            "inputs": {
+                "message": "消息"
+            },
+            "thread": {
+                "location_label": "位置：{{x}}, {{y}}"
+            },
+            "create": {
+                "title": "新频道",
+                "section": "频道",
+                "name": "名称",
+                "name_ph": "频道名称",
+                "description": "描述（可选）",
+                "description_ph": "简短描述",
+                "validation_name": "请输入频道名称。",
+                "invite_code_label": "邀请码",
+                "working": "正在创建…",
+                "submit": "创建频道"
+            },
+            "join": {
+                "title": "加入频道",
+                "section": "邀请",
+                "code": "邀请码",
+                "code_ph": "输入代码",
+                "validation_code": "请输入有效邀请码。",
+                "working": "正在加入…",
+                "submit": "加入"
+            },
+            "toasts": {
+                "registered": "账户已创建",
+                "signed_in": "登录成功",
+                "signed_out": "退出成功",
+                "generic_error": "出了点问题",
+                "left_channel": "您已离开频道",
+                "channel_deleted": "频道已删除",
+                "joined_channel": "您已加入频道",
+                "invite_copied": "邀请码已复制",
+                "no_invite_code": "此频道没有邀请码。",
+                "profile_saved": "个人资料已保存"
+            },
+            "tabs": {
+                "channels": "频道",
+                "profile": "个人资料"
+            },
+            "profile": {
+                "title": "个人资料",
+                "section_account": "账户",
+                "display_name": "显示名称",
+                "display_name_ph": "您的姓名",
+                "validation_display_name": "显示名称为必填项。",
+                "avatar_url": "头像 URL",
+                "avatar_url_ph": "https://…",
+                "avatar_footer": "将在您的消息和个人资料中显示的图片 URL。",
+                "save_profile": "保存个人资料",
+                "saving": "正在保存…"
+            }
+        },
+        "chitchat": {
+            "title": "Whispr",
+            "auth_choice": {
+                "subtitle": "使用您的电话号码和验证码继续。",
+                "login": "登录",
+                "register": "注册"
+            },
+            "auth_phone": {
+                "title_login": "登录",
+                "title_register": "注册",
+                "help": "输入您的电话号码以获取 OTP 验证码。",
+                "placeholder_example": "+86 123 4567 8901",
+                "send_code": "发送验证码",
+                "sending": "正在发送…",
+                "toast_code_sent": "验证码已发送到消息应用。",
+                "errors": {
+                    "no_account": "此电话号码未找到账户。",
+                    "already_registered": "此电话号码已注册。请登录。",
+                    "send_failed": "无法发送验证码。"
+                }
+            },
+            "auth_code": {
+                "title": "验证验证码",
+                "help": "输入已发送到消息应用的 6 位验证码。",
+                "placeholder": "000000",
+                "verify": "验证",
+                "verifying": "正在验证…",
+                "errors": {
+                    "invalid": "验证码无效",
+                    "failed": "验证失败"
+                }
+            },
+            "group_edit": {
+                "section_details": "群组信息",
+                "section_photo": "群组照片",
+                "name_visible_info": "对所有成员显示为对话名称。",
+                "description_info": "在群组信息中显示的简短描述。",
+                "avatar_info": "粘贴群组头像 URL。"
+            },
+            "chats": {
+                "preview_ellipsis": "…"
+            },
+            "common": {
+                "unknown_initial": "?",
+                "ellipsis": "…"
+            },
+            "backend": {
+                "push": {
+                    "new_message": "新消息",
+                    "photo": "照片",
+                    "voice_message": "语音消息"
+                },
+                "truncate_suffix": "…",
+                "codes": {
+                    "CHITCHAT_NOT_AUTHENTICATED": "未认证",
+                    "CHITCHAT_SESSION_EXPIRED": "会话已过期",
+                    "INVALID_PHONE": "需要电话",
+                    "VERIFICATION_RATE_LIMIT": "尝试次数过多，请等待",
+                    "VERIFICATION_SEND_UNAVAILABLE": "验证码发送者不可用",
+                    "VERIFICATION_SEND_FAILED": "无法传递验证码",
+                    "INVALID_NAME": "需要名称",
+                    "VERIFICATION_REQUIRED": "需要电话验证",
+                    "PHONE_ALREADY_REGISTERED": "电话已注册",
+                    "ACCOUNT_CREATE_FAILED": "无法创建账户",
+                    "SESSION_ISSUE_FAILED": "无法创建会话",
+                    "ACCOUNT_NOT_FOUND": "未找到账户",
+                    "ACCOUNT_SCOPE_MISMATCH": "账户属于另一设备",
+                    "INVALID_ACCOUNT_UPDATE": "账户更新内容无效",
+                    "INVALID_PEER_ID": "需要对等 ID",
+                    "PEER_NOT_FOUND": "未找到对等方",
+                    "INVALID_THREAD_ID": "需要线程 ID",
+                    "EMPTY_MESSAGE": "消息为空",
+                    "MEDIA_TOO_LARGE": "附件过大",
+                    "THREAD_NOT_FOUND": "未找到线程",
+                    "RECIPIENT_NOT_REGISTERED": "此用户没有 Whispr 账户",
+                    "INVALID_WALLPAPER_PAYLOAD": "需要线程 ID 和壁纸",
+                    "INVALID_GROUP_TITLE": "需要群组标题",
+                    "INVALID_GROUP_ID": "需要群组 ID",
+                    "GROUP_NOT_FOUND": "未找到群组",
+                    "GROUP_ADMIN_REQUIRED": "您不是群组管理员",
+                    "INVALID_GROUP_UPDATE": "群组更新内容无效",
+                    "INVALID_STATUS": "状态不能为空",
+                    "RECOVERY_DENIED": "无法在此设备上恢复账户",
+                    "INVALID_ACCOUNT": "所选账户无效"
+                }
+            },
+            "client": {
+                "codes": {
+                    "CHITCHAT_CALL_ERROR": "通话期间出错",
+                    "INVALID_PEER_ID": "需要对等 ID",
+                    "PEER_RESOLVE_FAILED": "无法解析对等方",
+                    "PHONE_NOT_FOUND": "未找到目标电话号码",
+                    "CALL_START_FAILED": "无法开始通话",
+                    "INVALID_CALL_ID": "缺少通话 ID",
+                    "CALL_NOT_FOUND": "没有活动通话",
+                    "CALL_ACCEPT_FAILED": "无法接受通话",
+                    "CALL_END_FAILED": "无法结束通话",
+                    "INVALID_ACTION": "需要操作",
+                    "CALL_CONTROL_FAILED": "无法控制通话"
+                }
+            },
+            "tabs": {
+                "chats": "聊天",
+                "calls": "通话",
+                "status": "状态",
+                "settings": "设置"
+            },
+            "actions": {
+                "cancel": "取消",
+                "done": "完成",
+                "save": "保存",
+                "post": "发布",
+                "clear": "清除",
+                "new_chat": "新聊天",
+                "new_group": "新群组",
+                "new_call": "新通话",
+                "add_status": "添加状态",
+                "edit": "编辑",
+                "load_more": "加载更多",
+                "add_photo": "添加照片",
+                "choose_from_gallery": "从图库选择",
+                "add_with_url": "通过 URL 添加"
+            },
+            "inputs": {
+                "search": "搜索",
+                "phone": "电话号码",
+                "code": "验证码",
+                "display_name": "您的姓名",
+                "message": "消息",
+                "group_name": "群组名称",
+                "group_description": "群组描述（可选）",
+                "avatar_url": "头像 URL",
+                "status_text": "您在想什么？",
+                "media_url": "图片 URL（可选）",
+                "bio": "简介"
+            },
+            "onboarding": {
+                "welcome_blurb": "欢迎来到 Whispr。点击下方设置您的个人资料。",
+                "agree_continue": "我同意并继续",
+                "profile_title": "个人资料",
+                "register": "注册"
+            },
+            "errors": {
+                "generic": "出了点问题",
+                "send_failed": "无法发送消息"
+            },
+            "states": {
+                "loading": "正在加载…"
+            },
+            "empty": {
+                "no_chats": "还没有聊天。",
+                "no_calls": "还没有通话历史。"
+            },
+            "thread": {
+                "join_call": "加入通话",
+                "encryption_notice": "消息受端到端加密保护。",
+                "composer_menu": "撰写菜单",
+                "composer_gallery": "图库",
+                "composer_link": "图片链接",
+                "add_photo_title": "添加照片",
+                "image_url_prompt": "图片 URL",
+                "message_placeholder": "消息",
+                "message_placeholder_attachments": "写消息或发送",
+                "voice_cancel": "取消",
+                "voice_stop": "停止",
+                "voice_send": "发送",
+                "voice_ready": "准备发送",
+                "voice_too_short": "录音太短",
+                "voice_recording": "正在录音",
+                "voice_mic_aria": "录制语音消息",
+                "voice_mic_denied": "语音消息需要麦克风权限。",
+                "voice_upload_not_configured": "语音上传未配置。请在 server/webhooks.lua 中设置 fivemanage.token 并确保 custom-upload.js 已加载。",
+                "voice_send_failed": "无法发送语音消息。",
+                "voice_too_large": "录音太大无法发送。",
+                "load_older": "加载更早的消息",
+                "load_older_error": "无法加载更早的消息。"
+            },
+            "new_chat": {
+                "title": "新聊天"
+            },
+            "group": {
+                "add_participants": "添加参与者",
+                "new_group": "新群组",
+                "create": "创建群组",
+                "edit": "编辑群组",
+                "pick_users": "选择至少一位参与者。",
+                "need_subject": "请输入群组名称。"
+            },
+            "contact": {
+                "section_actions": "操作",
+                "title": "联系人信息",
+                "group_label": "群组",
+                "media": "媒体",
+                "wallpaper": "壁纸",
+                "add_participants": "添加参与者",
+                "clear_chat": "清除聊天",
+                "exit_group": "退出群组",
+                "clear_title": "清除聊天",
+                "clear_confirm": "删除此对话中的所有消息？",
+                "leave_title": "退出群组",
+                "leave_confirm": "退出此群组？"
+            },
+            "wallpaper": {
+                "title": "壁纸",
+                "confirm": "更改对话壁纸？"
+            },
+            "status": {
+                "new": "新状态"
+            },
+            "calls": {
+                "outgoing": "拨出",
+                "incoming": "来电",
+                "missed": "未接",
+                "clear_title": "清除历史",
+                "clear_message": "从此设备上的电话应用中删除所有最近通话？",
+                "new_call": "新通话",
+                "active": "通话",
+                "subtitle": "语音通话",
+                "hang_up": "挂断",
+                "close": "关闭"
+            },
+            "settings": {
+                "section_chats": "聊天",
+                "section_account": "账户",
+                "section_details": "详情",
+                "item_footers": {
+                    "clear_all": "清除所有线程中的消息历史。线程仍保留在列表中。",
+                    "delete_all": "从此设备删除所有聊天线程。",
+                    "logout": "从 Whispr 退出登录。您可以打开应用再次登录。",
+                    "delete_account": "从此手机删除 Whispr 账户数据。"
+                },
+                "avatar_url_hint": "显示在您的个人资料和聊天中。",
+                "profile_sub": "点击以编辑个人资料",
+                "logout": "退出登录",
+                "logout_title": "退出登录",
+                "logout_message": "从此手机的 Whispr 退出登录？",
+                "delete_account": "删除账户",
+                "delete_account_title": "删除账户",
+                "delete_account_message": "这将从此手机删除您的 Whispr 账户。",
+                "clear_all_chats": "清除所有聊天",
+                "clear_all_title": "清除全部",
+                "clear_all_message": "从所有聊天中删除消息？",
+                "delete_all_chats": "删除所有聊天",
+                "delete_all_title": "删除全部",
+                "delete_all_message": "删除所有聊天线程？",
+                "edit_profile": "个人资料",
+                "read_receipts": "发送已读回执",
+                "phone_readonly": "电话：{{phone}}"
+            },
+            "toasts": {
+                "cleared": "聊天已清除",
+                "deleted_threads": "线程已删除",
+                "wallpaper_changed": "壁纸已更新",
+                "saved": "已保存",
+                "status_posted": "状态已发布",
+                "profile_saved": "个人资料已保存",
+                "group_updated": "群组已更新",
+                "calls_history_cleared": "通话历史已清除"
+            }
+        },
+        "zappeats": {
+            "title": "Zapp Eats",
+            "loading": "正在加载…",
+            "tabs": {
+                "home": "首页",
+                "map": "地图",
+                "profile": "个人资料"
+            },
+            "auth": {
+                "title": "Zapp Eats",
+                "subtitle": "此手机的快递员账户",
+                "sign_in": "登录",
+                "create_account": "创建账户",
+                "display_name": "显示名称",
+                "display_name_ph": "您的姓名",
+                "display_name_required": "显示名称为必填项。",
+                "handle": "快递员 ID",
+                "handle_ph": "courier_id",
+                "handle_footer": "3–24 个字符：仅限字母、数字、下划线。",
+                "invalid_handle": "快递员 ID 必须为 3–24 个字符（字母、数字、_）。",
+                "password": "密码",
+                "password_ph": "密码",
+                "working": "请稍等…",
+                "submit_login": "登录",
+                "submit_register": "创建账户"
+            },
+            "dialogs": {
+                "sign_out_confirm": "从此手机的 Zappeats 退出登录？"
+            },
+            "actions": {
+                "sign_out": "退出登录"
+            },
+            "toasts": {
+                "registered": "账户已创建",
+                "signed_in": "登录成功",
+                "signed_out": "退出成功",
+                "generic_error": "出了点问题",
+                "profile_saved": "个人资料已保存",
+                "password_updated": "密码已更新。请重新登录。"
+            },
+            "profile": {
+                "title": "个人资料",
+                "section_account": "账户",
+                "section_password": "安全",
+                "display_name": "显示名称",
+                "display_name_ph": "您的姓名",
+                "avatar_url": "头像 URL",
+                "avatar_url_ph": "https://…",
+                "avatar_footer": "输入指向方形图片的直接 HTTPS 链接。留空以使用首字母。",
+                "save_profile": "保存个人资料",
+                "saving": "正在保存…",
+                "change_password_nav": "更改密码",
+                "change_password_page_title": "更改密码",
+                "current_password": "当前密码",
+                "current_password_ph": "更改密码所需",
+                "new_password": "新密码",
+                "new_password_ph": "至少 4 个字符",
+                "new_password_footer": "使用您不在其他地方使用的密码。",
+                "confirm_password": "确认新密码",
+                "confirm_password_ph": "再次输入新密码",
+                "submit_password": "更新密码",
+                "saving_password": "正在更新…",
+                "validation_display_name": "显示名称不能为空。",
+                "validation_password_length": "新密码必须至少包含 4 个字符。",
+                "validation_password_match": "新密码和确认不匹配。"
+            },
+            "home": {
+                "open_map": "打开地图并开始工作",
+                "courier": "快递员",
+                "total_points": "总积分",
+                "avg_rating": "平均评分",
+                "avg_payout": "平均收入",
+                "streak": "准时配送连胜",
+                "deliveries_24h": "配送 (24 小时)",
+                "total_deliveries": "总配送",
+                "last_delivery": "上次配送",
+                "on_time": "准时",
+                "late": "迟到",
+                "earnings_chart": "收入",
+                "recent": "最近配送"
+            },
+            "map": {
+                "loading": "正在加载地图…",
+                "load_error": "无法加载地图",
+                "start_shift": "开始班次",
+                "end_shift": "结束班次",
+                "shift_hint": "当您在班次时，新订单将自动到来。前往标记并按 E 交付。",
+                "deadline_left": "剩余 {{sec}} 秒",
+                "deadline_over": "时间已到 — 快点！",
+                "center": "居中",
+                "tt_gps_on": "跟随我的位置 (GPS)",
+                "tt_gps_off": "停止位置跟随",
+                "tt_center": "将地图居中到我的位置",
+                "tt_style": "地图样式：{{label}}。点击更改。",
+                "tt_shift_start": "开始班次 — 新订单将自动到来。在标记处交付 (E)。",
+                "tt_shift_end": "结束班次 — 您将不再收到新订单。",
+                "shift_panel_label": "班次",
+                "shift_status_active": "活跃",
+                "shift_status_inactive": "不活跃",
+                "sheet_swipe_hint": "向上滑动以查看更多信息",
+                "sheet_shift_section": "配送如何工作",
+                "active_order": "活跃订单"
+            }
+        },
+        "zapp": {
+            "title": "Zapp",
+            "loading": "正在加载…",
+            "tabs": {
+                "ride": "乘车",
+                "drive": "驾驶",
+                "activity": "活动",
+                "profile": "个人资料"
+            },
+            "auth": {
+                "subtitle": "一个账户 — 按您的日程驾驶或赚钱。",
+                "sign_in": "登录",
+                "create_account": "创建账户",
+                "display_name": "显示名称",
+                "display_name_ph": "您的姓名",
+                "display_name_required": "显示名称为必填项。",
+                "handle": "成员 ID",
+                "handle_ph": "your_id",
+                "handle_footer": "3–24 个字符：仅限字母、数字、下划线。",
+                "invalid_handle": "成员 ID 必须为 3–24 个字符（字母、数字、_）。",
+                "password": "密码",
+                "password_ph": "密码",
+                "working": "请稍等…",
+                "submit_login": "登录",
+                "submit_register": "创建账户"
+            },
+            "dialogs": {
+                "sign_out_confirm": "从此手机的 Zapp 退出登录？"
+            },
+            "actions": {
+                "sign_out": "退出登录",
+                "request_ride": "请求乘车",
+                "cancel_ride": "取消乘车",
+                "accept": "接受",
+                "reject": "拒绝",
+                "start_trip": "开始行程",
+                "complete_trip": "完成行程",
+                "go_online": "上线",
+                "go_offline": "下线",
+                "load_more": "加载更多",
+                "continue_demo": "继续（演示司机）",
+                "save_profile_driver": "保存司机个人资料",
+                "cancel_trip_penalty": "取消行程（可能收取费用）",
+                "cancel_trip_driver": "取消行程"
+            },
+            "toasts": {
+                "registered": "账户已创建",
+                "signed_in": "登录成功",
+                "signed_out": "退出成功",
+                "not_in_vehicle": "您必须坐在驾驶座上。",
+                "generic_error": "出了点问题",
+                "profile_saved": "个人资料已保存",
+                "password_updated": "密码已更新。请重新登录。",
+                "select_driver": "请先选择司机。",
+                "need_locations": "请填写接送地点。",
+                "driver_profile_saved": "司机个人资料已保存"
+            },
+            "errors": {
+                "insufficient_funds": "银行账户余额不足以支付取消费用。",
+                "party_offline": "对方必须在线才能处理取消费用。",
+                "payment_failed": "付款失败。",
+                "start_driver_not_in_vehicle": "在开始行程前请坐在您车辆的驾驶座上。",
+                "start_rider_not_in_vehicle": "行程开始前乘客必须坐在您车辆的乘客座上。",
+                "start_not_in_vehicle": "行程开始前乘客必须在您的车辆中。",
+                "start_too_far_pickup": "请靠近接客点 — 您离约定位置太远。",
+                "start_bad_pickup": "接客数据缺失或无效。如果问题持续，请让乘客重新下单。",
+                "rider_offline": "乘客不在游戏中或距离太远无法验证。",
+                "complete_too_far": "请靠近下车点以完成行程。",
+                "invalid_coords": "请在地图上设置接送地点。",
+                "start_validation_failed": "无法开始行程。请确保您是司机、乘客在车内且您靠近接客点。"
+            },
+            "ride": {
+                "header": "请求乘车",
+                "live_map_title": "行程地图",
+                "draft_route_title": "路线预览",
+                "map_loading": "正在加载地图…",
+                "map_load_error": "无法加载地图。",
+                "map_hint": "选择接送地点并点击地图。",
+                "map_mode_pickup": "接客",
+                "map_mode_dropoff": "下车",
+                "map_label": "地图 · {{x}}, {{y}}",
+                "map_label_coordinates": "地图 · {{x}}, {{y}}",
+                "map_resolving": "正在查找地址…",
+                "map_wait_street": "请等待地址加载。",
+                "tt_gps_on": "跟随我的位置 (GPS)",
+                "tt_gps_off": "停止位置跟随",
+                "tt_center": "将地图居中到我的位置",
+                "tt_style": "地图样式：{{label}}。点击更改。",
+                "map_pickup_set": "接客地点已设置",
+                "map_dropoff_set": "下车地点已设置",
+                "booking_close": "关闭",
+                "booking_map_hint": "点击地图设置接送地点（或在上方更改模式）。",
+                "booking_sheet_title": "行程摘要",
+                "stage_to_pickup": "司机正在接近接客点",
+                "stage_to_dropoff": "正在前往目的地",
+                "booking_page_title": "请求乘车",
+                "booking_peek_tap_map": "点击地图设置接送地点",
+                "booking_peek_need_dropoff": "在地图上设置下车地点",
+                "booking_peek_ready": "向上滑动以确认并开始",
+                "booking_not_set": "尚未设置",
+                "straight_line_distance": "直线距离",
+                "distance_m": "{{m}} 米",
+                "distance_km": "{{km}} 公里",
+                "fare_estimate_range": "估算费用（范围）",
+                "fare_disclaimer": "最终价格在预订时确定，可能略有不同。",
+                "booking_driver": "司机",
+                "booking_start": "开始行程",
+                "booking_details_section": "预订如何工作",
+                "booking_details_body": "在地图上选择接送地点。估算费用基于服务器路线长度；收取的金额按相同规则计算，并带有少量随机成分。",
+                "pickup": "接客",
+                "pickup_ph": "当前位置或地址",
+                "dropoff": "下车",
+                "dropoff_ph": "您要去哪里？",
+                "note": "给司机的备注",
+                "note_ph": "可选",
+                "vehicle_class": "行程类型",
+                "class_economy": "经济",
+                "class_comfort": "舒适",
+                "class_xl": "XL",
+                "nearby": "附近司机",
+                "empty_drivers": "此行程类型没有在线司机。请尝试其他类型或等待。",
+                "est_fare": "估算费用",
+                "status_pending": "正在等待司机",
+                "status_en_route": "司机正在路上",
+                "status_trip": "行程进行中",
+                "plate": "牌照",
+                "vehicle": "车辆",
+                "ride_booked": "您的行程已预订"
+            },
+            "drive": {
+                "header": "驾驶并赚钱",
+                "setup_title": "司机个人资料",
+                "setup_sub": "上线前必填。",
+                "setup_vehicle_hint": "坐在驾驶座上。保存时您的车辆型号和牌照将自动检测。",
+                "vehicle_readonly_header": "车辆",
+                "vehicle_extras": "详情",
+                "price_km": "每公里价格",
+                "vehicle_model": "车辆型号",
+                "vehicle_model_ph": "例如 Ubermacht Oracle",
+                "vehicle_plate": "牌照",
+                "vehicle_plate_ph": "ABC123",
+                "duty_on": "您在线 — 乘客可以看到您。",
+                "duty_off": "您离线 — 您对乘客列表隐藏。",
+                "incoming": "新行程请求",
+                "active": "活跃行程",
+                "with": "乘客"
+            },
+            "activity": {
+                "header": "行程和收入",
+                "trips_section": "最近行程",
+                "earnings_today": "今天",
+                "earnings_week": "本周",
+                "trips_done": "已完成行程",
+                "empty": "还没有行程。",
+                "role_customer": "乘客",
+                "role_driver": "司机",
+                "cancelled": "已取消",
+                "paid": "已支付",
+                "search_placeholder": "搜索行程、街道或姓名",
+                "load_more_fail": "无法加载更多行程。",
+                "detail_title": "行程详情",
+                "detail_fare": "费用",
+                "detail_ride_id": "行程 ID",
+                "detail_map_title": "路线地图",
+                "detail_map_unavailable": "此行程没有保存的地图坐标。",
+                "detail_status_completed": "已完成",
+                "filter": {
+                    "7d": "7 天",
+                    "30d": "30 天",
+                    "all": "所有时间",
+                    "status_all": "全部",
+                    "status_completed": "已完成",
+                    "status_cancelled": "已取消",
+                    "role_all": "所有角色",
+                    "role_customer": "作为乘客",
+                    "role_driver": "作为司机"
+                }
+            },
+            "profile": {
+                "title": "账户",
+                "section_account": "个人资料",
+                "section_password": "安全",
+                "display_name": "显示名称",
+                "display_name_ph": "您的姓名",
+                "avatar_url": "头像 URL",
+                "avatar_url_ph": "https://…",
+                "avatar_footer": "输入直接 HTTPS 链接。留空以使用首字母。",
+                "save_profile": "保存个人资料",
+                "saving": "正在保存…",
+                "change_password_nav": "更改密码",
+                "change_password_page_title": "更改密码",
+                "current_password": "当前密码",
+                "current_password_ph": "更改密码所需",
+                "new_password": "新密码",
+                "new_password_ph": "至少 4 个字符",
+                "new_password_footer": "使用您不在其他地方使用的密码。",
+                "confirm_password": "确认新密码",
+                "confirm_password_ph": "再次输入新密码",
+                "submit_password": "更新密码",
+                "saving_password": "正在更新…",
+                "validation_display_name": "显示名称不能为空。",
+                "validation_password_length": "新密码必须至少包含 4 个字符。",
+                "validation_password_match": "新密码和确认不匹配。"
+            }
+        },
+        "marketplace": {
+            "title": "市场",
+            "auth": {
+                "subtitle": "在商店购物、与企业聊天，并在工作时管理服务。",
+                "sign_in": "登录",
+                "create_account": "创建账户",
+                "forgot": "忘记密码？",
+                "username": "用户名",
+                "password": "密码",
+                "working": "请稍等…"
+            },
+            "tabs": {
+                "shops": "商店",
+                "messages": "消息",
+                "profile": "个人资料"
+            },
+            "shops": {
+                "search_placeholder": "搜索商店",
+                "browse_caption": "探索附近的企业",
+                "view_shop": "查看商店",
+                "empty": "未找到符合您搜索的商店。"
+            },
+            "messages": {
+                "search_placeholder": "搜索对话",
+                "empty": "还没有对话",
+                "search_empty": "没有符合的对话",
+                "load_more": "加载更多",
+                "remaining": "剩余 {{count}}"
+            },
+            "profile": {
+                "header_title": "个人资料",
+                "section_account": "账户",
+                "avatar_url_ph": "https://…",
+                "avatar_footer": "输入您的个人资料头像 URL。",
+                "edit_section": "编辑个人资料",
+                "name": "姓名",
+                "username": "用户名",
+                "avatar_url": "头像 URL",
+                "password": "密码",
+                "password_required": "保存所需",
+                "save": "保存个人资料",
+                "enter_service": "开始服务",
+                "exit_service": "结束服务",
+                "service_status_active": "服务状态：活跃",
+                "service_status_inactive": "服务状态：不活跃",
+                "sign_out": "退出登录",
+                "delete_account": "删除账户",
+                "actions_close": "关闭",
+                "section_actions": "操作"
+            },
+            "register": {
+                "title": "创建账户",
+                "display_name": "显示名称",
+                "username": "用户名",
+                "password": "密码",
+                "submit": "注册",
+                "name_required": "显示名称为必填项。",
+                "user_short": "用户名必须至少包含 3 个字符。",
+                "pass_short": "密码必须至少包含 4 个字符。",
+                "user_taken": "用户名已被占用。"
+            },
+            "forgot": {
+                "title": "恢复账户",
+                "empty": "没有与此角色关联的账户。",
+                "recover": "恢复",
+                "rescue_confirm": "为此账户创建新密码？",
+                "no_account": "未找到账户。",
+                "new_credentials": "新密码（在您的个人资料中更改）："
+            },
+            "detail": {
+                "title": "商店",
+                "about": "关于商店",
+                "ratings": "评价",
+                "reviews_count_one": "1 条评价",
+                "reviews_count": "{{count}} 条评价",
+                "rating_avg": "平均 {{avg}}",
+                "rating_be_first": "还没有评价 — 点击星星成为第一个。",
+                "open": "营业中",
+                "closed": "已关闭",
+                "staff": "{{count}} 名员工正在值班",
+                "your_rating": "您的评价",
+                "rating_locked": "您已经评价过此商店。",
+                "set_waypoint": "设置路线",
+                "message": "消息",
+                "call_staff": "呼叫员工",
+                "manage": "管理业务",
+                "rated": "感谢您的评价！",
+                "waypoint_set": "路线已设置",
+                "closed_or_no_staff": "商店已关闭或没有员工值班。",
+                "call_hint": "使用电话应用呼叫员工。"
+            },
+            "chat": {
+                "title": "对话",
+                "placeholder": "消息…",
+                "send": "发送",
+                "location": "标记",
+                "location_label": "已分享位置",
+                "share_location": "分享位置",
+                "wallet_not_available": "Marketplace 聊天中付款不可用。",
+                "no_staff_online": "没有员工值班 — 消息仍会发送。"
+            },
+            "service": {
+                "title": "管理",
+                "balance": "业务余额",
+                "deposit": "存款",
+                "withdraw": "取款",
+                "hire": "招聘员工",
+                "hire_prompt": "输入附近玩家的服务器 ID",
+                "server_id": "服务器 ID",
+                "amount": "金额",
+                "set_grade": "设置等级",
+                "fire": "解雇",
+                "fire_confirm": "解雇此员工？",
+                "cancel": "取消",
+                "not_boss": "您不是此 marketplace 上该角色的老板。"
+            },
+            "picker": {
+                "title": "新消息",
+                "search": "搜索用户"
+            },
+            "dialogs": {
+                "sign_out_confirm": "从 Marketplace 退出登录？",
+                "delete_account_confirm": "永久删除您的 Marketplace 账户和所有对话？"
+            },
+            "toasts": {
+                "signed_in": "登录成功",
+                "signed_out": "退出成功",
+                "registered": "账户已创建",
+                "generic_error": "出了点问题",
+                "duty_updated": "值班状态已更新",
+                "profile_saved": "个人资料已更新",
+                "password_required": "保存更改需要密码。",
+                "account_deleted": "账户已删除"
+            }
+        },
+        "onionbrowser": {
+            "title": "Onion 浏览器",
+            "subtitle": "匿名商店",
+            "loading": "正在加载目录…",
+            "empty": "没有可购买的商品。",
+            "price_each": "每个",
+            "weapon_badge": "武器",
+            "qty": "数量",
+            "add": "添加",
+            "cart": "购物车",
+            "cart_empty": "您的购物车为空。",
+            "close_sheet": "关闭",
+            "checkout": "结账",
+            "checkout_done": "订单已发送。请检查您的地图和邮件。",
+            "total": "总计",
+            "order_lines": "您的订单",
+            "swipe_for_details": "向上滑动查看更多详情",
+            "lines": "{{count}} 件商品",
+            "remove": "移除",
+            "errors": {
+                "busy": "您已有一个待处理的订单。请完成或等待它完成。",
+                "invalid_cart": "购物车无效。",
+                "unknown_item": "未知商品。",
+                "config": "目录在服务器上配置错误。",
+                "no_money": "银行账户资金不足。",
+                "payment_failed": "付款失败。",
+                "no_order": "没有待领取的活动订单。",
+                "generic": "出了点问题。"
+            },
+            "client": {
+                "mission_started": "订单已发送。请等待联系 — 检查您的邮件。",
+                "success": "您已收到订单。",
+                "timeout": "您迟到了。卖家已取消配送。",
+                "pickup_failed": "无法完成领取。",
+                "drawtext_take": "[E] 领取订单",
+                "target_take": "领取订单",
+                "timer_left": "剩余时间：{{time}} 秒"
+            },
+            "backend": {
+                "mail_from_name": "匿名",
+                "mail_order_subject": "Onion 订单",
+                "mail_order_body": "朋友 — 我已发送您订单的位置。请勿分享。正在等待。",
+                "mail_fail_subject": "Onion 订单",
+                "mail_fail_body": "您迟到了。没有其他机会。"
+            }
+        },
+        "phone": {
+            "title": "电话",
+            "search_placeholder": "搜索联系人",
+            "pages": {
+                "contacts": "联系人",
+                "recents": "最近",
+                "dialpad": "拨号键盘",
+                "favorites": "收藏",
+                "contact_detail": "联系人",
+                "contact_create": "新建联系人",
+                "contact_edit": "编辑联系人",
+                "in_call": "通话中"
+            },
+            "actions": {
+                "call": "拨打",
+                "message": "消息",
+                "send_message": "发送消息",
+                "share_contact": "分享联系人",
+                "add_to_favorites": "添加到收藏",
+                "remove_from_favorites": "从收藏移除",
+                "block_contact": "屏蔽此联系人",
+                "delete_contact": "删除联系人",
+                "delete": "删除",
+                "video": "视频",
+                "chitchat": "Whispr",
+                "favorite": "收藏",
+                "unfavorite": "取消收藏",
+                "create_contact": "创建联系人",
+                "cancel": "取消",
+                "done": "完成",
+                "edit": "添加照片",
+                "end_call": "结束通话",
+                "mute": "静音",
+                "speaker": "免提",
+                "accept": "接听",
+                "decline": "拒接",
+                "videocall": "视频通话",
+                "more": "更多",
+                "keypad": "键盘",
+                "unblock_contact": "取消屏蔽此联系人"
+            },
+            "form": {
+                "name": "姓名",
+                "number": "电话号码",
+                "note": "备注"
+            },
+            "contact_photo": {
+                "title": "联系人照片",
+                "url": "图片 URL",
+                "gallery": "图库",
+                "url_title": "图片 URL",
+                "url_placeholder": "https://…"
+            },
+            "labels": {
+                "phone": "电话",
+                "notes": "备注",
+                "mobile": "手机",
+                "my_card": "我的名片",
+                "job_call": "工作来电",
+                "job_call_with_line": "工作来电 · {{line}}"
+            },
+            "filters": {
+                "all": "全部",
+                "missed": "未接"
+            },
+            "dialogs": {
+                "delete_selected_recents": "删除选定的最近通话？",
+                "block_contact": "屏蔽此联系人？对方将无法给你打电话或发消息。",
+                "unblock_contact": "取消屏蔽此联系人？"
+            },
+            "states": {
+                "ringing": "正在响铃",
+                "active": "通话中",
+                "ended": "已结束",
+                "incoming": "来电",
+                "calling": "正在拨打",
+                "voicemail": "语音信箱"
+            },
+            "peek_incoming": {
+                "hotkeys_hint": "1 — 接听 · 2 — 拒接"
+            },
+            "anonymous_caller": {
+                "display_name": "匿名",
+                "number_label": "隐藏"
+            },
+            "defaults": {
+                "unknown_contact": "未知"
+            },
+            "empty": {
+                "contacts": "未找到联系人。",
+                "recents": "还没有最近通话。",
+                "favorites": "还没有收藏的联系人。",
+                "contact_detail": "此联系人不可用。"
+            },
+            "notifications": {
+                "target_unavailable": "此玩家目前无法接听您的通话。",
+                "target_airplane_mode": "此人已开启飞行模式，无法接听通话。",
+                "target_busy_on_call": "此人正在另一部电话上通话。",
+                "internal_error": "服务器出现错误，请重试。",
+                "call_failed": "无法发起通话。",
+                "no_signal": "此区域没有手机信号。",
+                "target_no_signal": "对方没有信号，无法接听来电。",
+                "webrtc_no_signal": "此处信号太弱，无法进行视频通话。",
+                "no_active_emergency": "目前没有可用的活跃紧急服务。",
+                "invalid_number_length": "电话号码至少需要 {{minimum}} 个字符。",
+                "invalid_name_length": "姓名至少需要 {{minimum}} 个字符。",
+                "contact_save_failed": "无法保存联系人。",
+                "contact_delete_failed": "无法删除联系人。",
+                "contact_block_failed": "无法更新屏蔽状态。"
+            },
+            "backend": {
+                "call_end": {
+                    "title": "与 {{name}} 的通话",
+                    "default": "通话已结束。",
+                    "timeout": "通话已结束（无人接听）。",
+                    "rejected": "通话被拒接。",
+                    "connection_lost": "通话已结束（连接丢失）。"
+                }
+            }
+        },
+        "store": {
+            "title": "App Store",
+            "tabs": {
+                "today": "今天",
+                "games": "游戏",
+                "apps": "应用",
+                "explore": "探索"
+            },
+            "today": {
+                "headline": "今天"
+            },
+            "games": {
+                "section_title": "游戏",
+                "hero_footnote": "今日游戏",
+                "discover_title": "探索游戏",
+                "empty": "此目录中没有游戏。"
+            },
+            "apps": {
+                "section_title": "应用",
+                "hero_footnote": "今日应用",
+                "discover_title": "基础应用",
+                "empty": "此类别中没有应用。"
+            },
+            "explore": {
+                "section_title": "探索",
+                "search_placeholder": "游戏、应用、故事等",
+                "results": "结果",
+                "browse": "浏览",
+                "no_results": "没有找到结果。"
+            },
+            "actions": {
+                "get": "获取",
+                "open": "打开",
+                "locked": "已锁定"
+            },
+            "detail": {
+                "developer": "开发者",
+                "size": "大小",
+                "age": "年龄",
+                "whats_new": "更新内容",
+                "description": "描述",
+                "not_found": "未找到应用。"
+            },
+            "errors": {
+                "insufficient_storage": "存储空间不足。请释放空间或在 Peach Store 中购买更多。",
+                "JOB_REQUIRED": "此应用需要特定的职业和等级。",
+                "INSUFFICIENT_FUNDS": "你的余额不足。",
+                "INVALID_ACCOUNT": "所选支付账户无效。",
+                "PAYMENT_FAILED": "无法处理付款，请重试。",
+                "ACCOUNT_REQUIRED": "请为此高级应用选择一个支付账户。"
+            },
+            "backend": {
+                "errors": {
+                    "job_required": "此应用需要特定的职业和等级。"
+                }
+            },
+            "accounts": {
+                "money": "现金",
+                "bank": "银行"
+            },
+            "payment": {
+                "total": "总计",
+                "account": "支付方式",
+                "balance": "可用余额",
+                "confirm": "立即付款",
+                "hint": "付款后将立即开始下载。"
+            }
+        },
+        "weather": {
+            "title": "天气",
+            "hero": {
+                "now": "现在",
+                "syncing": "正在同步天气…",
+                "high_short": "最高：",
+                "low_short": "最低：",
+                "feels_like": "体感 {{temp}}"
+            },
+            "sections": {
+                "hourly": "逐小时预报",
+                "daily": "10 天预报"
+            },
+            "cities": {
+                "page_title": "城市",
+                "headline": "天气",
+                "results": "{{count}} 个结果",
+                "search_placeholder": "搜索城市",
+                "empty": "未找到“{{query}}”的城市。",
+                "updating": "正在更新城市…"
+            }
+        },
+        "videocall": {
+            "title": "视频通话",
+            "new_call": "新视频通话",
+            "section_recents": "视频通话",
+            "empty_recents": "还没有视频通话。从这里或电话应用开始视频通话。",
+            "cancel": "取消",
+            "search_placeholder": "搜索联系人",
+            "no_contacts": "没有符合搜索的联系人。"
+        },
+        "settings": {
+            "title": "设置",
+            "search_placeholder": "搜索",
+            "default_user": "用户",
+            "profile_subtitle": "Peach ID、云端、媒体和购买",
+            "avatar_alt": "头像",
+            "actions": {
+                "cancel": "取消",
+                "save": "保存",
+                "apply": "应用",
+                "reset": "重置",
+                "home_screen": "主屏幕",
+                "lock_screen": "锁屏",
+                "both": "两者"
+            },
+            "main": {
+                "items": {
+                    "general": "通用",
+                    "display": "屏幕与亮度",
+                    "wallpaper": "壁纸",
+                    "notifications": "通知",
+                    "security": "安全",
+                    "optimization": "优化",
+                    "aura_assistant": "Aura 助手",
+                    "ringtone": "铃声",
+                    "simcard": "SIM 卡",
+                    "phone_number": "我的电话号码",
+                    "profile": "个人资料",
+                    "storage": "存储"
+                },
+                "toggles": {
+                    "airplane_mode": "飞行模式",
+                    "bluetooth": "蓝牙",
+                    "dark_mode": "深色模式",
+                    "sound": "静音模式",
+                    "game_time": "游戏时间",
+                    "streamer_mode": "主播模式",
+                    "hidden_number": "隐藏号码",
+                    "face_unlock": "面部解锁",
+                    "battery_percentage": "电池百分比"
+                },
+                "item_footers": {
+                    "general": "应用更新、设备信息和重置选项。",
+                    "display": "亮度、外观和屏幕缩放。",
+                    "wallpaper": "选择主屏幕和锁屏壁纸。",
+                    "notifications": "通知样式和应用通知。",
+                    "security": "面部解锁和设备安全。",
+                    "optimization": "模糊效果、通知过渡和性能设置。",
+                    "aura_assistant": "语音助手语言和设备激活。",
+                    "ringtone": "默认声音和来电铃声。",
+                    "simcard": "此手机上安装的 SIM 卡以及更改活动号码。",
+                    "phone_number": "将注册号码复制到剪贴板。",
+                    "storage": "查看本手机的已用空间和应用大小。"
+                },
+                "toggle_footers": {
+                    "airplane_mode": "关闭所有无线连接。",
+                    "bluetooth": "连接耳机和配件。",
+                    "dark_mode": "在整个系统中使用深色。",
+                    "sound": "关闭通知和界面声音。",
+                    "game_time": "在手机上显示游戏时间而非真实时间。",
+                    "streamer_mode": "从直播叠加层隐藏敏感信息。",
+                    "hidden_number": "拨出电话对接收者显示为隐藏。",
+                    "face_unlock": "如果支持，使用面部识别解锁。",
+                    "battery_percentage": "在状态栏显示电池百分比。"
+                }
+            },
+            "general": {
+                "title": "通用",
+                "about": "关于设备",
+                "device_name": "设备名称",
+                "device_name_value": "Quasar 智能手机",
+                "qos_version": "设备版本",
+                "qos_version_value": "16.6",
+                "model_name": "型号名称",
+                "model_name_value": "QoS 3.0",
+                "model_number": "型号编号",
+                "model_number_value": "MLKFYHER/U",
+                "serial_number": "序列号",
+                "serial_number_value": "C9XVKHER",
+                "language": "语言",
+                "backup_transfer": "备份与传输",
+                "backup_transfer_footer": "将此设备的备份保存到您的账户，并在另一部手机上恢复。"
+            },
+            "language": {
+                "title": "语言",
+                "footer": "选择手机界面使用的语言。",
+                "error": "无法更改语言。"
+            },
+            "display": {
+                "title": "屏幕与亮度",
+                "sections": {
+                    "appearance": "外观",
+                    "brightness": "亮度",
+                    "scale": "缩放",
+                    "frame_color": "边框颜色"
+                },
+                "light": "浅色",
+                "dark": "深色",
+                "current_scale": "当前缩放",
+                "scale_min": "0.5x",
+                "scale_max": "1.0x",
+                "frame_color_hint": "自定义手机边框颜色"
+            },
+            "notifications": {
+                "title": "通知",
+                "display_type": "显示类型",
+                "app_notifications": "应用通知",
+                "types": {
+                    "count": "数量",
+                    "stack": "堆叠",
+                    "list": "列表"
+                },
+                "empty_apps": "没有可用应用"
+            },
+            "aura_assistant": {
+                "title": "Aura 助手",
+                "sections": {
+                    "voice": "语音",
+                    "stt_model": "设备上语音转文本模型",
+                    "language": "语音语言",
+                    "hotkey": "全局快捷键",
+                    "lock_screen": "锁屏"
+                },
+                "stt_model": {
+                    "slower_title": "思考更久，回复更慢",
+                    "slower_sub": "更好的准确性和意图理解，尤其对非英语语言；CPU/RAM 负载更高，等待时间更长。",
+                    "faster_title": "思考更快，回复更快",
+                    "faster_sub": "回复更快。对于非英语语言，理解度和识别质量会大幅下降。"
+                },
+                "toggles": {
+                    "enable": "启用 Aura",
+                    "enable_subtitle": "安装 Aura 附加组件后按住说话的语音命令。",
+                    "global_peek": "即使手机关闭也启用 Aura",
+                    "global_peek_subtitle": "按住 Aura 键（默认 B）以打开 peek 面板并聆听，即使手机界面关闭。需要 Aura 附加组件。",
+                    "lock_screen": "锁屏上的 Aura",
+                    "lock_screen_subtitle": "允许在锁定状态下使用有限语音命令（通话、打开相机、手电筒）。如果您想在锁定的手机上完全阻止 Aura，请关闭。"
+                },
+                "languages": {
+                    "server": "服务器默认",
+                    "turkish": "土耳其语",
+                    "english": "英语",
+                    "german": "德语",
+                    "french": "法语",
+                    "spanish": "西班牙语",
+                    "portuguese": "葡萄牙语"
+                },
+                "commands": {
+                    "page_title": "Aura 命令",
+                    "list_button": "命令列表",
+                    "section_basics": "您可以说些什么",
+                    "section_openable_apps": "按名称打开（已安装应用）",
+                    "open_app_footer": "示例：“打开 {{label}}”，“启动 {{label}}”。",
+                    "items": {
+                        "peek_lock_policy": {
+                            "title": "Peek 和锁定规则",
+                            "detail": "Peek（全局快捷键）：仅通话和手电筒。手机已锁定（未解锁）：通话、打开相机、手电筒 — 其他命令需要解锁。Peek + 已锁定：相机也被锁定。如果您不想在锁定的手机上听到声音，请在设置中关闭 Aura。"
+                        },
+                        "brightness_volume": {
+                            "title": "亮度和音量",
+                            "detail": "设置绝对值或调整：“将亮度设置为 50”，“音量 30”，“更亮”，“更安静”。类似“亮度百分之五十”的中文短语也有效。仅在 Peek 模式或锁屏上（直到解锁）可用。"
+                        },
+                        "music_media": {
+                            "title": "音乐和媒体",
+                            "detail": "“播放”，“暂停”，“下一首歌”，“上一首歌”以及类似的简短媒体命令。"
+                        },
+                        "flashlight": {
+                            "title": "手电筒",
+                            "detail": "“打开/关闭手电筒”，“手电筒” — 快速意图用于打开/关闭。在 Peek 和锁屏上允许。"
+                        },
+                        "open_app": {
+                            "title": "打开应用",
+                            "detail": "说打开/启动/开始并说出应用名称。下方的列表显示此版本中 Aura 可以打开的所有应用。在锁定的手机上仅允许相机（不在 Peek 中）。其他应用需要解锁。"
+                        },
+                        "wifi_cellular_orientation": {
+                            "title": "Wi‑Fi、移动数据、方向锁定",
+                            "detail": "控制中心样式切换：Wi‑Fi、移动数据、方向锁定 — 简短命令短语。"
+                        },
+                        "audio_output": {
+                            "title": "音频输出",
+                            "detail": "如果支持，在手机扬声器和耳机之间切换，例如“使用扬声器”，“通过耳机播放”。"
+                        },
+                        "call_contact": {
+                            "title": "呼叫某人",
+                            "detail": "“呼叫 Ivan”，“呼叫妈妈” — 当助手识别姓名时使用您的联系人。在 Peek 和锁屏上允许。"
+                        },
+                        "send_message": {
+                            "title": "发送消息",
+                            "detail": "向某人发送消息：带有文本时 Aura 会发送并打开聊天；没有文本时仅打开聊天供您编写。"
+                        },
+                        "cc_toggles": {
+                            "title": "快速设置切换",
+                            "detail": "飞行模式、蓝牙、静音、深色、流媒体、隐藏号码、电池百分比、游戏时间、Face ID — 打开/关闭的简短短语。需要解锁（不在 Peek / 锁屏上）。"
+                        },
+                        "slider_followup": {
+                            "title": "滑块后续",
+                            "detail": "更改亮度或音量后，类似“稍微亮一点”的简短短语可以临时调整同一参数。"
+                        },
+                        "llm_fallback": {
+                            "title": "自然语言和备用",
+                            "detail": "当短语不匹配快速路径时，Aura 可以询问附加模型。如果模型输出无效，您将听到简短的备用提示。"
+                        }
+                    }
+                }
+            },
+            "optimization": {
+                "title": "优化",
+                "sections": {
+                    "quick_presets": "快速预设",
+                    "visual_effects": "视觉效果"
+                },
+                "presets": {
+                    "quality": "最高质量",
+                    "performance": "性能"
+                },
+                "toggles": {
+                    "enable_blur": "启用模糊",
+                    "enable_blur_subtitle": "图层上的背景模糊效果",
+                    "filter_animations": "过滤器动画",
+                    "filter_animations_subtitle": "通知中的模糊过渡",
+                    "motion_animations": "界面动画",
+                    "motion_animations_subtitle": "打开应用和切换屏幕时的流畅动效"
+                },
+                "info": "如果您遇到延迟或卡顿，请尝试关闭模糊或通知过渡。这些设置保存在本地，并在会话之间保留。"
+            },
+            "profile": {
+                "title": "个人资料",
+                "image_alt": "个人资料",
+                "default_picture": "删除照片",
+                "custom_url": "自定义 URL",
+                "gallery": "图库",
+                "edit_name": "编辑姓名",
+                "not_set": "未设置",
+                "dialogs": {
+                    "profile_picture_url": "个人资料图片 URL",
+                    "edit_name": "编辑姓名",
+                    "url_placeholder": "输入有效 URL",
+                    "name_placeholder": "输入您的全名",
+                    "set_default_picture": "您的个人资料图片已删除。",
+                    "set_custom_url": "您的个人资料图片已设置为自定义 URL。",
+                    "set_from_gallery": "您的个人资料图片已从图库更新。",
+                    "profile_picture_video_no_poster": "此视频没有封面。请选择一张照片或另一段剪辑作为个人资料图片。"
+                }
+            },
+            "simcard": {
+                "title": "SIM 卡",
+                "use": "使用",
+                "delete": "删除",
+                "active_label": "活动",
+                "empty": "此手机上还没有 SIM 卡。从您的库存中使用 SIM 项目 — 每次使用都会为此设备添加一个随机号码。",
+                "toast_activated": "活动电话号码已更新。",
+                "toast_deleted": "SIM 卡已从此手机移除。",
+                "delete_confirm_title": "删除 SIM 卡？",
+                "delete_confirm_body": "此 SIM 卡将从设备中移除。此操作无法撤消。",
+                "cannot_delete_active": "您无法删除当前正在使用的 SIM 卡。请先切换到另一个。",
+                "cannot_delete_last": "此手机必须至少有一张 SIM 卡。",
+                "error_load": "无法加载 SIM 卡列表。",
+                "error_generic": "出了点问题。"
+            },
+            "backup": {
+                "title": "备份与传输",
+                "take_backup": "为此手机创建备份",
+                "take_backup_footer": "在您的账户中创建一个关联的备份记录（覆盖此手机的任何先前备份）。",
+                "empty": "还没有备份。使用“为此手机创建备份”来保存当前设备。",
+                "transfer_button": "在此手机上恢复",
+                "delete_button": "删除备份",
+                "transfer_confirm_title": "恢复备份？",
+                "transfer_confirm_body": "这会将备份数据转移到此手机。创建备份的手机将永久禁用且无法再次打开。",
+                "delete_confirm_title": "删除备份？",
+                "delete_confirm_body": "此备份记录将从您的账户中删除。",
+                "toast_taken": "备份已保存。",
+                "toast_deleted": "备份已删除。",
+                "toast_transferred": "备份已在此手机上恢复。如果它被锁定，请再次打开。",
+                "active_label": "此设备",
+                "error_load": "无法加载备份。",
+                "error_generic": "出了点问题。",
+                "error_limit": "您已达到最大备份数量。",
+                "error_disabled": "备份已禁用。",
+                "error_no_phone": "没有活动手机。",
+                "error_not_found": "未找到备份。",
+                "error_same_device": "此手机已在使用这些数据。",
+                "error_revoked": "此备份的来源不再有效。",
+                "error_invalid": "备份无效。"
+            },
+            "ringtone": {
+                "title": "铃声",
+                "defaults": {
+                    "reflection": "反射",
+                    "opening": "开启",
+                    "silk": "丝绸",
+                    "ripples": "涟漪",
+                    "sencha": "煎茶",
+                    "summit": "顶峰",
+                    "beacon": "信标",
+                    "constellation": "星座",
+                    "radar": "雷达"
+                }
+            },
+            "security": {
+                "title": "安全",
+                "change_passcode": "更改 PIN",
+                "change_passcode_footer": "设置新的数字 PIN 并选择其长度。",
+                "reset_password_footer": "删除 PIN 并禁用面部解锁。",
+                "change_passcode_length_title": "PIN 长度",
+                "change_passcode_length_section": "PIN",
+                "change_passcode_length_description": "选择您希望用于设备 PIN 的数字位数。",
+                "passcode_length_4": "4 位数",
+                "passcode_length_6": "6 位数",
+                "passcode_length_custom": "自定义",
+                "passcode_length_custom_footer": "选择 3 到 16 位之间的任意长度。",
+                "passcode_length_next": "下一步",
+                "reset_password": "重置密码",
+                "face_unlock_state_on": "已启用",
+                "face_unlock_state_off": "已禁用",
+                "passcode_enabled": "您的设备受 PIN 保护。",
+                "passcode_missing": "尚未设置 PIN。点击“更改 PIN”进行设置。",
+                "enter_passcode": "输入新 PIN",
+                "reset_confirm": "您确定要删除您的 PIN 吗？这也将禁用面部解锁。"
+            },
+            "wallpaper": {
+                "title": "壁纸",
+                "lock_screen": "锁屏",
+                "home_screen": "主屏幕",
+                "choose_wallpaper": "选择壁纸",
+                "custom_url": "自定义 URL",
+                "image_alt": "壁纸",
+                "current": "当前",
+                "set_wallpaper": "设置壁纸",
+                "set_wallpaper_prompt": "您想在哪里使用这些壁纸？",
+                "custom_wallpaper": "自定义壁纸",
+                "url_placeholder": "https://..."
+            },
+            "lockscreen": {
+                "title": "锁屏",
+                "customize_title": "自定义锁屏",
+                "type_time": "时间字体和颜色",
+                "type_date": "选择小部件",
+                "type_widgets": "添加小部件",
+                "tap_target_hint": "编辑时点击时间、日期或小部件区域。",
+                "slots": "插槽",
+                "time_color": "时间颜色",
+                "time_font": "时间字体",
+                "date_style": "日期样式",
+                "widgets": "小部件",
+                "classic": "经典",
+                "minimal": "简约",
+                "max_widget": "锁屏上的小部件已达到最大容量。",
+                "save": "保存",
+                "cancel": "取消"
+            },
+            "toast": {
+                "pin_required": "请先设置 PIN",
+                "password_changed": "密码更改成功",
+                "password_removed": "密码已移除",
+                "name_updated": "姓名更新成功",
+                "wallpaper_changed": "壁纸已更改",
+                "ringtone_changed": "铃声已更改",
+                "phone_copied": "电话号码已复制"
+            },
+            "errors": {
+                "invalid_app": "应用通知内容无效。",
+                "invalid_identifier": "缺少玩家标识符。",
+                "unknown_toggle": "未知设置操作。",
+                "duty_failed": "无法更改值班状态。",
+                "patch_invalid_field": "设置字段无效。",
+                "patch_invalid_category": "无法以这种方式更新此设置类别。",
+                "pin_digits_only": "PIN 只能包含数字。",
+                "pin_length": "PIN 必须为 3 到 16 位数字。",
+                "pin_invalid": "PIN 值无效。",
+                "security_invalid": "无法保存安全设置。"
+            },
+            "backend": {
+                "streamer_mode_updated": "主播模式已更新。",
+                "app_notification_updated": "应用通知已更新。",
+                "duty_status_updated": "值班状态已更新。"
+            },
+            "storage": {
+                "title": "存储",
+                "used": "已用",
+                "total": "总计",
+                "free": "可用",
+                "apps_section": "应用",
+                "media_section": "媒体",
+                "media_total": "所有媒体",
+                "media_photos": "照片",
+                "media_videos": "视频",
+                "media_items_one": "{{count}} 个项目",
+                "media_items_other": "{{count}} 个项目",
+                "empty_apps": "暂无受跟踪的应用。",
+                "load_error": "无法加载存储信息。",
+                "retry": "重试",
+                "refreshing": "正在刷新…",
+                "enabled_hint": "安装应用会占用本手机的实际存储空间。存满时可在 Peach Store 购买更多空间。",
+                "disabled_hint": "此服务器已禁用存储配额。",
+                "sources": {
+                    "system": "预装",
+                    "store": "App Store",
+                    "addon": "附加组件"
+                }
+            }
+        },
+        "qchat": {
+            "title": "QChat",
+            "tabs": {
+                "chats": "Chats",
+                "calls": "Calls",
+                "status": "Status",
+                "settings": "Settings"
+            },
+            "auth_choice": {
+                "subtitle": "Sign in to your account or create a new one.",
+                "login": "Log in",
+                "register": "Register"
+            },
+            "credential": {
+                "title_login": "QChat Log in",
+                "title_register": "QChat Register",
+                "help_login": "Log in with your username and password.",
+                "help_register": "Create a new QChat account with your username, display name and profile photo.",
+                "profile_photo": "Add profile photo",
+                "display_name": "Display name",
+                "username": "Username",
+                "password": "Password",
+                "working": "Processing...",
+                "submit_login": "Log in",
+                "submit_register": "Register",
+                "register_failed": "Registration failed",
+                "login_failed": "Login failed",
+                "validation": {
+                    "display_name_required": "需要显示名称",
+                    "display_name_too_long": "显示名称最多为 120 个字符",
+                    "username_required": "需要用户名",
+                    "username_min": "用户名必须至少包含 3 个字符",
+                    "username_max": "用户名最多为 24 个字符",
+                    "username_format": "仅可使用小写字母、数字和下划线",
+                    "password_required": "密码为必填项",
+                    "password_min": "密码至少需要 6 个字符",
+                    "password_max": "密码最多为 128 个字符"
+                }
+            },
+            "actions": {
+                "cancel": "Cancel",
+                "save": "Save",
+                "send": "Send",
+                "stop": "Stop",
+                "add": "Add",
+                "new_chat": "New chat",
+                "new_group": "New group",
+                "choose_from_gallery": "Choose from gallery",
+                "add_with_url": "Add with URL"
+            },
+            "inputs": {
+                "search_chats": "Search chats...",
+                "search_users": "Search users...",
+                "search": "Search...",
+                "message": "Type a message...",
+                "message_with_attachment": "Add a caption (optional)",
+                "group_name": "Group name",
+                "group_description": "Description",
+                "status_text": "What's your status?",
+                "image_url": "Enter image URL"
+            },
+            "common": {
+                "loading": "Loading...",
+                "unknown": "Unknown",
+                "group": "Group",
+                "outgoing_call": "Outgoing call",
+                "incoming_call": "Incoming call",
+                "video": "Video",
+                "video_short": "[video]"
+            },
+            "previews": {
+                "photo": "[Photo]",
+                "video": "[Video]",
+                "location": "[Location]"
+            },
+            "chats": {
+                "title": "QChat",
+                "header_new_group": "New Group",
+                "header_new_chat": "New Chat",
+                "default_thread_title": "QChat Chat",
+                "empty_last_message": "No messages",
+                "empty_list": "No chats found."
+            },
+            "calls": {
+                "title": "Calls",
+                "history_title": "Call History",
+                "empty": "No call history.",
+                "empty_pick": "No saved calls.",
+                "video_call": "Video call",
+                "voice_call": "Voice call",
+                "outgoing": "Outgoing",
+                "incoming": "Incoming",
+                "history_cleared": "Call history cleared",
+                "start_failed": "Call could not be started"
+            },
+            "status": {
+                "title": "Statuses",
+                "my_status": "My Status",
+                "new_title": "Share Status",
+                "viewer_title": "Status",
+                "default_preview": "Status",
+                "empty": "No statuses yet.",
+                "not_found": "Status not found.",
+                "shared": "Status shared",
+                "share_failed": "Status could not be created",
+                "only_image": "Only images can be selected",
+                "share_button": "Share Status",
+                "sharing": "Sharing..."
+            },
+            "settings": {
+                "title": "Settings",
+                "profile_settings": "Profile Settings",
+                "profile_subtitle": "User information",
+                "no_username": "No username",
+                "clear_all": "Clear all chats",
+                "clear_all_sub": "Messages are kept, content is cleared",
+                "clear_all_message": "Clear all chat contents?",
+                "clear_all_done": "All chats were cleared",
+                "delete_all": "Delete all chats",
+                "delete_all_sub": "Permanent action",
+                "delete_all_message": "Delete all chats?",
+                "delete_all_done": "All chats were deleted",
+                "logout": "Sign out",
+                "logout_sub": "Return to login screen",
+                "logout_message": "Sign out of QChat account?",
+                "logout_done": "Signed out",
+                "mobile_login": "移动应用",
+                "mobile_login_sub": "使用二维码登录",
+                "mobile_login_title": "二维码登录",
+                "mobile_login_help": "打开 QChat 移动应用并扫描此二维码。",
+                "mobile_login_expires": "剩余 {{seconds}} 秒",
+                "mobile_login_refresh": "刷新二维码",
+                "mobile_login_connected": "移动应用已连接",
+                "mobile_login_bridge_error": "无法连接到 QChat 服务器"
+            },
+            "contact": {
+                "title": "Contact Info",
+                "media": "Media",
+                "add_participant": "Add participant",
+                "actions": "Actions",
+                "clear_chat": "Clear chat",
+                "leave_group": "Leave group",
+                "clear_confirm": "All messages in this chat will be deleted.",
+                "leave_confirm": "Are you sure you want to leave this group?"
+            },
+            "group": {
+                "pick_members_title": "Group Members",
+                "add_members_title": "Add Participant",
+                "need_member": "Select at least one member",
+                "members_updated": "Group members updated",
+                "members_update_failed": "Group members could not be updated",
+                "new_group": "New Group",
+                "name_required": "Group name is required",
+                "create_failed": "Group could not be created",
+                "creating": "Creating...",
+                "create": "Create Group",
+                "edit": "Edit Group",
+                "info": "Group information",
+                "photo": "Group photo",
+                "name_info": "This name is visible to all members.",
+                "description_info": "A short description about the group.",
+                "avatar_label": "Avatar URL",
+                "avatar_info": "Image URL for group photo.",
+                "saved": "Saved",
+                "save_failed": "Could not save"
+            },
+            "profile": {
+                "title": "Edit Profile",
+                "section_info": "Info",
+                "display_name": "Display name",
+                "photo": "Profile photo",
+                "saving": "Saving...",
+                "save": "Save",
+                "display_name_required": "Display name cannot be empty",
+                "saved": "Profile saved",
+                "save_failed": "Profile could not be saved"
+            },
+            "thread": {
+                "title_fallback": "Chat",
+                "loading_thread": "Loading chat...",
+                "loading_messages": "Loading messages...",
+                "send_failed": "Message could not be sent",
+                "image_send_failed": "Media could not be sent",
+                "add_photo_title": "Add photo",
+                "image_url_prompt": "Enter image URL",
+                "voice_too_short": "Voice recording is too short",
+                "voice_mic_denied": "Microphone permission is required",
+                "voice_upload_not_configured": "Voice upload is not configured",
+                "voice_too_large": "Voice file is too large",
+                "voice_send_failed": "Voice message could not be sent",
+                "menu_label": "Add",
+                "menu_gallery": "Choose from gallery",
+                "menu_url": "Add with URL",
+                "voice_recording": "Recording...",
+                "voice_ready": "Ready to send",
+                "call_start_failed": "Call could not be started"
+            },
+            "new_chat": {
+                "title": "New Chat",
+                "open_failed": "Chat could not be opened",
+                "directory_failed": "Accounts could not be loaded",
+                "empty": "No results found."
+            },
+            "media": {
+                "shared_title": "Shared Media"
+            },
+            "errors": {
+                "generic": "Something went wrong",
+                "api_generic": "QChat API error",
+                "api_missing_data": "QChat API returned success without data"
+            },
+            "backend": {
+                "codes": {
+                    "QCHAT_BRIDGE_UNAVAILABLE": "QChat bridge is unavailable",
+                    "QCHAT_NOT_AUTHENTICATED": "QChat login is required",
+                    "ACCOUNT_NOT_FOUND": "QChat account not found",
+                    "INVALID_PAYLOAD": "Invalid request payload",
+                    "THREAD_OPEN_FAILED": "Thread could not be opened",
+                    "INVALID_THREAD": "Thread id is required",
+                    "THREAD_NOT_FOUND": "Thread not found",
+                    "MESSAGE_FAILED": "Message could not be sent",
+                    "ACCOUNT_CREATE_FAILED": "QChat account could not be created",
+                    "SESSION_ISSUE_FAILED": "QChat session could not be created",
+                    "INVALID_AUTH": "Invalid username or password",
+                    "ACCOUNT_UPDATE_FAILED": "Profile could not be updated",
+                    "VOIP_START_FAILED": "Failed to start call",
+                    "USERNAME_REQUIRED": "需要用户名",
+                    "USERNAME_TOO_SHORT": "用户名必须至少包含 3 个字符",
+                    "USERNAME_TOO_LONG": "用户名最多为 24 个字符",
+                    "USERNAME_INVALID": "用户名只能包含小写字母、数字和下划线",
+                    "USERNAME_TAKEN": "该用户名已被占用",
+                    "PASSWORD_REQUIRED": "密码为必填项",
+                    "PASSWORD_TOO_SHORT": "密码至少需要 6 个字符",
+                    "PASSWORD_TOO_LONG": "密码最多为 128 个字符",
+                    "DISPLAY_NAME_REQUIRED": "需要显示名称",
+                    "DISPLAY_NAME_TOO_LONG": "显示名称最多为 120 个字符"
+                }
+            },
+            "client": {
+                "codes": {
+                    "QCHAT_CALL_ERROR": "Something went wrong with the call",
+                    "INVALID_PEER_ID": "Peer id is required",
+                    "PEER_RESOLVE_FAILED": "Could not resolve peer",
+                    "PHONE_NOT_FOUND": "Target phone not found",
+                    "CALL_START_FAILED": "Failed to start call",
+                    "INVALID_CALL_ID": "Call id is missing",
+                    "CALL_NOT_FOUND": "No active call found",
+                    "CALL_ACCEPT_FAILED": "Failed to answer call",
+                    "CALL_END_FAILED": "Failed to end call",
+                    "INVALID_ACTION": "Action is required",
+                    "CALL_CONTROL_FAILED": "Failed to control call"
+                }
+            },
+            "app_store": {
+                "label": "QChat",
+                "creator": "QChat Inc.",
+                "description": "Real-time chat for both FiveM and mobile.",
+                "category": "Social",
+                "whats_new": "Initial cross-platform release.",
+                "detail_header": "QChat",
+                "detail_head": "Use QChat in-game and on your phone",
+                "detail_footer": "Stay connected across gameplay and real life.",
+                "age_rating": "16+"
+            }
+        },
+        "common": {
+            "image_viewer": {
+                "done": "完成",
+                "image_title": "照片",
+                "video_title": "视频",
+                "saved_title": "已保存",
+                "saved_text": "已保存到照片",
+                "already_saved_text": "已存在于照片中",
+                "save_failed_title": "Could not save"
+            }
+        },
+        "image_picker": {
+            "avatar": {
+                "clear": "删除图片"
+            }
+        }
+    },
+    "custom": {
+        "apps": {
+            "radio": {
+                "title": "无线电",
+                "actions": {
+                    "connect": "连接",
+                    "disconnect": "断开",
+                    "connect_to": "连接到"
+                },
+                "sections": {
+                    "private_frequencies": "私人频率",
+                    "history": "历史"
+                },
+                "inputs": {
+                    "frequency_placeholder": "选择频率"
+                },
+                "prompts": {
+                    "connect_selector": "您确定要连接吗？",
+                    "password_title": "输入密码",
+                    "password_description": "此频率为私人，需要密码。",
+                    "password_placeholder": "密码"
+                },
+                "notifications": {
+                    "invalid_password": "密码无效",
+                    "missing_frequency": "您必须指定频率",
+                    "not_connected": "您未连接到任何频率。"
+                }
+            },
+            "diamondcasino": {
+                "title": "钻石赌场",
+                "tabs": {
+                    "home": "首页",
+                    "chips": "筹码",
+                    "membership": "俱乐部",
+                    "shop": "商店",
+                    "admin": "管理"
+                },
+                "headers": {
+                    "chips": "筹码",
+                    "membership": "俱乐部会员",
+                    "shop": "赌场商店",
+                    "admin": "赌场管理"
+                },
+                "balance": {
+                    "label": "筹码余额",
+                    "vip_badge": "VIP",
+                    "member_badge": "会员",
+                    "guest": "客人"
+                },
+                "ban": {
+                    "title": "访问受限",
+                    "reason": "原因：{{reason}}"
+                },
+                "chip_buy": {
+                    "limit_off": "没有每日购买限制",
+                    "remaining": "您今天仍可购买 {{count}} 筹码",
+                    "locked": "筹码购买已锁定 ({{time}})",
+                    "needs_membership": "购买会员资格才能购买筹码。"
+                },
+                "waypoint": {
+                    "action": "赌场导航",
+                    "done": "导航已设置",
+                    "footer": "在赌场入口处设置 GPS"
+                },
+                "doors": {
+                    "section_title": "入口",
+                    "row_title": "赌场大门",
+                    "locked_footer": "已锁定 — 客人目前无法进入。",
+                    "unlocked_footer": "已解锁 — 对访客开放。"
+                },
+                "chips": {
+                    "buy_section_title": "购买赌场筹码",
+                    "buy_section_hint": "使用银行账户支付。每枚筹码从银行扣除 1 美元。",
+                    "sell_section_title": "将筹码兑换成现金",
+                    "sell_section_hint": "将您的筹码兑换成现金。每枚筹码向您的银行账户存入 1 美元。",
+                    "buy_preset": "购买 {{count}} 筹码",
+                    "sell_preset": "兑换 {{count}} 筹码",
+                    "custom_buy": "其他金额…",
+                    "custom_sell": "兑换其他金额…",
+                    "prompt_buy_title": "购买筹码",
+                    "prompt_buy_text": "您想购买多少筹码？总额将从银行扣除。",
+                    "prompt_sell_title": "将筹码兑换成现金",
+                    "prompt_sell_text": "您想将多少筹码兑换成银行现金？",
+                    "invalid": "输入有效金额",
+                    "row_footer_buy": "已从银行扣除",
+                    "row_footer_sell": "已存入银行",
+                    "row_footer_custom_buy": "选择任意数量购买",
+                    "row_footer_custom_sell": "选择要兑换的筹码数量"
+                },
+                "membership": {
+                    "status_vip": "您拥有 VIP 访问权限。",
+                    "status_member": "您拥有标准会员资格。",
+                    "status_none": "无会员资格 — 加入俱乐部以玩游戏。",
+                    "buy_member": "购买会员资格",
+                    "buy_vip": "升级到 VIP",
+                    "price_member": "银行：{{price}}",
+                    "price_vip": "银行：{{price}}",
+                    "disabled": "会员销售已禁用。",
+                    "footer_member": "俱乐部标准访问权限",
+                    "footer_vip": "俱乐部高级访问权限",
+                    "disabled_footer": "此选项在服务器上已禁用。"
+                },
+                "shop": {
+                    "market_title": "奢侈品市场（筹码）",
+                    "bar_title": "酒吧（银行）",
+                    "pay_chips": "{{price}} 筹码",
+                    "pay_bank": "{{price}} 银行",
+                    "buy": "购买",
+                    "market_off": "市场已关闭。",
+                    "bar_off": "酒吧已关闭。",
+                    "empty_hint": "目前没有可出售的商品。",
+                    "closed_footer": "此摊位目前不可用。"
+                },
+                "live": {
+                    "title": "在地板上",
+                    "vehicle": "展台屏幕",
+                    "vehicle_name_unknown": "未知车辆"
+                },
+                "errors": {
+                    "casino_not_started": "赌场资源尚未在此服务器上启动。",
+                    "load_failed": "无法加载赌场数据。"
+                },
+                "toast": {
+                    "waypoint_set": "赌场导航已添加到您的地图。",
+                    "chips_buy_ok": "筹码购买排队中 — {{count}} 筹码（将在摊位从银行扣除）。",
+                    "chips_sell_ok": "筹码兑换排队中 — {{count}} 筹码（将在摊位存入银行）。",
+                    "membership_standard_ok": "标准会员请求已发送 — 请在俱乐部等待批准。",
+                    "membership_vip_ok": "VIP 升级请求已发送 — 请在俱乐部等待批准。",
+                    "shop_market_ok": "市场订单已发送 — {{item}}（销售后将扣除筹码）。",
+                    "shop_bar_ok": "酒吧订单已发送 — {{item}}（销售后将从银行账户扣款）。",
+                    "admin_doors_lock_ok": "锁定命令已发送 — 赌场大门应对客人锁定。",
+                    "admin_doors_unlock_ok": "解锁命令已发送 — 赌场大门应重新打开。",
+                    "admin_wall_ok": "墙壁主题更改已发送到赌场地板。",
+                    "admin_music_ok": "流 URL 更新已发送 — 声音即将更新。",
+                    "admin_podium_ok": "展台车辆更改已发送 — 屏幕即将更新。",
+                    "operation_failed": "赌场无法完成此操作。请在几秒钟后重试。"
+                },
+                "admin": {
+                    "section_doors": "门",
+                    "doors_lock": "锁定赌场大门",
+                    "doors_unlock": "解锁赌场大门",
+                    "section_wall": "动画墙",
+                    "wall_diamonds": "主题：钻石",
+                    "wall_skulls": "主题：骷髅",
+                    "wall_snow": "主题：雪花",
+                    "section_media": "地板上的媒体",
+                    "music_change": "更改流 URL",
+                    "music_title": "赌场音乐 URL",
+                    "music_hint": "输入直接流链接（支持 xsound）。",
+                    "podium_change": "更改展台车辆",
+                    "podium_title": "展台车辆模型",
+                    "podium_hint": "生成名称，例如 adder 或实体名称字符串。",
+                    "doors_lock_footer": "阻止玩家进入赌场。",
+                    "doors_unlock_footer": "恢复正常访问。",
+                    "wall_footer": "大厅中的动画墙主题。",
+                    "music_change_footer": "输入直接流链接（xsound）。",
+                    "podium_change_footer": "车辆生成名称（例如 adder）。"
+                }
+            },
+            "lottery": {
+                "title": "Monkey Lotto",
+                "tabs": {
+                    "home": "主页",
+                    "play": "游玩",
+                    "history": "历史",
+                    "info": "奖品"
+                },
+                "headers": {
+                    "home": "Monkey Lotto",
+                    "play": "刮刮卡",
+                    "history": "您的历史",
+                    "info": "奖品表"
+                },
+                "errors": {
+                    "lottery_not_started": "该服务器未运行彩票系统。",
+                    "load_failed": "无法加载彩票数据。",
+                    "no_ticket": "您没有刮刮票。",
+                    "not_enough_money": "所选账户余额不足。"
+                },
+                "home": {
+                    "tickets_label": "库存中的彩票",
+                    "ticket_price": "每张 {{price}}",
+                    "buy_one": "购买 1 张",
+                    "buy_three": "购买 3 张",
+                    "buy_five": "购买 5 张",
+                    "play_now": "立即刮奖",
+                    "stats_won": "累计赢得",
+                    "stats_spent": "累计消费",
+                    "jackpot_sub": "每次购买都会让公共奖池增长",
+                    "recent_winners": "最近赢家",
+                    "no_winners": "尚无大奖 — 成为第一个吧！",
+                    "winner_row": "{{name}} 赢得 {{amount}}"
+                },
+                "play": {
+                    "empty_title": "无活动卡片",
+                    "empty_hint": "在主页购买彩票,或在库存中有彩票时点击立即刮奖。",
+                    "scratch_hint": "刮开金色覆膜以揭晓奖品",
+                    "reveal_ready": "刮得足够了 — 领取奖品吧",
+                    "claim": "领取奖品",
+                    "try_again": "再玩一张",
+                    "win_title": "中奖了！",
+                    "lose_title": "这次没中奖",
+                    "win_amount": "+{{amount}}",
+                    "slot_no_win": "未中奖"
+                },
+                "history": {
+                    "empty": "您还未通过手机游玩。",
+                    "won": "赢得 {{amount}}",
+                    "lost": "未中奖",
+                    "when": "{{date}}"
+                },
+                "info": {
+                    "rules_title": "玩法说明",
+                    "rules_body": "每张彩票有六个隐藏格子。刮开覆膜以揭晓金额。您的总奖金是所有金额格子的总和 — 刮完后即可领取。",
+                    "table_title": "可能结果",
+                    "chance_label": "权重: {{chance}}"
+                },
+                "toast": {
+                    "buy_ok": "已购买 {{count}} 张彩票。",
+                    "buy_fail": "购买失败。",
+                    "claim_ok": "您收到了 {{amount}}！",
+                    "claim_lose": "下次好运。",
+                    "operation_failed": "出错了。请重试。"
+                }
+            },
+            "vendingmachine": {
+                "title": "VendGo",
+                "errors": {
+                    "vending_not_started": "该服务器未运行自动售货系统。",
+                    "load_failed": "无法加载售货机数据。",
+                    "not_enough_money": "现金不足以购买此商品。",
+                    "inventory_full": "您的库存已满。"
+                },
+                "browse": {
+                    "balance": "现金: {{amount}}",
+                    "search_placeholder": "搜索售货机或目录",
+                    "custom_title": "已放置的售货机",
+                    "custom_empty": "该服务器没有自定义售货机。",
+                    "distance": "距离 {{distance}} 米",
+                    "waypoint": "设置 GPS",
+                    "catalog_title": "城市目录",
+                    "catalog_sub": "{{count}} 件商品",
+                    "catalog_empty": "无可用目录。",
+                    "back": "返回"
+                },
+                "purchase": {
+                    "balance": "现金: {{amount}}",
+                    "empty": "该售货机暂无商品。",
+                    "buy": "购买",
+                    "buying": "购买中…"
+                },
+                "cart": {
+                    "add": "加入购物车",
+                    "label": "购物车",
+                    "clear": "清空",
+                    "checkout": "结算",
+                    "sheet_title": "您的订单",
+                    "sheet_handle": "订单摘要",
+                    "total": "总计",
+                    "confirm": "付款并领取",
+                    "checking_out": "处理中…",
+                    "vendor_changed": "购物车已清空 — 商品必须来自同一售货机。"
+                },
+                "toast": {
+                    "purchase_ok": "已购买 {{label}}。",
+                    "purchase_fail": "购买失败。",
+                    "cart_ok": "已将 {{count}} 件商品添加到库存。",
+                    "waypoint_set": "GPS 路线已设置。",
+                    "operation_failed": "出错了。请重试。"
+                }
+            },
+            "restaurant": {
+                "title": "餐厅",
+                "tabs": {
+                    "browse": "订购",
+                    "manage": "员工"
+                },
+                "headers": {
+                    "browse": "开放餐厅",
+                    "manage": "工作地点",
+                    "menu": "菜单",
+                    "checkout": "结账",
+                    "finance": "财务"
+                },
+                "errors": {
+                    "resource_off": "餐厅系统尚未在此服务器上激活。",
+                    "load_failed": "无法加载餐厅数据。",
+                    "menu_failed": "此场所的菜单不可用。",
+                    "boss_failed": "您在此处没有员工访问权限。",
+                    "order_failed": "无法完成订单。"
+                },
+                "toast": {
+                    "waypoint_set": "导航已添加到您的地图。",
+                    "order_ok": "订单已发送 — #{{number}}",
+                    "settings_ok": "餐厅设置已更新。",
+                    "settings_fail": "无法更新设置。"
+                },
+                "browse": {
+                    "search_placeholder": "搜索餐厅",
+                    "empty": "目前没有开放的餐厅。",
+                    "open_badge": "开放",
+                    "waypoint": "导航",
+                    "back": "返回",
+                    "add": "添加",
+                    "cart": "购物车",
+                    "checkout": "结账",
+                    "pay_cash": "现金",
+                    "pay_bank": "银行",
+                    "total": "总计",
+                    "clear_cart": "清除",
+                    "order_lines": "您的订单",
+                    "sheet_swipe_hint": "向上滑动查看商品和付款。",
+                    "cart_empty_sheet": "您的购物车为空。",
+                    "sheet_handle": "调整面板大小",
+                    "sheet_payment": "付款",
+                    "no_items": "菜单中还没有商品。",
+                    "section_basic": "厨房",
+                    "section_burger": "汉堡",
+                    "section_pizza": "披萨",
+                    "section_fries": "配菜",
+                    "section_drinks": "饮料"
+                },
+                "manage": {
+                    "select": "餐厅",
+                    "no_jobs": "您没有在任何餐厅担任员工。",
+                    "balance": "业务余额",
+                    "daily": "今天",
+                    "weekly": "7 天",
+                    "open_label": "接受订单",
+                    "open_on": "开放",
+                    "open_off": "关闭",
+                    "transactions": "最近交易",
+                    "show_transactions": "显示交易",
+                    "hide_transactions": "隐藏交易",
+                    "no_transactions": "还没有交易。",
+                    "amount": "金额",
+                    "type": "类型"
+                }
+            },
+            "motels": {
+                "title": "汽车旅馆",
+                "tabs": {
+                    "discover": "发现",
+                    "my_stay": "我的住宿",
+                    "staff": "前台"
+                },
+                "errors": {
+                    "resource_off": "汽车旅馆系统尚未激活（启动 qs-motels-creator）。",
+                    "load_failed": "无法加载汽车旅馆数据。",
+                    "load_rooms": "无法加载此汽车旅馆的房间。",
+                    "unknown": "出了点问题。",
+                    "no_permission": "您没有此操作的权限。",
+                    "not_ready": "服务器仍在加载汽车旅馆。",
+                    "no_identifier": "无法识别您的角色。",
+                    "invalid_args": "请求无效。",
+                    "duration_too_short": "住宿必须至少持续 5 分钟。",
+                    "duration_too_long": "超过最大预订时长。",
+                    "motel_not_found": "未找到汽车旅馆。",
+                    "upgrade_required": "此房间类型需要汽车旅馆升级。",
+                    "room_taken": "房间不再可用。",
+                    "has_unpaid_bills": "在下一次预订前请支付汽车旅馆未付账单。",
+                    "already_renting_here": "您已经在该汽车旅馆租了一个房间。",
+                    "max_rooms": "已达到最大租用房间数。",
+                    "no_name": "缺少名称。",
+                    "not_enough_money": "资金不足。",
+                    "rent_failed": "无法完成租用。",
+                    "quote_failed": "无法计算价格。"
+                },
+                "discover": {
+                    "title": "预订住宿",
+                    "search_placeholder": "搜索汽车旅馆",
+                    "open_map": "打开地图",
+                    "empty": "列表中没有汽车旅馆。",
+                    "footer_rooms": "{{empty}} 空房 · 总计 {{total}}"
+                },
+                "map": {
+                    "title": "汽车旅馆地图",
+                    "empty_rooms": "{{count}} 空房",
+                    "per_min": "{{price}}/分钟"
+                },
+                "actions": {
+                    "waypoint": "设置 GPS",
+                    "view_rooms": "房间"
+                },
+                "detail": {
+                    "pick_room": "选择房间",
+                    "available": "可用",
+                    "unavailable": "已占用",
+                    "no_rooms": "尚未设置房间。"
+                },
+                "rent": {
+                    "title": "租用房间",
+                    "end_time": "退房时间",
+                    "quote_label": "估计总价",
+                    "bill_mode_hint": "您将在退房时付款 — 欠款将出现在您的租用列表中。",
+                    "confirm": "确认预订",
+                    "pick_end": "选择结束日期和时间。",
+                    "success": "房间已预订。"
+                },
+                "my": {
+                    "stay": {
+                        "rentals_title": "您的租用",
+                        "no_rentals": "您没有正在进行的汽车旅馆租用。",
+                        "bills_title": "未付账单",
+                        "no_bills": "没有未付账单。",
+                        "bill_fallback": "汽车旅馆账单",
+                        "debt": "欠款：{{amount}}",
+                        "pay_rent": "支付剩余租金",
+                        "request_placeholder": "给前台的消息（毛巾、噪音、维修…）",
+                        "send_request": "发送请求",
+                        "request_empty": "请先写一条消息。",
+                        "toast_bill": "账单已支付。",
+                        "toast_rent": "租金付款已发送。",
+                        "toast_request": "请求已发送给员工。",
+                        "remain_d": "剩余 {{d}} 天 {{h}} 小时",
+                        "remain_h": "剩余 {{h}} 小时 {{m}} 分钟",
+                        "remain_m": "剩余 {{m}} 分钟"
+                    }
+                },
+                "staff": {
+                    "pick_motel": "选择工作地点",
+                    "queue_title": "客人请求",
+                    "empty": "队列中没有请求。",
+                    "load_failed": "无法加载请求。",
+                    "accept": "接受",
+                    "reject": "拒绝",
+                    "no_access": "没有前台访问权限。",
+                    "toast_done": "请求已更新。"
+                }
+            },
+            "yacht": {
+                "title": "游艇",
+                "tabs": {
+                    "home": "首页",
+                    "location": "GPS",
+                    "manage": "管理",
+                    "scenes": "场景",
+                    "bell": "铃铛",
+                    "vault": "保险库"
+                },
+                "headers": {
+                    "location": "GPS",
+                    "manage": "管理",
+                    "scenes": "加载场景",
+                    "bell": "铃铛",
+                    "vault": "保险库代码"
+                },
+                "dialogs": {
+                    "remove_key_title": "移除钥匙",
+                    "transfer_title": "转移所有权",
+                    "sell_title": "出售游艇"
+                },
+                "home": {
+                    "select_yacht": "游艇",
+                    "no_selection": "请选择一艘游艇。",
+                    "summary": "摘要",
+                    "role": "访问权限",
+                    "role_owner": "所有者",
+                    "role_keyholder": "客用钥匙",
+                    "estimated_value": "估计价值",
+                    "radio": "游艇电台",
+                    "radio_url": "流 URL",
+                    "radio_volume": "音量",
+                    "save_radio": "应用电台设置",
+                    "radio_readonly": "当前流"
+                },
+                "location": {
+                    "waypoint": "设置 GPS 点",
+                    "waypoint_footer": "为您的游艇插槽使用锚点（或当您在附近时使用当前位置）。"
+                },
+                "manage": {
+                    "keys": "钥匙持有者",
+                    "no_keyholders": "没有额外的钥匙持有者。",
+                    "owner_badge": "所有者",
+                    "target_server_id": "目标玩家的服务器 ID",
+                    "upgrades": "升级",
+                    "transfer": "转移所有权",
+                    "transfer_action": "转移给玩家",
+                    "transfer_row_footer": "使用上面的服务器 ID。在对话框中确认。",
+                    "transfer_confirm": "将此游艇的所有权转移给此玩家？此操作在手机应用中无法撤消。",
+                    "danger": "危险区域",
+                    "sell_bank": "将游艇出售给银行",
+                    "sell_row_footer": "银行购买。在对话框中确认。",
+                    "sell_confirm": "以固定购买价将此游艇出售给银行？您将失去访问权限。",
+                    "invalid_server_id": "请输入有效的数字服务器 ID。",
+                    "remove_key_confirm": "从 {{id}} 移除钥匙？"
+                },
+                "scenes": {
+                    "empty": "没有场景任务（游艇可能尚未解包）。",
+                    "slots_busy": "{{busy}} / {{total}} 个插槽正在使用"
+                },
+                "vault": {
+                    "empty": "没有保存的保险库代码。"
+                },
+                "bell": {
+                    "hint": "当有人在您在船内时按响您的游艇铃铛时，您可以在此处确认或拒绝（仅限所有者）。",
+                    "accept": "接受最后一次铃铛请求",
+                    "deny": "拒绝最后一次铃铛请求"
+                },
+                "empty": {
+                    "no_yachts": "没有游艇访问权限",
+                    "hint": "购买游艇或从所有者处获取钥匙。"
+                },
+                "errors": {
+                    "yacht_not_started": "游艇资源尚未在此服务器上启动。",
+                    "load_failed": "无法加载游艇数据。"
+                },
+                "toast": {
+                    "waypoint_set": "导航点已在您的地图上设置。",
+                    "waypoint_failed": "无法为此游艇设置导航点。",
+                    "radio_sent": "电台更新已发送到服务器。",
+                    "give_key_ok": "钥匙交付完成。",
+                    "remove_key_ok": "钥匙已移除。",
+                    "transfer_ok": "所有权转移已发送。",
+                    "upgrade_ok": "升级请求已发送。",
+                    "sell_ok": "销售请求已发送。",
+                    "bell_accept_sent": "确认已发送。",
+                    "bell_deny_sent": "拒绝已发送。",
+                    "operation_failed": "无法完成此操作。"
+                }
+            },
+            "crime": {
+                "title": "犯罪",
+                "actions": {
+                    "retry": "重试"
+                },
+                "tabs": {
+                    "home": "首页",
+                    "missions": "任务",
+                    "wars": "战争",
+                    "season": "赛季"
+                },
+                "headers": {
+                    "missions": "任务",
+                    "territories": "领土",
+                    "wars": "领土战争",
+                    "season": "赛季过渡",
+                    "orgchat": "组织聊天"
+                },
+                "home": {
+                    "org_title": "组织",
+                    "org_fallback": "组织 #{{id}}",
+                    "stats_title": "进度",
+                    "stat_level": "等级",
+                    "stat_xp": "经验值",
+                    "stat_missions": "已完成任务",
+                    "stat_wars_won": "赢得的领土战争",
+                    "wars_title": "战争排行榜",
+                    "war_pending_in": "收到的请求",
+                    "war_pending_out": "已发送的请求",
+                    "war_active_territory": "活跃的领土战争",
+                    "war_active_pvp": "活跃的 PvP 冲突"
+                },
+                "missions": {
+                    "active_title": "活跃任务",
+                    "available_title": "可接受",
+                    "empty_active": "没有活跃任务。",
+                    "empty_available": "目前没有可接受的任务。",
+                    "claim": "领取奖励",
+                    "cancel": "取消",
+                    "cancel_title": "取消任务",
+                    "cancel_confirm": "取消此任务？根据服务器规则，进度可能会丢失。"
+                },
+                "territories": {
+                    "section": "地图上的领土",
+                    "empty": "服务器未返回任何领土。",
+                    "unclaimed": "未占领",
+                    "owner_id": "组织 #{{id}}",
+                    "waypoint": "设置 waypoint"
+                },
+                "territory_map": {
+                    "loading": "正在加载地图…",
+                    "load_error": "无法加载地图。",
+                    "legend": "领土区域",
+                    "fit_all": "显示所有领土",
+                    "fit_all_aria": "将所有领土适应屏幕"
+                },
+                "wars": {
+                    "active_title": "活跃战争",
+                    "empty_active": "目前没有活跃的领土战争。",
+                    "card_territory": "{{name}}",
+                    "you_involved": "您的组织参与其中",
+                    "spectator": "其他组织",
+                    "start_section": "开始战争",
+                    "start_hint": "选择您未控制的领土。您的等级必须有权限。",
+                    "start_cta": "开始",
+                    "start_title": "开始领土战争",
+                    "start_confirm": "向 {{name}} 请求领土战争？这可能会让您的组织付出代价。",
+                    "no_permission": "您没有通过手机启动战争的权限。"
+                },
+                "season": {
+                    "title": "赛季",
+                    "empty": "没有活跃赛季过渡数据。",
+                    "premium_hint": "高级路径解锁额外的组织奖励。",
+                    "premium_cta": "购买高级",
+                    "premium_active": "您的组织中高级已激活。",
+                    "rewards_title": "奖励",
+                    "reward_meta": "等级 {{level}} · {{tier}}",
+                    "claim": "领取",
+                    "claimed": "已领取"
+                },
+                "orgchat": {
+                    "title": "组织聊天",
+                    "subtitle": "这是来自 Crime Tablet 的团队频道（与手机 DarkChat 应用不同）。",
+                    "loading": "正在加载消息…",
+                    "empty": "还没有消息。",
+                    "placeholder": "写消息…",
+                    "send": "发送",
+                    "anon": "未知",
+                    "send_failed": "无法发送消息。"
+                },
+                "errors": {
+                    "crime_not_started": "Crime 资源尚未在此服务器上启动。",
+                    "no_organization": "您不是任何组织的成员。",
+                    "load_failed": "无法加载 Crime 数据。"
+                },
+                "toast": {
+                    "waypoint_set": "导航点已在您的地图上设置。",
+                    "waypoint_failed": "无法为此领土创建导航点。",
+                    "mission_taken": "任务已接受。",
+                    "mission_cancelled": "任务已取消。",
+                    "mission_claimed": "奖励已领取。",
+                    "war_started": "战争请求已发送。",
+                    "season_premium_ok": "高级请求已发送。",
+                    "season_claim_ok": "奖励已领取。",
+                    "operation_failed": "无法完成此操作。"
+                }
+            },
+            "racing": {
+                "title": "赛车",
+                "tabs": {
+                    "dashboard": "首页",
+                    "races": "赛事",
+                    "tracks": "赛道",
+                    "leaderboard": "排行榜",
+                    "profile": "个人资料"
+                },
+                "headers": {
+                    "races": "赛事",
+                    "tracks": "赛道",
+                    "leaderboard": "排行榜",
+                    "profile": "个人资料",
+                    "race_detail": "比赛",
+                    "track_detail": "赛道",
+                    "create": "举办赛事"
+                },
+                "actions": {
+                    "retry": "重试",
+                    "refresh": "刷新"
+                },
+                "dashboard": {
+                    "in_race": "您已报名参加正在进行的比赛",
+                    "stat_races": "赛事",
+                    "stat_elo": "ELO",
+                    "stat_rank": "排名",
+                    "stat_winrate": "胜率",
+                    "active_races": "即将开始的赛事",
+                    "no_races": "当前没有开放的赛事。",
+                    "recent": "最近活动",
+                    "no_events": "暂无最近事件。"
+                },
+                "races": {
+                    "filter_all": "全部",
+                    "filter_open": "开放",
+                    "filter_comp": "竞技",
+                    "class_all": "全部",
+                    "count": "{{count}} 场赛事",
+                    "empty": "没有符合您筛选条件的赛事。",
+                    "create": "创建赛事"
+                },
+                "race": {
+                    "unknown_track": "未知赛道",
+                    "laps": "{{count}} 圈",
+                    "racers": "{{count}} 名车手",
+                    "pot": "奖金池 ${{amount}}",
+                    "competition": "竞技",
+                    "joined": "已加入",
+                    "live": "直播",
+                    "not_found": "未找到赛事。",
+                    "buy_in": "入场费",
+                    "pot_label": "奖池",
+                    "racers_title": "车手",
+                    "no_racers": "暂无车手。",
+                    "waypoint": "将 GPS 设置为起点",
+                    "join": "加入赛事",
+                    "leave": "退出赛事"
+                },
+                "tracks": {
+                    "search": "搜索赛道…",
+                    "filter_all": "全部",
+                    "filter_favorites": "收藏",
+                    "filter_verified": "已验证",
+                    "count": "{{count}} 条赛道",
+                    "empty": "未找到赛道。",
+                    "verified": "已验证",
+                    "favorite": "收藏",
+                    "unfavorite": "取消收藏",
+                    "by": "作者 {{name}}",
+                    "waypoint": "在地图上显示",
+                    "best_times": "最佳单圈时间",
+                    "no_times": "暂无记录时间。",
+                    "not_found": "未找到赛道。"
+                },
+                "leaderboard": {
+                    "title": "全球 ELO",
+                    "empty": "排行榜为空。",
+                    "your_rank": "您的排名"
+                },
+                "profile": {
+                    "stat_races": "总赛事数",
+                    "stat_elo": "ELO",
+                    "stat_avg": "平均名次",
+                    "stat_comp": "竞技场次",
+                    "edit_title": "车手资料",
+                    "name": "显示名称",
+                    "tag": "标签",
+                    "avatar": "头像 URL",
+                    "colors": "检查点 & GPS 颜色",
+                    "save": "保存资料",
+                    "saving": "保存中…",
+                    "history": "赛事历史",
+                    "history_empty": "暂无已完成的赛事。"
+                },
+                "create": {
+                    "track": "选择赛道",
+                    "buy_in": "入场费 ($)",
+                    "laps": "圈数",
+                    "starts_in": "开始倒计时 (分钟)",
+                    "dnf": "DNF 计时器 (分钟)",
+                    "class": "车辆类别",
+                    "submit": "创建赛事",
+                    "creating": "创建中…",
+                    "no_tracks_title": "暂无可用赛道",
+                    "no_tracks_desc": "尚未创建任何赛道。请先使用赛车平板 (F10) 创建赛道。"
+                },
+                "errors": {
+                    "racing_not_started": "此服务器上 Racing 资源未运行。",
+                    "load_failed": "无法加载赛车数据。"
+                },
+                "toast": {
+                    "waypoint": "已在您的地图上设置导航点。",
+                    "joined": "您已加入赛事。",
+                    "left": "您已退出赛事。",
+                    "favorite": "收藏已更新。",
+                    "race_created": "赛事已创建。",
+                    "operation_failed": "无法完成此操作。"
+                }
+            },
+            "recorder": {
+                "title": "录音机",
+                "titles": {
+                    "header": "录音机"
+                },
+                "actions": {
+                    "delete": "删除此录音？"
+                },
+                "inputs": {
+                    "name_placeholder": "录音名称",
+                    "search_placeholder": "搜索录音"
+                },
+                "defaults": {
+                    "new_record": "新录音"
+                },
+                "notifications": {
+                    "record_start_failed": "无法开始录音。",
+                    "record_stop_failed": "无法停止录音。"
+                }
+            }
+        }
+    },
+    "phone_ui": {
+        "app_notification": {
+            "now": "现在",
+            "dismiss_aria": "关闭通知"
+        },
+        "common": {
+            "no_date": "无日期"
+        },
+        "dialogs": {
+            "app_not_found_title": "应用不可用",
+            "app_not_found_message": "未找到此应用或它不再可用。从手机中移除？",
+            "app_not_found_delete": "删除",
+            "app_not_found_cancel": "取消",
+            "job_required_title": "访问受限",
+            "job_required_message": "此应用需要特定的职业和等级。"
+        },
+        "onboarding": {
+            "nav_back": "返回",
+            "swipe_up_to_start": "向上滑动以开始",
+            "swipe_up_to_open": "向上滑动以打开",
+            "continue": "继续",
+            "language_title": "语言",
+            "appearance_title": "外观",
+            "aura_title": "Aura 助手",
+            "aura_subtitle": "使用语音进行通话、媒体、快速设置等。您可以随时在设置 → Aura 中更改这些设置。",
+            "passcode_length_title": "PIN 码",
+            "passcode_length_sub": "选择您的 PIN 码长度。",
+            "passcode_len_4": "4 位数",
+            "passcode_len_6": "6 位数",
+            "passcode_create_title": "创建 PIN 码",
+            "passcode_verify_title": "确认 PIN 码",
+            "passcode_island_hint": "保护您的设备",
+            "dont_use_passcode": "不使用 PIN 码",
+            "final_title": "欢迎"
+        },
+        "lock_screen": {
+            "notifications_badge": "{{count}} 条通知",
+            "widget": {
+                "weather": "天气",
+                "weather_unknown": "未知",
+                "weather_clear": "晴朗",
+                "reminder": "提醒",
+                "reminder_none": "没有提醒",
+                "reminder_due_soon": "{{count}} 即将到期",
+                "weazel": "Weazel",
+                "weazel_empty": "没有推荐文章",
+                "edit_prompt": "点击自定义小部件"
+            },
+            "customize": {
+                "date_suggestions": "建议",
+                "minimal_footer": "天气",
+                "classic_footer": "日期"
+            },
+            "notifications": {
+                "view": "查看",
+                "clear": "清除",
+                "clear_all": "清除全部",
+                "clearing": "正在清除…",
+                "time_now": "现在",
+                "time_minutes_short": "{{count}} 分钟前",
+                "time_hours_short": "{{count}} 小时前",
+                "time_days_short": "{{count}} 天前"
+            },
+            "passcode": {
+                "title": "输入 PIN 码",
+                "cancel": "取消",
+                "wrong": "PIN 码错误",
+                "try_again_in": "{{seconds}} 秒后重试。",
+                "verify_no_pin": "此设备上未设置 PIN 码。",
+                "digit_aria": "数字 {{digit}}",
+                "digit_letters_aria": "数字 {{digit}}，{{letters}}",
+                "delete": "删除",
+                "delete_aria": "删除"
+            }
+        },
+        "home_widgets": {
+            "map_markers": "{{count}} 个标记",
+            "gallery_no_photos": "没有照片",
+            "music_play": "播放",
+            "music_pause": "暂停",
+            "defaults": {
+                "no_track": "没有曲目",
+                "not_playing": "没有正在播放",
+                "no_reminder": "没有提醒",
+                "no_notes": "没有笔记",
+                "no_featured_story": "没有推荐文章",
+                "no_marker": "没有标记",
+                "clear_weather": "晴朗",
+                "default_location": "Los Santos"
+            },
+            "labels": {
+                "battery": "电池"
+            }
+        },
+        "control_center": {
+            "screen_mirroring": "屏幕镜像",
+            "houses_placeholder": "您在 Houses 应用中添加的附加组件和场景将显示在这里。",
+            "houses_open": "打开 Houses",
+            "audio_output_title": "音频输出",
+            "audio_output_phone": "手机",
+            "audio_output_earbuds": "耳机",
+            "audio_output_earbuds_hint": "在此手机上使用一次无线耳机物品以解锁私人收听。",
+            "audio_output_earbuds_aria": "耳机（先与耳机物品配对）"
+        },
+        "signal": {
+            "no_service_title": "无服务",
+            "no_service_message": "此应用需要更强的手机信号。请移动到有信号覆盖的区域。"
+        }
+    },
+    "logs": {
+        "unknown": "未知",
+        "player_info": "**{{title}}**\n姓名：`{{name}}`\n玩家 ID：`{{source}}`\n标识符：`{{identifier}}`\nSteam：`{{steam}}`\nDiscord：`{{discord}}`\nLicense：`{{license}}`\nLicense2：`{{license2}}`\nXBL：`{{xbl}}`\nFiveM：`{{fivem}}`\nIP：||{{ip}}||",
+        "webhooks": {
+            "title_format": "{{app}} · {{event}}",
+            "player_title": "玩家信息",
+            "apps": {
+                "pictagram": "Pictagram",
+                "tweedle": "Tweedle",
+                "beatzy": "Beatzy",
+                "yellowpages": "黄页",
+                "weazel": "Weazel 新闻"
+            },
+            "fields": {
+                "user": "用户",
+                "caption": "说明",
+                "location": "位置",
+                "media_count": "媒体",
+                "media_urls": "媒体 URL",
+                "video_url": "视频 URL",
+                "post_id": "帖子 ID",
+                "comment": "评论",
+                "target_user": "目标用户",
+                "action": "操作",
+                "title": "标题",
+                "body": "正文",
+                "category": "类别",
+                "phone": "电话",
+                "price": "价格",
+                "article_id": "文章 ID",
+                "description": "描述",
+                "video_id": "视频 ID",
+                "content": "内容",
+                "author": "作者",
+                "subtitle": "副标题",
+                "breaking": "突发新闻"
+            },
+            "values": {
+                "none": "—",
+                "liked": "已点赞",
+                "unliked": "已取消点赞",
+                "followed": "已关注",
+                "unfollowed": "已取消关注",
+                "reposted": "已转发",
+                "unreposted": "已取消转发",
+                "yes": "是",
+                "no": "否"
+            },
+            "events": {
+                "pictagram": {
+                    "post_create": "新帖子",
+                    "post_update": "帖子已更新",
+                    "post_delete": "帖子已删除",
+                    "comment_create": "新评论",
+                    "like_toggle": "点赞状态已切换",
+                    "follow": "关注",
+                    "story_create": "新快拍",
+                    "story_delete": "快拍已删除",
+                    "live_create": "直播已开始",
+                    "live_stop": "直播已结束",
+                    "live_chat": "直播聊天消息",
+                    "account_delete": "账户已删除"
+                },
+                "tweedle": {
+                    "post_create": "新推文",
+                    "reply_create": "新回复",
+                    "like_toggle": "点赞状态已切换",
+                    "repost_toggle": "转发状态已切换",
+                    "follow_toggle": "关注状态已切换",
+                    "profile_update": "个人资料已更新"
+                },
+                "beatzy": {
+                    "video_create": "新视频",
+                    "comment_create": "新评论",
+                    "like_toggle": "点赞状态已切换",
+                    "follow": "关注",
+                    "profile_update": "个人资料已更新",
+                    "account_delete": "账户已删除"
+                },
+                "yellowpages": {
+                    "post_create": "新列表",
+                    "post_delete": "列表已删除"
+                },
+                "weazel": {
+                    "article_create": "新文章",
+                    "article_update": "文章已更新",
+                    "article_delete": "文章已删除"
+                }
+            }
+        }
+    }
+}

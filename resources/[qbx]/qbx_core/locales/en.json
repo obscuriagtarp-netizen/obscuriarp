@@ -1,0 +1,288 @@
+{
+    "error": {
+      "not_online": "O jogador não está online",
+      "wrong_format": "Formato incorreto",
+      "missing_args": "Nem todos os argumentos foram informados (x, y, z)",
+      "missing_args2": "Todos os campos precisam ser preenchidos!",
+      "no_access": "Você não possui acesso a este comando",
+      "company_too_poor": "A empresa não possui dinheiro suficiente",
+      "item_not_exist": "Este item não existe",
+      "too_heavy": "O inventário está cheio",
+      "location_not_exist": "Este local não existe",
+      "duplicate_license": "Uma licença Rockstar duplicada foi encontrada",
+      "no_valid_license": "Nenhuma licença Rockstar válida foi encontrada",
+      "not_whitelisted": "Você não está na lista de permissões deste servidor",
+      "server_already_open": "O servidor já está aberto",
+      "server_already_closed": "O servidor já está fechado",
+      "no_permission": "Você não possui permissão para realizar esta ação",
+      "no_waypoint": "Nenhum destino foi marcado no mapa",
+      "tp_error": "Ocorreu um erro durante o teleporte",
+      "connecting_database_timeout": "A conexão com o banco de dados expirou. Verifique se o servidor SQL está ligado",
+      "connecting_error": "Ocorreu um erro ao conectar ao servidor. Verifique o console do servidor",
+      "no_match_character_registration": "Somente letras são permitidas. Espaços no início ou no final não são permitidos e as palavras devem começar com letra maiúscula. É permitido usar espaços entre as palavras.",
+      "already_in_queue": "Você já está na fila",
+      "no_subqueue": "Você não foi aceito em nenhuma fila secundária",
+      "character_delete_failed": "Não foi possível excluir o personagem. Tente novamente.",
+      "not_optin": "Você não está em serviço administrativo. Use /optin para alterar"
+    },
+    "success": {
+      "server_opened": "O servidor foi aberto",
+      "server_closed": "O servidor foi fechado",
+      "teleported_waypoint": "Você foi teleportado até o destino marcado",
+      "character_deleted": "Personagem excluído!",
+      "character_deleted_citizenid": "O personagem com o ID de cidadão %s foi excluído com sucesso.",
+      "optin_set": "O estado de serviço administrativo de %s foi alterado com sucesso."
+    },
+    "info": {
+      "received_paycheck": "Você recebeu seu pagamento de $%s",
+      "job_info": "Emprego: %s | Cargo: %s | Em serviço: %s",
+      "gang_info": "Clã: %s | Nível: %s",
+      "on_duty": "Você entrou em serviço!",
+      "off_duty": "Você saiu de serviço!",
+      "checking_ban": "Olá, %s. Estamos verificando se você possui algum banimento.",
+      "join_server": "Boas-vindas, %s, ao servidor %s.",
+      "checking_whitelisted": "Olá, %s. Estamos verificando sua permissão de acesso.",
+      "exploit_banned": "Você foi banido por uso de trapaças. Consulte nosso Discord para mais informações: %s",
+      "exploit_dropped": "Você foi expulso por explorar falhas do servidor",
+      "multichar_title": "Seleção de personagens",
+      "multichar_new_character": "Novo personagem #%s",
+      "char_male": "Masculino",
+      "char_female": "Feminino",
+      "play": "Jogar",
+      "play_description": "Jogar como %s",
+      "delete_character": "Excluir personagem",
+      "delete_character_description": "Excluir %s",
+      "logout_command_help": "Sair do personagem atual",
+      "check_id": "Consultar seu ID no servidor",
+      "deletechar_command_help": "Excluir o personagem de um jogador",
+      "deletechar_command_arg_player_id": "ID do jogador",
+      "character_registration_title": "Criação de personagem",
+      "first_name": "Nome",
+      "last_name": "Sobrenome",
+      "nationality": "Nacionalidade",
+      "gender": "Sexo",
+      "birth_date": "Data de nascimento",
+      "select_gender": "Selecione o sexo...",
+      "confirm_delete": "Tem certeza de que deseja excluir este personagem?",
+      "in_queue": "🐌 Você está na posição %s/%s da fila. (%s) %s",
+      "fetching_user": "Carregando usuário...",
+      "creating_user": "Criando usuário..."
+    },
+    "command": {
+      "tp": {
+        "help": "Teleportar até um jogador ou coordenadas (somente administradores)",
+        "params": {
+          "x": {
+            "name": "id/x",
+            "help": "ID do jogador ou posição X"
+          },
+          "y": {
+            "name": "y",
+            "help": "Posição Y"
+          },
+          "z": {
+            "name": "z",
+            "help": "Posição Z"
+          }
+        }
+      },
+      "tpm": {
+        "help": "Teleportar até o destino marcado no mapa (somente administradores)"
+      },
+      "togglepvp": {
+        "help": "Ativar ou desativar o PVP no servidor (somente administradores)"
+      },
+      "addpermission": {
+        "help": "Conceder permissão a um jogador (somente Deus)",
+        "params": {
+          "id": {
+            "name": "id",
+            "help": "ID do jogador"
+          },
+          "permission": {
+            "name": "permissão",
+            "help": "Nível de permissão"
+          }
+        }
+      },
+      "removepermission": {
+        "help": "Remover a permissão de um jogador (somente Deus)",
+        "params": {
+          "id": {
+            "name": "id",
+            "help": "ID do jogador"
+          },
+          "permission": {
+            "name": "permissão",
+            "help": "Nível de permissão"
+          }
+        }
+      },
+      "openserver": {
+        "help": "Abrir o servidor para todos (somente administradores)"
+      },
+      "closeserver": {
+        "help": "Fechar o servidor para jogadores sem permissão (somente administradores)",
+        "params": {
+          "reason": {
+            "name": "motivo",
+            "help": "Motivo do fechamento (opcional)"
+          }
+        }
+      },
+      "car": {
+        "help": "Criar um veículo (somente administradores)",
+        "params": {
+          "model": {
+            "name": "modelo",
+            "help": "Nome do modelo do veículo"
+          },
+          "keepCurrentVehicle": {
+            "name": "manterVeiculoAtual",
+            "help": "Manter o veículo atual. Deixe vazio para excluir o veículo atual"
+          }
+        }
+      },
+      "dv": {
+        "help": "Excluir veículo (somente administradores)",
+        "params": {
+          "radius": {
+            "name": "raio",
+            "help": "Raio para excluir os veículos, em metros"
+          }
+        }
+      },
+      "givemoney": {
+        "help": "Dar dinheiro a um jogador (somente administradores)",
+        "params": {
+          "id": {
+            "name": "id",
+            "help": "ID do jogador"
+          },
+          "moneytype": {
+            "name": "tipoDinheiro",
+            "help": "Tipo de dinheiro: cash, bank ou crypto"
+          },
+          "amount": {
+            "name": "valor",
+            "help": "Quantidade de dinheiro"
+          }
+        }
+      },
+      "setmoney": {
+        "help": "Definir o dinheiro de um jogador (somente administradores)",
+        "params": {
+          "id": {
+            "name": "id",
+            "help": "ID do jogador"
+          },
+          "moneytype": {
+            "name": "tipoDinheiro",
+            "help": "Tipo de dinheiro: cash, bank ou crypto"
+          },
+          "amount": {
+            "name": "valor",
+            "help": "Quantidade de dinheiro"
+          }
+        }
+      },
+      "job": {
+        "help": "Consultar seu emprego"
+      },
+      "setjob": {
+        "help": "Definir o emprego de um jogador (somente administradores)",
+        "params": {
+          "id": {
+            "name": "id",
+            "help": "ID do jogador"
+          },
+          "job": {
+            "name": "emprego",
+            "help": "Nome do emprego"
+          },
+          "grade": {
+            "name": "nível",
+            "help": "Nível do emprego"
+          }
+        }
+      },
+      "changejob": {
+        "help": "Alterar o emprego ativo de um jogador (somente administradores)",
+        "params": {
+          "id": {
+            "name": "id",
+            "help": "ID do jogador"
+          },
+          "job": {
+            "name": "emprego",
+            "help": "Nome do emprego"
+          }
+        }
+      },
+      "addjob": {
+        "help": "Adicionar um emprego ao jogador (somente administradores)",
+        "params": {
+          "id": {
+            "name": "id",
+            "help": "ID do jogador"
+          },
+          "job": {
+            "name": "emprego",
+            "help": "Nome do emprego"
+          },
+          "grade": {
+            "name": "nível",
+            "help": "Nível do emprego"
+          }
+        }
+      },
+      "removejob": {
+        "help": "Remover um emprego do jogador (somente administradores)",
+        "params": {
+          "id": {
+            "name": "id",
+            "help": "ID do jogador"
+          },
+          "job": {
+            "name": "emprego",
+            "help": "Nome do emprego"
+          }
+        }
+      },
+      "gang": {
+        "help": "Consultar seu clã"
+      },
+      "setgang": {
+        "help": "Definir o clã de um jogador (somente administradores)",
+        "params": {
+          "id": {
+            "name": "id",
+            "help": "ID do jogador"
+          },
+          "gang": {
+            "name": "clã",
+            "help": "Nome do clã"
+          },
+          "grade": {
+            "name": "nível",
+            "help": "Nível do clã"
+          }
+        }
+      },
+      "ooc": {
+        "help": "Enviar uma mensagem no chat fora do personagem"
+      },
+      "me": {
+        "help": "Exibir uma ação local",
+        "params": {
+          "message": {
+            "name": "mensagem",
+            "help": "Mensagem que será exibida"
+          }
+        }
+      },
+      "optin": {
+        "help": "Entrar ou sair do serviço administrativo (somente administradores)"
+      }
+    }
+  }

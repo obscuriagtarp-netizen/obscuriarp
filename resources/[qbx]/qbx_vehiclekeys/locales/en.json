@@ -1,0 +1,56 @@
+{
+  "addcom": {
+    "addkeys": "addkeys",
+    "addkeys_help": "Adicionar as chaves de um veículo para alguém.",
+    "addkeys_id": "id",
+    "addkeys_id_help": "ID do jogador",
+    "addkeys_plate": "plate",
+    "addkeys_plate_help": "Placa do veículo",
+    "givekeys": "givekeys",
+    "givekeys_help": "Entregar as chaves para alguém. Sem um ID, entrega para a pessoa mais próxima ou para todos no veículo.",
+    "givekeys_id": "id",
+    "givekeys_id_help": "ID do jogador",
+    "givekeys_plate": "plate",
+    "givekeys_plate_help": "Placa do veículo",
+    "removekeys": "removekeys",
+    "removekeys_help": "Remover as chaves de um veículo de alguém.",
+    "removekeys_id": "id",
+    "removekeys_id_help": "ID do jogador",
+    "removekeys_plate": "plate",
+    "removekeys_plate_help": "Placa do veículo"
+  },
+  "info": {
+    "engine": "Ligar ou desligar o motor",
+    "search_keys_dispatch": "[H] - Procurar as chaves",
+    "search_keys": "Procurar as chaves do veículo",
+    "toggle_locks": "Trancar ou destrancar o veículo",
+    "vehicle_theft": "Roubo de veículo em andamento. Tipo: "
+  },
+  "notify": {
+    "carjack_failed": "A tentativa de roubo falhou!",
+    "failed_lockedpick": "Você não conseguiu arrombar a fechadura.",
+    "failed_keys": "Você não encontrou as chaves e ficou frustrado.",
+    "fpid": "Preencha os argumentos de ID do jogador e placa",
+    "gave_keys": "Você entregou as chaves.",
+    "added_keys": "Você entregou uma cópia das chaves do veículo %s ao jogador %s!",
+    "keys_taken": "Você conseguiu as chaves do veículo!",
+    "keys_removed": "Você perdeu as chaves do veículo!",
+    "no_keys": "Você não possui as chaves deste veículo.",
+    "not_near": "Não há ninguém por perto para receber as chaves",
+    "vehicle_not_near": "Você não está próximo o suficiente do veículo",
+    "vehicle_locked": "Veículo trancado!",
+    "vehicle_lockedpick": "Você conseguiu arrombar a fechadura do veículo!",
+    "vehicle_unlocked": "Veículo destrancado!",
+    "removed_keys": "As chaves do veículo de placa %s foram removidas do jogador %s!",
+    "removed_keys_player": "Suas chaves do veículo de placa %s foram removidas!",
+    "player_offline": "Este jogador não está online!",
+    "vehicle_is_unlocked": "O veículo já está destrancado!",
+    "not_optin": "Você não está em serviço administrativo. Use /optin para alterar.",
+    "require_on_duty": "Este veículo está disponível somente para funcionários em serviço."
+  },
+  "progress": {
+    "attempting_carjack": "Tentando roubar o veículo...",
+    "searching_keys": "Procurando as chaves do veículo...",
+    "takekeys": "Procurando as chaves no corpo..."
+  }
+}

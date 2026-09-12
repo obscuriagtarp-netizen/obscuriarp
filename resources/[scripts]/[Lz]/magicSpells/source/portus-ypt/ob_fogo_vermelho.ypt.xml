@@ -1,0 +1,2354 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ParticleEffectsList>
+ <Name>ob_fogo_vermelho</Name>
+ <EffectRuleDictionary>
+  <Item>
+   <Name>ob_fogo_vermelho</Name>
+   <Unknown50 value="0x0" />
+   <Unknown54 value="0x1000000" />
+   <Unknown70 value="0" />
+   <Unknown74 value="0.25" />
+   <PlaybackDelay value="2" />
+   <PlaybackDelayModifier value="3" />
+   <PlaybackSpeedScale value="0.8" />
+   <PlaybackSpeedScaleModifier value="1.1" />
+   <Unknown88 value="0x1010100" />
+   <Unknown8C value="0x1010100" />
+   <CullRadius value="1" />
+   <CullDistance value="1" />
+   <Unknown98 value="1" />
+   <UnknownA0 value="8" />
+   <UnknownA4 value="80" />
+   <UnknownA8 value="100" />
+   <UnknownAC value="20" />
+   <UnknownB0 value="50" />
+   <UnknownB4 value="0" />
+   <UnknownB8 value="0" />
+   <UnknownBC value="0x0" />
+   <Unknown3A0 value="0x1" />
+   <EventEmitters>
+    <Item>
+     <EmitterRule>ent_amb_fbi_fire_sm_flame</EmitterRule>
+     <ParticleRule>ent_amb_fbi_fire_flame</ParticleRule>
+     <Unknown10 value="0" />
+     <Unknown14 value="1" />
+     <MoveSpeedScale value="1" />
+     <MoveSpeedScaleModifier value="1" />
+     <ParticleScale value="1" />
+     <ParticleScaleModifier value="1" />
+     <Colour1 value="0xFFFFFFFF" />
+     <Colour2 value="0xFFFFFFFF" />
+     <UnknownData>
+      <EventEmitterFlags>
+       <Item>LOD</Item>
+      </EventEmitterFlags>
+      <Unknown10>
+       <Item>
+        <Name>ptxEmitterRule:m_spawnRateOverTimeKFP</Name>
+        <Unknown14 value="1" />
+        <Items>
+         <Item>
+          <Unknown20 value="0" />
+          <Unknown24 value="1" />
+          <Keyframes>
+           <Item>
+            <InterpolationInterval value="0" />
+            <KeyFrameMultiplier value="0" />
+            <RedChannelColour value="8" />
+            <GreenChannelColour value="10" />
+            <BlueChannelColour value="0" />
+            <AlphaChannelColour value="0" />
+           </Item>
+          </Keyframes>
+         </Item>
+        </Items>
+       </Item>
+       <Item>
+        <Name>ptxEmitterRule:m_sizeScalarKFP</Name>
+        <Unknown14 value="1" />
+        <Items>
+         <Item>
+          <Unknown20 value="0" />
+          <Unknown24 value="1" />
+          <Keyframes>
+           <Item>
+            <InterpolationInterval value="0" />
+            <KeyFrameMultiplier value="0" />
+            <RedChannelColour value="80.52736" />
+            <GreenChannelColour value="80.52736" />
+            <BlueChannelColour value="80.52736" />
+            <AlphaChannelColour value="100" />
+           </Item>
+          </Keyframes>
+         </Item>
+        </Items>
+       </Item>
+      </Unknown10>
+     </UnknownData>
+    </Item>
+    <Item>
+     <EmitterRule>ent_amb_fbi_fire_sm_cinder</EmitterRule>
+     <ParticleRule>ent_amb_fbi_fire_cinder</ParticleRule>
+     <Unknown10 value="0" />
+     <Unknown14 value="1" />
+     <MoveSpeedScale value="1" />
+     <MoveSpeedScaleModifier value="1" />
+     <ParticleScale value="1" />
+     <ParticleScaleModifier value="1" />
+     <Colour1 value="0xFFFFFFFF" />
+     <Colour2 value="0xFFFFFFFF" />
+     <UnknownData>
+      <EventEmitterFlags>
+       <Item>LOD</Item>
+      </EventEmitterFlags>
+      <Unknown10>
+       <Item>
+        <Name>ptxEmitterRule:m_spawnRateOverTimeKFP</Name>
+        <Unknown14 value="1" />
+        <Items>
+         <Item>
+          <Unknown20 value="0" />
+          <Unknown24 value="1" />
+          <Keyframes>
+           <Item>
+            <InterpolationInterval value="0" />
+            <KeyFrameMultiplier value="0" />
+            <RedChannelColour value="0" />
+            <GreenChannelColour value="0" />
+            <BlueChannelColour value="0" />
+            <AlphaChannelColour value="0" />
+           </Item>
+          </Keyframes>
+         </Item>
+        </Items>
+       </Item>
+       <Item>
+        <Name>ptxEmitterRule:m_sizeScalarKFP</Name>
+        <Unknown14 value="1" />
+        <Items>
+         <Item>
+          <Unknown20 value="0" />
+          <Unknown24 value="1" />
+          <Keyframes>
+           <Item>
+            <InterpolationInterval value="0" />
+            <KeyFrameMultiplier value="0" />
+            <RedChannelColour value="12.45661" />
+            <GreenChannelColour value="12.45661" />
+            <BlueChannelColour value="12.45661" />
+            <AlphaChannelColour value="100" />
+           </Item>
+          </Keyframes>
+         </Item>
+        </Items>
+       </Item>
+      </Unknown10>
+     </UnknownData>
+    </Item>
+   </EventEmitters>
+   <KeyframeProperties>
+    <Item>
+     <Name>ptxEffectRule:m_colourTintMinKFP</Name>
+     <Unknown6C value="46336" />
+     <Keyframes />
+    </Item>
+    <Item>
+     <Name>ptxEffectRule:m_colourTintMaxKFP</Name>
+     <Unknown6C value="46592" />
+     <Keyframes />
+    </Item>
+    <Item>
+     <Name>ptxEffectRule:m_zoomScalarKFP</Name>
+     <Unknown6C value="46848" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="338.2096" />
+       <GreenChannelColour value="438.2094" />
+       <BlueChannelColour value="0" />
+       <AlphaChannelColour value="0" />
+      </Item>
+     </Keyframes>
+    </Item>
+    <Item>
+     <Name>ptxEffectRule:m_dataSphereKFP</Name>
+     <Unknown6C value="47104" />
+     <Keyframes />
+    </Item>
+    <Item>
+     <Name>ptxEffectRule:m_dataCapsuleKFP</Name>
+     <Unknown6C value="47360" />
+     <Keyframes />
+    </Item>
+   </KeyframeProperties>
+   <UnknownData>
+    <EventEmitterFlags>
+     <Item>LOD</Item>
+    </EventEmitterFlags>
+    <Unknown10 />
+   </UnknownData>
+  </Item>
+ </EffectRuleDictionary>
+ <EmitterRuleDictionary>
+  <Item>
+   <Name>ent_amb_fbi_fire_sm_cinder</Name>
+   <Unknown10 value="2" />
+   <Unknown628 value="0" />
+   <Domain1>
+    <Type value="Cylinder" />
+    <Unknown10 value="0x0" />
+    <Unknown258 value="2.1" />
+    <KeyframeProperty0>
+     <Name>ptxCreationDomain:m_positionKFP</Name>
+     <Unknown6C value="25600" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="0" />
+       <GreenChannelColour value="0" />
+       <BlueChannelColour value="0.03" />
+       <AlphaChannelColour value="0" />
+      </Item>
+     </Keyframes>
+    </KeyframeProperty0>
+    <KeyframeProperty1>
+     <Name>ptxCreationDomain:m_rotationKFP</Name>
+     <Unknown6C value="25856" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="90" />
+       <GreenChannelColour value="0" />
+       <BlueChannelColour value="0" />
+       <AlphaChannelColour value="0" />
+      </Item>
+     </Keyframes>
+    </KeyframeProperty1>
+    <KeyframeProperty2>
+     <Name>ptxCreationDomain:m_sizeOuterKFP</Name>
+     <Unknown6C value="26112" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="0.08" />
+       <GreenChannelColour value="0" />
+       <BlueChannelColour value="0.1" />
+       <AlphaChannelColour value="1" />
+      </Item>
+     </Keyframes>
+    </KeyframeProperty2>
+    <KeyframeProperty3>
+     <Name>ptxCreationDomain:m_sizeInnerKFP</Name>
+     <Unknown6C value="26368" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="0" />
+       <GreenChannelColour value="0" />
+       <BlueChannelColour value="0" />
+       <AlphaChannelColour value="0" />
+      </Item>
+     </Keyframes>
+    </KeyframeProperty3>
+   </Domain1>
+   <Domain2>
+    <Type value="Cylinder" />
+    <Unknown10 value="0x100" />
+    <Unknown258 value="2.1" />
+    <KeyframeProperty0>
+     <Name>ptxTargetDomain:m_positionKFP</Name>
+     <Unknown6C value="26624" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="0" />
+       <GreenChannelColour value="0" />
+       <BlueChannelColour value="0.1" />
+       <AlphaChannelColour value="0" />
+      </Item>
+      <Item>
+       <InterpolationInterval value="0.5" />
+       <KeyFrameMultiplier value="2" />
+       <RedChannelColour value="0" />
+       <GreenChannelColour value="0" />
+       <BlueChannelColour value="0.2" />
+       <AlphaChannelColour value="0" />
+      </Item>
+      <Item>
+       <InterpolationInterval value="1" />
+       <KeyFrameMultiplier value="2" />
+       <RedChannelColour value="0" />
+       <GreenChannelColour value="0" />
+       <BlueChannelColour value="0.1" />
+       <AlphaChannelColour value="0" />
+      </Item>
+     </Keyframes>
+    </KeyframeProperty0>
+    <KeyframeProperty1>
+     <Name>ptxTargetDomain:m_rotationKFP</Name>
+     <Unknown6C value="26880" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="90" />
+       <GreenChannelColour value="0" />
+       <BlueChannelColour value="0" />
+       <AlphaChannelColour value="0" />
+      </Item>
+     </Keyframes>
+    </KeyframeProperty1>
+    <KeyframeProperty2>
+     <Name>ptxTargetDomain:m_sizeOuterKFP</Name>
+     <Unknown6C value="27136" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="0.470657" />
+       <GreenChannelColour value="0.051163" />
+       <BlueChannelColour value="0.470657" />
+       <AlphaChannelColour value="1" />
+      </Item>
+     </Keyframes>
+    </KeyframeProperty2>
+    <KeyframeProperty3>
+     <Name>ptxTargetDomain:m_sizeInnerKFP</Name>
+     <Unknown6C value="27392" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="0" />
+       <GreenChannelColour value="0" />
+       <BlueChannelColour value="0" />
+       <AlphaChannelColour value="0" />
+      </Item>
+     </Keyframes>
+    </KeyframeProperty3>
+   </Domain2>
+   <KeyframeProperties>
+    <Item>
+     <Name>ptxEmitterRule:m_spawnRateOverTimeKFP</Name>
+     <Unknown6C value="23040" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="32.78688" />
+       <GreenChannelColour value="32.78688" />
+       <BlueChannelColour value="20" />
+       <AlphaChannelColour value="0" />
+      </Item>
+     </Keyframes>
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_spawnRateOverDistKFP</Name>
+     <Unknown6C value="23296" />
+     <Keyframes />
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_particleLifeKFP</Name>
+     <Unknown6C value="23552" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="1.8" />
+       <GreenChannelColour value="3" />
+       <BlueChannelColour value="0.01" />
+       <AlphaChannelColour value="0.01" />
+      </Item>
+     </Keyframes>
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_playbackRateScalarKFP</Name>
+     <Unknown6C value="23808" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="1.4" />
+       <GreenChannelColour value="0.01" />
+       <BlueChannelColour value="0.01" />
+       <AlphaChannelColour value="0.01" />
+      </Item>
+     </Keyframes>
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_speedScalarKFP</Name>
+     <Unknown6C value="24064" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="0.8" />
+       <GreenChannelColour value="0.8" />
+       <BlueChannelColour value="0" />
+       <AlphaChannelColour value="0" />
+      </Item>
+     </Keyframes>
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_sizeScalarKFP</Name>
+     <Unknown6C value="24320" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="6.547883" />
+       <GreenChannelColour value="6.547883" />
+       <BlueChannelColour value="6.547883" />
+       <AlphaChannelColour value="100" />
+      </Item>
+     </Keyframes>
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_accnScalarKFP</Name>
+     <Unknown6C value="24576" />
+     <Keyframes />
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_dampeningScalarKFP</Name>
+     <Unknown6C value="24832" />
+     <Keyframes />
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_matrixWeightScalarKFP</Name>
+     <Unknown6C value="25088" />
+     <Keyframes />
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_inheritVelocityKFP</Name>
+     <Unknown6C value="25344" />
+     <Keyframes />
+    </Item>
+   </KeyframeProperties>
+  </Item>
+  <Item>
+   <Name>ent_amb_fbi_fire_sm_flame</Name>
+   <Unknown10 value="2" />
+   <Unknown628 value="0" />
+   <Domain1>
+    <Type value="Cylinder" />
+    <Unknown10 value="0x1" />
+    <Unknown258 value="2.1" />
+    <KeyframeProperty0>
+     <Name>ptxCreationDomain:m_positionKFP</Name>
+     <Unknown6C value="30208" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="0" />
+       <GreenChannelColour value="0" />
+       <BlueChannelColour value="0.058729" />
+       <AlphaChannelColour value="0" />
+      </Item>
+     </Keyframes>
+    </KeyframeProperty0>
+    <KeyframeProperty1>
+     <Name>ptxCreationDomain:m_rotationKFP</Name>
+     <Unknown6C value="30464" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="77.7561" />
+       <GreenChannelColour value="-0.05433" />
+       <BlueChannelColour value="88.65108" />
+       <AlphaChannelColour value="0" />
+      </Item>
+      <Item>
+       <InterpolationInterval value="0.429952" />
+       <KeyFrameMultiplier value="2.325841" />
+       <RedChannelColour value="77.7561" />
+       <GreenChannelColour value="4.085279" />
+       <BlueChannelColour value="24.79346" />
+       <AlphaChannelColour value="0" />
+      </Item>
+      <Item>
+       <InterpolationInterval value="0.454106" />
+       <KeyFrameMultiplier value="41.401" />
+       <RedChannelColour value="77.7561" />
+       <GreenChannelColour value="3.932162" />
+       <BlueChannelColour value="21.20596" />
+       <AlphaChannelColour value="0" />
+      </Item>
+      <Item>
+       <InterpolationInterval value="0.995169" />
+       <KeyFrameMultiplier value="1.848214" />
+       <RedChannelColour value="77.7561" />
+       <GreenChannelColour value="0.502329" />
+       <BlueChannelColour value="92.89888" />
+       <AlphaChannelColour value="0" />
+      </Item>
+     </Keyframes>
+    </KeyframeProperty1>
+    <KeyframeProperty2>
+     <Name>ptxCreationDomain:m_sizeOuterKFP</Name>
+     <Unknown6C value="30720" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="0.06338" />
+       <GreenChannelColour value="0.019953" />
+       <BlueChannelColour value="0.062207" />
+       <AlphaChannelColour value="0" />
+      </Item>
+     </Keyframes>
+    </KeyframeProperty2>
+    <KeyframeProperty3>
+     <Name>ptxCreationDomain:m_sizeInnerKFP</Name>
+     <Unknown6C value="30976" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="0" />
+       <GreenChannelColour value="0" />
+       <BlueChannelColour value="0" />
+       <AlphaChannelColour value="0" />
+      </Item>
+     </Keyframes>
+    </KeyframeProperty3>
+   </Domain1>
+   <Domain2>
+    <Type value="Cylinder" />
+    <Unknown10 value="0x100" />
+    <Unknown258 value="2.1" />
+    <KeyframeProperty0>
+     <Name>ptxTargetDomain:m_positionKFP</Name>
+     <Unknown6C value="31232" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="0" />
+       <GreenChannelColour value="0" />
+       <BlueChannelColour value="0.290317" />
+       <AlphaChannelColour value="0" />
+      </Item>
+      <Item>
+       <InterpolationInterval value="0.503333" />
+       <KeyFrameMultiplier value="1.986756" />
+       <RedChannelColour value="0" />
+       <GreenChannelColour value="0" />
+       <BlueChannelColour value="0.230317" />
+       <AlphaChannelColour value="0" />
+      </Item>
+      <Item>
+       <InterpolationInterval value="0.996111" />
+       <KeyFrameMultiplier value="2.029311" />
+       <RedChannelColour value="0" />
+       <GreenChannelColour value="0" />
+       <BlueChannelColour value="0.290317" />
+       <AlphaChannelColour value="0" />
+      </Item>
+     </Keyframes>
+    </KeyframeProperty0>
+    <KeyframeProperty1>
+     <Name>ptxTargetDomain:m_rotationKFP</Name>
+     <Unknown6C value="31488" />
+     <Keyframes />
+    </KeyframeProperty1>
+    <KeyframeProperty2>
+     <Name>ptxTargetDomain:m_sizeOuterKFP</Name>
+     <Unknown6C value="31744" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="0.054118" />
+       <GreenChannelColour value="0.091765" />
+       <BlueChannelColour value="0.054118" />
+       <AlphaChannelColour value="0" />
+      </Item>
+     </Keyframes>
+    </KeyframeProperty2>
+    <KeyframeProperty3>
+     <Name>ptxTargetDomain:m_sizeInnerKFP</Name>
+     <Unknown6C value="32000" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="0" />
+       <GreenChannelColour value="0" />
+       <BlueChannelColour value="0" />
+       <AlphaChannelColour value="0" />
+      </Item>
+     </Keyframes>
+    </KeyframeProperty3>
+   </Domain2>
+   <KeyframeProperties>
+    <Item>
+     <Name>ptxEmitterRule:m_spawnRateOverTimeKFP</Name>
+     <Unknown6C value="27648" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="19.00815" />
+       <GreenChannelColour value="22.00815" />
+       <BlueChannelColour value="0" />
+       <AlphaChannelColour value="0" />
+      </Item>
+     </Keyframes>
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_spawnRateOverDistKFP</Name>
+     <Unknown6C value="27904" />
+     <Keyframes />
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_particleLifeKFP</Name>
+     <Unknown6C value="28160" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="1.1" />
+       <GreenChannelColour value="1.2" />
+       <BlueChannelColour value="0.01" />
+       <AlphaChannelColour value="0.01" />
+      </Item>
+     </Keyframes>
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_playbackRateScalarKFP</Name>
+     <Unknown6C value="28416" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="1.114762" />
+       <GreenChannelColour value="0.01" />
+       <BlueChannelColour value="0.01" />
+       <AlphaChannelColour value="0.01" />
+      </Item>
+     </Keyframes>
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_speedScalarKFP</Name>
+     <Unknown6C value="28672" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="0.770233" />
+       <GreenChannelColour value="0.898605" />
+       <BlueChannelColour value="0" />
+       <AlphaChannelColour value="0" />
+      </Item>
+     </Keyframes>
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_sizeScalarKFP</Name>
+     <Unknown6C value="28928" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="42.31994" />
+       <GreenChannelColour value="42.31994" />
+       <BlueChannelColour value="42.31994" />
+       <AlphaChannelColour value="100" />
+      </Item>
+     </Keyframes>
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_accnScalarKFP</Name>
+     <Unknown6C value="29184" />
+     <Keyframes />
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_dampeningScalarKFP</Name>
+     <Unknown6C value="29440" />
+     <Keyframes />
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_matrixWeightScalarKFP</Name>
+     <Unknown6C value="29696" />
+     <Keyframes />
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_inheritVelocityKFP</Name>
+     <Unknown6C value="29952" />
+     <Keyframes />
+    </Item>
+   </KeyframeProperties>
+  </Item>
+  <Item>
+   <Name>ent_amb_fbi_fire_sm_glow</Name>
+   <Unknown10 value="2" />
+   <Unknown628 value="0" />
+   <Domain1>
+    <Type value="Box" />
+    <Unknown10 value="0x1" />
+    <Unknown258 value="2" />
+    <KeyframeProperty0>
+     <Name>ptxCreationDomain:m_positionKFP</Name>
+     <Unknown6C value="34816" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="0" />
+       <GreenChannelColour value="0" />
+       <BlueChannelColour value="0.02" />
+       <AlphaChannelColour value="0" />
+      </Item>
+     </Keyframes>
+    </KeyframeProperty0>
+    <KeyframeProperty1>
+     <Name>ptxCreationDomain:m_rotationKFP</Name>
+     <Unknown6C value="35072" />
+     <Keyframes />
+    </KeyframeProperty1>
+    <KeyframeProperty2>
+     <Name>ptxCreationDomain:m_sizeOuterKFP</Name>
+     <Unknown6C value="35328" />
+     <Keyframes />
+    </KeyframeProperty2>
+    <KeyframeProperty3>
+     <Name>ptxCreationDomain:m_sizeInnerKFP</Name>
+     <Unknown6C value="35584" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="0" />
+       <GreenChannelColour value="0" />
+       <BlueChannelColour value="0" />
+       <AlphaChannelColour value="0" />
+      </Item>
+     </Keyframes>
+    </KeyframeProperty3>
+   </Domain1>
+   <Domain2>
+    <Type value="Box" />
+    <Unknown10 value="0x101" />
+    <Unknown258 value="-1" />
+    <KeyframeProperty0>
+     <Name>ptxTargetDomain:m_positionKFP</Name>
+     <Unknown6C value="35840" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="0" />
+       <GreenChannelColour value="0.000298" />
+       <BlueChannelColour value="0" />
+       <AlphaChannelColour value="0" />
+      </Item>
+     </Keyframes>
+    </KeyframeProperty0>
+    <KeyframeProperty1>
+     <Name>ptxTargetDomain:m_rotationKFP</Name>
+     <Unknown6C value="36096" />
+     <Keyframes />
+    </KeyframeProperty1>
+    <KeyframeProperty2>
+     <Name>ptxTargetDomain:m_sizeOuterKFP</Name>
+     <Unknown6C value="36352" />
+     <Keyframes />
+    </KeyframeProperty2>
+    <KeyframeProperty3>
+     <Name>ptxTargetDomain:m_sizeInnerKFP</Name>
+     <Unknown6C value="36608" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="0" />
+       <GreenChannelColour value="0" />
+       <BlueChannelColour value="0" />
+       <AlphaChannelColour value="0" />
+      </Item>
+     </Keyframes>
+    </KeyframeProperty3>
+   </Domain2>
+   <KeyframeProperties>
+    <Item>
+     <Name>ptxEmitterRule:m_spawnRateOverTimeKFP</Name>
+     <Unknown6C value="32256" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="665.0225" />
+       <GreenChannelColour value="665.0225" />
+       <BlueChannelColour value="2" />
+       <AlphaChannelColour value="0" />
+      </Item>
+     </Keyframes>
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_spawnRateOverDistKFP</Name>
+     <Unknown6C value="32512" />
+     <Keyframes />
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_particleLifeKFP</Name>
+     <Unknown6C value="32768" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="1.161341" />
+       <GreenChannelColour value="1.241341" />
+       <BlueChannelColour value="0.01" />
+       <AlphaChannelColour value="0.01" />
+      </Item>
+     </Keyframes>
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_playbackRateScalarKFP</Name>
+     <Unknown6C value="33024" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="1.2" />
+       <GreenChannelColour value="0" />
+       <BlueChannelColour value="0" />
+       <AlphaChannelColour value="0" />
+      </Item>
+     </Keyframes>
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_speedScalarKFP</Name>
+     <Unknown6C value="33280" />
+     <Keyframes />
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_sizeScalarKFP</Name>
+     <Unknown6C value="33536" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="13.73974" />
+       <GreenChannelColour value="13.73974" />
+       <BlueChannelColour value="13.73974" />
+       <AlphaChannelColour value="0" />
+      </Item>
+     </Keyframes>
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_accnScalarKFP</Name>
+     <Unknown6C value="33792" />
+     <Keyframes />
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_dampeningScalarKFP</Name>
+     <Unknown6C value="34048" />
+     <Keyframes />
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_matrixWeightScalarKFP</Name>
+     <Unknown6C value="34304" />
+     <Keyframes />
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_inheritVelocityKFP</Name>
+     <Unknown6C value="34560" />
+     <Keyframes />
+    </Item>
+   </KeyframeProperties>
+  </Item>
+  <Item>
+   <Name>ent_amb_fbi_fire_wall_lg_cinder</Name>
+   <Unknown10 value="2" />
+   <Unknown628 value="0" />
+   <Domain1>
+    <Type value="Cylinder" />
+    <Unknown10 value="0x0" />
+    <Unknown258 value="2.1" />
+    <KeyframeProperty0>
+     <Name>ptxCreationDomain:m_positionKFP</Name>
+     <Unknown6C value="39424" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="0" />
+       <GreenChannelColour value="0" />
+       <BlueChannelColour value="0.03" />
+       <AlphaChannelColour value="0" />
+      </Item>
+     </Keyframes>
+    </KeyframeProperty0>
+    <KeyframeProperty1>
+     <Name>ptxCreationDomain:m_rotationKFP</Name>
+     <Unknown6C value="39680" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="90" />
+       <GreenChannelColour value="0" />
+       <BlueChannelColour value="0" />
+       <AlphaChannelColour value="0" />
+      </Item>
+     </Keyframes>
+    </KeyframeProperty1>
+    <KeyframeProperty2>
+     <Name>ptxCreationDomain:m_sizeOuterKFP</Name>
+     <Unknown6C value="39936" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="0.08" />
+       <GreenChannelColour value="0.232019" />
+       <BlueChannelColour value="0.1" />
+       <AlphaChannelColour value="1" />
+      </Item>
+     </Keyframes>
+    </KeyframeProperty2>
+    <KeyframeProperty3>
+     <Name>ptxCreationDomain:m_sizeInnerKFP</Name>
+     <Unknown6C value="40192" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="0" />
+       <GreenChannelColour value="0" />
+       <BlueChannelColour value="0" />
+       <AlphaChannelColour value="0" />
+      </Item>
+     </Keyframes>
+    </KeyframeProperty3>
+   </Domain1>
+   <Domain2>
+    <Type value="Cylinder" />
+    <Unknown10 value="0x100" />
+    <Unknown258 value="2.1" />
+    <KeyframeProperty0>
+     <Name>ptxTargetDomain:m_positionKFP</Name>
+     <Unknown6C value="40448" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="0.14321" />
+       <GreenChannelColour value="0" />
+       <BlueChannelColour value="0.1" />
+       <AlphaChannelColour value="0" />
+      </Item>
+      <Item>
+       <InterpolationInterval value="0.5" />
+       <KeyFrameMultiplier value="2" />
+       <RedChannelColour value="0.14321" />
+       <GreenChannelColour value="0" />
+       <BlueChannelColour value="0.2" />
+       <AlphaChannelColour value="0" />
+      </Item>
+      <Item>
+       <InterpolationInterval value="1" />
+       <KeyFrameMultiplier value="2" />
+       <RedChannelColour value="0.14321" />
+       <GreenChannelColour value="0" />
+       <BlueChannelColour value="0.1" />
+       <AlphaChannelColour value="0" />
+      </Item>
+     </Keyframes>
+    </KeyframeProperty0>
+    <KeyframeProperty1>
+     <Name>ptxTargetDomain:m_rotationKFP</Name>
+     <Unknown6C value="40704" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="90" />
+       <GreenChannelColour value="0" />
+       <BlueChannelColour value="0" />
+       <AlphaChannelColour value="0" />
+      </Item>
+     </Keyframes>
+    </KeyframeProperty1>
+    <KeyframeProperty2>
+     <Name>ptxTargetDomain:m_sizeOuterKFP</Name>
+     <Unknown6C value="40960" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="0.470657" />
+       <GreenChannelColour value="0.051163" />
+       <BlueChannelColour value="0.470657" />
+       <AlphaChannelColour value="1" />
+      </Item>
+     </Keyframes>
+    </KeyframeProperty2>
+    <KeyframeProperty3>
+     <Name>ptxTargetDomain:m_sizeInnerKFP</Name>
+     <Unknown6C value="41216" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="0" />
+       <GreenChannelColour value="0" />
+       <BlueChannelColour value="0" />
+       <AlphaChannelColour value="0" />
+      </Item>
+     </Keyframes>
+    </KeyframeProperty3>
+   </Domain2>
+   <KeyframeProperties>
+    <Item>
+     <Name>ptxEmitterRule:m_spawnRateOverTimeKFP</Name>
+     <Unknown6C value="36864" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="122.2695" />
+       <GreenChannelColour value="122.2695" />
+       <BlueChannelColour value="30" />
+       <AlphaChannelColour value="0" />
+      </Item>
+     </Keyframes>
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_spawnRateOverDistKFP</Name>
+     <Unknown6C value="37120" />
+     <Keyframes />
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_particleLifeKFP</Name>
+     <Unknown6C value="37376" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="1.8" />
+       <GreenChannelColour value="3" />
+       <BlueChannelColour value="0.01" />
+       <AlphaChannelColour value="0.01" />
+      </Item>
+     </Keyframes>
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_playbackRateScalarKFP</Name>
+     <Unknown6C value="37632" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="1.4" />
+       <GreenChannelColour value="0.01" />
+       <BlueChannelColour value="0.01" />
+       <AlphaChannelColour value="0.01" />
+      </Item>
+     </Keyframes>
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_speedScalarKFP</Name>
+     <Unknown6C value="37888" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="0.8" />
+       <GreenChannelColour value="0.8" />
+       <BlueChannelColour value="0" />
+       <AlphaChannelColour value="0" />
+      </Item>
+     </Keyframes>
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_sizeScalarKFP</Name>
+     <Unknown6C value="38144" />
+     <Keyframes>
+      <Item>
+       <InterpolationInterval value="0" />
+       <KeyFrameMultiplier value="0" />
+       <RedChannelColour value="6.547883" />
+       <GreenChannelColour value="6.547883" />
+       <BlueChannelColour value="6.547883" />
+       <AlphaChannelColour value="100" />
+      </Item>
+     </Keyframes>
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_accnScalarKFP</Name>
+     <Unknown6C value="38400" />
+     <Keyframes />
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_dampeningScalarKFP</Name>
+     <Unknown6C value="38656" />
+     <Keyframes />
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_matrixWeightScalarKFP</Name>
+     <Unknown6C value="38912" />
+     <Keyframes />
+    </Item>
+    <Item>
+     <Name>ptxEmitterRule:m_inheritVelocityKFP</Name>
+     <Unknown6C value="39168" />
+     <Keyframes />
+    </Item>
+   </KeyframeProperties>
+  </Item>
+ </EmitterRuleDictionary>
+ <ParticleRuleDictionary>
+  <Item>
+   <Name>ent_amb_fbi_fire_cinder</Name>
+   <FxcFile>ptfx_sprite</FxcFile>
+   <FxcTechnique>RGB_lit_soft</FxcTechnique>
+   <Unknown10 value="9" />
+   <Unknown100 value="0" />
+   <Unknown104 value="0" />
+   <Unknown108 value="1" />
+   <Unknown10C value="0x10100" />
+   <Unknown118 value="0" />
+   <Unknown11C value="3" />
+   <Unknown1D0 value="16" />
+   <Unknown1E0 value="4" />
+   <Unknown1E4 value="0" />
+   <Unknown1E8 value="0x101" />
+   <Unknown1EC value="0" />
+   <Unknown220 value="0x2" />
+   <Spawner1>
+    <EffectRule />
+    <Unknown18 value="1" />
+    <Unknown1C value="1" />
+    <Unknown20 value="0xFFFFFFFF" />
+    <Unknown24 value="100" />
+    <Unknown28 value="0" />
+    <Unknown38 value="1" />
+    <Unknown3C value="1" />
+    <Unknown40 value="0xFFFFFFFF" />
+    <Unknown44 value="100" />
+    <Unknown48 value="0" />
+    <Unknown68 value="0" />
+    <Unknown6C value="0x0" />
+   </Spawner1>
+   <Spawner2>
+    <EffectRule />
+    <Unknown18 value="1" />
+    <Unknown1C value="1" />
+    <Unknown20 value="0xFFFFFFFF" />
+    <Unknown24 value="100" />
+    <Unknown28 value="0" />
+    <Unknown38 value="1" />
+    <Unknown3C value="1" />
+    <Unknown40 value="0xFFFFFFFF" />
+    <Unknown44 value="100" />
+    <Unknown48 value="0" />
+    <Unknown68 value="1" />
+    <Unknown6C value="0x0" />
+   </Spawner2>
+   <Behaviours>
+    <Item>
+     <Type value="Age" />
+    </Item>
+    <Item>
+     <Type value="Acceleration" />
+     <Unknown158 value="0" />
+     <Unknown15C value="0" />
+     <KeyframeProperty0>
+      <Name>ptxu_Acceleration:m_xyzMinKFP</Name>
+      <Unknown6C value="43264" />
+      <Keyframes>
+       <Item>
+        <InterpolationInterval value="0" />
+        <KeyFrameMultiplier value="0" />
+        <RedChannelColour value="-0.4" />
+        <GreenChannelColour value="0" />
+        <BlueChannelColour value="0" />
+        <AlphaChannelColour value="0" />
+       </Item>
+      </Keyframes>
+     </KeyframeProperty0>
+     <KeyframeProperty1>
+      <Name>ptxu_Acceleration:m_xyzMaxKFP</Name>
+      <Unknown6C value="43520" />
+      <Keyframes>
+       <Item>
+        <InterpolationInterval value="0" />
+        <KeyFrameMultiplier value="0" />
+        <RedChannelColour value="-0.1" />
+        <GreenChannelColour value="-0.004268" />
+        <BlueChannelColour value="0.560094" />
+        <AlphaChannelColour value="0" />
+       </Item>
+      </Keyframes>
+     </KeyframeProperty1>
+    </Item>
+    <Item>
+     <Type value="Velocity" />
+    </Item>
+    <Item>
+     <Type value="Noise" />
+     <Unknown270 value="0" />
+     <Unknown274 value="1" />
+     <KeyframeProperty0>
+      <Name>ptxu_Noise:m_posNoiseMinKFP</Name>
+      <Unknown6C value="43776" />
+      <Keyframes>
+       <Item>
+        <InterpolationInterval value="0" />
+        <KeyFrameMultiplier value="0" />
+        <RedChannelColour value="0.1" />
+        <GreenChannelColour value="0.1" />
+        <BlueChannelColour value="0.1" />
+        <AlphaChannelColour value="0" />
+       </Item>
+      </Keyframes>
+     </KeyframeProperty0>
+     <KeyframeProperty1>
+      <Name>ptxu_Noise:m_posNoiseMaxKFP</Name>
+      <Unknown6C value="44032" />
+      <Keyframes>
+       <Item>
+        <InterpolationInterval value="0" />
+        <KeyFrameMultiplier value="0" />
+        <RedChannelColour value="0.3" />
+        <GreenChannelColour value="0.3" />
+        <BlueChannelColour value="0.3" />
+        <AlphaChannelColour value="0" />
+       </Item>
+      </Keyframes>
+     </KeyframeProperty1>
+     <KeyframeProperty2>
+      <Name>ptxu_Noise:m_velNoiseMinKFP</Name>
+      <Unknown6C value="44288" />
+      <Keyframes>
+       <Item>
+        <InterpolationInterval value="0" />
+        <KeyFrameMultiplier value="0" />
+        <RedChannelColour value="5.006864" />
+        <GreenChannelColour value="5.006864" />
+        <BlueChannelColour value="5.006864" />
+        <AlphaChannelColour value="0" />
+       </Item>
+      </Keyframes>
+     </KeyframeProperty2>
+     <KeyframeProperty3>
+      <Name>ptxu_Noise:m_velNoiseMaxKFP</Name>
+      <Unknown6C value="44544" />
+      <Keyframes>
+       <Item>
+        <InterpolationInterval value="0" />
+        <KeyFrameMultiplier value="0" />
+        <RedChannelColour value="6.76902" />
+        <GreenChannelColour value="6.76902" />
+        <BlueChannelColour value="6.76902" />
+        <AlphaChannelColour value="0" />
+       </Item>
+      </Keyframes>
+     </KeyframeProperty3>
+    </Item>
+    <Item>
+     <Type value="Size" />
+     <Unknown270 value="0" />
+     <Unknown274 value="1" />
+     <KeyframeProperty0>
+      <Name>ptxu_Size:m_whdMinKFP</Name>
+      <Unknown6C value="44801" />
+      <Keyframes>
+       <Item>
+        <InterpolationInterval value="0" />
+        <KeyFrameMultiplier value="0" />
+        <RedChannelColour value="0" />
+        <GreenChannelColour value="0" />
+        <BlueChannelColour value="0" />
+        <AlphaChannelColour value="0" />
+       </Item>
+       <Item>
+        <InterpolationInterval value="0.05" />
+        <KeyFrameMultiplier value="20" />
+        <RedChannelColour value="0.1" />
+        <GreenChannelColour value="0.083969" />
+        <BlueChannelColour value="0" />
+        <AlphaChannelColour value="0" />
+       </Item>
+       <Item>
+        <InterpolationInterval value="0.79937" />
+        <KeyFrameMultiplier value="1.334454" />
+        <RedChannelColour value="0.06" />
+        <GreenChannelColour value="0.051527" />
+        <BlueChannelColour value="0" />
+        <AlphaChannelColour value="0" />
+       </Item>
+       <Item>
+        <InterpolationInterval value="1" />
+        <KeyFrameMultiplier value="4.984299" />
+        <RedChannelColour value="0" />
+        <GreenChannelColour value="0" />
+        <BlueChannelColour value="0" />
+        <AlphaChannelColour value="0" />
+       </Item>
+      </Keyframes>
+     </KeyframeProperty0>
+     <KeyframeProperty1>
+      <Name>ptxu_Size:m_whdMaxKFP</Name>
+      <Unknown6C value="45056" />
+      <Keyframes>
+       <Item>
+        <InterpolationInterval value="0" />
+        <KeyFrameMultiplier value="0" />
+        <RedChannelColour value="0" />
+        <GreenChannelColour value="0" />
+        <BlueChannelColour value="0" />
+        <AlphaChannelColour value="0" />
+       </Item>
+       <Item>
+        <InterpolationInterval value="0.05" />
+        <KeyFrameMultiplier value="20" />
+        <RedChannelColour value="0.3" />
+        <GreenChannelColour value="0.208333" />
+        <BlueChannelColour value="0" />
+        <AlphaChannelColour value="0" />
+       </Item>
+       <Item>
+        <InterpolationInterval value="0.797949" />
+        <KeyFrameMultiplier value="1.33699" />
+        <RedChannelColour value="0.15" />
+        <GreenChannelColour value="0.129032" />
+        <BlueChannelColour value="0" />
+        <AlphaChannelColour value="0" />
+       </Item>
+       <Item>
+        <InterpolationInterval value="1" />
+        <KeyFrameMultiplier value="4.949246" />
+        <RedChannelColour value="0" />
+        <GreenChannelColour value="0" />
+        <BlueChannelColour value="0" />
+        <AlphaChannelColour value="0" />
+       </Item>
+      </Keyframes>
+     </KeyframeProperty1>
+     <KeyframeProperty2>
+      <Name>ptxu_Size:m_tblrScalarKFP</Name>
+      <Unknown6C value="45312" />
+      <Keyframes>
+       <Item>
+        <InterpolationInterval value="0" />
+        <KeyFrameMultiplier value="0" />
+        <RedChannelColour value="1" />
+        <GreenChannelColour value="1" />
+        <BlueChannelColour value="1" />
+        <AlphaChannelColour value="1" />
+       </Item>
+      </Keyframes>
+     </KeyframeProperty2>
+     <KeyframeProperty3>
+      <Name>ptxu_Size:m_tblrVelScalarKFP</Name>
+      <Unknown6C value="45568" />
+      <Keyframes>
+       <Item>
+        <InterpolationInterval value="0" />
+        <KeyFrameMultiplier value="0" />
+        <RedChannelColour value="0.14" />
+        <GreenChannelColour value="0" />
+        <BlueChannelColour value="0" />
+        <AlphaChannelColour value="0" />
+       </Item>
+       <Item>
+        <InterpolationInterval value="0.3" />
+        <KeyFrameMultiplier value="3.333333" />
+        <RedChannelColour value="0.02" />
+        <GreenChannelColour value="0" />
+        <BlueChannelColour value="0" />
+        <AlphaChannelColour value="0" />
+       </Item>
+      </Keyframes>
+     </KeyframeProperty3>
+    </Item>
+    <Item>
+     <Type value="AnimateTexture" />
+     <UnknownC0 value="0" />
+     <UnknownC4 value="3" />
+     <UnknownC8 value="1" />
+     <UnknownCC value="0x1000100" />
+     <KeyframeProperty0>
+      <Name>ptxu_AnimateTexture:m_animRateKFP</Name>
+      <Unknown6C value="45824" />
+      <Keyframes />
+     </KeyframeProperty0>
+    </Item>
+    <Item>
+     <Type value="Colour" />
+     <Unknown1E0 value="0" />
+     <Unknown1E4 value="0x101" />
+     <KeyframeProperty0>
+      <Name>ptxu_Colour:m_rgbaMinKFP</Name>
+      <Unknown6C value="46080" />
+      <Keyframes>
+       <Item>
+        <InterpolationInterval value="0" />
+        <KeyFrameMultiplier value="0" />
+        <RedChannelColour value="0.8" />
+        <GreenChannelColour value="0.460465" />
+        <BlueChannelColour value="0.310204" />
+        <AlphaChannelColour value="0" />
+       </Item>
+       <Item>
+        <InterpolationInterval value="0.05" />
+        <KeyFrameMultiplier value="20" />
+        <RedChannelColour value="0.777245" />
+        <GreenChannelColour value="0.439942" />
+        <BlueChannelColour value="0.294694" />
+        <AlphaChannelColour value="1" />
+       </Item>
+       <Item>
+        <InterpolationInterval value="0.484702" />
+        <KeyFrameMultiplier value="2.300427" />
+        <RedChannelColour value="0.579411" />
+        <GreenChannelColour value="0.261512" />
+        <BlueChannelColour value="0.159847" />
+        <AlphaChannelColour value="1" />
+       </Item>
+       <Item>
+        <InterpolationInterval value="1" />
+        <KeyFrameMultiplier value="1.940625" />
+        <RedChannelColour value="0.344898" />
+        <GreenChannelColour value="0.05" />
+        <BlueChannelColour value="0" />
+        <AlphaChannelColour value="0" />
+       </Item>
+      </Keyframes>
+     </KeyframeProperty0>
+     <KeyframeProperty1>
+      <Name>ptxu_Colour:m_rgbaMaxKFP</Name>
+      <Unknown6C value="46336" />
+      <Keyframes>
+       <Item>
+        <InterpolationInterval value="0" />
+        <KeyFrameMultiplier value="0" />
+        <RedChannelColour value="1" />
+        <GreenChannelColour value="0.809302" />
+        <BlueChannelColour value="0.733894" />
+        <AlphaChannelColour value="0" />
+       </Item>
+       <Item>
+        <InterpolationInterval value="0.103182" />
+        <KeyFrameMultiplier value="9.691612" />
+        <RedChannelColour value="0.934591" />
+        <GreenChannelColour value="0.740328" />
+        <BlueChannelColour value="0.658169" />
+        <AlphaChannelColour value="0.403361" />
+       </Item>
+       <Item>
+        <InterpolationInterval value="0.753183" />
+        <KeyFrameMultiplier value="1.538459" />
+        <RedChannelColour value="0.522542" />
+        <GreenChannelColour value="0.30582" />
+        <BlueChannelColour value="0.181138" />
+        <AlphaChannelColour value="0.403361" />
+       </Item>
+       <Item>
+        <InterpolationInterval value="0.994214" />
+        <KeyFrameMultiplier value="4.148844" />
+        <RedChannelColour value="0.369748" />
+        <GreenChannelColour value="0.1" />
+        <BlueChannelColour value="0" />
+        <AlphaChannelColour value="0" />
+       </Item>
+      </Keyframes>
+     </KeyframeProperty1>
+     <KeyframeProperty2>
+      <Name>ptxu_Colour:m_emissiveIntensityKFP</Name>
+      <Unknown6C value="46592" />
+      <Keyframes>
+       <Item>
+        <InterpolationInterval value="0" />
+        <KeyFrameMultiplier value="0" />
+        <RedChannelColour value="15.06619" />
+        <GreenChannelColour value="32" />
+        <BlueChannelColour value="0" />
+        <AlphaChannelColour value="0" />
+       </Item>
+       <Item>
+        <InterpolationInterval value="1" />
+        <KeyFrameMultiplier value="1" />
+        <RedChannelColour value="5" />
+        <GreenChannelColour value="6" />
+        <BlueChannelColour value="0" />
+        <AlphaChannelColour value="0" />
+       </Item>
+      </Keyframes>
+     </KeyframeProperty2>
+    </Item>
+    <Item>
+     <Type value="Sprite" />
+     <Unknown30 value="0" />
+     <Unknown34 value="0" />
+     <Unknown38 value="0" />
+     <Unknown40 value="1" />
+     <Unknown44 value="0.5" />
+     <Unknown48 value="0.5" />
+     <Unknown4C value="0" />
+     <Unknown50 value="0" />
+     <Unknown54 value="0" />
+     <Unknown58 value="0" />
+     <Unknown5C value="0x0" />
+     <Unknown60 value="0x0" />
+    </Item>
+   </Behaviours>
+   <UnknownList1>
+    <Item>
+     <Name>Bias Link Set_00</Name>
+     <Unknown50 value="192" />
+     <Unknown40 />
+    </Item>
+   </UnknownList1>
+   <ShaderVars>
+    <Item>
+     <Type value="Vector2" />
+     <Name>hash_EA057402</Name>
+     <Unknown18 value="32" />
+     <Unknown30 value="1" />
+     <Unknown34 value="0" />
+     <Unknown38 value="0" />
+    </Item>
+    <Item>
+     <Type value="Keyframe" />
+     <Name>softness</Name>
+     <Unknown18 value="31" />
+     <Items>
+      <Item>
+       <Unknown0 value="0" />
+       <Unknown4 value="0" />
+       <Unknown10 value="3" />
+      </Item>
+     </Items>
+    </Item>
+    <Item>
+     <Type value="Keyframe" />
+     <Name>superalpha</Name>
+     <Unknown18 value="23" />
+     <Items>
+      <Item>
+       <Unknown0 value="0" />
+       <Unknown4 value="0" />
+       <Unknown10 value="0.5" />
+      </Item>
+      <Item>
+       <Unknown0 value="0.257353" />
+       <Unknown4 value="3.885713" />
+       <Unknown10 value="1.322124" />
+      </Item>
+      <Item>
+       <Unknown0 value="1" />
+       <Unknown4 value="1.346535" />
+       <Unknown10 value="1" />
+      </Item>
+     </Items>
+    </Item>
+    <Item>
+     <Type value="Vector2" />
+     <Name>directionalmult</Name>
+     <Unknown18 value="22" />
+     <Unknown30 value="1" />
+     <Unknown34 value="0" />
+     <Unknown38 value="0" />
+    </Item>
+    <Item>
+     <Type value="Vector2" />
+     <Name>ambientmult</Name>
+     <Unknown18 value="21" />
+     <Unknown30 value="1" />
+     <Unknown34 value="0" />
+     <Unknown38 value="0" />
+    </Item>
+    <Item>
+     <Type value="Keyframe" />
+     <Name>shadowamount</Name>
+     <Unknown18 value="20" />
+     <Items>
+      <Item>
+       <Unknown0 value="0" />
+       <Unknown4 value="0" />
+       <Unknown10 value="0" />
+      </Item>
+     </Items>
+    </Item>
+    <Item>
+     <Type value="Vector2" />
+     <Name>extralightmult</Name>
+     <Unknown18 value="19" />
+     <Unknown30 value="1" />
+     <Unknown34 value="0" />
+     <Unknown38 value="0" />
+    </Item>
+    <Item>
+     <Type value="Vector2" />
+     <Name>camerabias</Name>
+     <Unknown18 value="18" />
+     <Unknown30 value="0.5" />
+     <Unknown34 value="0" />
+     <Unknown38 value="0" />
+    </Item>
+    <Item>
+     <Type value="Keyframe" />
+     <Name>camerashrink</Name>
+     <Unknown18 value="17" />
+     <Items>
+      <Item>
+       <Unknown0 value="0" />
+       <Unknown4 value="0" />
+       <Unknown10 value="3" />
+      </Item>
+     </Items>
+    </Item>
+    <Item>
+     <Type value="Keyframe" />
+     <Name>normalarc</Name>
+     <Unknown18 value="16" />
+     <Items>
+      <Item>
+       <Unknown0 value="0" />
+       <Unknown4 value="0" />
+       <Unknown10 value="0" />
+      </Item>
+     </Items>
+    </Item>
+    <Item>
+     <Type value="Keyframe" />
+     <Name>hash_403390EA</Name>
+     <Unknown18 value="15" />
+     <Items>
+      <Item>
+       <Unknown0 value="0" />
+       <Unknown4 value="0" />
+       <Unknown10 value="1" />
+      </Item>
+     </Items>
+    </Item>
+    <Item>
+     <Type value="Vector2" />
+     <Name>softnesscurve</Name>
+     <Unknown18 value="14" />
+     <Unknown30 value="0" />
+     <Unknown34 value="0" />
+     <Unknown38 value="0" />
+    </Item>
+    <Item>
+     <Type value="Vector2" />
+     <Name>softnessshadowmult</Name>
+     <Unknown18 value="13" />
+     <Unknown30 value="0" />
+     <Unknown34 value="0" />
+     <Unknown38 value="0" />
+    </Item>
+    <Item>
+     <Type value="Vector2" />
+     <Name>softnessshadowoffset</Name>
+     <Unknown18 value="12" />
+     <Unknown30 value="0" />
+     <Unknown34 value="0" />
+     <Unknown38 value="0" />
+    </Item>
+    <Item>
+     <Type value="Vector2" />
+     <Name>normalmapmult</Name>
+     <Unknown18 value="11" />
+     <Unknown30 value="1" />
+     <Unknown34 value="0" />
+     <Unknown38 value="0" />
+    </Item>
+    <Item>
+     <Type value="Vector4" />
+     <Name>hash_7B483BC5</Name>
+     <Unknown18 value="10" />
+     <Unknown30 value="0" />
+     <Unknown34 value="0" />
+     <Unknown38 value="0" />
+    </Item>
+    <Item>
+     <Type value="Vector2" />
+     <Name>hash_6A1DBEC3</Name>
+     <Unknown18 value="9" />
+     <Unknown30 value="1" />
+     <Unknown34 value="0" />
+     <Unknown38 value="0" />
+    </Item>
+    <Item>
+     <Type value="Vector2" />
+     <Name>hash_BA5AF058</Name>
+     <Unknown18 value="8" />
+     <Unknown30 value="1" />
+     <Unknown34 value="0" />
+     <Unknown38 value="0" />
+    </Item>
+    <Item>
+     <Type value="Texture" />
+     <Name>refractionmap</Name>
+     <Unknown18 value="7" />
+     <Unknown3C value="0" />
+     <TextureName />
+    </Item>
+    <Item>
+     <Type value="Texture" />
+     <Name>normalspecmap</Name>
+     <Unknown18 value="6" />
+     <Unknown3C value="0" />
+     <TextureName />
+    </Item>
+    <Item>
+     <Type value="Texture" />
+     <Name>diffusetex2</Name>
+     <Unknown18 value="4" />
+     <Unknown3C value="0" />
+     <TextureName>ptfx_embers_rgb</TextureName>
+    </Item>
+   </ShaderVars>
+  </Item>
+  <Item>
+   <Name>ent_amb_fbi_fire_flame</Name>
+   <FxcFile>ptfx_sprite</FxcFile>
+   <FxcTechnique>RGB_lit_soft</FxcTechnique>
+   <Unknown10 value="8" />
+   <Unknown100 value="2" />
+   <Unknown104 value="0" />
+   <Unknown108 value="1" />
+   <Unknown10C value="0x10100" />
+   <Unknown118 value="0" />
+   <Unknown11C value="12" />
+   <Unknown1D0 value="16" />
+   <Unknown1E0 value="4" />
+   <Unknown1E4 value="0" />
+   <Unknown1E8 value="0x101" />
+   <Unknown1EC value="0" />
+   <Unknown220 value="0x2" />
+   <Spawner1>
+    <EffectRule />
+    <Unknown18 value="1" />
+    <Unknown1C value="1" />
+    <Unknown20 value="0xFFFFFFFF" />
+    <Unknown24 value="100" />
+    <Unknown28 value="0" />
+    <Unknown38 value="1" />
+    <Unknown3C value="1" />
+    <Unknown40 value="0xFFFFFFFF" />
+    <Unknown44 value="100" />
+    <Unknown48 value="0" />
+    <Unknown68 value="0" />
+    <Unknown6C value="0x0" />
+   </Spawner1>
+   <Spawner2>
+    <EffectRule />
+    <Unknown18 value="1" />
+    <Unknown1C value="1" />
+    <Unknown20 value="0xFFFFFFFF" />
+    <Unknown24 value="100" />
+    <Unknown28 value="0" />
+    <Unknown38 value="1" />
+    <Unknown3C value="1" />
+    <Unknown40 value="0xFFFFFFFF" />
+    <Unknown44 value="100" />
+    <Unknown48 value="0" />
+    <Unknown68 value="1" />
+    <Unknown6C value="0x0" />
+   </Spawner2>
+   <Behaviours>
+    <Item>
+     <Type value="Age" />
+    </Item>
+    <Item>
+     <Type value="Acceleration" />
+     <Unknown158 value="0" />
+     <Unknown15C value="0" />
+     <KeyframeProperty0>
+      <Name>ptxu_Acceleration:m_xyzMinKFP</Name>
+      <Unknown6C value="51968" />
+      <Keyframes>
+       <Item>
+        <InterpolationInterval value="0" />
+        <KeyFrameMultiplier value="0" />
+        <RedChannelColour value="-0.001624" />
+        <GreenChannelColour value="-0.001624" />
+        <BlueChannelColour value="0.444823" />
+        <AlphaChannelColour value="0" />
+       </Item>
+      </Keyframes>
+     </KeyframeProperty0>
+     <KeyframeProperty1>
+      <Name>ptxu_Acceleration:m_xyzMaxKFP</Name>
+      <Unknown6C value="52224" />
+      <Keyframes>
+       <Item>
+        <InterpolationInterval value="0" />
+        <KeyFrameMultiplier value="0" />
+        <RedChannelColour value="-0.001174" />
+        <GreenChannelColour value="-0.001174" />
+        <BlueChannelColour value="0.268779" />
+        <AlphaChannelColour value="0" />
+       </Item>
+      </Keyframes>
+     </KeyframeProperty1>
+    </Item>
+    <Item>
+     <Type value="Velocity" />
+    </Item>
+    <Item>
+     <Type value="Rotation" />
+     <Unknown270 value="0" />
+     <Unknown274 value="0" />
+     <Unknown278 value="0x1" />
+     <Unknown27C value="0" />
+     <KeyframeProperty0>
+      <Name>ptxu_Rotation:m_initialAngleMinKFP</Name>
+      <Unknown6C value="52480" />
+      <Keyframes>
+       <Item>
+        <InterpolationInterval value="0" />
+        <KeyFrameMultiplier value="0" />
+        <RedChannelColour value="49.60181" />
+        <GreenChannelColour value="0" />
+        <BlueChannelColour value="0" />
+        <AlphaChannelColour value="0" />
+       </Item>
+      </Keyframes>
+     </KeyframeProperty0>
+     <KeyframeProperty1>
+      <Name>ptxu_Rotation:m_initialAngleMaxKFP</Name>
+      <Unknown6C value="52736" />
+      <Keyframes>
+       <Item>
+        <InterpolationInterval value="0" />
+        <KeyFrameMultiplier value="0" />
+        <RedChannelColour value="-34.15814" />
+        <GreenChannelColour value="0" />
+        <BlueChannelColour value="0" />
+        <AlphaChannelColour value="0" />
+       </Item>
+      </Keyframes>
+     </KeyframeProperty1>
+     <KeyframeProperty2>
+      <Name>ptxu_Rotation:m_angleMinKFP</Name>
+      <Unknown6C value="52992" />
+      <Keyframes>
+       <Item>
+        <InterpolationInterval value="0" />
+        <KeyFrameMultiplier value="0" />
+        <RedChannelColour value="-29.77505" />
+        <GreenChannelColour value="0" />
+        <BlueChannelColour value="0" />
+        <AlphaChannelColour value="0" />
+       </Item>
+      </Keyframes>
+     </KeyframeProperty2>
+     <KeyframeProperty3>
+      <Name>ptxu_Rotation:m_angleMaxKFP</Name>
+      <Unknown6C value="53248" />
+      <Keyframes>
+       <Item>
+        <InterpolationInterval value="0" />
+        <KeyFrameMultiplier value="0" />
+        <RedChannelColour value="34.58968" />
+        <GreenChannelColour value="0" />
+        <BlueChannelColour value="0" />
+        <AlphaChannelColour value="0" />
+       </Item>
+      </Keyframes>
+     </KeyframeProperty3>
+    </Item>
+    <Item>
+     <Type value="Size" />
+     <Unknown270 value="0" />
+     <Unknown274 value="1" />
+     <KeyframeProperty0>
+      <Name>ptxu_Size:m_whdMinKFP</Name>
+      <Unknown6C value="53505" />
+      <Keyframes>
+       <Item>
+        <InterpolationInterval value="0" />
+        <KeyFrameMultiplier value="0" />
+        <RedChannelColour value="0.228817" />
+        <GreenChannelColour value="0.228817" />
+        <BlueChannelColour value="0" />
+        <AlphaChannelColour value="0" />
+       </Item>
+       <Item>
+        <InterpolationInterval value="0.289992" />
+        <KeyFrameMultiplier value="3.448371" />
+        <RedChannelColour value="0.29752" />
+        <GreenChannelColour value="0.29752" />
+        <BlueChannelColour value="0" />
+        <AlphaChannelColour value="0" />
+       </Item>
+       <Item>
+        <InterpolationInterval value="1" />
+        <KeyFrameMultiplier value="1.408435" />
+        <RedChannelColour value="0" />
+        <GreenChannelColour value="0.041485" />
+        <BlueChannelColour value="0" />
+        <AlphaChannelColour value="0" />
+       </Item>
+      </Keyframes>
+     </KeyframeProperty0>
+     <KeyframeProperty1>
+      <Name>ptxu_Size:m_whdMaxKFP</Name>
+      <Unknown6C value="53760" />
+      <Keyframes>
+       <Item>
+        <InterpolationInterval value="0" />
+        <KeyFrameMultiplier value="0" />
+        <RedChannelColour value="0.317163" />
+        <GreenChannelColour value="0.317163" />
+        <BlueChannelColour value="0" />
+        <AlphaChannelColour value="0" />
+       </Item>
+       <Item>
+        <InterpolationInterval value="0.436667" />
+        <KeyFrameMultiplier value="2.290075" />
+        <RedChannelColour value="0.407959" />
+        <GreenChannelColour value="0.407959" />
+        <BlueChannelColour value="0" />
+        <AlphaChannelColour value="0" />
+       </Item>
+       <Item>
+        <InterpolationInterval value="1" />
+        <KeyFrameMultiplier value="1.775149" />
+        <RedChannelColour value="0" />
+        <GreenChannelColour value="0.066092" />
+        <BlueChannelColour value="0" />
+        <AlphaChannelColour value="0" />
+       </Item>
+      </Keyframes>
+     </KeyframeProperty1>
+     <KeyframeProperty2>
+      <Name>ptxu_Size:m_tblrScalarKFP</Name>
+      <Unknown6C value="54016" />
+      <Keyframes>
+       <Item>
+        <InterpolationInterval value="0" />
+        <KeyFrameMultiplier value="0" />
+        <RedChannelColour value="1" />
+        <GreenChannelColour value="1" />
+        <BlueChannelColour value="1" />
+        <AlphaChannelColour value="1" />
+       </Item>
+      </Keyframes>
+     </KeyframeProperty2>
+     <KeyframeProperty3>
+      <Name>ptxu_Size:m_tblrVelScalarKFP</Name>
+      <Unknown6C value="54272" />
+      <Keyframes />
+     </KeyframeProperty3>
+    </Item>
+    <Item>
+     <Type value="MatrixWeight" />
+     <UnknownC0 value="0" />
+     <KeyframeProperty0>
+      <Name>ptxu_MatrixWeight:m_mtxWeightKFP</Name>
+      <Unknown6C value="54528" />
+      <Keyframes>
+       <Item>
+        <InterpolationInterval value="0" />
+        <KeyFrameMultiplier value="0" />
+        <RedChannelColour value="1" />
+        <GreenChannelColour value="1" />
+        <BlueChannelColour value="0" />
+        <AlphaChannelColour value="0" />
+       </Item>
+       <Item>
+        <InterpolationInterval value="1" />
+        <KeyFrameMultiplier value="1" />
+        <RedChannelColour value="0.238776" />
+        <GreenChannelColour value="0.426531" />
+        <BlueChannelColour value="0" />
+        <AlphaChannelColour value="0" />
+       </Item>
+      </Keyframes>
+     </KeyframeProperty0>
+    </Item>
+    <Item>
+     <Type value="Wind" />
+     <UnknownD0 value="30" />
+     <UnknownD4 value="50" />
+     <UnknownD8 value="2" />
+     <UnknownDC value="2" />
+     <UnknownE0 value="1" />
+     <KeyframeProperty0>
+      <Name>ptxu_Wind:m_influenceKFP</Name>
+      <Unknown6C value="54784" />
+      <Keyframes>
+       <Item>
+        <InterpolationInterval value="0" />
+        <KeyFrameMultiplier value="0" />
+        <RedChannelColour value="0.060465" />
+        <GreenChannelColour value="0.130233" />
+        <BlueChannelColour value="0" />
+        <AlphaChannelColour value="0" />
+       </Item>
+       <Item>
+        <InterpolationInterval value="1" />
+        <KeyFrameMultiplier value="1" />
+        <RedChannelColour value="0.2" />
+        <GreenChannelColour value="0.262791" />
+        <BlueChannelColour value="0" />
+        <AlphaChannelColour value="0" />
+       </Item>
+      </Keyframes>
+     </KeyframeProperty0>
+    </Item>
+    <Item>
+     <Type value="AnimateTexture" />
+     <UnknownC0 value="0" />
+     <UnknownC4 value="48" />
+     <UnknownC8 value="1" />
+     <UnknownCC value="0x1000000" />
+     <KeyframeProperty0>
+      <Name>ptxu_AnimateTexture:m_animRateKFP</Name>
+      <Unknown6C value="55040" />
+      <Keyframes>
+       <Item>
+        <InterpolationInterval value="0" />
+        <KeyFrameMultiplier value="0" />
+        <RedChannelColour value="24" />
+        <GreenChannelColour value="36" />
+        <BlueChannelColour value="0" />
+        <AlphaChannelColour value="0" />
+       </Item>
+      </Keyframes>
+     </KeyframeProperty0>
+    </Item>
+    <Item>
+     <Type value="Colour" />
+     <Unknown1E0 value="0" />
+     <Unknown1E4 value="0x101" />
+     <KeyframeProperty0>
+      <Name>ptxu_Colour:m_rgbaMinKFP</Name>
+      <Unknown6C value="55296" />
+      <Keyframes>
+       <Item>
+        <InterpolationInterval value="0" />
+        <KeyFrameMultiplier value="0" />
+        <RedChannelColour value="0.702326" />
+        <GreenChannelColour value="0.524639" />
+        <BlueChannelColour value="0.522152" />
+        <AlphaChannelColour value="0" />
+       </Item>
+       <Item>
+        <InterpolationInterval value="0.1" />
+        <KeyFrameMultiplier value="10" />
+        <RedChannelColour value="0.702326" />
+        <GreenChannelColour value="0.524639" />
+        <BlueChannelColour value="0.522152" />
+        <AlphaChannelColour value="0.25" />
+       </Item>
+       <Item>
+        <InterpolationInterval value="1" />
+        <KeyFrameMultiplier value="1.111111" />
+        <RedChannelColour value="0.702326" />
+        <GreenChannelColour value="0.524639" />
+        <BlueChannelColour value="0.522152" />
+        <AlphaChannelColour value="0" />
+       </Item>
+      </Keyframes>
+     </KeyframeProperty0>
+     <KeyframeProperty1>
+      <Name>ptxu_Colour:m_rgbaMaxKFP</Name>
+      <Unknown6C value="55552" />
+      <Keyframes>
+       <Item>
+        <InterpolationInterval value="0" />
+        <KeyFrameMultiplier value="0" />
+        <RedChannelColour value="1" />
+        <GreenChannelColour value="0.893023" />
+        <BlueChannelColour value="0.898897" />
+        <AlphaChannelColour value="0" />
+       </Item>
+       <Item>
+        <InterpolationInterval value="0.1" />
+        <KeyFrameMultiplier value="10" />
+        <RedChannelColour value="1" />
+        <GreenChannelColour value="0.893023" />
+        <BlueChannelColour value="0.898897" />
+        <AlphaChannelColour value="0.5" />
+       </Item>
+       <Item>
+        <InterpolationInterval value="1" />
+        <KeyFrameMultiplier value="1.111111" />
+        <RedChannelColour value="1" />
+        <GreenChannelColour value="0.893023" />
+        <BlueChannelColour value="0.898897" />
+        <AlphaChannelColour value="0" />
+       </Item>
+      </Keyframes>
+     </KeyframeProperty1>
+     <KeyframeProperty2>
+      <Name>ptxu_Colour:m_emissiveIntensityKFP</Name>
+      <Unknown6C value="55808" />
+      <Keyframes>
+       <Item>
+        <InterpolationInterval value="0" />
+        <KeyFrameMultiplier value="0" />
+        <RedChannelColour value="100" />
+        <GreenChannelColour value="150" />
+        <BlueChannelColour value="0" />
+        <AlphaChannelColour value="0" />
+       </Item>
+      </Keyframes>
+     </KeyframeProperty2>
+    </Item>
+    <Item>
+     <Type value="Sprite" />
+     <Unknown30 value="0" />
+     <Unknown34 value="0" />
+     <Unknown38 value="0" />
+     <Unknown40 value="0" />
+     <Unknown44 value="0.5" />
+     <Unknown48 value="0" />
+     <Unknown4C value="0" />
+     <Unknown50 value="0" />
+     <Unknown54 value="0" />
+     <Unknown58 value="0" />
+     <Unknown5C value="0x10100" />
+     <Unknown60 value="0x0" />
+    </Item>
+   </Behaviours>
+   <UnknownList1>
+    <Item>
+     <Name>Bias Link Set_00</Name>
+     <Unknown50 value="29" />
+     <Unknown40 />
+    </Item>
+   </UnknownList1>
+   <ShaderVars>
+    <Item>
+     <Type value="Vector2" />
+     <Name>hash_EA057402</Name>
+     <Unknown18 value="32" />
+     <Unknown30 value="1" />
+     <Unknown34 value="0" />
+     <Unknown38 value="0" />
+    </Item>
+    <Item>
+     <Type value="Keyframe" />
+     <Name>softness</Name>
+     <Unknown18 value="31" />
+     <Items>
+      <Item>
+       <Unknown0 value="0" />
+       <Unknown4 value="0" />
+       <Unknown10 value="1.5" />
+      </Item>
+      <Item>
+       <Unknown0 value="0.879227" />
+       <Unknown4 value="1.137363" />
+       <Unknown10 value="0" />
+      </Item>
+     </Items>
+    </Item>
+    <Item>
+     <Type value="Keyframe" />
+     <Name>superalpha</Name>
+     <Unknown18 value="23" />
+     <Items>
+      <Item>
+       <Unknown0 value="0" />
+       <Unknown4 value="0" />
+       <Unknown10 value="1" />
+      </Item>
+     </Items>
+    </Item>
+    <Item>
+     <Type value="Vector2" />
+     <Name>directionalmult</Name>
+     <Unknown18 value="22" />
+     <Unknown30 value="1" />
+     <Unknown34 value="0" />
+     <Unknown38 value="0" />
+    </Item>
+    <Item>
+     <Type value="Vector2" />
+     <Name>ambientmult</Name>
+     <Unknown18 value="21" />
+     <Unknown30 value="1" />
+     <Unknown34 value="0" />
+     <Unknown38 value="0" />
+    </Item>
+    <Item>
+     <Type value="Keyframe" />
+     <Name>shadowamount</Name>
+     <Unknown18 value="20" />
+     <Items>
+      <Item>
+       <Unknown0 value="0" />
+       <Unknown4 value="0" />
+       <Unknown10 value="0" />
+      </Item>
+     </Items>
+    </Item>
+    <Item>
+     <Type value="Vector2" />
+     <Name>extralightmult</Name>
+     <Unknown18 value="19" />
+     <Unknown30 value="1" />
+     <Unknown34 value="0" />
+     <Unknown38 value="0" />
+    </Item>
+    <Item>
+     <Type value="Vector2" />
+     <Name>camerabias</Name>
+     <Unknown18 value="18" />
+     <Unknown30 value="0.3" />
+     <Unknown34 value="0" />
+     <Unknown38 value="0" />
+    </Item>
+    <Item>
+     <Type value="Keyframe" />
+     <Name>camerashrink</Name>
+     <Unknown18 value="17" />
+     <Items>
+      <Item>
+       <Unknown0 value="0" />
+       <Unknown4 value="0" />
+       <Unknown10 value="1" />
+      </Item>
+     </Items>
+    </Item>
+    <Item>
+     <Type value="Keyframe" />
+     <Name>normalarc</Name>
+     <Unknown18 value="16" />
+     <Items>
+      <Item>
+       <Unknown0 value="0" />
+       <Unknown4 value="0" />
+       <Unknown10 value="0" />
+      </Item>
+     </Items>
+    </Item>
+    <Item>
+     <Type value="Keyframe" />
+     <Name>hash_403390EA</Name>
+     <Unknown18 value="15" />
+     <Items>
+      <Item>
+       <Unknown0 value="0" />
+       <Unknown4 value="0" />
+       <Unknown10 value="1" />
+      </Item>
+     </Items>
+    </Item>
+    <Item>
+     <Type value="Vector2" />
+     <Name>softnesscurve</Name>
+     <Unknown18 value="14" />
+     <Unknown30 value="0" />
+     <Unknown34 value="0" />
+     <Unknown38 value="0" />
+    </Item>
+    <Item>
+     <Type value="Vector2" />
+     <Name>softnessshadowmult</Name>
+     <Unknown18 value="13" />
+     <Unknown30 value="0" />
+     <Unknown34 value="0" />
+     <Unknown38 value="0" />
+    </Item>
+    <Item>
+     <Type value="Vector2" />
+     <Name>softnessshadowoffset</Name>
+     <Unknown18 value="12" />
+     <Unknown30 value="0" />
+     <Unknown34 value="0" />
+     <Unknown38 value="0" />
+    </Item>
+    <Item>
+     <Type value="Vector2" />
+     <Name>normalmapmult</Name>
+     <Unknown18 value="11" />
+     <Unknown30 value="1" />
+     <Unknown34 value="0" />
+     <Unknown38 value="0" />
+    </Item>
+    <Item>
+     <Type value="Vector4" />
+     <Name>hash_7B483BC5</Name>
+     <Unknown18 value="10" />
+     <Unknown30 value="0.3" />
+     <Unknown34 value="1" />
+     <Unknown38 value="0" />
+    </Item>
+    <Item>
+     <Type value="Vector2" />
+     <Name>hash_6A1DBEC3</Name>
+     <Unknown18 value="9" />
+     <Unknown30 value="1" />
+     <Unknown34 value="0" />
+     <Unknown38 value="0" />
+    </Item>
+    <Item>
+     <Type value="Vector2" />
+     <Name>hash_BA5AF058</Name>
+     <Unknown18 value="8" />
+     <Unknown30 value="1" />
+     <Unknown34 value="0" />
+     <Unknown38 value="0" />
+    </Item>
+    <Item>
+     <Type value="Texture" />
+     <Name>refractionmap</Name>
+     <Unknown18 value="7" />
+     <Unknown3C value="0" />
+     <TextureName />
+    </Item>
+    <Item>
+     <Type value="Texture" />
+     <Name>normalspecmap</Name>
+     <Unknown18 value="6" />
+     <Unknown3C value="0" />
+     <TextureName />
+    </Item>
+    <Item>
+     <Type value="Texture" />
+     <Name>diffusetex2</Name>
+     <Unknown18 value="4" />
+     <Unknown3C value="0" />
+     <TextureName>ptfx_fire_v2</TextureName>
+    </Item>
+   </ShaderVars>
+  </Item>
+ </ParticleRuleDictionary>
+ <DrawableDictionary>
+ </DrawableDictionary>
+ <TextureDictionary>
+  <Item>
+   <Name>ptfx_fire_v2</Name>
+   <Unk32 value="128" />
+   <Usage>DIFFUSE</Usage>
+   <UsageFlags>Y4, X16, X32, Y64, X256, Y512, Y1024, UNK24</UsageFlags>
+   <ExtraFlags value="0" />
+   <Width value="1024" />
+   <Height value="2048" />
+   <MipLevels value="12" />
+   <Format>D3DFMT_BC7</Format>
+   <FileName>ptfx_fire_v2.dds</FileName>
+  </Item>
+  <Item>
+   <Name>ptfx_embers_rgb</Name>
+   <Unk32 value="128" />
+   <Usage>DIFFUSE</Usage>
+   <UsageFlags>X32, X64, X128, UNK24</UsageFlags>
+   <ExtraFlags value="0" />
+   <Width value="256" />
+   <Height value="256" />
+   <MipLevels value="9" />
+   <Format>D3DFMT_BC7</Format>
+   <FileName>ptfx_embers_rgb.dds</FileName>
+  </Item>
+ </TextureDictionary>
+</ParticleEffectsList>

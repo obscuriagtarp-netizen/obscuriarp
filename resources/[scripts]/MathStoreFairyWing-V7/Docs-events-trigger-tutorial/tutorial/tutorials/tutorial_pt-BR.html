@@ -1,0 +1,639 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathStore: Fairy Wing V7 | Tutorial</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000000;
+            color: #e0e0e0;
+            line-height: 1.8;
+        }
+
+        /* ===== HEADER / HERO ===== */
+        .hero {
+            position: relative;
+            text-align: center;
+            padding: 100px 40px 60px;
+            background: radial-gradient(ellipse at 50% 0%, rgba(50, 130, 255, 0.12) 0%, transparent 60%);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .hero-badge {
+            display: inline-block;
+            padding: 6px 18px;
+            border: 1px solid rgba(80, 150, 255, 0.4);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #6bb5ff;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 20px;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+        .hero h1 span {
+            background: linear-gradient(135deg, #6bb5ff, #2a7ac9, #87b8ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero .subtitle {
+            font-size: 1.15rem;
+            color: #888;
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* ===== SECTION ===== */
+        .section {
+            padding: 80px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .section:last-child { border-bottom: none; }
+
+        .section-label {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #6bb5ff;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 12px;
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 16px;
+            letter-spacing: -0.01em;
+        }
+
+        .section p {
+            font-size: 1rem;
+            color: #999;
+            margin-bottom: 20px;
+            max-width: 700px;
+        }
+
+        .section h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-top: 40px;
+            margin-bottom: 12px;
+        }
+
+        /* ===== IMAGES ===== */
+        .img-showcase {
+            margin: 32px 0;
+            text-align: center;
+        }
+        .img-showcase img {
+            max-width: 100%;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+        }
+        .img-showcase .img-caption {
+            margin-top: 12px;
+            font-size: 0.8rem;
+            color: #666;
+            font-style: italic;
+        }
+
+        /* ===== FEATURE CARDS ===== */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 32px;
+        }
+        .feature-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
+            padding: 28px;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .feature-card:hover {
+            border-color: rgba(82, 150, 250, 0.3);
+            background: rgba(82, 150, 250, 0.04);
+        }
+        .feature-card .icon {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+        .feature-card h4 {
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .feature-card p {
+            color: #777;
+            font-size: 0.88rem;
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+
+        /* ===== CODE BLOCK ===== */
+        pre {
+            background: #0a0a0a;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-size: 0.85rem;
+            line-height: 1.7;
+        }
+        code {
+            font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+            color: #e6edf3;
+        }
+        p code, li code {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 4px;
+            padding: 2px 7px;
+            font-size: 0.85em;
+            color: #87b8ff;
+        }
+
+        /* ===== TABLE ===== */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            text-align: left;
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        th {
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid rgba(255,255,255,0.12);
+        }
+        td { color: #aaa; font-size: 0.9rem; }
+        tr:hover td { color: #ddd; }
+
+        /* ===== ALERTS ===== */
+        .alert {
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 3px solid;
+            font-size: 0.92rem;
+        }
+        .alert-tip {
+            background: rgba(46, 160, 67, 0.08);
+            border-color: #2ea043;
+            color: #56d364;
+        }
+        .alert-warn {
+            background: rgba(210, 153, 34, 0.08);
+            border-color: #d29922;
+            color: #e3b341;
+        }
+        .alert-info {
+            background: rgba(50, 130, 255, 0.08);
+            border-color: #3170e0;
+            color: #6bb5ff;
+        }
+
+        /* ===== COMMAND LIST ===== */
+        .cmd-item {
+            display: flex;
+            align-items: baseline;
+            gap: 16px;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .cmd-item:last-child { border-bottom: none; }
+        .cmd-name {
+            font-family: 'Cascadia Code', 'Fira Code', monospace;
+            color: #87b8ff;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            min-width: 180px;
+        }
+        .cmd-desc {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        /* ===== FAQ SIDEBAR ===== */
+        .faq-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            background: rgba(82, 150, 250, 0.15);
+            border: 1px solid rgba(82, 150, 250, 0.3);
+            color: #6bb5ff;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.03em;
+        }
+        .faq-toggle:hover {
+            background: rgba(82, 150, 250, 0.25);
+            border-color: rgba(82, 150, 250, 0.5);
+        }
+
+        .faq-sidebar {
+            position: fixed;
+            top: 0;
+            left: -320px;
+            width: 300px;
+            height: 100vh;
+            background: #0a0a0a;
+            border-right: 1px solid rgba(255,255,255,0.06);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 70px 20px 30px;
+            transition: left 0.3s ease;
+        }
+        .faq-sidebar.open { left: 0; }
+
+        .faq-sidebar h3 {
+            color: #6bb5ff;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .faq-item {
+            display: block;
+            padding: 12px 14px;
+            margin-bottom: 6px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.15s;
+            border: 1px solid transparent;
+        }
+        .faq-item:hover {
+            background: rgba(82, 150, 250, 0.06);
+            border-color: rgba(82, 150, 250, 0.15);
+        }
+        .faq-item .faq-q {
+            color: #e0e0e0;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .faq-item .faq-a {
+            color: #666;
+            font-size: 0.75rem;
+            display: block;
+        }
+
+        .faq-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .faq-overlay.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            text-align: center;
+            padding: 60px 40px;
+            color: #444;
+            font-size: 0.8rem;
+            border-top: 1px solid rgba(255,255,255,0.04);
+        }
+        .footer a { color: #6bb5ff; }
+
+        /* ===== SCROLL ===== */
+        html { scroll-behavior: smooth; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .hero { padding: 60px 20px 40px; }
+            .hero h1 { font-size: 2rem; }
+            .container { padding: 0 20px; }
+            .section { padding: 50px 0; }
+            .features-grid { grid-template-columns: 1fr; }
+            .faq-sidebar { width: 260px; left: -280px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ==================== FAQ SIDEBAR ==================== -->
+<button class="faq-toggle" onclick="toggleFaq()">? FAQ</button>
+<div class="faq-overlay" id="faqOverlay" onclick="toggleFaq()"></div>
+<aside class="faq-sidebar" id="faqSidebar">
+    <h3>Perguntas Frequentes</h3>
+
+    <a href="#atalhos" class="faq-item" onclick="toggleFaq()">
+        <span class="faq-q">Como abro a HUD?</span>
+        <span class="faq-a">Configure uma tecla em Configurações > Teclado > FiveM</span>
+    </a>
+
+    <a href="#hud" class="faq-item" onclick="toggleFaq()">
+        <span class="faq-q">O que aparece quando abro a HUD?</span>
+        <span class="faq-a">O menu de equipar asas com as opções disponíveis</span>
+    </a>
+
+    <a href="#atalhos" class="faq-item" onclick="toggleFaq()">
+        <span class="faq-q">Como fecho a HUD?</span>
+        <span class="faq-a">Pressione ESC a qualquer momento</span>
+    </a>
+
+    <a href="#hud" class="faq-item" onclick="toggleFaq()">
+        <span class="faq-q">O botão de pegar asas está cinza, por que?</span>
+        <span class="faq-a">Você não tem permissão ou o item necessário</span>
+    </a>
+
+    <a href="#atalhos" class="faq-item" onclick="toggleFaq()">
+        <span class="faq-q">Posso trocar a tecla da HUD?</span>
+        <span class="faq-a">Sim, em Configurações > Teclado > FiveM no GTA</span>
+    </a>
+
+    <a href="#atalhos" class="faq-item" onclick="toggleFaq()">
+        <span class="faq-q">O texto da tecla muda de idioma?</span>
+        <span class="faq-a">Sim, depende do Config.Locale do servidor</span>
+    </a>
+
+    <a href="#auto-remocao" class="faq-item" onclick="toggleFaq()">
+        <span class="faq-q">Se eu crashar a asa fica no mundo?</span>
+        <span class="faq-a">Não, são removidas automaticamente ao desconectar</span>
+    </a>
+
+    <a href="#comandos" class="faq-item" onclick="toggleFaq()">
+        <span class="faq-q">Preciso usar comandos?</span>
+        <span class="faq-a">Não, a HUD faz tudo. Comandos são para debug/admin</span>
+    </a>
+
+    <a href="#comandos" class="faq-item" onclick="toggleFaq()">
+        <span class="faq-q">Quantas cores de asas existem?</span>
+        <span class="faq-a">30 cores neste pack (IDs de 1 a 30)</span>
+    </a>
+</aside>
+
+<!-- ==================== HERO ==================== -->
+<header class="hero">
+    <div class="hero-badge">Tutorial de Comandos e Uso</div>
+    <h1>MathStore: <span>Fairy Wing V7</span></h1>
+    <img src="../img/v7/fotobonita.png" alt="Fairy Wing V7 Preview" style="max-width: 565px; width: 100%; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); margin: 20px auto 24px; opacity: 0.85; display: block;">
+    <p class="subtitle">O sistema completo de asas de fada para FiveM, com HUD integrada, sistema de voo e callbacks de permissão avançados.</p>
+</header>
+
+<!-- ==================== INTRODUÇÃO ==================== -->
+<div class="container">
+    <section class="section" id="introducao">
+        <span class="section-label">Introdução</span>
+        <h2>O que é o Fairy Wing V7?</h2>
+        <p>O <strong style="color:#fff;">MathStore Fairy Wing V7</strong> é um resource avançado de asas de fada para FiveM que inclui asas animadas, sistema de voo, HUD radial interativa e callbacks de permissão avançados.</p>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="icon">🧚</div>
+                <h4>Asas de Fada</h4>
+                <p>30 cores de asas com animações e múltiplos estados configuráveis.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🎮</div>
+                <h4>HUD Radial</h4>
+                <p>Interface interativa para controlar todas as funções sem precisar decorar comandos.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">⚙️</div>
+                <h4>Callbacks Avançados</h4>
+                <p>Sistema de permissões personalizável. Restrinja por grupo, item, VIP ou qualquer lógica.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== HUD ==================== -->
+    <section class="section" id="hud">
+        <span class="section-label">Interface</span>
+        <h2>HUD Radial Integrada</h2>
+        <p>O Fairy Wing V7 possui uma HUD radial completa que permite controlar todas as funções do resource de forma visual e intuitiva. Para abrir, use o comando configurado ou a tecla de atalho.</p>
+
+        <h3>Menu Inicial — Equipando Asas</h3>
+        <p>Ao abrir a HUD pela primeira vez (sem nada equipado), o menu inicial aparece com a opção central:</p>
+        <ul style="color:#ccc; margin: 12px 0 20px 24px;">
+            <li><strong style="color:#fff;">PEGAR ASA</strong> (centro) — Equipa as asas</li>
+        </ul>
+
+        <div class="img-showcase">
+            <img src="../img/v7/hudcomasas1.png" alt="HUD - Menu Inicial">
+            <div class="img-caption">Menu inicial: clique para equipar suas asas</div>
+        </div>
+
+        <p>Ao clicar em qualquer opção, irá aparecer um painel para você digitar o ID (cor) desejado.</p>
+
+        <div class="img-showcase">
+            <img src="../img/v7/caixinhaescolhsuaasa.png" alt="Menu de escolha de ID">
+            <div class="img-caption">Painel de seleção do ID (cor) da asa</div>
+        </div>
+
+        <h3>Menu Radial Completo</h3>
+        <p>Após equipar asas, a HUD radial completa é exibida com 4 botões para controlar tudo:</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Botão</th>
+                    <th>Função</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td style="color:#fff;">01 — ASA FECHAR</td><td>Fecha as asas (animação no chão)</td></tr>
+                <tr><td style="color:#fff;">02 — ASA ABRIR</td><td>Abre as asas (animação no chão)</td></tr>
+                <tr><td style="color:#fff;">03 — PEGAR ASA / REMOVER ASA</td><td>Toggle: equipa ou remove as asas</td></tr>
+                <tr><td style="color:#fff;">04 — ASA BATER</td><td>Bate as asas (animação no chão)</td></tr>
+            </tbody>
+        </table>
+
+        <div class="img-showcase">
+            <img src="../img/v7/hudcomasas1.png" alt="HUD Radial Completa">
+            <div class="img-caption">HUD radial completa com todos os 4 botões</div>
+        </div>
+
+        <div class="alert alert-tip">
+            <strong>Dica:</strong> Se o botão de pegar asas estiver cinza, significa que você não tem permissão ou não possui o item necessário. Consulte o administrador do servidor.
+        </div>
+
+        <h3>Tecla de Atalho para a HUD</h3>
+        <p>O jogador pode configurar as teclas nas configurações do GTA V em <strong style="color:#fff;">Configurações → Teclado → FiveM</strong> e procurar pela opção do resource.</p>
+
+        <div class="img-showcase">
+            <img src="../img/v7/menutecladofivem.png" alt="Configuração de tecla no GTA FiveM">
+            <div class="img-caption">Configurações do GTA > Teclado > FiveM. No exemplo a tecla Q foi atribuída, mas o jogador pode escolher qualquer botão</div>
+        </div>
+
+        <p>Nas configurações você encontrará a opção <strong style="color:#fff;">(MathStoreFairyWing-V7) Abrir/Fechar HUD Wings</strong>. O nome da pasta do resource não pode ser alterado, então sempre aparecerá <code>MathStoreFairyWing-V7</code> seguido da descrição da ação.</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Ação</th>
+                    <th>Padrão</th>
+                    <th>Descrição</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="color:#fff;">Toggle Asas</td>
+                    <td><code>Nenhuma</code></td>
+                    <td>Abrir/fechar as asas</td>
+                </tr>
+                <tr>
+                    <td style="color:#fff;">Voo</td>
+                    <td><code>Desativado</code></td>
+                    <td>Ativar/desativar modo de voo</td>
+                </tr>
+                <tr>
+                    <td style="color:#fff;">HUD</td>
+                    <td><code>Nenhuma</code></td>
+                    <td>Abrir/fechar a HUD radial</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="alert alert-tip">
+            <strong>Recomendado:</strong> A forma ideal de configurar a tecla é ir em <strong>Configurações > Teclado > FiveM</strong> no GTA e atribuir a tecla desejada. Também é possível usar o comando <code>/hud7</code> para abrir a HUD e criar uma bind manual, mas a configuração pelo GTA é mais prática.
+        </div>
+
+        <div class="alert alert-info">
+            <strong>Dica:</strong> Para fechar a HUD a qualquer momento, basta pressionar <strong style="color:#fff;">ESC</strong>.
+        </div>
+    </section>
+
+    <!-- ==================== AUTO-REMOÇÃO ==================== -->
+    <section class="section" id="auto-remocao">
+        <span class="section-label">Sistema</span>
+        <h2>Remoção Automática</h2>
+        <p>Jogadores que saírem do servidor ou sofrerem crash terão suas asas removidas automaticamente. Isso evita que objetos órfãos fiquem no mundo sem dono.</p>
+
+        <div class="alert alert-info">
+            <strong>Nota:</strong> Pode haver interferências dependendo da base/framework utilizado. Mas o comportamento correto é a remoção automática ao desconectar. Caso alguma asa fique bugada, use <code>/asaslimpar7</code> ou <code>/asaslimpar27</code> para limpar manualmente.
+        </div>
+    </section>
+
+    <!-- ==================== COMANDOS ==================== -->
+    <section class="section" id="comandos">
+        <span class="section-label">Referência</span>
+        <h2>Comandos</h2>
+        <p>Todos os comandos podem ser renomeados pelo administrador do servidor no arquivo de configuração. Abaixo estão os nomes padrão.</p>
+
+        <div class="alert alert-warn">
+            <strong>Importante:</strong> Os comandos são destinados para fins de <strong>debug e administração</strong>. Os jogadores normalmente utilizam a HUD, que é mais intuitiva e simples de usar.
+        </div>
+
+        <h3>Asas</h3>
+        <div class="cmd-item">
+            <span class="cmd-name">/asas7 [1-30]</span>
+            <span class="cmd-desc">Equipa as asas. Aceita um número de cor de 1 a 30. Ex: <code>/asas7 5</code></span>
+        </div>
+        <div class="cmd-item">
+            <span class="cmd-name">/remover7</span>
+            <span class="cmd-desc">Remove as asas equipadas.</span>
+        </div>
+        <div class="cmd-item">
+            <span class="cmd-name">/asastg7</span>
+            <span class="cmd-desc">Abre ou fecha as asas.</span>
+        </div>
+        <div class="cmd-item">
+            <span class="cmd-name">/asasvoar7</span>
+            <span class="cmd-desc">Ativa ou desativa o modo de voo.</span>
+        </div>
+        <div class="cmd-item">
+            <span class="cmd-name">/asascor7 [num]</span>
+            <span class="cmd-desc">Troca a cor das asas sem remover.</span>
+        </div>
+        <div class="cmd-item">
+            <span class="cmd-name">/abrir7</span>
+            <span class="cmd-desc">Animação de abrir as asas no chão.</span>
+        </div>
+        <div class="cmd-item">
+            <span class="cmd-name">/fechar7</span>
+            <span class="cmd-desc">Animação de fechar as asas no chão.</span>
+        </div>
+        <div class="cmd-item">
+            <span class="cmd-name">/bater7</span>
+            <span class="cmd-desc">Animação de bater as asas no chão.</span>
+        </div>
+
+        <h3>Limpeza</h3>
+        <div class="cmd-item">
+            <span class="cmd-name">/asaslimpar7</span>
+            <span class="cmd-desc">Remove TODAS as asas do mundo (global). Uso administrativo.</span>
+        </div>
+        <div class="cmd-item">
+            <span class="cmd-name">/asaslimpar27</span>
+            <span class="cmd-desc">Remove asas órfãs/bugadas perto de você (sem dono).</span>
+        </div>
+
+        <h3>HUD</h3>
+        <div class="cmd-item">
+            <span class="cmd-name">/hud7</span>
+            <span class="cmd-desc">Abre ou fecha a HUD radial.</span>
+        </div>
+
+        <div class="alert alert-info">
+            <strong>Nota:</strong> Todos os nomes de comando podem ser alterados pelo administrador no <code>config.lua</code>. Os nomes acima são os padrões.
+        </div>
+    </section>
+</div>
+
+<!-- ==================== FOOTER ==================== -->
+<footer class="footer">
+    <p>MathStore: Fairy Wing V7 | Tutorial e Documentação</p>
+    <p style="margin-top: 8px;">Desenvolvido por <a href="#">MathStore</a> | Contato: math0001 no Discord</p>
+</footer>
+
+<script>
+function toggleFaq() {
+    document.getElementById('faqSidebar').classList.toggle('open');
+    document.getElementById('faqOverlay').classList.toggle('open');
+}
+</script>
+
+</body>
+</html>

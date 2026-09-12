@@ -1,0 +1,165 @@
+{
+  "rightCorner": {
+    "job": "Meslek",
+    "gang": "Çete",
+    "bank": "Banka",
+    "cash": "Nakit",
+    "weapon": "Silah",
+    "blackMoney": "Kara para"
+  },
+  "carhud": {
+    "kmh": "km/s",
+    "mph": "mil/s",
+    "feet": "ft",
+    "airspeed": "Hava Hızı",
+    "waterspeed": "Su Hızı"
+  },
+  "quickMenu": {
+    "markText": "İşaretlemek için tıkla",
+    "categories": {
+      "nearby": "Yakınlar",
+      "music": "Müzik",
+      "car": "Araç"
+    },
+    "nearby": {
+      "bank": "Banka",
+      "shop": "Dükkan",
+      "clothing": "Kıyafet Mağazası",
+      "garage": "Garaj",
+      "mechanic": "Tamirci",
+      "gunshop": "Silahçı"
+    },
+    "music": {
+      "placeholder": "Bir şarkı URL'si girin",
+      "play": "Oynat",
+      "errorTitle": "Müzik Hatası",
+      "errorMessages": {
+        "invalidUrl": "Geçersiz URL. Lütfen geçerli bir şarkı URL'si girin.",
+        "invalidVideoData": "Geçersiz video verisi. Lütfen URL'yi kontrol edin ve tekrar deneyin.",
+        "apiError": "API Hatası. Lütfen daha sonra tekrar deneyin."
+      }
+    }
+  },
+  "location": {
+    "nearPostal": "Posta Yakını"
+  },
+  "settingsMenu": {
+    "title": "Hud",
+    "subtitle": "Ayarlar",
+    "reset": "Ayarları Sıfırla",
+    "confirm": "Onayla",
+    "cancel": "İptal",
+    "categories": {
+      "general": "Genel",
+      "carhud": "Araç Hud",
+      "status": "Durum Hud",
+      "corner": "Sağ Köşe"
+    },
+    "fuel": {
+      "title": "Yakıt Türü",
+      "description": "Araçta kullanılan yakıt türünü seçin. Litre veya Galon. * Değişiklikler kaydedilecektir.",
+      "litres": "Litre 100L",
+      "gallons": "Galon 100G"
+    },
+    "map": {
+      "title": "Harita",
+      "description": "Haritayı görmek istediğiniz formatı seçin.",
+      "square": "Kare",
+      "circle": "Daire"
+    },
+    "cinematic": {
+      "title": "Sinema Modu",
+      "description": "Sinema modunu etkinleştir veya devre dışı bırak..",
+      "enabled": "Etkin",
+      "disabled": "Devre Dışı"
+    },
+    "carhuds": {
+      "modern": "Modern",
+      "agressive": "Agresif",
+      "sport": "Spor",
+      "simple": "Basit",
+      "simplev2": "Basit V2",
+      "circle": "Daire",
+      "changes": "*Değişiklikleriniz kaydedilecektir",
+      "description": "Sağ tarafta araç hud renk paletlerini düzenleyebilir ve kendi renginizi bulabilirsiniz."
+    },
+    "status": {
+      "circle": "Daire",
+      "circlev2": "Daire V2",
+      "circlev3": "Daire V3",
+      "circlev4": "Daire V4",
+      "square": "Kare",
+      "squarev2": "Kare V2",
+      "hexagon": "Altıgen",
+      "wave": "Dalga",
+      "simple": "Basit",
+      "simplev2": "Basit V2",
+      "regular": "Standart",
+      "changes": "*Değişiklikleriniz kaydedilecektir",
+      "description": "Sağ tarafta hud renk paletlerini düzenleyebilir ve kendi renginizi bulabilirsiniz."
+    },
+    "rightCorner": {
+      "color": {
+        "title": "Renkleri Seç",
+        "description": "Sağ köşe elemanları için renkleri seçin. Her ikon ve yazı için farklı bir renk seçebilirsiniz."
+      },
+      "old": {
+        "title": "Eski",
+        "description": "Satır içinde eski görünümlü bilgileri içerir."
+      },
+      "boxed_dynamic": {
+        "title": "Kutu Dinamik",
+        "description": "Kutu şekli dinamik bir görünüme sahiptir. Renkler sabah veya akşam döngüsüne göre değişebilir."
+      },
+      "modern": {
+        "title": "Modern",
+        "description": "Kutulu ve en yeni görünüme sahiptir. Kesinlikle tavsiye edilir."
+      },
+      "simple": {
+        "title": "Basit",
+        "description": "Herhangi bir kutu içermeyen basit bir tasarımdır. Sadelikten hoşlananlar için çok kullanışlıdır."
+      }
+    },
+    "mapRadius": {
+      "title": "Harita Kenar Yumuşaklığı",
+      "description": "Kare haritanın kenar yumuşaklığını buradan seçebilirsiniz.",
+      "enabled": "Etkin",
+      "disabled": "Devre Dışı"
+    },
+    "performance": {
+      "title": "Performans Modu",
+      "description": "Buradan performans modunu seçebilirsiniz. Bu, HUD'un performansını değiştirir. Düşük donanımlı bir bilgisayarınız varsa bu modu kullanmanız önerilir.",
+      "balanced": "Dengeli",
+      "performance": "Performans"
+    },
+    "speed": {
+      "title": "Hız türü",
+      "description": "Carhud'da görmek istediğiniz hız türünü seçin.",
+      "kmh": "KM/S",
+      "mph": "MIL/S"
+    },
+    "theme_data": {
+      "title": "Tema Dışa Aktar",
+      "export": "Dışa Aktar",
+      "description": "Mevcut temanızı dışa aktarabilirsiniz. Kopyalanan veriyi Config.json'daki veriyle değiştirin"
+    },
+
+    "editor": {
+      "title": "Özelleştirme Modu",
+      "description": "HUD öğelerinin pozisyonlarını düzenleyin. İstenilen görünümü elde edin.",
+      "button": "Özelleştirme"
+    },
+
+    "minimap": {
+      "title": "Minimap",
+      "description": "Minimapı burada gizleyebilir veya gösterebilirsiniz.",
+      "show": "Göster",
+      "hide": "Gizle"
+    },
+
+    "scale": {
+      "title": "Ölçek",
+      "description": "HUD ölçeğini buradan değiştirebilirsiniz. Bu, HUD öğelerinin boyutunu değiştirir."
+    }
+  }
+}

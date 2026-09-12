@@ -1,0 +1,110 @@
+import { useNuiState } from '../../hooks/nuiState';
+
+import Section from './components/Section';
+import Item from './components/Item';
+import Input from './components/Input';
+import RangeInput from './components/RangeInput';
+import HeritagePicker from './components/HeritagePicker';
+
+import { PedHeadBlend, HeadBlendSettings } from './interfaces';
+
+interface HeadBlendProps {
+  settings: HeadBlendSettings;
+  storedData: PedHeadBlend;
+  data: PedHeadBlend;
+  handleHeadBlendChange: (key: keyof PedHeadBlend, value: number) => void;
+}
+
+const HeadBlend = ({ settings, storedData, data, handleHeadBlendChange }: HeadBlendProps) => {
+  const { locales } = useNuiState();
+
+  if (!locales) {
+    return null;
+  }
+
+  return (
+    <Section title={locales.headBlend.title}>
+      <Item title={locales.headBlend.shape.title} columns={1}>
+        <HeritagePicker
+          title={locales.headBlend.shape.firstOption}
+          min={settings.shapeFirst.min}
+          max={settings.shapeFirst.max}
+          value={data.shapeFirst}
+          onChange={value => handleHeadBlendChange('shapeFirst', value)}
+        />
+        <HeritagePicker
+          title={locales.headBlend.shape.secondOption}
+          min={settings.shapeSecond.min}
+          max={settings.shapeSecond.max}
+          value={data.shapeSecond}
+          onChange={value => handleHeadBlendChange('shapeSecond', value)}
+        />
+        <RangeInput
+          title={locales.headBlend.shape.mix}
+          min={settings.shapeMix.min}
+          max={settings.shapeMix.max}
+          factor={settings.shapeMix.factor}
+          defaultValue={data.shapeMix}
+          clientValue={storedData.shapeMix}
+          onChange={value => handleHeadBlendChange('shapeMix', value)}
+        />
+      </Item>
+      <Item title={locales.headBlend.skin.title} columns={1}>
+        <Input
+          title={locales.headBlend.skin.firstOption}
+          min={settings.skinFirst.min}
+          max={settings.skinFirst.max}
+          defaultValue={data.skinFirst}
+          clientValue={storedData.skinFirst}
+          onChange={value => handleHeadBlendChange('skinFirst', value)}
+        />
+        <Input
+          title={locales.headBlend.skin.secondOption}
+          min={settings.skinSecond.min}
+          max={settings.skinSecond.max}
+          defaultValue={data.skinSecond}
+          clientValue={storedData.skinSecond}
+          onChange={value => handleHeadBlendChange('skinSecond', value)}
+        />
+        <RangeInput
+          title={locales.headBlend.skin.mix}
+          min={settings.skinMix.min}
+          max={settings.skinMix.max}
+          factor={settings.skinMix.factor}
+          defaultValue={data.skinMix}
+          clientValue={storedData.skinMix}
+          onChange={value => handleHeadBlendChange('skinMix', value)}
+        />
+      </Item>
+      <Item title={locales.headBlend.race.title} columns={1}>
+        <Input
+            title={locales.headBlend.race.shape}
+            min={settings.shapeThird.min}
+            max={settings.shapeThird.max}
+            defaultValue={data.shapeThird}
+            clientValue={storedData.shapeThird}
+            onChange={value => handleHeadBlendChange('shapeThird', value)}
+        />
+        <Input
+          title={locales.headBlend.race.skin}
+          min={settings.skinThird.min}
+          max={settings.skinThird.max}
+          defaultValue={data.skinThird}
+          clientValue={storedData.skinThird}
+          onChange={value => handleHeadBlendChange('skinThird', value)}
+        />
+        <RangeInput
+          title={locales.headBlend.race.mix}
+          min={settings.thirdMix.min}
+          max={settings.thirdMix.max}
+          factor={settings.thirdMix.factor}
+          defaultValue={data.thirdMix}
+          clientValue={storedData.thirdMix}
+          onChange={value => handleHeadBlendChange('thirdMix', value)}
+        />
+      </Item>
+    </Section>
+  );
+};
+
+export default HeadBlend;

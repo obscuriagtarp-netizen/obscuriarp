@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathStore: Fairy Wing V7 | Tutorial</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000000;
+            color: #e0e0e0;
+            line-height: 1.8;
+        }
+
+        /* ===== HEADER / HERO ===== */
+        .hero {
+            position: relative;
+            text-align: center;
+            padding: 100px 40px 60px;
+            background: radial-gradient(ellipse at 50% 0%, rgba(50, 130, 255, 0.12) 0%, transparent 60%);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .hero-badge {
+            display: inline-block;
+            padding: 6px 18px;
+            border: 1px solid rgba(80, 150, 255, 0.4);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #6bb5ff;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 20px;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+        .hero h1 span {
+            background: linear-gradient(135deg, #6bb5ff, #2a7ac9, #87b8ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero .subtitle {
+            font-size: 1.15rem;
+            color: #888;
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* ===== SECTION ===== */
+        .section {
+            padding: 80px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .section:last-child { border-bottom: none; }
+
+        .section-label {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #6bb5ff;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 12px;
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 16px;
+            letter-spacing: -0.01em;
+        }
+
+        .section p {
+            font-size: 1rem;
+            color: #999;
+            margin-bottom: 20px;
+            max-width: 700px;
+        }
+
+        .section h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-top: 40px;
+            margin-bottom: 12px;
+        }
+
+        /* ===== IMAGES ===== */
+        .img-showcase {
+            margin: 32px 0;
+            text-align: center;
+        }
+        .img-showcase img {
+            max-width: 100%;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+        }
+        .img-showcase .img-caption {
+            margin-top: 12px;
+            font-size: 0.8rem;
+            color: #666;
+            font-style: italic;
+        }
+
+        /* ===== FEATURE CARDS ===== */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 32px;
+        }
+        .feature-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
+            padding: 28px;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .feature-card:hover {
+            border-color: rgba(82, 150, 250, 0.3);
+            background: rgba(82, 150, 250, 0.04);
+        }
+        .feature-card .icon {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+        .feature-card h4 {
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .feature-card p {
+            color: #777;
+            font-size: 0.88rem;
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+
+        /* ===== CODE BLOCK ===== */
+        pre {
+            background: #0a0a0a;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-size: 0.85rem;
+            line-height: 1.7;
+        }
+        code {
+            font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+            color: #e6edf3;
+        }
+        p code, li code {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 4px;
+            padding: 2px 7px;
+            font-size: 0.85em;
+            color: #87b8ff;
+        }
+
+        /* ===== TABLE ===== */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            text-align: left;
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        th {
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid rgba(255,255,255,0.12);
+        }
+        td { color: #aaa; font-size: 0.9rem; }
+        tr:hover td { color: #ddd; }
+
+        /* ===== ALERTS ===== */
+        .alert {
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 3px solid;
+            font-size: 0.92rem;
+        }
+        .alert-tip {
+            background: rgba(46, 160, 67, 0.08);
+            border-color: #2ea043;
+            color: #56d364;
+        }
+        .alert-warn {
+            background: rgba(210, 153, 34, 0.08);
+            border-color: #d29922;
+            color: #e3b341;
+        }
+        .alert-info {
+            background: rgba(50, 130, 255, 0.08);
+            border-color: #3170e0;
+            color: #6bb5ff;
+        }
+
+        /* ===== COMMAND LIST ===== */
+        .cmd-item {
+            display: flex;
+            align-items: baseline;
+            gap: 16px;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .cmd-item:last-child { border-bottom: none; }
+        .cmd-name {
+            font-family: 'Cascadia Code', 'Fira Code', monospace;
+            color: #87b8ff;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            min-width: 180px;
+        }
+        .cmd-desc {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        /* ===== FAQ SIDEBAR ===== */
+        .faq-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            background: rgba(82, 150, 250, 0.15);
+            border: 1px solid rgba(82, 150, 250, 0.3);
+            color: #6bb5ff;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.03em;
+        }
+        .faq-toggle:hover {
+            background: rgba(82, 150, 250, 0.25);
+            border-color: rgba(82, 150, 250, 0.5);
+        }
+
+        .faq-sidebar {
+            position: fixed;
+            top: 0;
+            left: -320px;
+            width: 300px;
+            height: 100vh;
+            background: #0a0a0a;
+            border-right: 1px solid rgba(255,255,255,0.06);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 70px 20px 30px;
+            transition: left 0.3s ease;
+        }
+        .faq-sidebar.open { left: 0; }
+
+        .faq-sidebar h3 {
+            color: #6bb5ff;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .faq-item {
+            display: block;
+            padding: 12px 14px;
+            margin-bottom: 6px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.15s;
+            border: 1px solid transparent;
+        }
+        .faq-item:hover {
+            background: rgba(82, 150, 250, 0.06);
+            border-color: rgba(82, 150, 250, 0.15);
+        }
+        .faq-item .faq-q {
+            color: #e0e0e0;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .faq-item .faq-a {
+            color: #666;
+            font-size: 0.75rem;
+            display: block;
+        }
+
+        .faq-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .faq-overlay.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            text-align: center;
+            padding: 60px 40px;
+            color: #444;
+            font-size: 0.8rem;
+            border-top: 1px solid rgba(255,255,255,0.04);
+        }
+        .footer a { color: #6bb5ff; }
+
+        /* ===== SCROLL ===== */
+        html { scroll-behavior: smooth; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .hero { padding: 60px 20px 40px; }
+            .hero h1 { font-size: 2rem; }
+            .container { padding: 0 20px; }
+            .section { padding: 50px 0; }
+            .features-grid { grid-template-columns: 1fr; }
+            .faq-sidebar { width: 260px; left: -280px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ==================== FAQ SIDEBAR ==================== -->
+<button class="faq-toggle" onclick="toggleFaq()">? FAQ</button>
+<div class="faq-overlay" id="faqOverlay" onclick="toggleFaq()"></div>
+<aside class="faq-sidebar" id="faqSidebar">
+    <h3>คำถามที่พบบ่อย</h3>
+
+    <a href="#atalhos" class="faq-item" onclick="toggleFaq()">
+        <span class="faq-q">จะเปิด HUD ได้อย่างไร?</span>
+        <span class="faq-a">ตั้งค่าปุ่มลัดใน ตั้งค่า > แป้นพิมพ์ > FiveM</span>
+    </a>
+
+    <a href="#hud" class="faq-item" onclick="toggleFaq()">
+        <span class="faq-q">เมื่อเปิด HUD จะเห็นอะไร?</span>
+        <span class="faq-a">เมนูสวมใส่ปีกพร้อมตัวเลือกที่มีให้</span>
+    </a>
+
+    <a href="#atalhos" class="faq-item" onclick="toggleFaq()">
+        <span class="faq-q">จะปิด HUD ได้อย่างไร?</span>
+        <span class="faq-a">กด ESC ได้ตลอดเวลา</span>
+    </a>
+
+    <a href="#hud" class="faq-item" onclick="toggleFaq()">
+        <span class="faq-q">ปุ่มรับปีกเป็นสีเทา ทำไม?</span>
+        <span class="faq-a">คุณไม่มีสิทธิ์หรือไม่มีไอเท็มที่จำเป็น</span>
+    </a>
+
+    <a href="#atalhos" class="faq-item" onclick="toggleFaq()">
+        <span class="faq-q">เปลี่ยนปุ่มลัด HUD ได้ไหม?</span>
+        <span class="faq-a">ได้ ใน ตั้งค่า > แป้นพิมพ์ > FiveM ในเกม GTA</span>
+    </a>
+
+    <a href="#atalhos" class="faq-item" onclick="toggleFaq()">
+        <span class="faq-q">ข้อความปุ่มลัดจะเปลี่ยนภาษาไหม?</span>
+        <span class="faq-a">ใช่ ขึ้นอยู่กับ Config.Locale ของเซิร์ฟเวอร์</span>
+    </a>
+
+    <a href="#auto-remocao" class="faq-item" onclick="toggleFaq()">
+        <span class="faq-q">ถ้าเกมแครช ปีกจะค้างอยู่ในโลกไหม?</span>
+        <span class="faq-a">ไม่ ปีกจะถูกลบอัตโนมัติเมื่อยกเลิกการเชื่อมต่อ</span>
+    </a>
+
+    <a href="#comandos" class="faq-item" onclick="toggleFaq()">
+        <span class="faq-q">จำเป็นต้องใช้คำสั่งไหม?</span>
+        <span class="faq-a">ไม่ HUD ทำทุกอย่างได้ คำสั่งมีไว้สำหรับ debug/admin</span>
+    </a>
+
+    <a href="#comandos" class="faq-item" onclick="toggleFaq()">
+        <span class="faq-q">มีสีปีกกี่สี?</span>
+        <span class="faq-a">แพ็คนี้มี 30 สี (ID 1 ถึง 30)</span>
+    </a>
+</aside>
+
+<!-- ==================== HERO ==================== -->
+<header class="hero">
+    <div class="hero-badge">บทช่วยสอนคำสั่งและการใช้งาน</div>
+    <h1>MathStore: <span>Fairy Wing V7</span></h1>
+    <img src="../img/v7/fotobonita.png" alt="Fairy Wing V7 Preview" style="max-width: 565px; width: 100%; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); margin: 20px auto 24px; opacity: 0.85; display: block;">
+    <p class="subtitle">ระบบปีกนางฟ้าครบวงจรสำหรับ FiveM พร้อม HUD ในตัว ระบบบิน และ callback สิทธิ์ขั้นสูง</p>
+</header>
+
+<!-- ==================== INTRODUÇÃO ==================== -->
+<div class="container">
+    <section class="section" id="introducao">
+        <span class="section-label">บทนำ</span>
+        <h2>Fairy Wing V7 คืออะไร?</h2>
+        <p><strong style="color:#fff;">MathStore Fairy Wing V7</strong> เป็น resource ปีกนางฟ้าขั้นสูงสำหรับ FiveM ซึ่งรวมปีกแอนิเมชัน ระบบบิน HUD แบบวงกลมแบบโต้ตอบ และ callback สิทธิ์ขั้นสูง</p>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="icon">🧚</div>
+                <h4>ปีกนางฟ้า</h4>
+                <p>ปีก 30 สีพร้อมแอนิเมชันและสถานะที่กำหนดค่าได้หลายแบบ</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🎮</div>
+                <h4>HUD แบบวงกลม</h4>
+                <p>อินเทอร์เฟซแบบโต้ตอบเพื่อควบคุมฟังก์ชันทั้งหมดโดยไม่ต้องจำคำสั่ง</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">⚙️</div>
+                <h4>Callback ขั้นสูง</h4>
+                <p>ระบบสิทธิ์ที่กำหนดเองได้ จำกัดตามกลุ่ม ไอเท็ม VIP หรือตรรกะใดก็ได้</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== HUD ==================== -->
+    <section class="section" id="hud">
+        <span class="section-label">อินเทอร์เฟซ</span>
+        <h2>HUD แบบวงกลมในตัว</h2>
+        <p>Fairy Wing V7 มี HUD แบบวงกลมครบครันที่ช่วยให้คุณควบคุมฟังก์ชันทั้งหมดของ resource ได้อย่างเห็นภาพและใช้งานง่าย หากต้องการเปิด ให้ใช้คำสั่งที่ตั้งค่าไว้หรือปุ่มลัด</p>
+
+        <h3>เมนูเริ่มต้น — การสวมใส่ปีก</h3>
+        <p>เมื่อเปิด HUD ครั้งแรก (โดยยังไม่ได้สวมใส่อะไร) เมนูเริ่มต้นจะปรากฏพร้อมตัวเลือกตรงกลาง:</p>
+        <ul style="color:#ccc; margin: 12px 0 20px 24px;">
+            <li><strong style="color:#fff;">รับปีก</strong> (ตรงกลาง) — สวมใส่ปีก</li>
+        </ul>
+
+        <div class="img-showcase">
+            <img src="../img/v7/hudcomasas1.png" alt="HUD - เมนูเริ่มต้น">
+            <div class="img-caption">เมนูเริ่มต้น: คลิกเพื่อสวมใส่ปีกของคุณ</div>
+        </div>
+
+        <p>เมื่อคลิกตัวเลือกใดก็ตาม จะปรากฏแผงให้คุณพิมพ์ ID (สี) ที่ต้องการ</p>
+
+        <div class="img-showcase">
+            <img src="../img/v7/caixinhaescolhsuaasa.png" alt="เมนูเลือก ID">
+            <div class="img-caption">แผงเลือก ID (สี) ของปีก</div>
+        </div>
+
+        <h3>เมนูวงกลมแบบเต็ม</h3>
+        <p>หลังจากสวมใส่ปีกแล้ว HUD แบบวงกลมเต็มรูปแบบจะแสดงพร้อมปุ่ม 4 ปุ่มเพื่อควบคุมทุกอย่าง:</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ปุ่ม</th>
+                    <th>ฟังก์ชัน</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td style="color:#fff;">01 — ปิดปีก</td><td>ปิดปีก (แอนิเมชันบนพื้น)</td></tr>
+                <tr><td style="color:#fff;">02 — เปิดปีก</td><td>เปิดปีก (แอนิเมชันบนพื้น)</td></tr>
+                <tr><td style="color:#fff;">03 — รับปีก / ถอดปีก</td><td>สลับ: สวมใส่หรือถอดปีก</td></tr>
+                <tr><td style="color:#fff;">04 — กระพือปีก</td><td>กระพือปีก (แอนิเมชันบนพื้น)</td></tr>
+            </tbody>
+        </table>
+
+        <div class="img-showcase">
+            <img src="../img/v7/hudcomasas1.png" alt="HUD แบบวงกลมเต็มรูปแบบ">
+            <div class="img-caption">HUD แบบวงกลมเต็มรูปแบบพร้อมปุ่มทั้ง 4 ปุ่ม</div>
+        </div>
+
+        <div class="alert alert-tip">
+            <strong>เคล็ดลับ:</strong> หากปุ่มรับปีกเป็นสีเทา หมายความว่าคุณไม่มีสิทธิ์หรือไม่มีไอเท็มที่จำเป็น กรุณาติดต่อผู้ดูแลเซิร์ฟเวอร์
+        </div>
+
+        <h3>ปุ่มลัดสำหรับ HUD</h3>
+        <p>ผู้เล่นสามารถตั้งค่าปุ่มลัดในการตั้งค่า GTA V ที่ <strong style="color:#fff;">ตั้งค่า → แป้นพิมพ์ → FiveM</strong> แล้วมองหาตัวเลือกของ resource</p>
+
+        <div class="img-showcase">
+            <img src="../img/v7/menutecladofivem.png" alt="การตั้งค่าปุ่มลัดใน GTA FiveM">
+            <div class="img-caption">ตั้งค่า GTA > แป้นพิมพ์ > FiveM ในตัวอย่างนี้ปุ่ม Q ถูกกำหนดไว้ แต่ผู้เล่นสามารถเลือกปุ่มอื่นได้</div>
+        </div>
+
+        <p>ในการตั้งค่าคุณจะพบตัวเลือก <strong style="color:#fff;">(MathStoreFairyWing-V7) เปิด/ปิด HUD Wings</strong> ชื่อโฟลเดอร์ resource ไม่สามารถเปลี่ยนได้ ดังนั้นจะแสดง <code>MathStoreFairyWing-V7</code> ตามด้วยคำอธิบายของการกระทำเสมอ</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>การกระทำ</th>
+                    <th>ค่าเริ่มต้น</th>
+                    <th>คำอธิบาย</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="color:#fff;">สลับปีก</td>
+                    <td><code>ไม่มี</code></td>
+                    <td>เปิด/ปิดปีก</td>
+                </tr>
+                <tr>
+                    <td style="color:#fff;">บิน</td>
+                    <td><code>ปิดใช้งาน</code></td>
+                    <td>เปิด/ปิดโหมดบิน</td>
+                </tr>
+                <tr>
+                    <td style="color:#fff;">HUD</td>
+                    <td><code>ไม่มี</code></td>
+                    <td>เปิด/ปิด HUD แบบวงกลม</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="alert alert-tip">
+            <strong>แนะนำ:</strong> วิธีที่ดีที่สุดในการตั้งค่าปุ่มลัดคือไปที่ <strong>ตั้งค่า > แป้นพิมพ์ > FiveM</strong> ใน GTA แล้วกำหนดปุ่มที่ต้องการ คุณยังสามารถใช้คำสั่ง <code>/hud7</code> เพื่อเปิด HUD และสร้าง bind เอง แต่การตั้งค่าผ่าน GTA จะสะดวกกว่า
+        </div>
+
+        <div class="alert alert-info">
+            <strong>เคล็ดลับ:</strong> หากต้องการปิด HUD ได้ตลอดเวลา เพียงกด <strong style="color:#fff;">ESC</strong>
+        </div>
+    </section>
+
+    <!-- ==================== AUTO-REMOÇÃO ==================== -->
+    <section class="section" id="auto-remocao">
+        <span class="section-label">ระบบ</span>
+        <h2>การลบอัตโนมัติ</h2>
+        <p>ผู้เล่นที่ออกจากเซิร์ฟเวอร์หรือเกมแครชจะมีปีกถูกลบอัตโนมัติ ซึ่งป้องกันไม่ให้วัตถุกำพร้าค้างอยู่ในโลกโดยไม่มีเจ้าของ</p>
+
+        <div class="alert alert-info">
+            <strong>หมายเหตุ:</strong> อาจมีการรบกวนขึ้นอยู่กับฐาน/framework ที่ใช้ แต่พฤติกรรมที่ถูกต้องคือการลบอัตโนมัติเมื่อยกเลิกการเชื่อมต่อ หากปีกใดมีปัญหา ให้ใช้ <code>/asaslimpar7</code> หรือ <code>/asaslimpar27</code> เพื่อล้างด้วยตนเอง
+        </div>
+    </section>
+
+    <!-- ==================== COMANDOS ==================== -->
+    <section class="section" id="comandos">
+        <span class="section-label">อ้างอิง</span>
+        <h2>คำสั่ง</h2>
+        <p>คำสั่งทั้งหมดสามารถเปลี่ยนชื่อได้โดยผู้ดูแลเซิร์ฟเวอร์ในไฟล์การตั้งค่า ด้านล่างเป็นชื่อเริ่มต้น</p>
+
+        <div class="alert alert-warn">
+            <strong>สำคัญ:</strong> คำสั่งมีไว้สำหรับ <strong>debug และการดูแลระบบ</strong> ผู้เล่นทั่วไปมักจะใช้ HUD ซึ่งใช้งานง่ายและเป็นมิตรกว่า
+        </div>
+
+        <h3>ปีก</h3>
+        <div class="cmd-item">
+            <span class="cmd-name">/asas7 [1-30]</span>
+            <span class="cmd-desc">สวมใส่ปีก รับหมายเลขสี 1 ถึง 30 ตัวอย่าง: <code>/asas7 5</code></span>
+        </div>
+        <div class="cmd-item">
+            <span class="cmd-name">/remover7</span>
+            <span class="cmd-desc">ถอดปีกที่สวมใส่อยู่</span>
+        </div>
+        <div class="cmd-item">
+            <span class="cmd-name">/asastg7</span>
+            <span class="cmd-desc">เปิดหรือปิดปีก</span>
+        </div>
+        <div class="cmd-item">
+            <span class="cmd-name">/asasvoar7</span>
+            <span class="cmd-desc">เปิดหรือปิดโหมดบิน</span>
+        </div>
+        <div class="cmd-item">
+            <span class="cmd-name">/asascor7 [num]</span>
+            <span class="cmd-desc">เปลี่ยนสีปีกโดยไม่ต้องถอด</span>
+        </div>
+        <div class="cmd-item">
+            <span class="cmd-name">/abrir7</span>
+            <span class="cmd-desc">แอนิเมชันเปิดปีกบนพื้น</span>
+        </div>
+        <div class="cmd-item">
+            <span class="cmd-name">/fechar7</span>
+            <span class="cmd-desc">แอนิเมชันปิดปีกบนพื้น</span>
+        </div>
+        <div class="cmd-item">
+            <span class="cmd-name">/bater7</span>
+            <span class="cmd-desc">แอนิเมชันกระพือปีกบนพื้น</span>
+        </div>
+
+        <h3>การล้าง</h3>
+        <div class="cmd-item">
+            <span class="cmd-name">/asaslimpar7</span>
+            <span class="cmd-desc">ลบปีกทั้งหมดในโลก (ทั่วไป) ใช้สำหรับการดูแลระบบ</span>
+        </div>
+        <div class="cmd-item">
+            <span class="cmd-name">/asaslimpar27</span>
+            <span class="cmd-desc">ลบปีกกำพร้า/มีปัญหาใกล้ตัวคุณ (ที่ไม่มีเจ้าของ)</span>
+        </div>
+
+        <h3>HUD</h3>
+        <div class="cmd-item">
+            <span class="cmd-name">/hud7</span>
+            <span class="cmd-desc">เปิดหรือปิด HUD แบบวงกลม</span>
+        </div>
+
+        <div class="alert alert-info">
+            <strong>หมายเหตุ:</strong> ชื่อคำสั่งทั้งหมดสามารถเปลี่ยนได้โดยผู้ดูแลระบบใน <code>config.lua</code> ชื่อข้างต้นเป็นค่าเริ่มต้น
+        </div>
+    </section>
+</div>
+
+<!-- ==================== FOOTER ==================== -->
+<footer class="footer">
+    <p>MathStore: Fairy Wing V7 | บทช่วยสอนและเอกสาร</p>
+    <p style="margin-top: 8px;">พัฒนาโดย <a href="#">MathStore</a> | ติดต่อ: math0001 ใน Discord</p>
+</footer>
+
+<script>
+function toggleFaq() {
+    document.getElementById('faqSidebar').classList.toggle('open');
+    document.getElementById('faqOverlay').classList.toggle('open');
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,191 @@
+
+
+.hub {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hub-inner {
+  position: relative;
+  width: 100%;
+  max-width: 1320px;
+
+  padding: 32px 32px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(20, 10, 40, 0.45);
+  box-shadow:
+    0 16px 80px rgba(0, 0, 0, 0.7),
+    inset 0 0 30px rgba(255, 255, 255, 0.04);
+}
+
+.hub-fab {
+  position: absolute;
+  top: -22px;
+  right: 38px;
+
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+
+  background: linear-gradient(135deg, #ffffff, #d4d4d4);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #4c1d95;
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 22px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+
+  z-index: 50;
+  transition: transform 0.15s ease-out, filter 0.15s ease-out;
+}
+
+.hub-fab i {
+  font-size: 18px;
+}
+
+.hub-fab:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.08);
+}
+
+.hub-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1.2fr 1.4fr;
+  grid-template-rows: 150px 150px 150px;
+  grid-template-areas:
+    "geral geral rasp"
+    "emp   est   pel"
+    "vip   vip   vip";
+  gap: 20px;
+}
+
+.hub-card {
+  position: relative;
+  border-radius: 6px;
+
+  background:
+    linear-gradient(135deg, #4b1ea7, #612ed1) padding-box,
+    linear-gradient(135deg, #f9fafb, #9ca3af) border-box;
+  border: 1px solid transparent;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  transform-origin: center;
+
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.7);
+  transition:
+    transform 0.15s ease-out,
+    filter 0.15s ease-out,
+    box-shadow 0.15s ease-out;
+}
+
+.hub-card:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.08);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85);
+}
+
+.hub-card-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.hub-title,
+.hub-sub,
+.hub-icon {
+  color: #ffffff !important;
+}
+
+.hub-title {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.hub-sub {
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  opacity: 0.85;
+}
+
+.hub-icon {
+  font-size: 30px;
+  margin-bottom: 6px;
+  opacity: 0.95;
+}
+
+.hub-card--geral {
+  grid-area: geral;
+}
+
+.hub-card--raspadinha {
+  grid-area: rasp;
+}
+
+.hub-card--empregos {
+  grid-area: emp;
+}
+
+.hub-card--estabelecimentos {
+  grid-area: est;
+}
+
+.hub-card--pelucias {
+  grid-area: pel;
+}
+
+.hub-card--lojavip {
+  grid-area: vip;
+}
+
+@media (max-width: 1100px) {
+  .hub-inner {
+    padding: 26px 20px;
+  }
+
+  .hub-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    grid-template-areas:
+      "geral geral"
+      "rasp  rasp"
+      "pel   pel"
+      "emp   est"
+      "vip   vip";
+  }
+}
+
+@media (max-width: 720px) {
+  .hub-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "geral"
+      "rasp"
+      "pel"
+      "emp"
+      "est"
+      "vip";
+  }
+
+  .hub-inner {
+    padding-inline: 14px;
+  }
+}

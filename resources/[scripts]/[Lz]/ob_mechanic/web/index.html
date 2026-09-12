@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Automotiva Akuma | Obscuria</title>
+  <link rel="stylesheet" href="style.css?v=2.1.1">
+</head>
+<body>
+  <div id="actionmenu">
+    <div id="principal" class="principal">
+      <div id="titulo" class="titulo">
+        <div class="brand-seal"><img src="assets/obscuria-emblem.png?v=2.1.1" alt="Obscuria"></div>
+        <div class="title-copy">
+          <span id="screenEyebrow">OFICINA AUTORIZADA</span>
+          <strong id="screenTitle">Automotiva Akuma</strong>
+          <p id="screenSubtitle">Personalização e manutenção veicular</p>
+        </div>
+        <div class="service-status"><i></i> EM SERVIÇO</div>
+      </div>
+
+      <div class="catalog-head">
+        <span id="catalogTitle">CATÁLOGO TÉCNICO</span>
+        <small id="catalogDescription">Selecione uma categoria para inspecionar o veículo.</small>
+      </div>
+      <div id="menu" class="menu"></div>
+
+      <button id="modificar" class="modificar" type="button">Reparar antes de modificar</button>
+
+      <div class="action-footer">
+        <div class="secondary-actions">
+          <button id="voltar" class="voltar" type="button">Voltar</button>
+          <button id="sair" class="sair" type="button">Sair</button>
+        </div>
+        <div class="price">
+          <span>TOTAL DO SERVIÇO</span>
+          <strong id="preco">$ 0</strong>
+        </div>
+        <button id="pagar" class="pagar" type="button">Concluir</button>
+      </div>
+
+      <button class="camera" id="cam" type="button"><span>H</span> Alterar ângulo da câmera</button>
+    </div>
+  </div>
+
+  <div id="mechanicPrompt" class="mechanic-prompt" aria-hidden="true">
+    <div class="mechanic-prompt-card">
+      <div class="mechanic-prompt-icon" id="promptIcon">?</div>
+      <span id="promptEyebrow">Mecânica</span>
+      <strong id="promptTitle">Confirmar</strong>
+      <p id="promptMessage">Deseja continuar?</p>
+      <div class="mechanic-prompt-actions">
+        <button id="promptCancel" class="prompt-cancel" type="button">Cancelar</button>
+        <button id="promptConfirm" class="prompt-confirm" type="button">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js?v=2.1.1"></script>
+</body>
+</html>

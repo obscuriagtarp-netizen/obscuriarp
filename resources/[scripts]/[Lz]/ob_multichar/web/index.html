@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obscuria | Personagens</title>
+    <link rel="stylesheet" href="style.css?v=11">
+</head>
+<body>
+    <main id="app" class="app is-hidden" aria-hidden="true">
+        <header class="brand">
+            <img src="assets/ui/obscuria-emblem.png" alt="" class="brand__emblem">
+            <div>
+                <span class="eyebrow">Arquivo de destinos</span>
+                <h1>Obscuria</h1>
+                <p>Escolha quem atravessará os portões.</p>
+            </div>
+        </header>
+
+        <section class="identity-panel" aria-live="polite">
+            <div class="identity-panel__topline">
+                <span id="slotLabel">Registro 01</span>
+                <span id="statusLabel" class="status">Disponível</span>
+            </div>
+            <div id="identityContent" class="identity-content"></div>
+            <div class="identity-actions">
+                <button id="deleteButton" class="button button--danger" type="button">Excluir</button>
+                <button id="playButton" class="button button--primary" type="button">Entrar na cidade</button>
+            </div>
+        </section>
+
+        <section class="character-dock" aria-label="Seus personagens">
+            <div class="character-dock__heading">
+                <span>Seus registros</span>
+                <small id="slotCount">0 personagens</small>
+            </div>
+            <div id="characterSlots" class="character-slots"></div>
+        </section>
+
+        <div id="modalLayer" class="modal-layer is-hidden" aria-hidden="true">
+            <section id="createModal" class="modal is-hidden" role="dialog" aria-modal="true" aria-labelledby="createTitle">
+                <button class="icon-close" type="button" data-close-modal aria-label="Fechar"></button>
+                <span class="eyebrow">Novo registro</span>
+                <h2 id="createTitle">Escreva uma nova história</h2>
+                <p class="modal__lead">Esses dados acompanharão o personagem dentro de Obscuria.</p>
+
+                <form id="createForm" class="create-form" novalidate>
+                    <input id="createSlot" name="slot" type="hidden">
+                    <label><span>Nome</span><input name="firstname" maxlength="24" autocomplete="off" required></label>
+                    <label><span>Sobrenome</span><input name="lastname" maxlength="24" autocomplete="off" required></label>
+                    <label class="create-form__wide">
+                        <span>Nacionalidade</span>
+                        <input id="nationality" name="nationality" type="hidden">
+                        <span id="nationalitySelect" class="nationality-select">
+                            <button id="nationalityTrigger" class="nationality-select__trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
+                                <span id="nationalityValue">Brasileira</span>
+                                <span class="nationality-select__chevron" aria-hidden="true"></span>
+                            </button>
+                            <span id="nationalityMenu" class="nationality-select__menu is-hidden" role="listbox" aria-label="Escolha a nacionalidade"></span>
+                        </span>
+                    </label>
+                    <label><span>Data de nascimento</span><input id="birthdate" name="birthdate" type="text" inputmode="numeric" maxlength="10" autocomplete="bday" placeholder="DD/MM/AAAA" pattern="[0-9]{2}/[0-9]{2}/[0-9]{4}" required></label>
+                    <fieldset>
+                        <legend>Identidade</legend>
+                        <div class="segmented">
+                            <label><input type="radio" name="gender" value="0" checked><span>Masculino</span></label>
+                            <label><input type="radio" name="gender" value="1"><span>Feminino</span></label>
+                        </div>
+                    </fieldset>
+                    <p id="formError" class="form-error" role="alert"></p>
+                    <button class="button button--primary create-form__submit" type="submit">Criar personagem</button>
+                </form>
+            </section>
+
+            <section id="deleteModal" class="modal modal--compact is-hidden" role="dialog" aria-modal="true" aria-labelledby="deleteTitle">
+                <span class="eyebrow eyebrow--danger">Ação permanente</span>
+                <h2 id="deleteTitle">Apagar este destino?</h2>
+                <p class="modal__lead">Todos os dados deste personagem serão removidos.</p>
+                <div class="confirmation-name" id="deleteConfirmName"></div>
+                <p class="confirmation-help">Digite o nome exibido acima para confirmar.</p>
+                <input id="deleteConfirmInput" class="confirmation-input" autocomplete="off">
+                <div class="modal__actions">
+                    <button class="button" type="button" data-close-modal>Cancelar</button>
+                    <button id="confirmDeleteButton" class="button button--danger" type="button" disabled>Excluir definitivamente</button>
+                </div>
+            </section>
+        </div>
+
+        <div id="loading" class="loading is-hidden" aria-live="assertive">
+            <span class="loading__sigil"></span>
+            <strong id="loadingLabel">Lendo registros...</strong>
+        </div>
+        <div id="toast" class="toast is-hidden" role="status"></div>
+    </main>
+
+    <script src="app.js?v=11"></script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+{
+  "rightCorner": {
+    "job": "Loc de muncă",
+    "gang": "Bandă",
+    "bank": "Bancă",
+    "cash": "Numerar",
+    "weapon": "Armă",
+    "blackMoney": "Bani negri"
+  },
+  "carhud": {
+    "kmh": "km/h",
+    "mph": "mile/h",
+    "feet": "ft",
+    "airspeed": "Viteză aeriană",
+    "waterspeed": "Viteză pe apă"
+  },
+  "quickMenu": {
+    "markText": "Apasă pentru a marca",
+    "categories": {
+      "nearby": "Aproape",
+      "music": "Muzică",
+      "car": "Mașină"
+    },
+    "nearby": {
+      "bank": "Bancă",
+      "shop": "Magazin",
+      "clothing": "Magazin de haine",
+      "garage": "Garaj",
+      "mechanic": "Mecanic",
+      "gunshop": "Armurier"
+    },
+    "music": {
+      "placeholder": "Introduceți un link al melodiei",
+      "play": "Redă",
+      "errorTitle": "Eroare Muzică",
+      "errorMessages": {
+        "invalidUrl": "URL invalid. Te rugăm să introduci un link valid al melodiei.",
+        "invalidVideoData": "Date video invalide. Verifică URL-ul și încearcă din nou.",
+        "apiError": "Eroare API. Te rugăm să încerci mai târziu."
+      }
+    }
+  },
+  "location": {
+    "nearPostal": "Aproape de codul poștal"
+  },
+  "settingsMenu": {
+    "title": "HUD",
+    "subtitle": "Setări",
+    "reset": "Resetează setările",
+    "confirm": "Confirmă",
+    "cancel": "Anulează",
+    "categories": {
+      "general": "General",
+      "carhud": "HUD Mașină",
+      "status": "HUD Status",
+      "corner": "Colț Dreapta"
+    },
+    "fuel": {
+      "title": "Tip Combustibil",
+      "description": "Selectează tipul de combustibil al vehiculului. Litri sau galoane. * Modificările vor fi salvate.",
+      "litres": "Litri 100L",
+      "gallons": "Galoane 100G"
+    },
+    "map": {
+      "title": "Hartă",
+      "description": "Selectează formatul în care dorești să vezi harta.",
+      "square": "Pătrat",
+      "circle": "Cerc"
+    },
+    "cinematic": {
+      "title": "Mod Cinematic",
+      "description": "Activează sau dezactivează modul cinematic.",
+      "enabled": "Activat",
+      "disabled": "Dezactivat"
+    },
+    "carhuds": {
+      "modern": "Modern",
+      "agressive": "Agressiv",
+      "sport": "Sport",
+      "simple": "Simplu",
+      "simplev2": "Simplu V2",
+      "circle": "Cerc",
+      "changes": "*Modificările tale vor fi salvate",
+      "description": "În dreapta poți edita paletele de culori ale HUD-ului mașinii și să îți alegi propria culoare."
+    },
+    "status": {
+      "circle": "Cerc",
+      "circlev2": "Cerc V2",
+      "circlev3": "Cerc V3",
+      "circlev4": "Cerc V4",
+      "square": "Pătrat",
+      "squarev2": "Pătrat V2",
+      "hexagon": "Hexagon",
+      "wave": "Val",
+      "simple": "Simplu",
+      "simplev2": "Simplu V2",
+      "regular": "Normal",
+      "changes": "*Modificările tale vor fi salvate",
+      "description": "În dreapta poți edita paletele de culori ale HUD-ului status și să îți alegi propria culoare."
+    },
+    "rightCorner": {
+      "color": {
+        "title": "Selectează Culorile",
+        "description": "Alege culorile pentru elementele din colțul dreapta. Poți alege culori diferite pentru fiecare pictogramă și text."
+      },
+      "old": {
+        "title": "Vechi",
+        "description": "Conține informații în stil vechi, într-un singur rând."
+      },
+      "boxed_dynamic": {
+        "title": "Cutie Dinamică",
+        "description": "Forma cutiei este dinamică. Culorile se pot schimba în funcție de ora zilei."
+      },
+      "modern": {
+        "title": "Modern",
+        "description": "Are un aspect modern într-o cutie. Recomandat cu încredere."
+      },
+      "simple": {
+        "title": "Simplu",
+        "description": "Un design simplu fără cutii. Foarte util pentru cei care preferă simplitatea."
+      }
+    },
+    "mapRadius": {
+      "title": "Mărginirea hărții",
+      "description": "Poți selecta cât de rotunjite sunt marginile hărții pătrate aici.",
+      "enabled": "Activat",
+      "disabled": "Dezactivat"
+    },
+    "performance": {
+      "title": "Mod performanță",
+      "description": "Poți selecta modul de performanță aici. Va schimba performanța HUD-ului. Este recomandat să folosești acest mod dacă ai un PC slab.",
+      "balanced": "Echilibrat",
+      "performance": "Performanță"
+    },
+    "speed": {
+      "title": "Tip viteză",
+      "description": "Selectează tipul de viteză pe care vrei să îl vezi în Carhud.",
+      "kmh": "KM/H",
+      "mph": "MP/H"
+    },
+    "theme_data": {
+      "title": "Exportă Tema",
+      "export": "Exportă",
+      "description": "Poți exporta tema curentă. Înlocuiește datele copiate cu datele din Config.json"
+    },
+
+    "editor": {
+      "title": "Mod Personalizare",
+      "description": "Aranjează pozițiile elementelor HUD. Obține aspectul dorit.",
+      "button": "Personalizare"
+    },
+
+    "minimap": {
+      "title": "Minimap",
+      "description": "Poți ascunde sau afișa minimapa aici.",
+      "show": "Afișează",
+      "hide": "Ascunde"
+    },
+
+    "scale": {
+      "title": "Scală",
+      "description": "Aici poți modifica scala HUD-ului. Acest lucru va schimba dimensiunea elementelor HUD-ului."
+    }
+  }
+}

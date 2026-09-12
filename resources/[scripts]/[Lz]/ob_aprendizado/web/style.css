@@ -1,0 +1,243 @@
+:root {
+    font-family: Georgia, 'Times New Roman', serif;
+    --violet: #a96bff;
+    --violet-soft: #d5bcff;
+    --gold: #c7b477;
+    --ink: #050809;
+}
+
+* { box-sizing: border-box; }
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background: transparent !important;
+}
+
+body.preview { background: #666b6d !important; }
+button { font: inherit; }
+
+.lesson {
+    position: fixed;
+    inset: 0;
+    display: none;
+    overflow: hidden;
+    color: #eee9dc;
+    pointer-events: none;
+    background: transparent;
+}
+
+.lesson.is-visible {
+    display: block;
+    pointer-events: auto;
+    background: var(--ink);
+}
+
+.ritual-backdrop,
+.ritual-haze {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.ritual-backdrop {
+    background-color: #071011;
+    background-image: url('assets/ritual-backdrop.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.ritual-haze {
+    background: rgba(1, 5, 7, 0.3);
+}
+
+.close-button {
+    position: absolute;
+    z-index: 10;
+    top: clamp(18px, 3vh, 34px);
+    right: clamp(20px, 3vw, 46px);
+    width: 38px;
+    height: 38px;
+    padding: 0 0 3px;
+    border: 1px solid rgba(205, 188, 134, 0.52);
+    border-radius: 50%;
+    color: #d7cfb3;
+    background: rgba(4, 9, 11, 0.92);
+    font-size: 25px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus-visible {
+    color: #fff;
+    border-color: var(--violet-soft);
+    outline: none;
+}
+
+.ritual-header {
+    position: absolute;
+    z-index: 3;
+    top: clamp(24px, 4.4vh, 54px);
+    left: 50%;
+    width: min(760px, 76vw);
+    display: grid;
+    justify-items: center;
+    transform: translateX(-50%);
+}
+
+.eyebrow,
+.spell-index,
+.result-kicker {
+    font-family: Arial, sans-serif;
+    font-weight: 700;
+    letter-spacing: 0;
+}
+
+.eyebrow {
+    color: rgba(239, 231, 203, 0.92);
+    font-size: 12px;
+    text-shadow: 0 1px 2px #000;
+}
+
+.title-rule {
+    position: absolute;
+    top: 22px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: rgba(193, 175, 116, 0.22);
+}
+
+.title-rule i {
+    position: absolute;
+    top: -3px;
+    left: 50%;
+    width: 7px;
+    height: 7px;
+    border: 1px solid rgba(211, 193, 132, 0.75);
+    background: #0b1516;
+    transform: translateX(-50%) rotate(45deg);
+}
+
+.ritual-header h1 {
+    max-width: 72vw;
+    margin: 20px 0 7px;
+    overflow: hidden;
+    color: #f2ecd9;
+    font-family: 'Palatino Linotype', Georgia, serif;
+    font-size: clamp(30px, 2.6vw, 46px);
+    font-weight: 600;
+    line-height: 1;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-shadow: 0 2px 4px #000;
+}
+
+.spell-index {
+    color: var(--violet-soft);
+    font-size: 12px;
+    text-shadow: 0 1px 2px #000;
+}
+
+.trace-stage {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: 50%;
+    width: min(920px, 76vw);
+    height: min(620px, 66vh);
+    min-width: 520px;
+    min-height: 390px;
+    transform: translate(-50%, -48%);
+    touch-action: none;
+}
+
+#traceCanvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    transition: opacity 320ms ease;
+}
+
+.current-instruction {
+    position: absolute;
+    left: 50%;
+    bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    color: rgba(244, 239, 222, 0.94);
+    font: 700 12px/1.2 Arial, sans-serif;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    transition: opacity 220ms ease;
+    text-shadow: 0 1px 3px #000;
+}
+
+.trace-stage.is-complete .current-instruction {
+    opacity: 0;
+}
+
+.current-key {
+    width: 64px;
+    height: 44px;
+    object-fit: contain;
+}
+
+.result-seal {
+    position: absolute;
+    left: 50%;
+    bottom: 1px;
+    display: grid;
+    justify-items: center;
+    gap: 4px;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-50%);
+    transition: opacity 380ms ease;
+}
+
+.result-seal.is-visible { opacity: 1; }
+
+.result-kicker {
+    color: var(--violet-soft);
+    font-size: 11px;
+    text-shadow: 0 1px 3px #000;
+}
+
+.result-seal strong {
+    color: #f2ecd9;
+    font-size: 20px;
+    font-weight: 600;
+    text-shadow: 0 1px 3px #000;
+}
+
+.spell-preload { display: none; }
+
+.lesson.is-error .trace-stage { animation: error-pulse 360ms ease; }
+
+@keyframes error-pulse {
+    0%, 100% { opacity: 1; }
+    45% { opacity: 0.62; }
+}
+
+@media (max-width: 760px), (max-height: 620px) {
+    .ritual-header { top: 18px; }
+    .ritual-header h1 { margin-top: 10px; }
+
+    .trace-stage {
+        width: 88vw;
+        height: 69vh;
+        min-width: 0;
+        min-height: 260px;
+    }
+
+    .current-instruction { bottom: -2px; }
+}

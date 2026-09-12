@@ -1,0 +1,625 @@
+================================================================================
+  TEXTOS EXTRAIDOS DO doc_pt-BR.html — BASE PARA TRADUCAO
+  
+  INSTRUCOES PARA O AGENTE TRADUTOR:
+  - Traduza APENAS o texto apos o numero e ponto (ex: "1. texto aqui")
+  - NAO traduza nomes tecnicos: Config.*, Bridge.*, GetConvar(), etc.
+  - NAO traduza nomes de eventos: MathStoreFairyWingv6:spawn, etc.
+  - NAO traduza nomes de parametros: source, cor, permission, etc.
+  - NAO traduza nomes de frameworks: ESX, QB-Core, QBX, vRP, Standalone
+  - NAO traduza nomes de resources: ox_lib, qb-core, es_extended, etc.
+  - NAO traduza nomes de arquivos: config.lua, permissions.lua, etc.
+  - NAO traduza nomes de funcoes: HasPermission, CanEquipWings, etc.
+  - NAO traduza comandos: /asas, /asasremover, etc. (sao configuráveis)
+  - NAO traduza tags de cenario: ESX, QB-Core, vRP, Qualquer Framework, etc.
+  - MANTENHA emojis (🔧 ⚙️ 🌉 🔐 🔗 📡) iguais
+  - MANTENHA a estrutura: === SECAO === e --- TIPO ---
+  
+  IDIOMAS JA EXISTENTES: pt-BR, en-US, es (parcial)
+  IDIOMAS QUE FALTAM: fr, pt-PT, th
+================================================================================
+
+
+=== META ===
+--- TIPO: title ---
+1. MathStore: Fairy Wings V6 TIER 2 | Documentacao Tecnica
+
+=== NAV ===
+--- TIPO: brand ---
+2. FairyWings V6
+--- TIPO: nav-links ---
+3. Instalacao
+4. Config
+5. Bridge
+6. Permissoes
+7. Callbacks
+8. Eventos
+9. Comandos
+10. Avancado
+
+=== HERO ===
+--- TIPO: badge ---
+11. Documentacao Tecnica para Devs e Admins
+--- TIPO: h1 ---
+12. MathStore: Fairy Wings V6 TIER 2
+--- TIPO: subtitle ---
+13. Guia completo de integracao, eventos, callbacks, permissoes e configuracao. Tudo que voce precisa para implementar o resource na sua cidade.
+
+=== SECAO: visao-geral ===
+--- TIPO: section-label ---
+14. Visao Geral
+--- TIPO: h2 ---
+15. O que voce vai encontrar aqui?
+--- TIPO: p ---
+16. Esta documentacao e para desenvolvedores e administradores que precisam instalar, integrar ou customizar o resource no servidor FiveM. Cada secao e independente, voce nao precisa ficar voltando pra cima pra entender o que esta lendo.
+--- TIPO: feature-card ---
+17. 🔧 Instalacao + Licenca
+18. Tudo num lugar so: extrair, configurar a key/convar no server.cfg, dependencias. Pronto pra rodar.
+19. ⚙️ Configuracao Completa
+20. Todos os campos do config.lua, comandos renomeaveis, keybinds, cooldowns, idiomas, notificacoes.
+21. 🌉 Bridge Multi-Framework
+22. Como funciona a deteccao automatica de QBX, QB-Core, ESX, vRP e Standalone.
+23. 🔐 Permissoes
+24. 8 camadas de permissao: ACE, grupos, jobs, citizenid, vRP, sets. Exemplos pra cada framework.
+25. 🔗 Callbacks
+26. 5 callbacks pra injetar logica do SEU servidor: exigir item, checar quest, liberar habilidade, e mais.
+27. 📡 Eventos
+28. Lista completa de eventos server/client. Como escutar de outro resource, como integrar com seu sistema.
+
+=== SECAO: instalacao ===
+--- TIPO: section-label ---
+29. Setup Completo
+--- TIPO: h2 ---
+30. Instalacao e Licenca
+--- TIPO: p ---
+31. Tudo que voce precisa pra colocar o resource no ar. A licenca (key) faz parte da instalacao, entao esta tudo junto aqui.
+--- TIPO: h3 ---
+32. 1. Extrair o resource
+--- TIPO: p ---
+33. Coloque a pasta MathStoreFairyWingv6 dentro da sua pasta resources/.
+--- TIPO: alert-warn-title ---
+34. Nome da pasta
+--- TIPO: alert-warn-desc ---
+35. O nome da pasta precisa ser exatamente MathStoreFairyWingv6. Keybinds, eventos internos e state bags dependem desse nome.
+--- TIPO: h3 ---
+36. 2. Configurar a Key (Convar)
+--- TIPO: p ---
+37. Cada servidor precisa de uma key unica para o resource funcionar. Essa key e configurada como uma convar no seu server.cfg, e deve vir antes do ensure.
+--- TIPO: p ---
+38. O nome da convar e definido em config/config.lua:
+--- TIPO: h3 ---
+39. Como a validacao funciona
+--- TIPO: flow ---
+40. Servidor inicia e le a convar com GetConvar()
+41. Envia requisicao HTTP para a API de validacao
+42. SE valida → Resource carrega normalmente
+43. SE invalida → Resource para de funcionar
+44. Clients recebem evento authStatus confirmando status
+--- TIPO: alert-warn-title ---
+45. Cuidado com a key
+--- TIPO: alert-warn-desc ---
+46. Nao compartilhe sua key. Cada key e vinculada ao IP do servidor. Se mudar de host, entre em contato para migrar.
+--- TIPO: h3 ---
+47. 3. Dependencias
+--- TIPO: table-header ---
+48. Resource | Status | Funcao
+--- TIPO: table-row ---
+49. Opcional | Comandos com sugestoes, notificacoes estilizadas. Ativa em Config.UseOxLib
+50. Auto-detectado | Bridge QB/QBX para permissoes e player data
+51. Auto-detectado | Bridge ESX para permissoes e player data
+52. Auto-detectado | Bridge vRP para grupos, permissoes e identidade
+--- TIPO: alert-info-title ---
+53. Modo Standalone
+--- TIPO: alert-info-desc ---
+54. Se nenhum framework for detectado, o resource roda sozinho. Tudo funciona, apenas sem integracao de permissoes nativas do framework.
+
+=== SECAO: config ===
+--- TIPO: section-label ---
+55. Configuracao
+--- TIPO: h2 ---
+56. Config.lua
+--- TIPO: p ---
+57. O arquivo config/config.lua centraliza todas as opcoes do resource. Tudo que voce pode mudar esta aqui.
+--- TIPO: h3 ---
+58. Framework e Geral
+--- TIPO: alert-tip-title ---
+59. Dica
+--- TIPO: alert-tip-desc ---
+60. Com Config.Framework = 'auto', o resource detecta sozinho qual framework esta rodando. So force manualmente se tiver algum conflito.
+--- TIPO: h3 ---
+61. Notificacoes
+--- TIPO: table-header ---
+62. Valor | Comportamento
+--- TIPO: table-row ---
+63. Detecta: ox_lib > framework > native (nessa ordem)
+64. Forca ox_lib:notify
+65. Forca QBCore notification
+66. Forca ESX.ShowNotification
+67. Forca vRP notification
+68. Notificacao nativa do GTA V
+--- TIPO: h3 ---
+69. Keybinds
+--- TIPO: alert-info-title ---
+70. Como funciona
+--- TIPO: alert-info-desc ---
+71. Quando o valor e '' (vazio), nenhuma tecla e atribuida por padrao. O jogador vai em Configuracoes > Teclado > FiveM e escolhe a tecla que quiser. O texto que aparece la muda conforme o Config.Locale.
+--- TIPO: h3 ---
+72. Cooldowns
+--- TIPO: p ---
+73. O cooldown e por jogador, controlado no server. Quando o jogador desconecta, o cooldown e limpo.
+--- TIPO: h3 ---
+74. Idiomas (Locales)
+--- TIPO: p ---
+75. O idioma definido em Config.Locale afeta notificacoes, texto dos keybinds e toda a HUD radial. Tudo e traduzido em config/locales.lua.
+--- TIPO: table-header ---
+76. Codigo | Idioma
+--- TIPO: table-row ---
+77. Portugues (Brasil)
+78. Ingles (EUA)
+79. Espanhol
+80. Frances
+81. Portugues (Portugal)
+82. Tailandes
+--- TIPO: p ---
+83. O sistema usa a funcao L() pra buscar strings traduzidas:
+--- TIPO: h3 ---
+84. Comandos (Todos Renomeaveis)
+--- TIPO: p ---
+85. Todo comando pode ser renomeado. O jogador ve o nome que voce definir. A lista completa de comandos com parametros e permissoes esta mais abaixo na secao Comandos.
+
+=== SECAO: bridge ===
+--- TIPO: section-label ---
+86. Multi-Framework
+--- TIPO: h2 ---
+87. Sistema Bridge
+--- TIPO: p ---
+88. O resource detecta automaticamente o framework do servidor e adapta todas as funcoes internas. Voce nao precisa configurar nada na maioria dos casos.
+--- TIPO: h3 ---
+89. Como a deteccao funciona
+--- TIPO: p ---
+90. Em bridge/shared.lua, o sistema verifica quais resources estao rodando e escolhe o bridge correto:
+--- TIPO: table-header ---
+91. Framework | Resource Detectado | Resultado
+--- TIPO: table-row ---
+92. Nenhum | - | 'standalone'
+--- TIPO: h3 ---
+93. Funcoes do Bridge (Server-side)
+--- TIPO: p ---
+94. Funcoes disponiveis no server para interagir com os dados do jogador:
+--- TIPO: h3 ---
+95. Funcoes do Bridge (Client-side)
+--- TIPO: p ---
+96. Funcoes disponiveis no client:
+
+=== SECAO: permissoes ===
+--- TIPO: section-label ---
+97. Controle de Acesso
+--- TIPO: h2 ---
+98. Sistema de Permissoes
+--- TIPO: p ---
+99. Controla quem pode usar cada funcionalidade do resource. O sistema possui 8 camadas de checagem, verificadas em ordem. Quando qualquer camada da uma resposta definitiva (permitir ou negar), as proximas nao sao verificadas.
+--- TIPO: h3 ---
+100. Chaves de Permissao
+--- TIPO: p ---
+101. Existem duas chaves usadas em todo o sistema:
+--- TIPO: table-header ---
+102. Chave | Onde e usada | Descricao
+--- TIPO: table-row ---
+103. Todos os comandos de asas, HUD, animacoes | Permissao geral para usar o resource
+104. /asaslimpar | Permissao admin para limpar todas as asas do servidor
+--- TIPO: h3 ---
+105. Fluxo completo de checagem (8 camadas)
+--- TIPO: p ---
+106. Quando um jogador executa qualquer comando, a permissao e verificada nessa ordem:
+--- TIPO: flow ---
+107. Retorna true/false? Usa e para aqui
+108. Retorna nil? Continua pra proxima camada
+109. Se enabled = false, TODOS tem acesso (sem restricao)
+110. Lista de IDs especificos permitidos
+--- TIPO: h3 ---
+111. Permitir para todos (sem nenhuma restricao)
+--- TIPO: h3 ---
+112. Restringir por grupo vRP
+--- TIPO: h3 ---
+113. Restringir por ACE Permission
+--- TIPO: h3 ---
+114. Restringir por Job (QB/ESX)
+--- TIPO: h3 ---
+115. Restringir por CitizenID especifico
+--- TIPO: h3 ---
+116. Grupos ACE customizados
+--- TIPO: p ---
+117. Mapeia nomes amigaveis para os ACE groups reais do seu servidor:
+
+=== SECAO: callbacks ===
+--- TIPO: section-label ---
+118. Callbacks
+--- TIPO: h2 ---
+119. Callbacks: Injetando Logica do Seu Servidor
+--- TIPO: p ---
+120. Os callbacks permitem que voce escreva sua propria logica dentro do fluxo do resource, sem editar nenhum arquivo interno. Tudo fica em config/config.lua. Use eles para decidir quem pode usar, o que acontece quando equipa, o que acontece quando remove, e qualquer regra personalizada do seu servidor.
+--- TIPO: h3 ---
+121. Tabela de Callbacks
+--- TIPO: table-header ---
+122. Callback | Parametros | Retorno | Momento da chamada
+--- TIPO: table-row ---
+123. Antes de abrir a HUD radial
+124. Antes de equipar asas
+125. Depois de equipar asas
+126. Depois de remover asas
+127. Antes de qualquer checagem de permissao
+--- TIPO: alert-info-title ---
+128. Sobre o CanEquipWings
+--- TIPO: alert-info-desc ---
+129. O parametro cor pode ser nil ou um number. Quando e nil, o server esta checando se o botao "Pegar Asa" da HUD deve ficar habilitado. Quando e um numero, e uma tentativa real de equipar. Trate os dois casos no seu callback.
+--- TIPO: h3 ---
+130. Cenarios com exemplos completos
+--- TIPO: p ---
+131. Cada cenario abaixo e completo e auto-contido. Copie o que fizer sentido pro seu servidor.
+
+--- TIPO: scenario-title ---
+132. Exigir item no inventario pra equipar (e devolver ao remover)
+--- TIPO: scenario-desc ---
+133. O jogador precisa ter o item fairy_dust no inventario. Ao equipar, o item e consumido. Ao remover as asas, o item volta pro inventario.
+
+--- TIPO: scenario-title ---
+134. Exigir item no inventario pra equipar (e devolver ao remover)
+--- TIPO: scenario-desc ---
+135. Mesma logica do ESX, mas usando as funcoes do QB-Core.
+
+--- TIPO: scenario-title ---
+136. Exigir item no inventario pra equipar (e devolver ao remover)
+--- TIPO: scenario-desc ---
+137. Mesma logica usando funcoes do vRP.
+
+--- TIPO: scenario-title ---
+138. Jogador precisa estar em um local especifico
+--- TIPO: scenario-desc ---
+139. O jogador so pode equipar se estiver dentro de uma area definida. Util pra criar "templos", altares ou zonas magicas onde as asas sao liberadas.
+
+--- TIPO: scenario-title ---
+140. Jogador precisa ter completado uma quest ou progressao
+--- TIPO: scenario-desc ---
+141. Se o seu servidor tem sistema de quests ou progressao, voce pode verificar se o jogador completou uma etapa antes de liberar as asas. Este exemplo usa exports de um resource de quests generico, adapte pro sistema do seu servidor.
+
+--- TIPO: scenario-title ---
+142. Jogador precisa ter desbloqueado uma habilidade (skill tree)
+--- TIPO: scenario-desc ---
+143. Se o servidor usa sistema de habilidades, arvore de skills, ou progressao por nivel, voce pode condicionar o uso das asas a uma skill especifica.
+
+--- TIPO: scenario-title ---
+144. Asas somente para VIPs (ou qualquer ACE group)
+--- TIPO: scenario-desc ---
+145. Bloquear tanto a HUD quanto o equipar para quem nao e VIP. Pode usar com qualquer grupo ACE do seu servidor.
+
+--- TIPO: scenario-title ---
+146. Combinar varias regras: item + local + nivel
+--- TIPO: scenario-desc ---
+147. Exemplo completo combinando varias condicoes. O jogador precisa ter um item, estar num local especifico e ter nivel minimo. Mostra como compor regras complexas num unico callback.
+
+--- TIPO: scenario-title ---
+148. Override total da permissao com logica propria
+--- TIPO: scenario-desc ---
+149. Se voce tem um sistema de permissao proprio no servidor e quer ignorar completamente o sistema de 8 camadas, use o callback HasPermission. Retornar true ou false pula todas as checagens padrao. Retornar nil deixa o sistema continuar normalmente.
+
+--- TIPO: scenario-title ---
+150. Permissao baseada em cargos do Discord
+--- TIPO: scenario-desc ---
+151. Vamos supor que voce quer basear seu sistema de permissao em cargos do Discord. Isso e possivel! Basta ter um resource de integracao Discord no servidor (como badger_discord_api, discord_perms, deek_discord, etc.) que forneca um export pra checar cargo. O callback HasPermission faz o resto.
+
+--- TIPO: alert-tip-title ---
+152. Combinando Discord + sistema padrao
+--- TIPO: alert-tip-desc ---
+153. Se voce quiser que o jogador tenha acesso se tiver o cargo do Discord OU se passar no sistema padrao (vRP, ACE, job, etc.), basta retornar nil quando o cargo nao for encontrado. Assim o sistema continua checando as outras 7 camadas normalmente:
+
+=== SECAO: eventos ===
+--- TIPO: section-label ---
+154. Eventos e Integracao
+--- TIPO: h2 ---
+155. Eventos: Escutando e Integrando
+--- TIPO: p ---
+156. O resource dispara diversos eventos ao longo do ciclo de vida das asas. Voce pode escutar esses eventos de outros resources pra criar integracoes, sincronizar sistemas, ou reagir quando algo acontece.
+--- TIPO: h3 ---
+157. Nomenclatura dos eventos
+--- TIPO: p ---
+158. Todos os eventos sao prefixados automaticamente com o nome do resource para evitar conflito. O prefixo segue o padrao:
+--- TIPO: alert-info-title ---
+159. Sobre os nomes
+--- TIPO: alert-info-desc ---
+160. Os nomes exatos sao gerados automaticamente em bridge/shared.lua usando GetCurrentResourceName(). Abaixo, usamos o nome padrao MathStoreFairyWingv6.
+--- TIPO: h3 ---
+161. Eventos Client → Server (Sincronizacao)
+--- TIPO: p ---
+162. Quando o jogador faz algo localmente, o client envia esses eventos pro server pra que outros jogadores vejam:
+--- TIPO: table-header ---
+163. Evento | Parametros | Quando e enviado
+--- TIPO: table-row ---
+164. Asas criadas localmente
+165. Animacao da asa mudou
+166. Asas removidas localmente
+167. Tocar som em posicao
+168. Runa criada
+169. Runas deletadas
+170. Jogador pede estado atual (ao conectar)
+--- TIPO: h3 ---
+171. Eventos Server → Client (Comandos)
+--- TIPO: p ---
+172. Quando um comando e validado no server (permissoes + callbacks), o server envia pro client executar. Estes sao direcionados ao jogador que executou o comando:
+--- TIPO: table-header ---
+173. Evento | Parametros | Acao
+--- TIPO: table-row ---
+174. Equipar asas
+175. Remover asas
+176. Abrir/fechar asas
+177. Toggle voo
+178. Mudar cor
+179. Abrir/fechar HUD
+180. Deletar TODAS (admin, broadcast -1)
+181. Deletar orfas proximo
+182. Animacao abrir
+183. Animacao fechar
+184. Animacao bater
+185. Equip cinematico
+186. Remove cinematico
+187. Ritual 1 (3 estagios)
+188. Ritual 2 (2 estagios, com runa mao)
+189. Ritual 3 (2 estagios, sem runa)
+190. Avancar pro estagio 2
+191. Voltar pro estagio 1
+192. Sair do ritual
+193. Spawnar runa magica
+194. Deletar runas
+195. Agachar (4 variantes)
+196. Sair do agachar
+197. Meditar no chao
+198. Meditar no ar
+199. Transicao chao → ar
+200. Transicao ar → chao
+201. Sair da meditacao
+202. Idle loop (6 variantes)
+203. Saudacao + idle5
+--- TIPO: h3 ---
+204. Eventos de Broadcast (Server → Todos no Bucket)
+--- TIPO: p ---
+205. Quando um jogador equipa/remove asas, o server envia pra todos os outros jogadores no mesmo routing bucket:
+--- TIPO: table-header ---
+206. Evento | Parametros | Acao
+--- TIPO: table-row ---
+207. Outro player equipou asas
+208. Animacao de outro player mudou
+209. Outro player removeu asas
+210. Tocar som de outro player
+211. Runa de outro player
+212. Runas de outro player deletadas
+213. Estado completo do bucket
+--- TIPO: h3 ---
+214. Eventos locais do Client (escutaveis por outros resources)
+--- TIPO: p ---
+215. O client emite eventos locais usando TriggerEvent (nao sao net events, sao locais do client). Outros resources podem escutar esses eventos com AddEventHandler:
+--- TIPO: table-header ---
+216. Evento | Parametros | Quando
+--- TIPO: table-row ---
+217. Jogador comecou a voar
+218. Jogador parou de voar
+219. Estado da animacao de voo mudou
+220. Modo rasante ativou/desativou
+221. Modo subida ativou/desativou
+--- TIPO: h3 ---
+222. Cenarios de integracao com exemplos completos
+--- TIPO: p ---
+223. Cada cenario abaixo mostra como escutar ou reagir a eventos do resource a partir de outro resource do seu servidor.
+
+--- TIPO: scenario-title ---
+224. Reagir quando um jogador comeca ou para de voar
+--- TIPO: scenario-desc ---
+225. Seu resource de HUD ou sistema de status pode escutar o inicio/fim do voo pra mostrar um indicador, aplicar efeito, ou alterar a camera.
+
+--- TIPO: scenario-title ---
+226. Detectar modo de voo especifico (rasante, subida)
+--- TIPO: scenario-desc ---
+227. Se voce quer aplicar efeitos visuais diferentes conforme o tipo de manobra que o jogador faz no ar.
+
+--- TIPO: scenario-title ---
+228. Escutar no server quando alguem equipa/remove asas
+--- TIPO: scenario-desc ---
+229. A partir de outro resource no server, voce pode escutar os eventos de sync pra logar, dar recompensa, notificar Discord, etc.
+
+--- TIPO: alert-warn-title ---
+230. Sobre escutar net events
+--- TIPO: alert-warn-desc ---
+231. Quando voce registra um RegisterNetEvent de outro resource, voce esta escutando o mesmo evento que o FairyWings ja escuta internamente. O FiveM permite multiplos handlers. Sua logica roda junto, sem interferir no resource original.
+
+--- TIPO: scenario-title ---
+232. Detectar quando uma runa magica e invocada
+--- TIPO: scenario-desc ---
+233. Se o seu sistema de magia, XP, ou efeitos visuais precisa saber quando uma runa foi criada.
+
+--- TIPO: scenario-title ---
+234. Reagir a mudancas de animacao de outro jogador
+--- TIPO: scenario-desc ---
+235. Quando outro jogador troca de animacao (ex: comeca ritual), o broadcast chega no seu client. Voce pode usar pra criar efeitos visuais sincronizados.
+
+--- TIPO: h3 ---
+236. Disparando eventos do FairyWings a partir de outro resource
+--- TIPO: p ---
+237. Os cenarios acima mostram como escutar eventos. Mas voce tambem pode disparar eventos do FairyWings direto do seu resource, sem depender de comandos. Isso e util quando o fluxo comeca fora do FairyWings (loja, item, NPC, quest, etc.).
+
+--- TIPO: alert-warn-title ---
+238. Importante
+--- TIPO: alert-warn-desc ---
+239. Quando voce dispara o evento direto, voce pula o sistema de permissoes e callbacks do FairyWings. A responsabilidade de checar se o jogador pode ou nao usar fica no SEU resource. Use isso so quando voce quer controle total do fluxo.
+
+--- TIPO: scenario-title ---
+240. Loja ou NPC que da asas ao jogador ao comprar
+--- TIPO: scenario-desc ---
+241. O jogador interage com um NPC ou loja, paga, e recebe as asas direto. Do server do seu resource, voce manda o evento :spawn pro client do jogador.
+
+--- TIPO: scenario-title ---
+242. Item usavel que equipa asas ao usar
+--- TIPO: scenario-desc ---
+243. Voce registra um item usavel no server. Quando o jogador usa o item, as asas sao equipadas automaticamente e o item e consumido.
+
+--- TIPO: scenario-title ---
+244. Item usavel que equipa asas ao usar
+--- TIPO: scenario-desc ---
+245. Mesma logica do ESX, mas usando QB-Core.
+
+--- TIPO: scenario-title ---
+246. Remover asas de um jogador a partir de outro resource
+--- TIPO: scenario-desc ---
+247. Se o jogador morreu, foi preso, entrou em uma zona restrita, ou qualquer outra condicao do seu servidor, voce pode forcar a remocao das asas.
+
+--- TIPO: scenario-title ---
+248. Trocar a cor das asas de outro resource
+--- TIPO: scenario-desc ---
+249. O jogador ja tem asas equipadas e voce quer mudar a cor sem remover e re-equipar. Util pra sistema de evolucao, recompensas, ou loja de cosmeticos.
+
+--- TIPO: scenario-title ---
+250. Quest ou evento do servidor que recompensa com asas
+--- TIPO: scenario-desc ---
+251. O jogador completou uma quest, um evento sazonal, ou um boss fight, e a recompensa e receber asas com uma cor especial.
+
+--- TIPO: scenario-title ---
+252. Ativar/desativar voo ou abrir HUD de outro resource
+--- TIPO: scenario-desc ---
+253. Voce pode controlar qualquer funcionalidade do FairyWings remotamente. Exemplos com varios eventos uteis:
+
+--- TIPO: h3 ---
+254. Fluxo completo: do comando ate a sincronizacao
+--- TIPO: p ---
+255. Pra entender como tudo se conecta, aqui esta o fluxo completo de quando um jogador digita /asas 5:
+--- TIPO: flow ---
+256. Jogador: /asas 5
+257. Server: Recebe comando registrado
+258. Checagem de 8 camadas (ver secao Permissoes)
+259. SEM permissao? → Bridge.Notify() + STOP
+260. Roda o callback do seu config.lua
+261. Callback retornou false? → STOP
+262. Client: Cria a entidade da asa, aplica cor 5
+263. Server: Salva em activeWings[source]
+264. Outros jogadores no mesmo bucket veem as asas aparecerem
+
+--- TIPO: h3 ---
+265. HUD e NUI
+--- TIPO: p ---
+266. A HUD radial usa o sistema NUI do FiveM. Quando o jogador abre a HUD, o client envia dados pro navegador embutido:
+--- TIPO: p ---
+267. Os botoes da HUD disparam NUI Callbacks:
+
+=== SECAO: comandos ===
+--- TIPO: section-label ---
+268. Referencia Completa
+--- TIPO: h2 ---
+269. Lista de Comandos
+--- TIPO: p ---
+270. Todos os comandos abaixo usam os nomes padrao. Todos podem ser renomeados no Config.Commands (secao Config).
+--- TIPO: h4 ---
+271. Basicos
+--- TIPO: table-header ---
+272. Comando | Parametro | Permissao | Descricao
+--- TIPO: table-row ---
+273. Equipar asas com cor
+274. Remover asas
+275. Abrir/fechar asas
+276. Toggle modo de voo
+277. Trocar cor sem remover
+278. Abrir/fechar HUD radial
+--- TIPO: h4 ---
+279. Cinematicas
+--- TIPO: table-header ---
+280. Comando | Parametro | Permissao | Descricao
+--- TIPO: table-row ---
+281. Equipar com animacao cinematica
+282. Remover com animacao cinematica
+--- TIPO: h4 ---
+283. Animacoes no chao
+--- TIPO: table-header ---
+284. Comando | Permissao | Descricao
+--- TIPO: table-row ---
+285. Abrir asas
+286. Fechar asas
+287. Bater asas
+--- TIPO: h4 ---
+288. Rituais
+--- TIPO: table-header ---
+289. Comando | Permissao | Descricao
+--- TIPO: table-row ---
+290. Ritual 1 (3 estagios)
+291. Ritual 2 (2 estagios, com runa na mao)
+292. Ritual 3 (2 estagios, sem runa)
+293. Sair do ritual ativo
+--- TIPO: h4 ---
+294. Agachar
+--- TIPO: table-header ---
+295. Comando | Permissao | Descricao
+--- TIPO: table-row ---
+296. Agachar variacao 1
+297. Agachar variacao 2
+298. Agachar variacao 3
+299. Agachar variacao 4
+300. Sair do agachar
+--- TIPO: h4 ---
+301. Meditacao
+--- TIPO: table-header ---
+302. Comando | Permissao | Descricao
+--- TIPO: table-row ---
+303. Meditar no chao
+304. Meditar no ar (precisa de asas)
+305. Transicao chao para ar
+306. Transicao ar para chao
+307. Sair da meditacao
+--- TIPO: h4 ---
+308. Idles
+--- TIPO: table-header ---
+309. Comando | Permissao | Descricao
+--- TIPO: table-row ---
+310. 6 variacoes de idle loop
+311. Saudacao + transicao pra idle5
+--- TIPO: h4 ---
+312. Runas
+--- TIPO: table-header ---
+313. Comando | Parametro | Permissao | Descricao
+--- TIPO: table-row ---
+314. Invocar runa magica
+315. Deletar todas as runas
+--- TIPO: h4 ---
+316. Admin
+--- TIPO: table-header ---
+317. Comando | Permissao | Descricao
+--- TIPO: table-row ---
+318. Remover TODAS as asas do servidor (broadcast global)
+319. Remover asas orfas (bugged) proximo de voce
+
+=== SECAO: avancado ===
+--- TIPO: section-label ---
+320. Topicos Avancados
+--- TIPO: h2 ---
+321. Routing Buckets, StateBag e Estado Interno
+--- TIPO: p ---
+322. Informacoes avancadas sobre como o resource gerencia sincronizacao, conflitos multi-resource e estado interno.
+--- TIPO: h3 ---
+323. Routing Buckets
+--- TIPO: p ---
+324. O resource respeita routing buckets do FiveM. Jogadores em buckets diferentes nao veem as asas uns dos outros. Toda a sincronizacao e filtrada por bucket.
+--- TIPO: alert-info-title ---
+325. Na pratica
+--- TIPO: alert-info-desc ---
+326. Se voce usa apartamentos, instancias, ou qualquer sistema baseado em routing buckets (ex: qb-apartments, esx_property), as asas funcionam corretamente em cada instancia sem interferir nas outras.
+--- TIPO: h3 ---
+327. StateBag (Multi-Resource)
+--- TIPO: p ---
+328. Se o servidor possui multiplos resources de asas da MathStore (ex: DragonWings + FairyWings), o sistema usa StateBag pra evitar conflitos. Apenas um resource pode ter asas ativas por jogador.
+--- TIPO: h3 ---
+329. Estado interno do Server
+--- TIPO: p ---
+330. O server mantém tres tabelas de estado que rastreiam tudo que esta ativo. Util pra entender debug e comportamento:
+
+=== SECAO: footer ===
+--- TIPO: footer ---
+331. MathStore: Fairy Wings V6 TIER 2 | Documentacao Tecnica
+--- TIPO: footer ---
+332. Desenvolvido por MathStore | Contato: math0001 no Discord
+
+================================================================================
+  FIM — Total: 332 textos extraidos
+================================================================================

@@ -1,0 +1,182 @@
+{
+    "rightCorner": {
+        "job": "Job",
+        "gang": "Gang",
+        "bank": "Bank",
+        "cash": "Cash",
+        "weapon": "Weapon",
+        "blackMoney": "Black Money"
+    },
+    "carhud": {
+        "kmh": "km/h",
+        "mph": "mp/h",
+        "feet": "ft",
+        "airspeed": "Airspeed",
+        "waterspeed": "Water Speed"
+    },
+    "quickMenu": {
+        "markText": "Click to mark it",
+        "categories": {
+            "nearby": "Nearby",
+            "music": "Music",
+            "car": "Car"
+        },
+        "nearby": {
+            "bank": "Bank",
+            "shop": "Shop",
+            "clothing": "Clothing Store",
+            "garage": "Garage",
+            "mechanic": "Mechanic",
+            "gunshop": "Gun Shop"
+        },
+        "music": {
+            "placeholder": "Enter a song URL",
+            "play": "Play",
+            "errorTitle": "Music Error",
+            "errorMessages": {
+                "invalidUrl": "Invalid URL. Please enter a valid song URL.",
+                "invalidVideoData": "Invalid video data. Please check the URL and try again.",
+                "apiError": "API Error. Please try again later."
+            }
+        }
+    },
+    "location": {
+        "nearPostal": "Near Postal"
+    },
+    "settingsMenu": {
+        "title": "Hud",
+        "subtitle": "Settings",
+        "reset": "Reset Settings",
+        "confirm": "Confirm",
+        "cancel": "Cancel",
+
+        "categories": {
+            "general": "General",
+            "carhud": "Car Hud",
+            "status": "Status Hud",
+            "corner": "Right Corner"
+        },
+
+        "fuel": {
+            "title": "Fuel Type",
+            "description": "Select the type of fuel used by the vehicle. Litres or Gallons. * Changes will be saved.",
+
+            "litres": "Litres 100L",
+            "gallons": "Gallons 100G"
+        },
+
+        "map": {
+            "title": "Map",
+            "description": "Select the format in which you want to see the map.",
+            "square": "Square",
+            "circle": "Circle"
+        },
+
+        "cinematic": {
+            "title": "Cinematic Mode",
+            "description": "Enable or disable cinematic mode..",
+            "enabled": "Enabled",
+            "disabled": "Disabled"
+        },
+
+        "carhuds": {
+            "modern": "Modern",
+            "agressive": "Agressive",
+            "sport": "Sport",
+            "simple": "Simple",
+            "simplev2": "Simple V2",
+            "circle": "Circle",
+
+            "changes": "*Your changes will be saved",
+            "description": "On the right you can edit carhud's colour palettes and find your own colour."
+        },
+
+        "status": {
+            "circle": "Circle",
+            "circlev2": "Circle V2",
+            "circlev3": "Circle V3",
+            "circlev4": "Circle V4",
+            "square": "Square",
+            "squarev2": "Square V2",
+            "hexagon": "Hexagon",
+            "wave": "Wave",
+            "simple": "Simple",
+            "simplev2": "Simple V2",
+            "regular": "Regular",
+
+            "changes": "*Your changes will be saved",
+            "description": "On the right you can edit hud's colour palettes and find your own colour."
+        },
+
+        "rightCorner": {
+            "color": {
+                "title": "Select Colors",
+                "description": "Select the colors for the right corner elements. You can choose a different colour for each icon and text."
+            },
+
+            "old": {
+                "title": "Old",
+                "description": "Contains the old-looking information in a row."
+            },
+            "boxed_dynamic": {
+                "title": "Boxed Dynamic",
+                "description": "The box shape has a dynamic appearance. The colours can change according to the morning or evening cycle."
+            },
+            "modern": {
+                "title": "Modern",
+                "description": "It is boxed and has the newest look. Definitely recommended."
+            },
+
+            "simple": {
+                "title": "Simple",
+                "description": "It is a simple design that does not contain any boxes. It is very useful for those who like simplicity."
+            }
+        },
+
+        "mapRadius": {
+            "title": "Map softness",
+            "description": "You can select the edge softness of the square map here.",
+
+            "enabled": "Enabled",
+            "disabled": "Disabled"
+        },
+
+        "performance": {
+            "title": "Performance Mode",
+            "description": "You can select the performance mode here. It will change the performance of the hud. It is recommended to use this mode if you have a low-end PC.",
+            "balanced": "Balanced",
+            "performance": "Performance"
+        },
+
+        "theme_data": {
+            "title": "Export Theme",
+            "export": "Export",
+            "description": "You can export your current theme. Replace the copied data with the data in Config.json"
+        },
+
+        "speed": {
+            "title": "Speed type",
+            "description": "Select the speed type you want to see in Carhud.",
+            "kmh": "KM/H",
+            "mph": "MP/H"
+        },
+
+        "editor": {
+            "title": "Customization Mode",
+            "description": "Arrange the positions of the HUD elements. Achieve the desired appearance.",
+            "button": "Customization"
+        },
+
+        "minimap": {
+            "title": "Minimap",
+            "description": "You can hide or show the minimap here.",
+            "show": "Show", 
+            "hide": "Hide"
+        },
+
+        "scale": {
+            "title": "Scale",
+            "description": "You can change the scale of the hud here. It will change the size of the hud elements."
+        }
+    }
+}

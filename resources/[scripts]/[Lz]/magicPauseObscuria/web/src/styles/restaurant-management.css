@@ -1,0 +1,753 @@
+.restaurant-manager {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  flex-direction: column;
+  overflow: hidden;
+  color: #f4f0f7;
+  background: rgba(13, 11, 16, 0.72);
+}
+
+.restaurant-manager button,
+.restaurant-manager input,
+.restaurant-manager select,
+.restaurant-manager textarea {
+  font: inherit;
+}
+
+.restaurant-manager button {
+  color: inherit;
+  cursor: pointer;
+}
+
+.restaurant-manager button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.restaurant-manager__header {
+  display: grid;
+  min-height: 82px;
+  flex: 0 0 auto;
+  grid-template-columns: 38px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.restaurant-manager__back {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border: 1px solid rgba(193, 159, 215, 0.22);
+  border-radius: 7px;
+  background: rgba(150, 101, 181, 0.09);
+}
+
+.restaurant-manager__back:hover {
+  border-color: rgba(202, 167, 224, 0.46);
+  background: rgba(150, 101, 181, 0.16);
+}
+
+.restaurant-manager__identity {
+  min-width: 0;
+}
+
+.restaurant-manager__identity > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #bda6c8;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.restaurant-manager__identity h2 {
+  margin: 3px 0 2px;
+  overflow: hidden;
+  color: #fff;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.restaurant-manager__identity small {
+  display: block;
+  overflow: hidden;
+  color: #8e8792;
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.restaurant-manager__availability {
+  display: flex;
+  min-width: 92px;
+  height: 34px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid rgba(105, 180, 125, 0.28);
+  border-radius: 7px;
+  color: #b9ddc2;
+  background: rgba(68, 130, 84, 0.09);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.restaurant-manager__availability i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #78c48b;
+  box-shadow: 0 0 9px rgba(120, 196, 139, 0.55);
+}
+
+.restaurant-manager__availability.closed {
+  border-color: rgba(183, 94, 111, 0.25);
+  color: #d6a4ad;
+  background: rgba(128, 55, 68, 0.09);
+}
+
+.restaurant-manager__availability.closed i {
+  background: #bf6a7a;
+  box-shadow: none;
+}
+
+.restaurant-manager__tabs {
+  display: flex;
+  height: 45px;
+  flex: 0 0 auto;
+  align-items: end;
+  gap: 3px;
+  padding: 0 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(7, 6, 9, 0.28);
+}
+
+.restaurant-manager__tabs button {
+  display: flex;
+  height: 35px;
+  align-items: center;
+  gap: 7px;
+  padding: 0 12px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  color: #8f8894;
+  background: transparent;
+  font-size: 10px;
+  font-weight: 650;
+}
+
+.restaurant-manager__tabs button:hover,
+.restaurant-manager__tabs button.active {
+  color: #e4d9e9;
+  background: rgba(154, 111, 180, 0.08);
+}
+
+.restaurant-manager__tabs button.active {
+  border-bottom-color: #9168aa;
+}
+
+.restaurant-manager__scroll {
+  min-height: 0;
+  flex: 1;
+  overflow-y: auto;
+  padding: 11px 14px 15px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(156, 112, 181, 0.38) transparent;
+}
+
+.restaurant-manager__scroll::-webkit-scrollbar {
+  width: 5px;
+}
+
+.restaurant-manager__scroll::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(156, 112, 181, 0.38);
+}
+
+.restaurant-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(120px, 1fr));
+  gap: 7px;
+}
+
+.restaurant-metrics article,
+.restaurant-manager__section {
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.restaurant-metrics article {
+  min-height: 76px;
+  padding: 10px;
+}
+
+.restaurant-metrics small,
+.restaurant-metrics strong,
+.restaurant-metrics span {
+  display: block;
+}
+
+.restaurant-metrics small,
+.restaurant-manager__section header small {
+  color: #8b8490;
+  font-size: 8px;
+  font-weight: 650;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.restaurant-metrics strong {
+  margin: 5px 0 3px;
+  color: #d4bddf;
+  font-size: 17px;
+}
+
+.restaurant-metrics span {
+  color: #77717b;
+  font-size: 8px;
+}
+
+.restaurant-manager__columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+  margin-top: 7px;
+}
+
+.restaurant-manager__section {
+  min-width: 0;
+  padding: 11px;
+}
+
+.restaurant-manager__section > header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 9px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.restaurant-manager__section > header > svg {
+  color: #bba3c7;
+}
+
+.restaurant-manager__section header h3 {
+  margin: 1px 0 0;
+  color: #f4eff7;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.restaurant-manager__section > p {
+  margin: 8px 0 0;
+  color: #817a85;
+  font-size: 8px;
+  line-height: 1.4;
+}
+
+.restaurant-manager label {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 7px;
+}
+
+.restaurant-manager label > span {
+  color: #aaa2ae;
+  font-size: 8px;
+  font-weight: 600;
+}
+
+.restaurant-manager input,
+.restaurant-manager select,
+.restaurant-manager textarea {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 255, 255, 0.095);
+  border-radius: 5px;
+  outline: 0;
+  color: #ece7ef;
+  background: rgba(5, 4, 7, 0.42);
+  font-size: 10px;
+}
+
+.restaurant-manager input,
+.restaurant-manager select {
+  height: 34px;
+  padding: 0 9px;
+}
+
+.restaurant-manager textarea {
+  min-height: 58px;
+  resize: vertical;
+  padding: 8px 9px;
+}
+
+.restaurant-manager input:focus,
+.restaurant-manager select:focus,
+.restaurant-manager textarea:focus {
+  border-color: rgba(169, 124, 195, 0.52);
+}
+
+.restaurant-inline-form {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px;
+}
+
+.restaurant-inline-form button,
+.restaurant-primary,
+.restaurant-secondary {
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-radius: 5px;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.restaurant-inline-form button,
+.restaurant-secondary {
+  border: 1px solid rgba(178, 139, 199, 0.28);
+  color: #d9c9e0;
+  background: rgba(136, 91, 160, 0.1);
+}
+
+.restaurant-primary {
+  width: 100%;
+  border: 1px solid rgba(180, 137, 204, 0.38);
+  color: #fbf8fc;
+  background: rgba(119, 80, 143, 0.72);
+}
+
+.restaurant-primary:hover:not(:disabled) {
+  background: rgba(139, 94, 166, 0.82);
+}
+
+.restaurant-form-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.restaurant-form-row--triple {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.restaurant-ranking ol {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.restaurant-ranking li {
+  display: flex;
+  min-height: 37px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+}
+
+.restaurant-ranking li b,
+.restaurant-ranking li small {
+  display: block;
+}
+
+.restaurant-ranking li b {
+  font-size: 9px;
+}
+
+.restaurant-ranking li small {
+  margin-top: 2px;
+  color: #77717b;
+  font-size: 8px;
+}
+
+.restaurant-ranking li strong {
+  color: #cdbbd5;
+  font-size: 9px;
+}
+
+.restaurant-catalog-management {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(270px, 0.75fr);
+  gap: 8px;
+  overflow: hidden;
+}
+
+.restaurant-recipe-editor {
+  overflow-y: auto;
+}
+
+.restaurant-catalog-side {
+  display: grid;
+  min-height: 0;
+  grid-template-rows: minmax(180px, 1fr) minmax(190px, 1fr);
+  gap: 8px;
+}
+
+.restaurant-library,
+.restaurant-category-editor {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.restaurant-library__list,
+.restaurant-category-list {
+  min-height: 0;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.restaurant-library__list article {
+  display: grid;
+  min-height: 47px;
+  grid-template-columns: 31px minmax(0, 1fr) 27px 27px;
+  align-items: center;
+  gap: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.restaurant-library__list article > img,
+.restaurant-library__list article > span {
+  display: grid;
+  width: 29px;
+  height: 29px;
+  place-items: center;
+  object-fit: cover;
+  border: 1px solid rgba(174, 132, 197, 0.22);
+  color: #b79bc5;
+  background: rgba(132, 88, 157, 0.08);
+}
+
+.restaurant-library__list b,
+.restaurant-library__list small,
+.restaurant-category-list b,
+.restaurant-category-list small {
+  display: block;
+}
+
+.restaurant-library__list b,
+.restaurant-category-list b {
+  overflow: hidden;
+  font-size: 9px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.restaurant-library__list small,
+.restaurant-category-list small {
+  margin-top: 2px;
+  color: #78717d;
+  font-size: 7.5px;
+}
+
+.restaurant-library__list button,
+.restaurant-category-list button,
+.restaurant-point-list article button {
+  display: grid;
+  width: 25px;
+  height: 25px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  color: #a9a1ad;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.restaurant-library__list button:last-child,
+.restaurant-category-list button,
+.restaurant-point-list article button:last-child {
+  color: #c67e8d;
+}
+
+.restaurant-text-button {
+  margin-left: auto;
+  border: 0;
+  color: #bba5c5;
+  background: transparent;
+  font-size: 8px;
+}
+
+.restaurant-checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 3px 0 8px;
+}
+
+.restaurant-checks label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 0;
+  color: #a49ba8;
+  font-size: 8px;
+}
+
+.restaurant-checks input {
+  width: 13px;
+  height: 13px;
+}
+
+.restaurant-craft-flow {
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #493d50;
+  background: #151119;
+}
+.restaurant-craft-flow > header { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+.restaurant-craft-flow > header small, .restaurant-craft-flow > header strong { display: block; }
+.restaurant-craft-flow > header small { color: #a77bc1; font-size: 8px; text-transform: uppercase; }
+.restaurant-craft-flow > header strong { margin-top: 2px; font-size: 11px; }
+.restaurant-craft-flow > header > span { color: #8c8391; font-size: 9px; }
+.restaurant-craft-picker { display: flex; gap: 5px; padding-bottom: 8px; overflow-x: auto; }
+.restaurant-craft-picker button { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 4px; min-height: 29px; padding: 0 8px; border: 1px solid #4d4055; color: #bbaec3; background: #1b171f; font-size: 8px; }
+.restaurant-craft-picker button:hover { border-color: #89639f; color: #f3eaf6; }
+.restaurant-craft-list { display: grid; gap: 4px; }
+.restaurant-craft-list article { display: grid; grid-template-columns: 25px minmax(0, 1fr) repeat(3, 24px); align-items: center; gap: 4px; min-height: 38px; padding: 4px 5px; border-left: 2px solid #855ca0; background: #1b171e; }
+.restaurant-craft-list article > b { color: #ae80c8; text-align: center; }
+.restaurant-craft-list article strong, .restaurant-craft-list article small { display: block; }
+.restaurant-craft-list article strong { font-size: 9px; }
+.restaurant-craft-list article small { margin-top: 2px; color: #817887; font-size: 8px; }
+.restaurant-craft-list article button { display: grid; width: 23px; height: 23px; place-items: center; border: 1px solid #453d48; color: #9f95a4; background: #110e13; }
+.restaurant-craft-list article button:last-child { color: #c87580; }
+.restaurant-craft-list article button:disabled { opacity: .25; }
+.restaurant-craft-flow > p { margin: 6px 0 0; color: #7f7683; font-size: 8px; }
+
+.restaurant-category-icons {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding-bottom: 5px;
+}
+
+.restaurant-category-icons button {
+  height: 29px;
+  flex: 0 0 auto;
+  padding: 0 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  color: #918895;
+  background: rgba(255, 255, 255, 0.02);
+  font-size: 8px;
+}
+
+.restaurant-category-icons button.active {
+  border-color: rgba(176, 130, 201, 0.45);
+  color: #e3d6e9;
+  background: rgba(133, 89, 157, 0.16);
+}
+
+.restaurant-secondary {
+  width: max-content;
+  margin-top: 7px;
+  padding: 0 10px;
+}
+
+.restaurant-category-list {
+  display: grid;
+  align-content: start;
+  gap: 4px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.restaurant-category-list article {
+  display: grid;
+  min-height: 37px;
+  grid-template-columns: minmax(0, 1fr) 27px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 5px 0 8px;
+  border: 1px solid rgba(255, 255, 255, 0.065);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.restaurant-points-management {
+  display: grid;
+  grid-template-columns: minmax(250px, 0.7fr) minmax(0, 1.3fr);
+  gap: 8px;
+  overflow: hidden;
+}
+
+.restaurant-point-list {
+  overflow-y: auto;
+}
+
+.restaurant-point-list article {
+  display: grid;
+  min-height: 49px;
+  grid-template-columns: 29px minmax(0, 1fr) 27px 27px;
+  align-items: center;
+  gap: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.restaurant-point-list article > span {
+  display: grid;
+  width: 27px;
+  height: 27px;
+  place-items: center;
+  color: #b69bc3;
+}
+
+.restaurant-point-list article b,
+.restaurant-point-list article small {
+  display: block;
+}
+
+.restaurant-confirm {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(4, 3, 6, 0.78);
+}
+
+.restaurant-confirm > section {
+  width: min(390px, 100%);
+  padding: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  background: #151119;
+  box-shadow: 0 22px 55px rgba(0, 0, 0, 0.48);
+}
+
+.restaurant-confirm header,
+.restaurant-confirm footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.restaurant-confirm header small {
+  color: #c695cf;
+  font-size: 8px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.restaurant-confirm header h3 { margin: 4px 0 0; font-size: 14px; }
+.restaurant-confirm header > button {
+  display: grid;
+  width: 32px;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+  cursor: pointer;
+}
+.restaurant-confirm p { margin: 15px 0; color: rgba(255, 255, 255, 0.6); font-size: 10px; line-height: 1.45; }
+.restaurant-confirm footer { justify-content: flex-end; }
+.restaurant-confirm footer button {
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+  font: inherit;
+  font-size: 9px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.restaurant-confirm footer button.danger { border-color: rgba(217, 91, 105, 0.34); background: rgba(217, 91, 105, 0.12); color: #f3a7af; }
+.restaurant-confirm footer button:disabled { opacity: 0.45; cursor: wait; }
+
+.restaurant-point-list article b {
+  font-size: 9px;
+}
+
+.restaurant-point-list article small {
+  margin-top: 2px;
+  color: #77717c;
+  font-size: 8px;
+}
+
+@media (max-width: 1180px), (max-height: 760px) {
+  .restaurant-manager__header {
+    min-height: 68px;
+    padding: 8px 11px;
+  }
+
+  .restaurant-manager__tabs {
+    height: 40px;
+  }
+
+  .restaurant-manager__tabs button {
+    height: 31px;
+    padding: 0 8px;
+    font-size: 9px;
+  }
+
+  .restaurant-manager__scroll {
+    padding: 8px 10px 11px;
+  }
+
+  .restaurant-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .restaurant-metrics article {
+    min-height: 62px;
+  }
+
+  .restaurant-manager__section {
+    padding: 8px;
+  }
+
+  .restaurant-catalog-management,
+  .restaurant-points-management {
+    grid-template-columns: minmax(0, 1fr) minmax(230px, 0.72fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .restaurant-manager__columns,
+  .restaurant-catalog-management,
+  .restaurant-points-management {
+    grid-template-columns: 1fr;
+  }
+
+  .restaurant-catalog-management,
+  .restaurant-points-management {
+    overflow-y: auto;
+  }
+
+  .restaurant-catalog-side {
+    grid-template-rows: auto auto;
+  }
+}

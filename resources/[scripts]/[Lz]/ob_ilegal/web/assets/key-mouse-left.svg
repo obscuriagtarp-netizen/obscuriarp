@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 92 128" role="img" aria-label="Mouse esquerdo">
+  <path d="M30 4h32c15 0 26 12 26 28v46c0 27-18 46-42 46S4 105 4 78V32C4 16 15 4 30 4Z" fill="#505158"/>
+  <path d="M30 4h16v41H4V32C4 16 15 4 30 4Z" fill="#a96bff"/>
+  <path d="M46 4v41M4 45h84" fill="none" stroke="#eee8dc" stroke-linecap="round" stroke-width="6"/>
+  <path d="M30 4h32c15 0 26 12 26 28v46c0 27-18 46-42 46S4 105 4 78V32C4 16 15 4 30 4Z" fill="none" stroke="#eee8dc" stroke-linejoin="round" stroke-width="6"/>
+</svg>

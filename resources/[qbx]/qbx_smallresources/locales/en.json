@@ -1,0 +1,46 @@
+{
+   "error": {
+     "canceled": "Cancelado...",
+     "cruise_control_disabled": "Controle de velocidade desativado",
+     "cruise_control_unavailable": "Controle de velocidade indisponível",
+     "deleted_recording": "Gravação excluída!",
+     "later_aligator": "Até mais!",
+     "stress_gain": "Você está se sentindo mais estressado!",
+     "no_vehicle_nearby": "Não há nenhum veículo próximo para desvirar.",
+     "is_handcuffed": "Você está algemado.",
+     "is_fastened": "Você está usando o cinto de segurança.",
+     "vehicle_radio_off": "Rádio do veículo desligado"
+   },
+   "success": {
+     "cruise_control_enabled": "Controle de velocidade ativado",
+     "started_recording": "Gravação iniciada!",
+     "stopped_recording": "Gravação interrompida!",
+     "saved_recording": "Gravação salva!",
+     "stress_relief": "Você está se sentindo mais relaxado!",
+     "flipped_car": "Veículo desvirado com sucesso!",
+     "vehicle_radio_on": "Rádio do veículo ligado"
+   },
+   "progress": {
+     "eating": "Comendo...",
+     "drinking": "Bebendo...",
+     "drinking_liquor": "Bebendo álcool...",
+     "quick_sniff": "Cheirando...",
+     "smoking_crack": "Fumando crack...",
+     "popping_pills": "Tomando comprimidos...",
+     "healing": "Tratando ferimentos...",
+     "smoking_meth": "Fumando metanfetamina...",
+     "lighting_joint": "Acendendo baseado...",
+     "flipping_car": "Desvirando veículo..."
+   },
+   "info": {
+     "minutes": "minutos",
+     "seconds": "segundos...",
+     "shuffleSeat": "Trocar de assento",
+     "teleport_level_select": "Ir para o andar #%s",
+     "teleport_current_level_indication": "(Você está aqui)"
+   },
+   "actions": {
+     "push_vehicle": "Pressione [~g~SHIFT~w~] e [~g~E~w~] para empurrar o veículo até soltar [~g~SHIFT~w~]",
+     "toggle_cruise_control": "Ativar ou desativar o controle de velocidade"
+   }
+ }

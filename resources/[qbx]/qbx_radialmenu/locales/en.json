@@ -1,0 +1,57 @@
+{
+  "error": {
+    "no_people_nearby": "Não há jogadores por perto.",
+    "no_vehicle_nearby": "Não há nenhum veículo próximo para desvirar.",
+    "no_vehicle_found": "Nenhum veículo foi encontrado.",
+    "extra_deactivated": "O extra %s foi desativado.",
+    "extra_not_present": "O extra %s não está disponível neste veículo.",
+    "not_driver": "Você não é o motorista deste veículo.",
+    "vehicle_driving_fast": "Este veículo está rápido demais.",
+    "seat_occupied": "Este assento está ocupado.",
+    "race_harness_on": "Você está usando um cinto de corrida e não pode trocar de assento.",
+    "obj_not_found": "Não foi possível criar o objeto solicitado.",
+    "not_near_ambulance": "Você não está próximo de uma ambulância.",
+    "far_away": "Você está muito distante.",
+    "not_kidnapped": "Você não sequestrou esta pessoa.",
+    "trunk_closed": "O porta-malas está fechado.",
+    "cant_enter_trunk": "Você não pode entrar neste porta-malas.",
+    "already_in_trunk": "Você já está dentro do porta-malas.",
+    "someone_in_trunk": "Já existe alguém dentro do porta-malas.",
+    "cancel_task": "Cancelado"
+  },
+  "progress": {
+    "flipping_car": "Desvirando o veículo..."
+  },
+  "success": {
+    "extra_activated": "O extra %s foi ativado.",
+    "entered_trunk": "Você entrou no porta-malas.",
+    "flipped_car": "Veículo desvirado com sucesso!"
+  },
+  "info": {
+    "no_variants": "Não há nenhuma variação disponível para esta opção.",
+    "wrong_ped": "Este modelo de personagem não permite esta opção.",
+    "nothing_to_remove": "Você não possui nada para remover.",
+    "already_wearing": "Você já está usando isso.",
+    "switched_seats": "Você mudou para o assento: %s."
+  },
+  "general": {
+    "command_description": "Abrir o menu radial",
+    "get_out_trunk_button": "[E] Sair do porta-malas",
+    "close_trunk_button": "[G] Fechar porta-malas",
+    "open_trunk_button": "[G] Abrir porta-malas",
+    "getintrunk_command_desc": "Entrar no porta-malas",
+    "putintrunk_command_desc": "Colocar o jogador no porta-malas",
+    "gang_radial": "Clã",
+    "job_radial": "Emprego"
+  },
+  "options": {
+    "flip": "Desvirar veículo",
+    "vehicle": "Veículo",
+    "emergency_button": "Botão de emergência",
+    "driver_seat": "Assento do motorista",
+    "passenger_seat": "Assento do passageiro",
+    "other_seats": "Outro assento",
+    "rear_left_seat": "Assento traseiro esquerdo",
+    "rear_right_seat": "Assento traseiro direito"
+  }
+}

@@ -1,0 +1,165 @@
+{
+  "rightCorner": {
+    "job": "Lavoro",
+    "gang": "Banda",
+    "bank": "Banca",
+    "cash": "Contanti",
+    "weapon": "Arma",
+    "blackMoney": "Soldi neri"
+  },
+  "carhud": {
+    "kmh": "km/h",
+    "mph": "mph",
+    "feet": "ft",
+    "airspeed": "Velocità Aerea",
+    "waterspeed": "Velocità Acqua"
+  },
+  "quickMenu": {
+    "markText": "Clicca per segnare",
+    "categories": {
+      "nearby": "Vicino",
+      "music": "Musica",
+      "car": "Auto"
+    },
+    "nearby": {
+      "bank": "Banca",
+      "shop": "Negozio",
+      "clothing": "Negozio di Abbigliamento",
+      "garage": "Garage",
+      "mechanic": "Meccanico",
+      "gunshop": "Armeria"
+    },
+    "music": {
+      "placeholder": "Inserisci l'URL della canzone",
+      "play": "Riproduci",
+      "errorTitle": "Errore Musica",
+      "errorMessages": {
+        "invalidUrl": "URL non valido. Inserisci un URL valido della canzone.",
+        "invalidVideoData": "Dati video non validi. Controlla l'URL e riprova.",
+        "apiError": "Errore API. Riprova più tardi."
+      }
+    }
+  },
+  "location": {
+    "nearPostal": "Vicino al CAP"
+  },
+  "settingsMenu": {
+    "title": "Hud",
+    "subtitle": "Impostazioni",
+    "reset": "Ripristina impostazioni",
+    "confirm": "Conferma",
+    "cancel": "Annulla",
+    "categories": {
+      "general": "Generale",
+      "carhud": "Hud Auto",
+      "status": "Hud Stato",
+      "corner": "Angolo Destro"
+    },
+    "fuel": {
+      "title": "Tipo di Carburante",
+      "description": "Seleziona il tipo di carburante utilizzato dal veicolo. Litri o Galloni. * Le modifiche verranno salvate.",
+      "litres": "Litri 100L",
+      "gallons": "Galloni 100G"
+    },
+    "map": {
+      "title": "Mappa",
+      "description": "Seleziona il formato in cui vuoi vedere la mappa.",
+      "square": "Quadrato",
+      "circle": "Cerchio"
+    },
+    "cinematic": {
+      "title": "Modalità Cinematografica",
+      "description": "Abilita o disabilita la modalità cinematografica.",
+      "enabled": "Abilitato",
+      "disabled": "Disabilitato"
+    },
+    "carhuds": {
+      "modern": "Moderno",
+      "agressive": "Aggressivo",
+      "sport": "Sportivo",
+      "simple": "Semplice",
+      "simplev2": "Semplice V2",
+      "circle": "Cerchio",
+      "changes": "*Le modifiche verranno salvate",
+      "description": "A destra puoi modificare la palette colori dell'hud auto e trovare il tuo colore ideale."
+    },
+    "status": {
+      "circle": "Cerchio",
+      "circlev2": "Cerchio V2",
+      "circlev3": "Cerchio V3",
+      "circlev4": "Cerchio V4",
+      "square": "Quadrato",
+      "squarev2": "Quadrato V2",
+      "hexagon": "Esagono",
+      "wave": "Onda",
+      "simple": "Semplice",
+      "simplev2": "Semplice V2",
+      "regular": "Standard",
+      "changes": "*Le modifiche verranno salvate",
+      "description": "A destra puoi modificare la palette colori dell'hud stato e trovare il tuo colore ideale."
+    },
+    "rightCorner": {
+      "color": {
+        "title": "Seleziona Colori",
+        "description": "Seleziona i colori per gli elementi dell'angolo destro. Puoi scegliere un colore diverso per ogni icona e testo."
+      },
+      "old": {
+        "title": "Vecchio",
+        "description": "Contiene informazioni vecchio stile disposte in riga."
+      },
+      "boxed_dynamic": {
+        "title": "Box Dinamico",
+        "description": "Aspetto dinamico del box. I colori cambiano in base al ciclo giorno/notte."
+      },
+      "modern": {
+        "title": "Moderno",
+        "description": "Stile box moderno. Altamente raccomandato."
+      },
+      "simple": {
+        "title": "Semplice",
+        "description": "Design pulito senza box. Ideale per chi ama la semplicità."
+      }
+    },
+    "mapRadius": {
+      "title": "Morbidezza Bordi Mappa",
+      "description": "Puoi selezionare la morbidezza dei bordi della mappa quadrata qui.",
+      "enabled": "Abilitato",
+      "disabled": "Disabilitato"
+    },
+    "performance": {
+      "title": "Modalità prestazioni",
+      "description": "Puoi selezionare la modalità prestazioni qui. Cambierà le prestazioni dell'HUD. Si consiglia di utilizzare questa modalità se si dispone di un PC di fascia bassa.",
+      "balanced": "Bilanciato",
+      "performance": "Prestazioni"
+    },
+    "speed": {
+      "title": "Tipo di velocità",
+      "description": "Seleziona il tipo di velocità che vuoi vedere nell'HUD dell'auto.",
+      "kmh": "KM/H",
+      "mph": "MP/H"
+    },
+    "theme_data": {
+      "title": "Esporta Tema",
+      "export": "Esporta",
+      "description": "Puoi esportare il tuo tema attuale. Sostituisci i dati copiati con i dati in Config.json"
+    },
+
+    "editor": {
+      "title": "Modalità Personalizzazione",
+      "description": "Organizza le posizioni degli elementi HUD. Ottieni l'aspetto desiderato.",
+      "button": "Personalizzazione"
+    },
+
+    "minimap": {
+      "title": "Minimappa",
+      "description": "Qui puoi nascondere o mostrare la minimappa.",
+      "show": "Mostra",
+      "hide": "Nascondi"
+    },
+
+    "scale": {
+      "title": "Scala",
+      "description": "Qui puoi modificare la scala dell'HUD. Questo cambierà la dimensione degli elementi dell'HUD."
+    }
+  }
+}

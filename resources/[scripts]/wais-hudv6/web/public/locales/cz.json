@@ -1,0 +1,165 @@
+{
+  "rightCorner": {
+    "job": "Povolání",
+    "gang": "Gang",
+    "bank": "Banka",
+    "cash": "Hotovost",
+    "weapon": "Zbraň",
+    "blackMoney": "Černé peníze"
+  },
+  "carhud": {
+    "kmh": "km/h",
+    "mph": "mph",
+    "feet": "ft",
+    "airspeed": "Rychlost vzduchu",
+    "waterspeed": "Rychlost vody"
+  },
+  "quickMenu": {
+    "markText": "Klikni pro označení",
+    "categories": {
+      "nearby": "Blízko",
+      "music": "Hudba",
+      "car": "Auto"
+    },
+    "nearby": {
+      "bank": "Banka",
+      "shop": "Obchod",
+      "clothing": "Obchod s oblečením",
+      "garage": "Garáž",
+      "mechanic": "Mechanik",
+      "gunshop": "Obchod se zbraněmi"
+    },
+    "music": {
+      "placeholder": "Zadejte URL písničky",
+      "play": "Přehrát",
+      "errorTitle": "Chyba Hudby",
+      "errorMessages": {
+        "invalidUrl": "Neplatná URL. Prosím zadejte platnou URL písničky.",
+        "invalidVideoData": "Neplatná data videa. Zkontrolujte URL a zkuste to znovu.",
+        "apiError": "Chyba API. Zkuste to prosím později."
+      }
+    }
+  },
+  "location": {
+    "nearPostal": "Blízko PSČ"
+  },
+  "settingsMenu": {
+    "title": "Hud",
+    "subtitle": "Nastavení",
+    "reset": "Obnovit nastavení",
+    "confirm": "Potvrdit",
+    "cancel": "Zrušit",
+    "categories": {
+      "general": "Obecné",
+      "carhud": "Auto HUD",
+      "status": "Status HUD",
+      "corner": "Pravý roh"
+    },
+    "fuel": {
+      "title": "Typ paliva",
+      "description": "Vyberte typ paliva používaného vozidlem. Litry nebo Galony. * Změny budou uloženy.",
+      "litres": "Litry 100L",
+      "gallons": "Galony 100G"
+    },
+    "map": {
+      "title": "Mapa",
+      "description": "Vyberte formát mapy, který chcete zobrazit.",
+      "square": "Čtverec",
+      "circle": "Kruh"
+    },
+    "cinematic": {
+      "title": "Filmový režim",
+      "description": "Povolit nebo zakázat filmový režim.",
+      "enabled": "Povoleno",
+      "disabled": "Zakázáno"
+    },
+    "carhuds": {
+      "modern": "Moderní",
+      "agressive": "Agresivní",
+      "sport": "Sportovní",
+      "simple": "Jednoduchý",
+      "simplev2": "Jednoduchý V2",
+      "circle": "Kruh",
+      "changes": "*Vaše změny budou uloženy",
+      "description": "Vpravo můžete upravit barevné palety HUDu a najít si vlastní barvy."
+    },
+    "status": {
+      "circle": "Kruh",
+      "circlev2": "Kruh V2",
+      "circlev3": "Kruh V3",
+      "circlev4": "Kruh V4",
+      "square": "Čtverec",
+      "squarev2": "Čtverec V2",
+      "hexagon": "Šestiúhelník",
+      "wave": "Vlna",
+      "simple": "Jednoduchý",
+      "simplev2": "Jednoduchý V2",
+      "regular": "Běžný",
+      "changes": "*Vaše změny budou uloženy",
+      "description": "Vpravo můžete upravit barevné palety HUDu a najít si vlastní barvy."
+    },
+    "rightCorner": {
+      "color": {
+        "title": "Vyberte barvy",
+        "description": "Vyberte barvy pro prvky v pravém rohu. Každá ikona a text může mít svou vlastní barvu."
+      },
+      "old": {
+        "title": "Starý",
+        "description": "Obsahuje starší styl zobrazení v řádku."
+      },
+      "boxed_dynamic": {
+        "title": "Dynamický Box",
+        "description": "Box má dynamický vzhled. Barvy se mění podle denního cyklu."
+      },
+      "modern": {
+        "title": "Moderní",
+        "description": "Krabicový s moderním vzhledem. Určitě doporučeno."
+      },
+      "simple": {
+        "title": "Jednoduchý",
+        "description": "Jednoduchý design bez rámečků. Velmi vhodné pro milovníky jednoduchosti."
+      }
+    },
+    "mapRadius": {
+      "title": "Měkké okraje mapy",
+      "description": "Zde můžete nastavit měkkost okrajů čtvercové mapy.",
+      "enabled": "Povoleno",
+      "disabled": "Zakázáno"
+    },
+    "performance": {
+    "title": "Režim výkonu",
+    "description": "Zde můžete vybrat režim výkonu. Změní to výkon HUDu. Doporučuje se použít tento režim, pokud máte slabší PC.",
+    "balanced": "Vyvážený",
+    "performance": "Výkon"
+    },
+    "speed": {
+      "title": "Typ rychlosti",
+      "description": "Vyberte typ rychlosti, který chcete zobrazit v Carhudu.",
+      "kmh": "KM/H",
+      "mph": "MP/H"
+    },
+    "theme_data": {
+      "title": "Export motivu",
+      "export": "Exportovat",
+      "description": "Můžete exportovat svůj aktuální motiv. Nahraďte zkopírovaná data daty v Config.json"
+    },
+
+    "editor": {
+      "title": "Režim přizpůsobení",
+      "description": "Uspořádejte pozice prvků HUD. Dosáhněte požadovaného vzhledu.",
+      "button": "Přizpůsobení"
+    },
+
+    "minimap": {
+      "title": "Minimapa",
+      "description": "Zde můžete minimapu skrýt nebo zobrazit.",
+      "show": "Zobrazit",
+      "hide": "Skrýt"
+    },
+
+    "scale": {
+      "title": "Měřítko",
+      "description": "Zde můžete změnit měřítko HUDu. Změní to velikost prvků HUDu."
+    }
+  }
+}

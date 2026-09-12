@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathStore: Fairy Wings V6 TIER 2 | Technical Documentation</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000000;
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wrapper {
+            text-align: center;
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+        }
+        h1 span {
+            background: linear-gradient(135deg, #a78bfa, #6d5acf, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .doc-badge {
+            display: inline-block;
+            padding: 6px 18px;
+            border: 1px solid rgba(138,100,255,0.4);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #a78bfa;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 50px;
+        }
+
+        .lang-prompt {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-bottom: 32px;
+            line-height: 2;
+            color: #666;
+        }
+        .lang-prompt .sep {
+            color: rgba(167, 139, 250, 0.3);
+            margin: 0 6px;
+        }
+
+        .lang-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .lang-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            padding: 28px 20px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+        .lang-card:hover {
+            background: rgba(167, 139, 250, 0.06);
+            border-color: rgba(167, 139, 250, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .lang-flag {
+            font-size: 2.4rem;
+            line-height: 1;
+        }
+
+        .lang-name {
+            color: #ffffff;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .lang-native {
+            color: #777;
+            font-size: 0.75rem;
+            font-weight: 400;
+        }
+
+        .footer-note {
+            margin-top: 60px;
+            font-size: 0.7rem;
+            color: #333;
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8rem; margin-bottom: 12px; }
+            .lang-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .wrapper { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <h1>MathStore: <span>Fairy Wings V6</span> TIER 2</h1>
+    <div class="doc-badge">Technical Documentation for Devs & Admins</div>
+
+    <div class="lang-prompt">
+        Selecione seu idioma
+        <span class="sep">|</span>
+        Select your language
+        <span class="sep">|</span>
+        Selecciona tu idioma
+        <span class="sep">|</span>
+        Choisissez votre langue
+        <span class="sep">|</span>
+        เลือกภาษาของคุณ
+    </div>
+
+    <div class="lang-grid">
+        <a href="docs/doc_pt-BR.html" class="lang-card">
+            <div class="lang-flag">🇧🇷</div>
+            <div class="lang-name">Português</div>
+            <div class="lang-native">Brasil</div>
+        </a>
+
+        <a href="docs/doc_en-US.html" class="lang-card">
+            <div class="lang-flag">🇺🇸</div>
+            <div class="lang-name">English</div>
+            <div class="lang-native">United States</div>
+        </a>
+
+        <a href="docs/doc_es.html" class="lang-card">
+            <div class="lang-flag">🇪🇸</div>
+            <div class="lang-name">Español</div>
+            <div class="lang-native">España</div>
+        </a>
+
+        <a href="docs/doc_fr.html" class="lang-card">
+            <div class="lang-flag">🇫🇷</div>
+            <div class="lang-name">Français</div>
+            <div class="lang-native">France</div>
+        </a>
+
+        <a href="docs/doc_pt-PT.html" class="lang-card">
+            <div class="lang-flag">🇵🇹</div>
+            <div class="lang-name">Português</div>
+            <div class="lang-native">Portugal</div>
+        </a>
+
+        <a href="docs/doc_th.html" class="lang-card">
+            <div class="lang-flag">🇹🇭</div>
+            <div class="lang-name">ภาษาไทย</div>
+            <div class="lang-native">Thailand</div>
+        </a>
+    </div>
+
+    <p class="footer-note">MathStore: Fairy Wings V6 TIER 2 | Technical Documentation</p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1001 @@
+@font-face {
+  font-family: "Obscuria Sans";
+  src: url("./fonts/obscuria-sans.woff") format("woff");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 100 900;
+}
+
+:root {
+  --ob-font-body: "Obscuria Sans", "Segoe UI", Arial, sans-serif;
+  --ob-font-display: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --ob-surface: rgba(14, 12, 16, 0.96);
+  --ob-surface-soft: rgba(24, 20, 27, 0.94);
+  --ob-surface-hover: rgba(51, 39, 56, 0.98);
+  --ob-ink: #f4f0f4;
+  --ob-muted: #b7afb9;
+  --ob-line: rgba(226, 208, 230, 0.15);
+  --ob-line-strong: rgba(211, 179, 220, 0.38);
+  --ob-accent: #b89ac2;
+  --ob-accent-soft: #ddcae2;
+  --ob-success: #91cba2;
+  --ob-warning: #d7bc78;
+  --ob-danger: #d99da4;
+}
+
+body {
+  font-family: var(--ob-font-body) !important;
+  letter-spacing: 0 !important;
+}
+
+body * {
+  scrollbar-color: rgba(184, 154, 194, 0.45) rgba(8, 7, 10, 0.35);
+  scrollbar-width: thin;
+}
+
+body *::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+body *::-webkit-scrollbar-track {
+  background: rgba(8, 7, 10, 0.35);
+}
+
+body *::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background: rgba(184, 154, 194, 0.45);
+}
+
+/* Radial menu */
+svg[viewBox="0 0 350 350"] {
+  width: min(385px, 46vw) !important;
+  height: min(385px, 46vw) !important;
+  filter: drop-shadow(0 20px 34px rgba(0, 0, 0, 0.34));
+}
+
+svg[viewBox="0 0 350 350"] > g:first-child > circle {
+  fill: rgba(8, 7, 10, 0.97) !important;
+  stroke: var(--ob-line-strong) !important;
+  stroke-width: 1 !important;
+}
+
+svg[viewBox="0 0 350 350"] > g[class] > path {
+  fill: var(--ob-surface-soft) !important;
+  stroke: var(--ob-line) !important;
+  stroke-width: 0.8 !important;
+  transition: fill 160ms ease, stroke 160ms ease;
+}
+
+svg[viewBox="0 0 350 350"] > g[class]:hover > path {
+  fill: var(--ob-surface-hover) !important;
+  stroke: var(--ob-line-strong) !important;
+}
+
+svg[viewBox="0 0 350 350"] > g[class] text {
+  fill: var(--ob-ink) !important;
+  font-family: var(--ob-font-body) !important;
+  font-weight: 500 !important;
+  letter-spacing: 0 !important;
+}
+
+svg[viewBox="0 0 350 350"] > g[class] > g > svg,
+svg[viewBox="0 0 350 350"] > g[class] > g > svg path {
+  color: var(--ob-muted) !important;
+  fill: var(--ob-muted) !important;
+  transition: color 160ms ease, fill 160ms ease;
+}
+
+svg[viewBox="0 0 350 350"] > g[class]:hover > g > svg,
+svg[viewBox="0 0 350 350"] > g[class]:hover > g > svg path {
+  color: var(--ob-accent-soft) !important;
+  fill: var(--ob-accent-soft) !important;
+}
+
+svg[viewBox="0 0 350 350"] > g:last-child > circle {
+  fill: #604a68 !important;
+  stroke: rgba(226, 208, 230, 0.3) !important;
+  stroke-width: 2 !important;
+  transition: fill 160ms ease, stroke 160ms ease;
+}
+
+svg[viewBox="0 0 350 350"] > g:last-child:hover > circle {
+  fill: #765a80 !important;
+  stroke: rgba(226, 208, 230, 0.52) !important;
+}
+
+svg[viewBox="0 0 350 350"] + div svg,
+svg[viewBox="0 0 350 350"] + div svg path {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+}
+
+/* Notifications */
+.mantine-xcllmb {
+  --ob-state: var(--ob-accent);
+  position: relative !important;
+  width: min(330px, calc(100vw - 32px)) !important;
+  min-height: 62px !important;
+  padding: 12px 14px !important;
+  overflow: hidden !important;
+  border: 1px solid var(--ob-line) !important;
+  border-left: 2px solid var(--ob-state) !important;
+  border-radius: 6px !important;
+  background: var(--ob-surface) !important;
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.32) !important;
+  color: var(--ob-ink) !important;
+  font-family: var(--ob-font-body) !important;
+}
+
+.mantine-xcllmb:has(.fa-circle-check) { --ob-state: var(--ob-success); }
+.mantine-xcllmb:has(.fa-circle-exclamation) { --ob-state: var(--ob-warning); }
+.mantine-xcllmb:has(.fa-circle-xmark) { --ob-state: var(--ob-danger); }
+
+.mantine-xcllmb::before,
+.obscuria-notification::before {
+  display: none !important;
+  content: none !important;
+}
+
+.obscuria-notification {
+  --ob-state: var(--ob-accent);
+  position: relative !important;
+  width: min(330px, calc(100vw - 32px)) !important;
+  min-height: 62px !important;
+  padding: 12px 14px !important;
+  overflow: hidden !important;
+  border: 1px solid var(--ob-line) !important;
+  border-left: 2px solid var(--ob-state) !important;
+  border-radius: 6px !important;
+  background: var(--ob-surface) !important;
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.32) !important;
+  color: var(--ob-ink) !important;
+  font-family: var(--ob-font-body) !important;
+}
+
+.obscuria-notification:has(.fa-circle-check) { --ob-state: var(--ob-success); }
+.obscuria-notification:has(.fa-circle-exclamation) { --ob-state: var(--ob-warning); }
+.obscuria-notification:has(.fa-circle-xmark) { --ob-state: var(--ob-danger); }
+
+.obscuria-notification .mantine-Group-root {
+  gap: 12px !important;
+  flex-wrap: nowrap !important;
+}
+
+.obscuria-notification .mantine-RingProgress-root {
+  flex: 0 0 auto;
+  filter: drop-shadow(0 0 9px color-mix(in srgb, var(--ob-state) 28%, transparent));
+}
+
+.obscuria-notification .mantine-RingProgress-root circle:first-of-type {
+  stroke: rgba(226, 208, 230, 0.12) !important;
+}
+
+.obscuria-notification .mantine-RingProgress-root circle:nth-of-type(2) {
+  stroke: var(--ob-state) !important;
+}
+
+.obscuria-notification .mantine-ThemeIcon-root {
+  background: color-mix(in srgb, var(--ob-state) 14%, transparent) !important;
+  color: var(--ob-state) !important;
+}
+
+.obscuria-notification .mantine-ThemeIcon-root svg,
+.obscuria-notification .mantine-ThemeIcon-root svg path {
+  color: var(--ob-state) !important;
+  fill: var(--ob-state) !important;
+}
+
+.obscuria-notification .mantine-Stack-root {
+  min-width: 0 !important;
+  gap: 3px !important;
+}
+
+.obscuria-notification .mantine-Text-root:not(.description) {
+  overflow: hidden !important;
+  color: var(--ob-ink) !important;
+  font-family: var(--ob-font-display) !important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  line-height: 1.15 !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.obscuria-notification .description {
+  color: var(--ob-muted) !important;
+  font-family: var(--ob-font-body) !important;
+  font-size: 13px !important;
+  line-height: 1.25 !important;
+}
+
+.mantine-xcllmb .mantine-Group-root {
+  gap: 12px !important;
+  flex-wrap: nowrap !important;
+}
+
+.mantine-xcllmb .mantine-RingProgress-root {
+  flex: 0 0 auto;
+  filter: drop-shadow(0 0 9px color-mix(in srgb, var(--ob-state) 28%, transparent));
+}
+
+.mantine-xcllmb .mantine-RingProgress-root circle:first-of-type {
+  stroke: rgba(226, 208, 230, 0.12) !important;
+}
+
+.mantine-xcllmb .mantine-RingProgress-root circle:nth-of-type(2) {
+  stroke: var(--ob-state) !important;
+}
+
+.mantine-xcllmb .mantine-ThemeIcon-root {
+  background: color-mix(in srgb, var(--ob-state) 14%, transparent) !important;
+  color: var(--ob-state) !important;
+}
+
+.mantine-xcllmb .mantine-ThemeIcon-root svg,
+.mantine-xcllmb .mantine-ThemeIcon-root svg path {
+  color: var(--ob-state) !important;
+  fill: var(--ob-state) !important;
+}
+
+.mantine-xcllmb .mantine-Stack-root {
+  min-width: 0 !important;
+  gap: 3px !important;
+}
+
+.mantine-xcllmb .mantine-Text-root:not(.description) {
+  overflow: hidden !important;
+  color: var(--ob-ink) !important;
+  font-family: var(--ob-font-display) !important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  line-height: 1.15 !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.mantine-xcllmb .description {
+  color: var(--ob-muted) !important;
+  font-family: var(--ob-font-body) !important;
+  font-size: 13px !important;
+  line-height: 1.25 !important;
+}
+
+/* Linear progress */
+.mantine-1olnuag {
+  bottom: 5.5% !important;
+  width: min(370px, calc(100vw - 32px)) !important;
+  height: auto !important;
+  align-items: flex-end !important;
+}
+
+.mantine-kaihjh {
+  position: relative !important;
+  width: min(370px, calc(100vw - 32px)) !important;
+  height: 48px !important;
+  overflow: hidden !important;
+  border: 1px solid var(--ob-line) !important;
+  border-radius: 6px !important;
+  background: var(--ob-surface) !important;
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.3) !important;
+}
+
+.mantine-1cd2ieq {
+  position: relative !important;
+  height: 100% !important;
+  background: rgba(184, 154, 194, 0.13) !important;
+}
+
+.mantine-1cd2ieq::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background: var(--ob-accent-soft);
+  box-shadow: 0 0 10px rgba(184, 154, 194, 0.46);
+  content: "";
+}
+
+.mantine-1sz6a8g {
+  display: flex !important;
+  width: min(370px, calc(100vw - 32px)) !important;
+  max-width: none !important;
+  height: 48px !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  padding: 0 15px !important;
+  overflow: hidden !important;
+  color: var(--ob-ink) !important;
+  font-family: var(--ob-font-body) !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  line-height: 1 !important;
+  text-overflow: ellipsis !important;
+  text-shadow: none !important;
+  white-space: nowrap !important;
+}
+
+/* Circular progress */
+.mantine-1n3mrrw {
+  gap: 10px !important;
+  margin-top: 0 !important;
+  filter: drop-shadow(0 15px 28px rgba(0, 0, 0, 0.3));
+}
+
+.mantine-onvdy9 {
+  border: 0 !important;
+  border-radius: 50% !important;
+  background: var(--ob-surface) !important;
+  box-shadow:
+    inset 0 0 0 1px var(--ob-line),
+    inset 0 0 0 5px rgba(184, 154, 194, 0.035) !important;
+}
+
+.mantine-onvdy9 circle:first-of-type {
+  stroke: rgba(226, 208, 230, 0.15) !important;
+}
+
+.mantine-onvdy9 circle:nth-of-type(2) {
+  stroke: var(--ob-accent-soft) !important;
+  stroke-linecap: round !important;
+}
+
+.mantine-dbu1t2 {
+  color: var(--ob-ink) !important;
+  font-family: var(--ob-font-body) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  text-shadow: none !important;
+}
+
+.mantine-1bg282z {
+  max-width: min(280px, calc(100vw - 32px)) !important;
+  height: auto !important;
+  padding: 8px 13px !important;
+  overflow: hidden !important;
+  border: 1px solid var(--ob-line) !important;
+  border-radius: 5px !important;
+  background: var(--ob-surface) !important;
+  color: var(--ob-ink) !important;
+  font-family: var(--ob-font-body) !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  line-height: 1.2 !important;
+  text-align: center !important;
+  text-overflow: ellipsis !important;
+  text-shadow: none !important;
+  white-space: nowrap !important;
+}
+
+/* Stable progress hooks kept outside Mantine's generated class names. */
+.obscuria-progress-linear-wrapper {
+  bottom: 5.5% !important;
+  width: min(370px, calc(100vw - 32px)) !important;
+  height: auto !important;
+  align-items: flex-end !important;
+}
+
+.obscuria-progress-linear-track {
+  position: relative !important;
+  width: min(370px, calc(100vw - 32px)) !important;
+  height: 48px !important;
+  overflow: hidden !important;
+  border: 1px solid var(--ob-line) !important;
+  border-radius: 6px !important;
+  background: var(--ob-surface) !important;
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.3) !important;
+}
+
+.obscuria-progress-linear-fill {
+  position: relative !important;
+  height: 100% !important;
+  background: rgba(184, 154, 194, 0.13) !important;
+}
+
+.obscuria-progress-linear-fill::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background: var(--ob-accent-soft);
+  box-shadow: 0 0 10px rgba(184, 154, 194, 0.46);
+  content: "";
+}
+
+.obscuria-progress-linear-label {
+  display: flex !important;
+  width: min(370px, calc(100vw - 32px)) !important;
+  max-width: none !important;
+  height: 48px !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  padding: 0 15px !important;
+  overflow: hidden !important;
+  color: var(--ob-ink) !important;
+  font-family: var(--ob-font-body) !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  line-height: 1 !important;
+  text-overflow: ellipsis !important;
+  text-shadow: none !important;
+  white-space: nowrap !important;
+}
+
+.obscuria-progress-circle-wrapper {
+  gap: 10px !important;
+  margin-top: 0 !important;
+  filter: drop-shadow(0 15px 28px rgba(0, 0, 0, 0.3));
+}
+
+.obscuria-progress-circle-ring {
+  border: 0 !important;
+  border-radius: 50% !important;
+  background: var(--ob-surface) !important;
+  box-shadow:
+    inset 0 0 0 1px var(--ob-line),
+    inset 0 0 0 5px rgba(184, 154, 194, 0.035) !important;
+}
+
+.obscuria-progress-circle-ring circle:first-of-type {
+  stroke: rgba(226, 208, 230, 0.15) !important;
+}
+
+.obscuria-progress-circle-ring circle:nth-of-type(2) {
+  stroke: var(--ob-accent-soft) !important;
+  stroke-linecap: round !important;
+}
+
+.obscuria-progress-circle-value {
+  color: var(--ob-ink) !important;
+  font-family: var(--ob-font-body) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  text-shadow: none !important;
+}
+
+.obscuria-progress-circle-label {
+  max-width: min(280px, calc(100vw - 32px)) !important;
+  height: auto !important;
+  padding: 8px 13px !important;
+  overflow: hidden !important;
+  border: 1px solid var(--ob-line) !important;
+  border-radius: 5px !important;
+  background: var(--ob-surface) !important;
+  color: var(--ob-ink) !important;
+  font-family: var(--ob-font-body) !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  line-height: 1.2 !important;
+  text-align: center !important;
+  text-overflow: ellipsis !important;
+  text-shadow: none !important;
+  white-space: nowrap !important;
+}
+
+/* Dialogs and form controls */
+.mantine-Modal-overlay {
+  background: rgba(6, 5, 7, 0.48) !important;
+}
+
+.mantine-Modal-modal {
+  max-width: calc(100vw - 32px) !important;
+  overflow: hidden !important;
+  border: 1px solid var(--ob-line-strong) !important;
+  border-radius: 6px !important;
+  background: var(--ob-surface) !important;
+  box-shadow: 0 24px 58px rgba(0, 0, 0, 0.4) !important;
+  color: var(--ob-ink) !important;
+  font-family: var(--ob-font-body) !important;
+}
+
+.mantine-Modal-header {
+  min-height: 58px !important;
+  padding: 17px 20px 14px !important;
+  border-bottom: 1px solid var(--ob-line) !important;
+  background: rgba(23, 19, 25, 0.96) !important;
+}
+
+.mantine-Modal-title {
+  color: var(--ob-ink) !important;
+  font-family: var(--ob-font-display) !important;
+  font-size: 20px !important;
+  font-weight: 400 !important;
+  line-height: 1.15 !important;
+  text-align: left !important;
+}
+
+.mantine-Modal-title p,
+.mantine-Modal-body p {
+  margin: 0 !important;
+}
+
+.mantine-Modal-body {
+  padding: 18px 20px 20px !important;
+  color: var(--ob-muted) !important;
+  font-family: var(--ob-font-body) !important;
+  font-size: 13px !important;
+  line-height: 1.4 !important;
+}
+
+.mantine-Modal-root .mantine-Stack-root {
+  gap: 15px !important;
+}
+
+.mantine-Modal-root .mantine-InputWrapper-label {
+  margin-bottom: 5px !important;
+  color: var(--ob-ink) !important;
+  font-family: var(--ob-font-body) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  line-height: 1.2 !important;
+}
+
+.mantine-Modal-root .mantine-InputWrapper-description {
+  margin-bottom: 7px !important;
+  color: var(--ob-muted) !important;
+  font-size: 12px !important;
+  line-height: 1.3 !important;
+}
+
+.mantine-Modal-root .mantine-InputWrapper-required {
+  color: var(--ob-danger) !important;
+}
+
+.mantine-Modal-root .mantine-Input-input,
+.mantine-Modal-root .mantine-Textarea-input,
+.mantine-Modal-root .mantine-Select-input,
+.mantine-Modal-root .mantine-MultiSelect-input,
+.mantine-Modal-root .mantine-NumberInput-input,
+.mantine-Modal-root .mantine-PasswordInput-innerInput {
+  min-height: 40px !important;
+  border: 1px solid var(--ob-line) !important;
+  border-radius: 5px !important;
+  background: rgba(8, 7, 10, 0.72) !important;
+  color: var(--ob-ink) !important;
+  font-family: var(--ob-font-body) !important;
+  font-size: 13px !important;
+  caret-color: var(--ob-accent-soft) !important;
+  transition: border-color 150ms ease, background 150ms ease !important;
+}
+
+.mantine-Modal-root .mantine-Input-input::placeholder,
+.mantine-Modal-root .mantine-Textarea-input::placeholder,
+.mantine-Modal-root .mantine-Select-input::placeholder {
+  color: #766f79 !important;
+  opacity: 1 !important;
+}
+
+.mantine-Modal-root .mantine-Input-input:focus,
+.mantine-Modal-root .mantine-Textarea-input:focus,
+.mantine-Modal-root .mantine-Select-input:focus,
+.mantine-Modal-root .mantine-MultiSelect-input:focus-within,
+.mantine-Modal-root .mantine-NumberInput-input:focus {
+  border-color: var(--ob-line-strong) !important;
+  background: rgba(18, 15, 20, 0.94) !important;
+  outline: none !important;
+}
+
+.mantine-Modal-root .mantine-Input-icon,
+.mantine-Modal-root .mantine-Input-rightSection,
+.mantine-Modal-root .mantine-Select-rightSection {
+  color: var(--ob-accent) !important;
+}
+
+.mantine-Modal-root .mantine-Checkbox-input,
+.mantine-1utuode .mantine-Checkbox-input {
+  border: 1px solid var(--ob-line-strong) !important;
+  border-radius: 4px !important;
+  background: rgba(8, 7, 10, 0.8) !important;
+}
+
+.mantine-Modal-root .mantine-Checkbox-input:checked,
+.mantine-1utuode .mantine-Checkbox-input:checked {
+  border-color: var(--ob-accent) !important;
+  background: #6e5576 !important;
+}
+
+.mantine-Modal-root .mantine-Checkbox-label {
+  color: var(--ob-muted) !important;
+  font-family: var(--ob-font-body) !important;
+  font-size: 12px !important;
+}
+
+.mantine-Modal-root .mantine-Button-root {
+  min-width: 92px !important;
+  height: 36px !important;
+  border: 1px solid var(--ob-line) !important;
+  border-radius: 5px !important;
+  background: rgba(27, 23, 30, 0.94) !important;
+  color: var(--ob-muted) !important;
+  box-shadow: none !important;
+}
+
+.mantine-Modal-root .mantine-Button-root:last-child {
+  border-color: rgba(211, 179, 220, 0.28) !important;
+  background: #604a68 !important;
+  color: #fff !important;
+}
+
+.mantine-Modal-root .mantine-Button-root:hover {
+  border-color: var(--ob-line-strong) !important;
+  background: var(--ob-surface-hover) !important;
+}
+
+.mantine-Modal-root .mantine-Button-root:focus,
+.mantine-Modal-root .mantine-Button-root:focus-visible {
+  outline: 1px solid var(--ob-accent) !important;
+  outline-offset: 2px !important;
+}
+
+.mantine-Modal-root .mantine-Button-root:last-child:hover {
+  background: #73577c !important;
+}
+
+.mantine-Modal-root .mantine-Button-label {
+  font-family: var(--ob-font-body) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+.mantine-Select-dropdown,
+.mantine-MultiSelect-dropdown,
+.mantine-DatePicker-dropdown,
+.mantine-Popover-dropdown {
+  border: 1px solid var(--ob-line-strong) !important;
+  border-radius: 5px !important;
+  background: var(--ob-surface) !important;
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.36) !important;
+  color: var(--ob-ink) !important;
+  font-family: var(--ob-font-body) !important;
+}
+
+.mantine-Select-item,
+.mantine-MultiSelect-item {
+  border-radius: 4px !important;
+  color: var(--ob-muted) !important;
+  font-size: 13px !important;
+}
+
+.mantine-Select-item[data-selected],
+.mantine-MultiSelect-item[data-selected],
+.mantine-Select-item:hover,
+.mantine-MultiSelect-item:hover {
+  background: var(--ob-surface-hover) !important;
+  color: var(--ob-ink) !important;
+}
+
+.mantine-Modal-root .mantine-Slider-track {
+  background: rgba(226, 208, 230, 0.12) !important;
+}
+
+.mantine-Modal-root .mantine-Slider-bar {
+  background: var(--ob-accent) !important;
+}
+
+.mantine-Modal-root .mantine-Slider-thumb {
+  border-color: var(--ob-accent-soft) !important;
+  background: var(--ob-surface) !important;
+}
+
+/* Context menu */
+.mantine-ebg791 {
+  width: min(340px, calc(100vw - 32px)) !important;
+  height: min(580px, calc(100vh - 40px)) !important;
+  font-family: var(--ob-font-body) !important;
+}
+
+.mantine-ebg791 > div {
+  width: 100% !important;
+}
+
+.mantine-1w0s1is {
+  width: 100% !important;
+  height: 44px !important;
+  gap: 7px !important;
+  margin-bottom: 8px !important;
+}
+
+.mantine-17g56al .mantine-vpaz6b {
+  min-height: 44px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  padding: 0 14px !important;
+  border: 1px solid var(--ob-line-strong) !important;
+  border-radius: 6px !important;
+  background: var(--ob-surface) !important;
+  color: var(--ob-ink) !important;
+  font-family: var(--ob-font-display) !important;
+  font-size: 18px !important;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28) !important;
+}
+
+.mantine-17g56al .mantine-vpaz6b p {
+  margin: 0 !important;
+}
+
+.mantine-1w0s1is > .mantine-Button-root {
+  flex: 0 0 44px !important;
+  width: 44px !important;
+  min-width: 44px !important;
+  height: 44px !important;
+  align-self: auto !important;
+  border: 1px solid var(--ob-line) !important;
+  border-radius: 6px !important;
+  background: var(--ob-surface) !important;
+  color: var(--ob-muted) !important;
+}
+
+.mantine-jw4hzq {
+  width: 100% !important;
+  height: min(528px, calc(100vh - 92px)) !important;
+  padding-right: 3px !important;
+}
+
+.mantine-16x24zu {
+  gap: 6px !important;
+}
+
+.mantine-1oyb3o9 {
+  min-height: 64px !important;
+  padding: 10px 12px !important;
+  border: 1px solid var(--ob-line) !important;
+  border-radius: 6px !important;
+  background: var(--ob-surface) !important;
+  color: var(--ob-ink) !important;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.2) !important;
+  transition: border-color 150ms ease, background 150ms ease, transform 150ms ease !important;
+}
+
+.mantine-1oyb3o9:hover:not(:disabled) {
+  border-color: var(--ob-line-strong) !important;
+  background: var(--ob-surface-hover) !important;
+  transform: translateX(-2px) !important;
+}
+
+.mantine-1oyb3o9:disabled {
+  border-color: rgba(226, 208, 230, 0.08) !important;
+  background: rgba(18, 16, 20, 0.9) !important;
+  color: #756f78 !important;
+  opacity: 0.58 !important;
+}
+
+.mantine-1oyb3o9:disabled svg,
+.mantine-1oyb3o9:disabled svg path {
+  color: #756f78 !important;
+  fill: #756f78 !important;
+}
+
+.mantine-1oyb3o9 .mantine-133rf5d,
+.mantine-1oyb3o9 .mantine-4o023e {
+  color: var(--ob-ink) !important;
+  font-family: var(--ob-font-body) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+}
+
+.mantine-1oyb3o9 .mantine-nmrmxh,
+.mantine-1oyb3o9 .mantine-clfcje {
+  color: var(--ob-muted) !important;
+  font-family: var(--ob-font-body) !important;
+  font-size: 12px !important;
+  line-height: 1.25 !important;
+}
+
+.mantine-1oyb3o9 svg,
+.mantine-1oyb3o9 svg path {
+  color: var(--ob-accent) !important;
+  fill: var(--ob-accent) !important;
+}
+
+/* List menu */
+.mantine-1utuode {
+  width: min(384px, calc(100vw - 24px)) !important;
+  font-family: var(--ob-font-body) !important;
+}
+
+.mantine-eqc5g6 {
+  min-height: 50px !important;
+  display: flex !important;
+  align-items: center !important;
+  padding: 0 15px !important;
+  border: 1px solid var(--ob-line-strong) !important;
+  border-bottom: 0 !important;
+  border-radius: 6px 6px 0 0 !important;
+  background: var(--ob-surface) !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28) !important;
+}
+
+.mantine-1q8dtk7 {
+  color: var(--ob-ink) !important;
+  font-family: var(--ob-font-display) !important;
+  font-size: 18px !important;
+  font-weight: 400 !important;
+  text-transform: none !important;
+}
+
+.mantine-13t44ib {
+  overflow: hidden !important;
+  border: 1px solid var(--ob-line-strong) !important;
+  border-radius: 0 0 6px 6px !important;
+  background: rgba(8, 7, 10, 0.9) !important;
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.34) !important;
+}
+
+.mantine-1sv2ob3 {
+  gap: 5px !important;
+  padding: 7px !important;
+}
+
+.mantine-axjwg1 {
+  height: 58px !important;
+  padding: 0 12px !important;
+  border: 1px solid transparent !important;
+  border-radius: 5px !important;
+  background: rgba(24, 20, 27, 0.88) !important;
+  color: var(--ob-ink) !important;
+  outline: none !important;
+  transition: border-color 140ms ease, background 140ms ease !important;
+}
+
+.mantine-axjwg1:focus {
+  border-color: var(--ob-line-strong) !important;
+  background: var(--ob-surface-hover) !important;
+}
+
+.mantine-axjwg1 .mantine-17hkov1,
+.mantine-axjwg1 .mantine-18bbwl5 {
+  color: var(--ob-ink) !important;
+  font-family: var(--ob-font-body) !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  text-transform: none !important;
+}
+
+.mantine-axjwg1 .mantine-17hkov1 {
+  color: var(--ob-muted) !important;
+  font-size: 11px !important;
+}
+
+.mantine-axjwg1 .mantine-fol2rb,
+.mantine-axjwg1 .mantine-g8mdmr {
+  color: var(--ob-accent) !important;
+}
+
+.mantine-16xpcih {
+  max-width: min(330px, calc(100vw - 24px)) !important;
+  padding: 8px 11px !important;
+  border: 1px solid var(--ob-line) !important;
+  border-radius: 5px !important;
+  background: var(--ob-surface) !important;
+  color: var(--ob-muted) !important;
+  font-family: var(--ob-font-body) !important;
+  font-size: 12px !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* TextUI */
+.obscuria-textui,
+.mantine-mao4ly {
+  min-height: 46px !important;
+  margin: 8px !important;
+  padding: 10px 13px 10px 11px !important;
+  border: 1px solid var(--ob-line) !important;
+  border-left: 2px solid var(--ob-accent) !important;
+  border-radius: 6px !important;
+  background: var(--ob-surface) !important;
+  color: var(--ob-ink) !important;
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.3) !important;
+  font-family: var(--ob-font-body) !important;
+  font-size: 13px !important;
+}
+
+.obscuria-textui .mantine-Group-root,
+.mantine-mao4ly .mantine-kghls4 {
+  gap: 10px !important;
+  flex-wrap: nowrap !important;
+}
+
+.obscuria-textui p,
+.mantine-mao4ly p {
+  margin: 0 !important;
+  white-space: nowrap !important;
+}
+
+.obscuria-textui strong,
+.mantine-mao4ly strong {
+  display: inline-flex !important;
+  min-width: 26px !important;
+  height: 26px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-right: 2px !important;
+  border: 1px solid var(--ob-line-strong) !important;
+  border-radius: 4px !important;
+  background: rgba(184, 154, 194, 0.12) !important;
+  color: var(--ob-accent-soft) !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+}
+
+.obscuria-textui svg,
+.obscuria-textui svg path,
+.mantine-mao4ly svg,
+.mantine-mao4ly svg path {
+  color: var(--ob-accent) !important;
+  fill: var(--ob-accent) !important;
+}
+
+/* Skill check */
+.mantine-1fhfuc {
+  filter: drop-shadow(0 12px 25px rgba(0, 0, 0, 0.34)) !important;
+}
+
+.mantine-cmihi0 {
+  stroke: rgba(14, 12, 16, 0.9) !important;
+  stroke-width: 10px !important;
+}
+
+.mantine-1tgtzig {
+  stroke: var(--ob-accent) !important;
+  stroke-linecap: round !important;
+}
+
+.mantine-3wxbup {
+  stroke: var(--ob-ink) !important;
+  stroke-width: 12px !important;
+  stroke-linecap: round !important;
+  filter: drop-shadow(0 0 5px rgba(244, 240, 244, 0.32)) !important;
+}
+
+.mantine-1wc08is {
+  width: 32px !important;
+  height: 32px !important;
+  border: 1px solid var(--ob-line-strong) !important;
+  border-radius: 6px !important;
+  background: var(--ob-surface) !important;
+  color: var(--ob-ink) !important;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.34) !important;
+  font-family: var(--ob-font-body) !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}
+
+@media (max-width: 900px), (max-height: 700px) {
+  svg[viewBox="0 0 350 350"] {
+    width: min(330px, 62vw) !important;
+    height: min(330px, 62vw) !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .obscuria-notification,
+  .mantine-xcllmb {
+    min-height: 58px !important;
+    padding: 10px 12px !important;
+  }
+
+  .obscuria-notification .mantine-Text-root:not(.description),
+  .mantine-xcllmb .mantine-Text-root:not(.description) {
+    font-size: 15px !important;
+  }
+
+  .obscuria-notification .description,
+  .mantine-xcllmb .description,
+  .mantine-1sz6a8g,
+  .mantine-1bg282z {
+    font-size: 12px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  svg[viewBox="0 0 350 350"] > g[class] > path,
+  svg[viewBox="0 0 350 350"] > g[class] > g > svg,
+  svg[viewBox="0 0 350 350"] > g:last-child > circle {
+    transition: none !important;
+  }
+}

@@ -1,0 +1,1380 @@
+:root {
+  --ob-bg: rgba(4, 7, 10, 0.72);
+  --ob-panel: rgba(7, 10, 14, 0.96);
+  --ob-slot: rgba(10, 15, 20, 0.96);
+  --ob-slot-hover: rgba(14, 22, 26, 0.98);
+  --ob-line-soft: rgba(170, 180, 178, 0.12);
+  --ob-ivory: #eeeadd;
+  --ob-muted: #8f9a99;
+  --ob-teal: #48aaa6;
+  --ob-brass: #a98d55;
+  --ob-danger: #b45c66;
+}
+
+.app-wrapper {
+  color: var(--ob-ivory);
+}
+
+.app-wrapper > span {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+body.inventory-preview .inventory-wrapper::before {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.inventory-wrapper {
+  width: 100vw;
+  min-height: 100vh;
+  gap: 16px;
+  isolation: isolate;
+}
+
+.inventory-wrapper::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background: var(--ob-bg);
+  pointer-events: none;
+}
+
+.inventory-column {
+  min-width: 0;
+}
+
+/* Equipment, storage and hotbar belong to one continuous player frame. */
+.inventory-column-left {
+  position: relative;
+  display: grid;
+  grid-template-columns: clamp(74px, 8.2vh, 94px) auto;
+  grid-template-rows: auto auto;
+  gap: 12px 14px;
+  box-sizing: border-box;
+  padding: clamp(51px, 5.7vh, 63px);
+  isolation: isolate;
+}
+
+.inventory-column-left::before,
+.inventory-column-left::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+}
+
+.inventory-column-left::before {
+  inset: 0;
+  z-index: 1;
+  background: url('./images/ui-rpg-panel-frame-v2.png') center / 100% 100% no-repeat;
+}
+
+.inventory-column-left::after {
+  inset: clamp(44px, 4.9vh, 54px);
+  z-index: 0;
+  border: 1px solid rgba(168, 178, 176, 0.12);
+  border-radius: 4px;
+  background: var(--ob-panel);
+  box-shadow: inset 0 0 26px rgba(0, 0, 0, 0.5);
+}
+
+.inventory-column-left > * {
+  position: relative;
+  z-index: 2;
+}
+
+.inventory-column-left > .inventory-frame-shell {
+  grid-column: 2;
+  grid-row: 1;
+  padding: 0;
+  isolation: auto;
+}
+
+.inventory-column-left > .inventory-frame-shell::before,
+.inventory-column-left > .inventory-frame-shell::after {
+  content: none;
+}
+
+.inventory-column-left > .hotbar-container--embedded {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+/* Secondary inventories reuse the same restrained frame. */
+.inventory-column-right .inventory-frame-shell {
+  position: relative;
+  box-sizing: border-box;
+  padding: clamp(51px, 5.7vh, 63px);
+  isolation: isolate;
+}
+
+.inventory-column-right .inventory-frame-shell::before,
+.inventory-column-right .inventory-frame-shell::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+}
+
+.inventory-column-right .inventory-frame-shell::before {
+  inset: 0;
+  z-index: 1;
+  background: url('./images/ui-rpg-panel-frame-v2.png') center / 100% 100% no-repeat;
+}
+
+.inventory-column-right .inventory-frame-shell::after {
+  inset: clamp(44px, 4.9vh, 54px);
+  z-index: 0;
+  border: 1px solid rgba(168, 178, 176, 0.12);
+  border-radius: 4px;
+  background: var(--ob-panel);
+  box-shadow: inset 0 0 26px rgba(0, 0, 0, 0.5);
+}
+
+.inventory-column-right .inventory-grid-wrapper {
+  position: relative;
+  z-index: 2;
+}
+
+.inventory-grid-wrapper {
+  gap: 8px;
+}
+
+.inventory-grid-wrapper > div:first-child {
+  padding-top: 8px;
+}
+
+.inventory-grid-header-wrapper {
+  min-height: 28px;
+  align-items: center;
+  padding: 0 2px;
+}
+
+.inventory-grid-header-wrapper p:first-child {
+  max-width: 72%;
+  overflow: hidden;
+  color: var(--ob-ivory);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.inventory-grid-header-wrapper p:last-child {
+  color: var(--ob-muted);
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.weight-bar {
+  height: 3px;
+  border: 0;
+  border-radius: 0;
+  background: rgba(172, 182, 180, 0.12);
+  box-shadow: none;
+}
+
+.weight-bar > div {
+  box-shadow: none;
+}
+
+.inventory-grid-container {
+  gap: 5px;
+  padding: 2px 0 0;
+}
+
+.inventory-slot,
+.hotbar-item-slot,
+.item-notification-item-box {
+  overflow: hidden;
+  box-sizing: border-box;
+  border: 1px solid var(--ob-line-soft);
+  border-radius: 5px;
+  background-color: var(--ob-slot);
+  background-size: 66%;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.34);
+  transition: border-color 140ms ease, background-color 140ms ease, transform 140ms ease;
+}
+
+.inventory-slot::before,
+.hotbar-item-slot::before {
+  content: none;
+}
+
+.inventory-slot:hover,
+.hotbar-item-slot:hover {
+  z-index: 2;
+  border-color: rgba(72, 170, 166, 0.6);
+  background-color: var(--ob-slot-hover);
+  box-shadow: inset 0 0 0 1px rgba(72, 170, 166, 0.08);
+  transform: translateY(-1px);
+}
+
+.inventory-slot-label-box {
+  border: 0;
+  border-top: 1px solid rgba(170, 180, 178, 0.1);
+  border-radius: 0;
+  color: #d9d8cf;
+  background: rgba(5, 8, 11, 0.92);
+}
+
+.inventory-slot-label-text {
+  padding: 4px 5px 3px;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.item-slot-info-wrapper {
+  padding: 5px 6px;
+  color: #c8cfcd;
+  text-shadow: 0 1px 3px #000;
+}
+
+.item-slot-info-wrapper p {
+  font-size: 9px;
+}
+
+.inventory-slot-number,
+.hotbar-keycap {
+  border: 1px solid rgba(183, 191, 189, 0.28);
+  border-radius: 50%;
+  color: var(--ob-ivory);
+  background: #090d11;
+  box-shadow: none;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 700;
+  text-align: center;
+}
+
+.inventory-slot-number {
+  width: 17px;
+  height: 17px;
+  padding: 0;
+  line-height: 17px;
+}
+
+/* Equipment is a quiet internal rail instead of a second frame. */
+.equipment-dock {
+  position: relative;
+  top: auto;
+  right: auto;
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  width: auto;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 2px 12px 2px 0;
+  border-right: 1px solid rgba(169, 141, 85, 0.25);
+  transform: none;
+  isolation: auto;
+}
+
+.equipment-dock::before,
+.equipment-dock::after {
+  content: none;
+}
+
+.equipment-dock-slots {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 1vh, 12px);
+}
+
+.equipment-entry {
+  display: grid;
+  width: 100%;
+  justify-items: center;
+  gap: 4px;
+}
+
+.equipment-slot-shell {
+  position: relative;
+  width: clamp(52px, 6.3vh, 66px);
+  height: clamp(52px, 6.3vh, 66px);
+}
+
+.equipment-slot-shell::before {
+  content: none;
+}
+
+.equipment-slot-shell .inventory-slot {
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  border-color: rgba(183, 191, 189, 0.22);
+  border-radius: 7px;
+  background-color: rgba(8, 12, 16, 0.98);
+  background-size: 70%;
+}
+
+.equipment-slot-shell .inventory-slot-number,
+.equipment-slot-shell .inventory-slot-label-box {
+  display: none;
+}
+
+.equipment-slot-shell .item-slot-info-wrapper {
+  padding: 3px;
+}
+
+.equipment-slot-shell .item-slot-info-wrapper p:first-child {
+  display: none;
+}
+
+.equipment-empty-mark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  width: 26px;
+  height: 26px;
+  font-size: 0;
+  opacity: 0.38;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.equipment-empty-mark::before,
+.equipment-empty-mark::after {
+  content: '';
+  position: absolute;
+  box-sizing: border-box;
+  border-color: var(--ob-brass);
+}
+
+.equipment-entry[data-equipment='amulet'] .equipment-empty-mark::before {
+  inset: 3px 5px 7px;
+  border: 1px solid var(--ob-brass);
+  border-radius: 50% 50% 44% 44%;
+}
+
+.equipment-entry[data-equipment='amulet'] .equipment-empty-mark::after {
+  bottom: 2px;
+  left: 10px;
+  width: 6px;
+  height: 6px;
+  border: 1px solid var(--ob-brass);
+  transform: rotate(45deg);
+}
+
+.equipment-entry[data-equipment='necklace'] .equipment-empty-mark::before {
+  inset: 2px 3px 7px;
+  border-right: 1px solid var(--ob-brass);
+  border-bottom: 1px solid var(--ob-brass);
+  border-left: 1px solid var(--ob-brass);
+  border-radius: 0 0 50% 50%;
+}
+
+.equipment-entry[data-equipment='necklace'] .equipment-empty-mark::after {
+  bottom: 1px;
+  left: 9px;
+  width: 8px;
+  height: 8px;
+  border: 1px solid var(--ob-brass);
+  border-radius: 50%;
+}
+
+.equipment-entry[data-equipment='belt'] .equipment-empty-mark::before {
+  top: 9px;
+  left: 1px;
+  width: 24px;
+  height: 8px;
+  border-top: 1px solid var(--ob-brass);
+  border-bottom: 1px solid var(--ob-brass);
+}
+
+.equipment-entry[data-equipment='belt'] .equipment-empty-mark::after {
+  top: 6px;
+  left: 9px;
+  width: 9px;
+  height: 14px;
+  border: 1px solid var(--ob-brass);
+  border-radius: 2px;
+}
+
+.equipment-entry[data-equipment='ring'] .equipment-empty-mark::before {
+  inset: 4px;
+  border: 2px solid var(--ob-brass);
+  border-radius: 50%;
+}
+
+.equipment-entry[data-equipment='ring'] .equipment-empty-mark::after {
+  top: 1px;
+  left: 10px;
+  width: 7px;
+  height: 7px;
+  border: 1px solid var(--ob-brass);
+  transform: rotate(45deg);
+}
+
+.equipment-label {
+  max-width: 100%;
+  overflow: hidden;
+  color: var(--ob-muted);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 1;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.equipment-entry.is-equipped .inventory-slot {
+  border-color: rgba(72, 170, 166, 0.58);
+}
+
+.equipment-entry.is-equipped .equipment-label {
+  color: #d8d9d1;
+}
+
+.equipment-entry.is-invalid .inventory-slot {
+  border-color: rgba(180, 92, 102, 0.72);
+}
+
+.equipment-entry.is-invalid .equipment-label {
+  color: #d58089;
+}
+
+/* The five hotbar slots form the lower section of the player frame. */
+.hotbar-container--embedded {
+  position: relative;
+  bottom: auto;
+  width: 100%;
+  min-height: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 16px 0 0;
+  gap: 5px;
+  border-top: 1px solid rgba(169, 141, 85, 0.26);
+  isolation: auto;
+}
+
+.hotbar-container--embedded::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  width: 38px;
+  height: 1px;
+  border: 0;
+  background: var(--ob-brass);
+  filter: none;
+  transform: translateX(-50%);
+}
+
+.hotbar-container--embedded::after {
+  content: none;
+}
+
+.hotbar-entry {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 10.2vh;
+  width: 10.2vh;
+  padding-top: 8px;
+}
+
+.hotbar-container--embedded .inventory-slot {
+  width: 100%;
+  height: 10.2vh;
+}
+
+.hotbar-container--embedded .inventory-slot-number {
+  display: none;
+}
+
+.hotbar-keycap {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  z-index: 3;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  transform: translateX(-50%);
+  font-size: 11px;
+}
+
+/* Witch pouch is a compact corner control inside the player frame. */
+.witch-pouch-dock {
+  position: absolute;
+  top: clamp(-45px, -4.7vh, -38px);
+  right: 0;
+  left: auto;
+  z-index: 5;
+  display: block;
+  width: clamp(70px, 7.6vh, 82px);
+  transform: none;
+}
+
+.witch-pouch-button {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  background: url('./images/ui-witch-pouch-v2.png') center / contain no-repeat;
+  cursor: pointer;
+}
+
+.witch-pouch-button img {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+.witch-pouch-glow {
+  position: absolute;
+  right: 19%;
+  bottom: 19%;
+  width: 13%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: rgba(72, 170, 166, 0.5);
+  box-shadow: 0 0 8px rgba(72, 170, 166, 0.5);
+  opacity: 0.55;
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.witch-pouch-dock.is-available .witch-pouch-button:hover {
+  transform: translateY(-2px);
+}
+
+.witch-pouch-dock.is-available .witch-pouch-button:hover .witch-pouch-glow {
+  opacity: 1;
+  transform: scale(1.18);
+}
+
+.witch-pouch-dock.is-missing {
+  opacity: 0.4;
+}
+
+.witch-pouch-copy {
+  display: none;
+}
+
+.witch-pouch-dock.is-opening .witch-pouch-button {
+  animation: ob-pouch-open 420ms ease-in-out both;
+}
+
+.witch-pouch-dock.is-opening .witch-pouch-glow {
+  animation: ob-pouch-glow 420ms ease-out both;
+}
+
+@keyframes ob-pouch-open {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  44% {
+    transform: translateY(-4px) rotate(-3deg);
+  }
+  76% {
+    transform: translateY(-2px) rotate(2deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+@keyframes ob-pouch-glow {
+  0% {
+    opacity: 0.5;
+    transform: scale(0.9);
+  }
+  55% {
+    opacity: 1;
+    transform: scale(1.65);
+  }
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+}
+
+.inventory-wrapper--witch .inventory-column-left::after {
+  border-color: rgba(116, 93, 121, 0.34);
+  background: rgba(10, 9, 15, 0.97);
+}
+
+.inventory-wrapper--witch .inventory-column-left .inventory-slot:hover {
+  border-color: rgba(130, 103, 137, 0.7);
+  background-color: rgba(18, 14, 22, 0.98);
+}
+
+.inventory-control {
+  position: relative;
+  z-index: 4;
+}
+
+.inventory-control .inventory-control-wrapper {
+  width: 88px;
+  gap: 8px;
+}
+
+.inventory-control .inventory-control-input,
+.inventory-control .inventory-control-button {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid rgba(170, 180, 178, 0.2);
+  border-radius: 4px;
+  color: var(--ob-ivory);
+  background: rgba(7, 11, 15, 0.96);
+  box-shadow: none;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.inventory-control .inventory-control-input {
+  padding: 10px 6px;
+  font-size: 12px;
+}
+
+.inventory-control .inventory-control-button {
+  padding: 9px 5px;
+  color: #d0d5d3;
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.inventory-control .inventory-control-button:hover,
+.inventory-control .inventory-control-input:focus-within {
+  border-color: rgba(72, 170, 166, 0.55);
+  background: rgba(12, 20, 23, 0.98);
+}
+
+.tooltip-wrapper,
+.context-menu-list,
+.useful-controls-dialog {
+  border: 1px solid rgba(170, 180, 178, 0.2);
+  border-radius: 4px;
+  color: #d8dad4;
+  background: rgba(7, 11, 15, 0.98);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+}
+
+.context-menu-item {
+  border-radius: 3px;
+  color: #cbd0cd;
+}
+
+.context-menu-item:hover {
+  background: rgba(72, 170, 166, 0.1);
+}
+
+.inventory-grid-wrapper--witch-pouch .inventory-grid-container {
+  grid-template-columns: repeat(4, 10.2vh);
+  box-sizing: border-box;
+  height: calc(52.1vh + 12px);
+  justify-content: center;
+  padding: 8px;
+  border: 1px solid rgba(116, 93, 121, 0.3);
+  background: rgba(9, 8, 14, 0.9);
+  box-shadow: none;
+}
+
+.inventory-grid-wrapper--witch-pouch .inventory-slot {
+  border-color: rgba(116, 93, 121, 0.34);
+}
+
+@media (max-width: 1500px) {
+  .inventory-wrapper {
+    gap: 10px;
+  }
+
+  .inventory-column-left {
+    grid-template-columns: 68px auto;
+    gap: 10px;
+    padding: 47px;
+  }
+
+  .inventory-column-left::after,
+  .inventory-column-right .inventory-frame-shell::after {
+    inset: 40px;
+  }
+
+  .inventory-column-right .inventory-frame-shell {
+    padding: 47px;
+  }
+
+  .equipment-dock {
+    padding-right: 9px;
+  }
+
+  .equipment-slot-shell {
+    width: 48px;
+    height: 48px;
+  }
+
+  .inventory-control .inventory-control-wrapper {
+    width: 72px;
+  }
+}
+
+@media (max-height: 760px) {
+  .inventory-column-left {
+    grid-template-columns: 62px auto;
+    padding: 41px;
+  }
+
+  .inventory-column-left::after,
+  .inventory-column-right .inventory-frame-shell::after {
+    inset: 35px;
+  }
+
+  .inventory-column-right .inventory-frame-shell {
+    padding: 41px;
+  }
+
+  .equipment-slot-shell {
+    width: 44px;
+    height: 44px;
+  }
+
+  .equipment-label {
+    font-size: 8px;
+  }
+}
+
+/* V3: connected classic RPG composition. */
+.inventory-wrapper {
+  gap: 0;
+  transform: none;
+}
+
+.inventory-column-left,
+.inventory-control,
+.inventory-column-right {
+  transform: translateY(-4vh);
+}
+
+.inventory-column-left {
+  position: relative;
+  display: block;
+  padding: 0;
+  isolation: visible;
+}
+
+.inventory-column-left::before,
+.inventory-column-left::after {
+  content: none;
+}
+
+.inventory-column-left > .inventory-frame-shell,
+.inventory-column-right .inventory-frame-shell {
+  position: relative;
+  box-sizing: border-box;
+  padding: clamp(39px, 4.6vh, 48px);
+  isolation: isolate;
+}
+
+.inventory-column-right .inventory-frame-shell {
+  width: calc(51vh + 20px + clamp(78px, 9.2vh, 96px));
+}
+
+.inventory-column-left > .inventory-frame-shell::before,
+.inventory-column-left > .inventory-frame-shell::after,
+.inventory-column-right .inventory-frame-shell::before,
+.inventory-column-right .inventory-frame-shell::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+}
+
+.inventory-column-left > .inventory-frame-shell::before,
+.inventory-column-right .inventory-frame-shell::before {
+  inset: 0;
+  z-index: 1;
+  background: url('./images/ui-rpg-connected-frame-v3.png') center / 100% 100% no-repeat;
+}
+
+.inventory-column-left > .inventory-frame-shell::after,
+.inventory-column-right .inventory-frame-shell::after {
+  inset: clamp(13px, 1.6vh, 17px);
+  z-index: 0;
+  border: 0;
+  border-radius: 2px;
+  background: rgba(6, 8, 11, 0.72);
+  box-shadow: none;
+}
+
+.inventory-column-left .inventory-grid-wrapper,
+.inventory-column-right .inventory-grid-wrapper {
+  position: relative;
+  z-index: 2;
+}
+
+.inventory-grid-wrapper > div:first-child {
+  position: relative;
+  padding-top: 3px;
+}
+
+.inventory-grid-header-wrapper {
+  min-height: 26px;
+}
+
+.inventory-frame-shell .inventory-grid-header-wrapper p:first-child {
+  position: absolute;
+  top: clamp(-40px, -4.2vh, -34px);
+  left: 50%;
+  z-index: 4;
+  width: 142px;
+  max-width: 142px;
+  color: #c8c2b4;
+  font-size: 15px;
+  font-weight: 500;
+  text-align: center;
+  transform: translateX(-50%);
+}
+
+.inventory-frame-shell .inventory-grid-header-wrapper p:last-child {
+  margin-left: auto;
+  color: #8d918c;
+}
+
+.inventory-column-left .inventory-grid-header-wrapper p:last-child {
+  padding-right: 0;
+  text-align: right;
+}
+
+/* Equipment remains outside, attached to the player panel by a short connector. */
+.equipment-dock {
+  position: absolute;
+  top: 50%;
+  right: calc(100% + 12px);
+  grid-column: auto;
+  grid-row: auto;
+  z-index: 4;
+  width: 74px;
+  height: auto;
+  box-sizing: border-box;
+  padding: 12px 9px;
+  border: 1px solid rgba(163, 150, 121, 0.34);
+  border-radius: 3px;
+  background: rgba(6, 8, 11, 0.96);
+  transform: translateY(-50%);
+  isolation: isolate;
+}
+
+.equipment-dock::before,
+.equipment-dock::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+}
+
+.equipment-dock::before {
+  top: calc(50% - 4px);
+  right: -17px;
+  width: 8px;
+  height: 8px;
+  border: 1px solid rgba(169, 141, 85, 0.72);
+  background: #090b0e;
+  transform: rotate(45deg);
+}
+
+.equipment-dock::after {
+  top: 50%;
+  right: -13px;
+  width: 13px;
+  height: 1px;
+  background: rgba(169, 141, 85, 0.72);
+}
+
+.equipment-dock-slots {
+  height: auto;
+  gap: 9px;
+}
+
+.equipment-slot-shell {
+  width: 52px;
+  height: 52px;
+}
+
+.equipment-label {
+  font-size: 8px;
+}
+
+/* The hotbar stays outside and connects beneath the player panel. */
+.inventory-column-left > .hotbar-container--embedded {
+  position: absolute;
+  top: calc(100% + 12px);
+  bottom: auto;
+  left: 50%;
+  z-index: 4;
+  display: flex;
+  width: auto;
+  min-height: 0;
+  margin: 0;
+  padding: 12px 10px 10px;
+  gap: 5px;
+  border: 1px solid rgba(163, 150, 121, 0.34);
+  border-radius: 3px;
+  background: rgba(6, 8, 11, 0.96);
+  transform: translateX(-50%);
+  isolation: isolate;
+}
+
+.inventory-column-left > .hotbar-container--embedded::before {
+  content: '';
+  position: absolute;
+  top: -13px;
+  left: 50%;
+  width: 1px;
+  height: 13px;
+  border: 0;
+  background: rgba(169, 141, 85, 0.72);
+  transform: translateX(-50%);
+}
+
+.inventory-column-left > .hotbar-container--embedded::after {
+  content: '';
+  position: absolute;
+  top: -18px;
+  left: calc(50% - 4px);
+  width: 8px;
+  height: 8px;
+  border: 1px solid rgba(169, 141, 85, 0.72);
+  background: #090b0e;
+  transform: rotate(45deg);
+}
+
+.hotbar-entry {
+  padding-top: 6px;
+}
+
+.hotbar-keycap {
+  top: -9px;
+}
+
+/* Central actions are the visual bridge between both inventories. */
+.inventory-control {
+  position: relative;
+  z-index: 5;
+  box-sizing: border-box;
+  width: 96px;
+  margin: 0 -3px;
+  padding: 0 8px;
+}
+
+.inventory-control::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -5px;
+  left: -5px;
+  z-index: -1;
+  height: 1px;
+  background: rgba(169, 141, 85, 0.42);
+}
+
+.inventory-control .inventory-control-wrapper {
+  width: 80px;
+  padding: 10px 0;
+  gap: 7px;
+  background: rgba(5, 7, 10, 0.72);
+}
+
+.inventory-control .inventory-control-input,
+.inventory-control .inventory-control-button {
+  border-color: rgba(163, 150, 121, 0.3);
+  background: rgba(8, 10, 13, 0.98);
+}
+
+/* Witch pouch occupies the familiar top-right accessory position. */
+.witch-pouch-dock {
+  top: 9px;
+  right: 12px;
+  width: 56px;
+}
+
+.witch-pouch-button {
+  width: 100%;
+}
+
+@media (max-width: 1500px) {
+  .inventory-column-left,
+  .inventory-control,
+  .inventory-column-right {
+    transform: translateY(-3vh);
+  }
+
+  .inventory-column-left > .inventory-frame-shell,
+  .inventory-column-right .inventory-frame-shell {
+    padding: 37px;
+  }
+
+  .inventory-column-right .inventory-frame-shell {
+    width: calc(51vh + 94px);
+  }
+
+  .inventory-column-left > .inventory-frame-shell::after,
+  .inventory-column-right .inventory-frame-shell::after {
+    inset: 29px;
+  }
+
+  .equipment-dock {
+    right: calc(100% + 9px);
+    width: 66px;
+    padding: 10px 7px;
+  }
+
+  .equipment-slot-shell {
+    width: 46px;
+    height: 46px;
+  }
+
+  .inventory-control {
+    width: 84px;
+  }
+
+  .inventory-control .inventory-control-wrapper {
+    width: 70px;
+  }
+}
+
+@media (max-height: 760px) {
+  .inventory-column-left > .inventory-frame-shell,
+  .inventory-column-right .inventory-frame-shell {
+    padding: 34px;
+  }
+
+  .inventory-column-right .inventory-frame-shell {
+    width: calc(51vh + 88px);
+  }
+
+  .inventory-column-left > .inventory-frame-shell::after,
+  .inventory-column-right .inventory-frame-shell::after {
+    inset: 26px;
+  }
+
+  .inventory-frame-shell .inventory-grid-header-wrapper p:first-child {
+    top: -31px;
+    font-size: 13px;
+  }
+
+  .equipment-slot-shell {
+    width: 42px;
+    height: 42px;
+  }
+}
+
+/* V4: finishing pass for plaques, framed controls and the external rails. */
+.inventory-wrapper--witch .inventory-column-left > .inventory-frame-shell::after {
+  border-color: transparent;
+  background: rgba(6, 8, 11, 0.72);
+  box-shadow: none;
+}
+
+.inventory-frame-shell .inventory-grid-header-wrapper p:first-child {
+  top: clamp(-31px, -3.25vh, -27px);
+  width: 124px;
+  max-width: 124px;
+  overflow: hidden;
+  font-size: 14px;
+  line-height: 16px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.equipment-dock {
+  width: 86px;
+  padding: 10px 9px;
+  border: 8px solid transparent;
+  border-radius: 0;
+  border-image: url('./images/ui-rpg-connected-frame-v3.png') 118 / 8px / 0 stretch;
+  background: rgba(6, 8, 11, 0.78);
+}
+
+.equipment-dock::before,
+.equipment-dock::after {
+  content: none;
+}
+
+.equipment-slot-shell::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  z-index: 2;
+  border: 1px solid rgba(169, 141, 85, 0.42);
+  border-radius: 2px;
+  background:
+    linear-gradient(135deg, rgba(169, 141, 85, 0.7) 0 1px, transparent 1px) top left / 9px 9px no-repeat,
+    linear-gradient(225deg, rgba(169, 141, 85, 0.7) 0 1px, transparent 1px) top right / 9px 9px no-repeat,
+    linear-gradient(45deg, rgba(169, 141, 85, 0.56) 0 1px, transparent 1px) bottom left / 9px 9px no-repeat,
+    linear-gradient(315deg, rgba(169, 141, 85, 0.56) 0 1px, transparent 1px) bottom right / 9px 9px no-repeat;
+  box-shadow: inset 0 0 8px rgba(169, 141, 85, 0.08);
+  transform: none;
+  pointer-events: none;
+}
+
+.equipment-entry.is-equipped .equipment-slot-shell::before {
+  border-color: rgba(186, 157, 98, 0.72);
+  box-shadow:
+    inset 0 0 9px rgba(169, 141, 85, 0.12),
+    0 0 5px rgba(169, 141, 85, 0.12);
+}
+
+.equipment-entry.is-equipped .inventory-slot {
+  border-color: rgba(169, 141, 85, 0.48);
+  background-color: rgba(9, 10, 11, 0.98);
+  box-shadow:
+    inset 0 0 12px rgba(169, 141, 85, 0.06),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.38);
+}
+
+.equipment-empty-mark {
+  display: block;
+  width: 68%;
+  height: 68%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 0.24;
+}
+
+.equipment-entry[data-equipment] .equipment-empty-mark::before,
+.equipment-entry[data-equipment] .equipment-empty-mark::after {
+  content: none;
+}
+
+.equipment-entry[data-equipment='amulet'] .equipment-empty-mark {
+  background-image: url('./images/ui-equipment-amulet.png');
+}
+
+.equipment-entry[data-equipment='necklace'] .equipment-empty-mark {
+  background-image: url('./images/ui-equipment-necklace.png');
+}
+
+.equipment-entry[data-equipment='belt'] .equipment-empty-mark {
+  background-image: url('./images/ui-equipment-belt.png');
+}
+
+.equipment-entry[data-equipment='ring'] .equipment-empty-mark {
+  background-image: url('./images/ui-equipment-ring.png');
+}
+
+.equipment-empty-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 3;
+  width: 72%;
+  height: 72%;
+  object-fit: contain;
+  opacity: 0.54;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.equipment-slot-shell .durability-bar {
+  display: none;
+}
+
+.useful-controls-button,
+.useful-controls-dialog-overlay {
+  display: none !important;
+}
+
+.inventory-control {
+  width: 104px;
+  padding: 0 7px;
+}
+
+.inventory-control .inventory-control-wrapper {
+  width: 90px;
+  padding: 12px 0;
+  background: transparent;
+}
+
+.inventory-control .inventory-control-input,
+.inventory-control .inventory-control-button {
+  min-height: 38px;
+  padding: 7px 5px;
+  border: 6px solid transparent;
+  border-radius: 0;
+  border-image: url('./images/ui-rpg-connected-frame-v3.png') 118 / 6px / 0 stretch;
+  color: #d8d3c7;
+  background: rgba(7, 9, 12, 0.98);
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+.inventory-control .inventory-control-input {
+  color: var(--ob-ivory);
+  font-size: 12px;
+}
+
+.inventory-control .inventory-control-button {
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.inventory-control .inventory-control-button:hover,
+.inventory-control .inventory-control-input:focus-within {
+  border-color: transparent;
+  background: rgba(12, 18, 20, 0.98);
+}
+
+.inventory-column-left > .hotbar-container--embedded {
+  top: calc(100% - 3px);
+  min-height: 0;
+  padding: 20px 30px 17px;
+  gap: 5px;
+  border: 0;
+  border-radius: 0;
+  background: url('./images/ui-hotbar-vines.png') center / 100% 100% no-repeat;
+  box-shadow: none;
+}
+
+.inventory-column-left > .hotbar-container--embedded::before {
+  content: none;
+}
+
+.inventory-column-left > .hotbar-container--embedded::after {
+  content: none;
+}
+
+.hotbar-entry {
+  padding-top: 8px;
+}
+
+.hotbar-keycap {
+  top: -7px;
+  left: 50%;
+  display: grid;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  place-items: center;
+  line-height: 1;
+  transform: translateX(-50%);
+}
+
+@media (max-width: 1500px) {
+  .equipment-dock {
+    width: 76px;
+    padding: 9px 7px;
+  }
+
+  .inventory-control {
+    width: 94px;
+    padding: 0 5px;
+  }
+
+  .inventory-control .inventory-control-wrapper {
+    width: 84px;
+  }
+
+  .inventory-column-left > .hotbar-container--embedded {
+    padding: 18px 24px 15px;
+  }
+}
+
+@media (max-height: 760px) {
+  .inventory-frame-shell .inventory-grid-header-wrapper p:first-child {
+    top: -26px;
+    width: 112px;
+    max-width: 112px;
+    font-size: 12px;
+    line-height: 14px;
+  }
+
+  .equipment-dock {
+    width: 72px;
+    padding: 8px 7px;
+  }
+
+  .inventory-column-left > .hotbar-container--embedded {
+    padding: 16px 22px 13px;
+  }
+}
+
+/* Handcrafted witch pouch: detached control in the lower-right corner. */
+.witch-pouch-dock {
+  position: fixed;
+  right: clamp(24px, 2.6vw, 48px);
+  bottom: clamp(20px, 3vh, 34px);
+  top: auto;
+  left: auto;
+  z-index: 20;
+  display: block;
+  width: clamp(112px, 8vw, 146px);
+  height: clamp(112px, 8vw, 146px);
+  transform: none;
+  pointer-events: none;
+}
+
+.witch-pouch-button {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  outline: 0;
+  background: transparent;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: transform 180ms ease;
+  opacity: 1;
+  filter: none;
+}
+
+.witch-pouch-button:disabled {
+  opacity: 1;
+  filter: none;
+}
+
+.witch-pouch-button img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 1;
+  filter: none;
+  pointer-events: none;
+}
+
+.witch-pouch-dock.is-available .witch-pouch-button:hover {
+  transform: translateY(-3px) scale(1.025);
+}
+
+.witch-pouch-dock.is-available .witch-pouch-button:active {
+  transform: translateY(-1px) scale(0.985);
+}
+
+.witch-pouch-dock.is-opening .witch-pouch-button {
+  animation: none;
+  transform: none;
+  cursor: wait;
+}
+
+.witch-pouch-dock.is-open .witch-pouch-button {
+  transform: none;
+  cursor: default;
+}
+
+.witch-pouch-dock.is-missing {
+  opacity: 1;
+}
+
+.witch-pouch-glow,
+.witch-pouch-copy {
+  display: none;
+}
+
+@media (max-width: 1500px), (max-height: 760px) {
+  .witch-pouch-dock {
+    right: 20px;
+    bottom: 18px;
+    width: 104px;
+    height: 104px;
+  }
+}

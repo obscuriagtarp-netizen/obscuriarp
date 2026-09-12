@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Obscuria HUD</title>
+    <link rel="stylesheet" href="style.css?v=30" />
+  </head>
+  <body>
+    <main id="hud" class="hud is-hidden" aria-label="Poderes sobrenaturais">
+      <section id="abilityCluster" class="ability-cluster" aria-live="polite">
+        <div id="overloadMeter" class="overload-meter is-hidden" aria-label="Excesso sobrenatural estavel">
+          <span class="overload-core" aria-hidden="true"></span>
+          <img
+            class="overload-frame"
+            src="assets/overload-meter-frame.png"
+            alt=""
+            draggable="false"
+          />
+          <strong id="overloadValue" class="overload-value">0</strong>
+        </div>
+        <div id="essenceMeter" class="essence-meter is-empty" aria-label="Essencia indisponivel">
+          <div class="essence-vial-window" aria-hidden="true">
+            <span id="essenceLiquid" class="essence-liquid">
+              <span class="essence-fluid">
+                <span class="essence-current"></span>
+              </span>
+            </span>
+          </div>
+          <img
+            class="essence-frame"
+            src="assets/essence-vial-frame.png"
+            alt=""
+            draggable="false"
+          />
+          <span id="essenceValue" class="essence-value">0</span>
+          <span id="essenceLabel" class="essence-label" aria-hidden="true">Essencia</span>
+        </div>
+      </section>
+    </main>
+
+    <div id="keybindBackdrop" class="keybind-backdrop is-hidden" aria-hidden="true">
+      <section class="keybind-panel" role="dialog" aria-modal="true" aria-labelledby="keybindTitle">
+        <img class="keybind-panel-frame" src="assets/keybind-panel-frame.png" alt="" draggable="false" />
+        <button id="keybindClose" class="keybind-close" type="button" aria-label="Fechar">&times;</button>
+        <header class="keybind-header">
+          <span id="keybindProvider">PODERES SOBRENATURAIS</span>
+          <h1 id="keybindTitle">VINCULOS ARCANOS</h1>
+        </header>
+        <div id="keybindRows" class="keybind-rows"></div>
+        <p id="keybindFeedback" class="keybind-feedback" aria-live="polite"></p>
+        <footer class="keybind-actions">
+          <button id="keybindDefaults" class="keybind-action" type="button">PADRAO</button>
+          <button id="keybindCancel" class="keybind-action" type="button">CANCELAR</button>
+          <button id="keybindSave" class="keybind-action is-primary" type="button">SALVAR</button>
+        </footer>
+      </section>
+    </div>
+
+    <script src="app.js?v=16"></script>
+  </body>
+</html>

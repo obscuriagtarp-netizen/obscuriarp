@@ -1,0 +1,165 @@
+{
+  "rightCorner": {
+    "job": "Beruf",
+    "gang": "Gang",
+    "bank": "Bank",
+    "cash": "Bargeld",
+    "weapon": "Waffe",
+    "blackMoney": "Schwarzgeld"
+  },
+  "carhud": {
+    "kmh": "km/h",
+    "mph": "mph",
+    "feet": "ft",
+    "airspeed": "Luftgeschwindigkeit",
+    "waterspeed": "Wassergeschwindigkeit"
+  },
+  "quickMenu": {
+    "markText": "Zum Markieren klicken",
+    "categories": {
+      "nearby": "In der Nähe",
+      "music": "Musik",
+      "car": "Auto"
+    },
+    "nearby": {
+      "bank": "Bank",
+      "shop": "Laden",
+      "clothing": "Kleidungsgeschäft",
+      "garage": "Garage",
+      "mechanic": "Mechaniker",
+      "gunshop": "Waffenladen"
+    },
+    "music": {
+      "placeholder": "Gib eine Song-URL ein",
+      "play": "Abspielen",
+      "errorTitle": "Musikfehler",
+      "errorMessages": {
+        "invalidUrl": "Ungültige URL. Bitte gib eine gültige Song-URL ein.",
+        "invalidVideoData": "Ungültige Videodaten. Bitte überprüfe die URL und versuche es erneut.",
+        "apiError": "API-Fehler. Bitte versuche es später erneut."
+      }
+    }
+  },
+  "location": {
+    "nearPostal": "In der Nähe von PLZ"
+  },
+  "settingsMenu": {
+    "title": "Hud",
+    "subtitle": "Einstellungen",
+    "reset": "Einstellungen zurücksetzen",
+    "confirm": "Bestätigen",
+    "cancel": "Abbrechen",
+    "categories": {
+      "general": "Allgemein",
+      "carhud": "Auto-Hud",
+      "status": "Status-Hud",
+      "corner": "Rechte Ecke"
+    },
+    "fuel": {
+      "title": "Kraftstofftyp",
+      "description": "Wähle den Kraftstofftyp des Fahrzeugs. Liter oder Gallonen. * Änderungen werden gespeichert.",
+      "litres": "Liter 100L",
+      "gallons": "Gallonen 100G"
+    },
+    "map": {
+      "title": "Karte",
+      "description": "Wähle das Format der Karte.",
+      "square": "Quadrat",
+      "circle": "Kreis"
+    },
+    "cinematic": {
+      "title": "Kino-Modus",
+      "description": "Aktiviere oder deaktiviere den Kino-Modus.",
+      "enabled": "Aktiviert",
+      "disabled": "Deaktiviert"
+    },
+    "carhuds": {
+      "modern": "Modern",
+      "agressive": "Aggressiv",
+      "sport": "Sportlich",
+      "simple": "Einfach",
+      "simplev2": "Einfach V2",
+      "circle": "Kreis",
+      "changes": "*Deine Änderungen werden gespeichert",
+      "description": "Rechts kannst du die Farbpalletten des Auto-HUDs bearbeiten und deine eigenen Farben finden."
+    },
+    "status": {
+      "circle": "Kreis",
+      "circlev2": "Kreis V2",
+      "circlev3": "Kreis V3",
+      "circlev4": "Kreis V4",
+      "square": "Quadrat",
+      "squarev2": "Quadrat V2",
+      "hexagon": "Hexagon",
+      "wave": "Welle",
+      "simple": "Einfach",
+      "simplev2": "Einfach V2",
+      "regular": "Standard",
+      "changes": "*Deine Änderungen werden gespeichert",
+      "description": "Rechts kannst du die Farbpalletten des Status-HUDs bearbeiten und deine eigenen Farben finden."
+    },
+    "rightCorner": {
+      "color": {
+        "title": "Farben auswählen",
+        "description": "Wähle Farben für die Elemente in der rechten Ecke. Du kannst für jedes Symbol und jeden Text eine andere Farbe wählen."
+      },
+      "old": {
+        "title": "Alt",
+        "description": "Zeigt Informationen in einer alten, einfachen Zeile an."
+      },
+      "boxed_dynamic": {
+        "title": "Dynamischer Kasten",
+        "description": "Der Kastenstil ist dynamisch. Farben ändern sich je nach Tageszeit."
+      },
+      "modern": {
+        "title": "Modern",
+        "description": "Box-Stil mit modernem Look. Sehr empfohlen."
+      },
+      "simple": {
+        "title": "Einfach",
+        "description": "Ein simples Design ohne Kästen. Sehr praktisch für Minimalisten."
+      }
+    },
+    "mapRadius": {
+      "title": "Kartenrandweichheit",
+      "description": "Hier kannst du die Weichheit der Ecken der quadratischen Karte einstellen.",
+      "enabled": "Aktiviert",
+      "disabled": "Deaktiviert"
+    },
+    "performance": {
+      "title": "Leistungsmodus",
+      "description": "Hier können Sie den Leistungsmodus auswählen. Dies ändert die Leistung des HUDs. Es wird empfohlen, diesen Modus zu verwenden, wenn Sie einen leistungsschwachen PC haben.",
+      "balanced": "Ausgewogen",
+      "performance": "Leistung"
+    },
+    "speed": {
+      "title": "Geschwindigkeitstyp",
+      "description": "Wählen Sie den Geschwindigkeitstyp, den Sie im Carhud sehen möchten.",
+      "kmh": "KM/H",
+      "mph": "MP/H"
+    },
+    "theme_data": {
+      "title": "Design exportieren",
+      "export": "Exportieren",
+      "description": "Sie können Ihr aktuelles Design exportieren. Ersetzen Sie die kopierten Daten mit den Daten in Config.json"
+    },
+
+    "editor": {
+      "title": "Anpassungsmodus",
+      "description": "Ordne die Positionen der HUD-Elemente an. Erreiche das gewünschte Aussehen.",
+      "button": "Anpassung"
+    },
+
+    "minimap": {
+      "title": "Minimap",
+      "description": "Hier kannst du die Minimap ausblenden oder anzeigen.",
+      "show": "Anzeigen",
+      "hide": "Ausblenden"
+    },
+
+    "scale": {
+      "title": "Skalierung",
+      "description": "Hier kannst du die Skalierung des HUDs ändern. Dadurch wird die Größe der HUD-Elemente angepasst."
+    }
+  }
+}

@@ -1,0 +1,824 @@
+/* Obscuria visual layer. Kept separate from the vendor bundle for safer updates. */
+:root {
+  --ob-panel: rgba(15, 13, 19, 0.96);
+  --ob-panel-raised: rgba(27, 23, 32, 0.98);
+  --ob-border: rgba(197, 172, 211, 0.2);
+  --ob-border-strong: rgba(188, 151, 209, 0.42);
+  --ob-accent: #a77abd;
+  --ob-accent-soft: #d7b9e5;
+  --ob-text: #f5f0f7;
+  --ob-muted: #aaa0ae;
+  --ob-success: #73b889;
+}
+
+.jobProgressPanel {
+  top: 50% !important;
+  left: max(18px, 1.5vw) !important;
+  right: auto !important;
+  bottom: auto !important;
+  width: 320px;
+  overflow: hidden;
+  border: 1px solid var(--ob-border);
+  border-left: 3px solid var(--ob-accent);
+  border-radius: 5px;
+  color: var(--ob-text);
+  background: var(--ob-panel);
+  box-shadow:
+    0 18px 44px rgba(0, 0, 0, 0.46),
+    inset 0 1px 0 rgba(255, 255, 255, 0.035);
+  opacity: 0;
+  transform: translate(-16px, -50%);
+  transition:
+    opacity 180ms ease,
+    transform 220ms ease,
+    width 220ms ease;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.jobProgressPanel.active {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
+.jobProgressPanel.expanded {
+  width: 400px;
+}
+
+.jobProgressHeader {
+  min-height: 48px;
+  padding: 11px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.065);
+  background:
+    linear-gradient(90deg, rgba(167, 122, 189, 0.13), transparent 62%),
+    var(--ob-panel-raised);
+}
+
+.jobProgressHeaderText {
+  color: var(--ob-text);
+  font-family: GilroySBold, "Segoe UI", sans-serif;
+  font-size: 14px;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+.jobProgressHeaderCount {
+  min-width: 38px;
+  padding: 5px 7px;
+  border: 1px solid var(--ob-border-strong);
+  border-radius: 3px;
+  color: var(--ob-accent-soft);
+  background: rgba(167, 122, 189, 0.12);
+  font-family: GilroySBold, "Segoe UI", sans-serif;
+  font-size: 12px;
+  line-height: 1;
+  text-align: center;
+}
+
+.jobProgressBody {
+  gap: 0;
+  padding: 7px 10px 8px;
+}
+
+.jobProgressTask {
+  min-height: 34px;
+  gap: 9px;
+  padding: 8px 5px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.045);
+  border-radius: 2px;
+}
+
+.jobProgressTask:last-child {
+  border-bottom-color: transparent;
+}
+
+.jobProgressTask:hover {
+  background: rgba(167, 122, 189, 0.07);
+}
+
+.jobProgressCheckbox {
+  width: 17px;
+  height: 17px;
+  border: 1px solid rgba(215, 185, 229, 0.34);
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.jobProgressCheckbox svg {
+  width: 11px;
+  height: 11px;
+}
+
+.jobProgressTask.completed .jobProgressCheckbox,
+.jobProgressSubtask.completed .jobProgressSubtaskIcon {
+  border-color: var(--ob-success);
+  background: var(--ob-success);
+}
+
+.jobProgressTaskLabel {
+  color: rgba(245, 240, 247, 0.86);
+  font-family: GilroyMedium, "Segoe UI", sans-serif;
+  font-size: 12px;
+  line-height: 1.25;
+  letter-spacing: 0;
+}
+
+.jobProgressTask.completed .jobProgressTaskLabel {
+  color: rgba(170, 160, 174, 0.5);
+}
+
+.jobProgressTaskPercent {
+  min-width: 38px;
+  color: var(--ob-muted);
+  font-family: GilroySBold, "Segoe UI", sans-serif;
+  font-size: 11px;
+}
+
+.jobProgressDetailDivider {
+  background: rgba(197, 172, 211, 0.13);
+}
+
+.jobProgressSubtask {
+  padding: 5px 3px;
+  border-radius: 2px;
+}
+
+.jobProgressSubtaskIcon {
+  width: 17px;
+  height: 17px;
+  border: 1px solid rgba(215, 185, 229, 0.25);
+}
+
+.jobProgressSubtaskIcon svg {
+  width: 10px;
+  height: 10px;
+}
+
+.jobProgressSubtaskLabel {
+  color: rgba(245, 240, 247, 0.72);
+  font-size: 11px;
+  letter-spacing: 0;
+}
+
+.jobProgressSubtaskPct,
+.jobProgressSubtaskNumber {
+  color: var(--ob-muted);
+}
+
+.jobProgressSubtaskBar,
+.jobProgressHoldBar {
+  background: rgba(255, 255, 255, 0.075);
+}
+
+.jobProgressSubtaskBarFill,
+.jobProgressHoldBarFill {
+  border-radius: 1px;
+  background: var(--ob-accent) !important;
+}
+
+.jobProgressHoldSection {
+  padding: 6px 14px 11px;
+}
+
+.jobProgressHoldBar {
+  height: 3px;
+  margin-bottom: 6px;
+  border-radius: 1px;
+}
+
+.jobProgressHintBasic {
+  color: rgba(215, 205, 220, 0.6);
+  font-family: GilroyMedium, "Segoe UI", sans-serif;
+  font-size: 10px;
+  letter-spacing: 0;
+}
+
+.jobProgressDescription {
+  color: rgba(215, 205, 220, 0.68);
+  font-size: 11px;
+  line-height: 1.45;
+  letter-spacing: 0;
+}
+
+@media (max-width: 1366px) {
+  .jobProgressPanel {
+    left: 14px !important;
+    width: 300px;
+  }
+
+  .jobProgressPanel.expanded {
+    width: 370px;
+  }
+}
+
+/* Active-job HUD rails ----------------------------------------------------- */
+.obscuriaJobHudRail {
+  position: fixed;
+  top: 25vh;
+  left: 8px;
+  bottom: auto;
+  z-index: 50;
+  width: min(840px, calc(100vw - 16px));
+  height: 48vh;
+  max-height: none;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: 8px;
+  transform: none;
+  pointer-events: none;
+}
+
+.obscuriaJobHudRail > :not(.active) {
+  display: none !important;
+}
+
+.obscuriaJobHudRail > .active {
+  position: relative !important;
+  inset: auto !important;
+  margin: 0 !important;
+  opacity: 1;
+  transform: none !important;
+  pointer-events: auto;
+  animation: obscuriaHudReveal 220ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes obscuriaHudReveal {
+  from {
+    opacity: 0;
+    translate: -18px 0;
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+.obscuriaJobHudRail > .truckFillIndicator.active,
+.obscuriaJobHudRail > .taximeterIndicator.active,
+.obscuriaJobHudRail > .trailerHealthIndicator.active,
+.obscuriaJobHudRail > .oxygenIndicator.active,
+.obscuriaJobHudRail > .jobProgressPanel.active,
+.obscuriaJobHudRail > .coopLeaderboardPanel.active,
+.obscuriaJobHudRail > .contractPanel.active {
+  display: flex !important;
+}
+
+.obscuriaJobHudRail > .truckTrackerPanel.active {
+  display: block !important;
+}
+
+.obscuriaJobHudRail .jobProgressPanel {
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: none;
+}
+
+.truckFillIndicator,
+.taximeterIndicator,
+.trailerHealthIndicator,
+.truckTrackerPanel {
+  width: 320px;
+  overflow: hidden;
+  border: 1px solid var(--ob-border);
+  border-left: 3px solid var(--ob-accent);
+  border-radius: 5px;
+  background: var(--ob-panel);
+  box-shadow:
+    0 16px 38px rgba(0, 0, 0, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.truckTrackerPanel {
+  width: 400px;
+}
+
+.truckFillHeader,
+.taximeterHeader,
+.trailerHealthHeader,
+.truckTrackerHeader {
+  min-height: 44px;
+  padding: 10px 13px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.065);
+  background:
+    linear-gradient(90deg, rgba(167, 122, 189, 0.13), transparent 62%),
+    var(--ob-panel-raised);
+}
+
+.truckFillIcon,
+.taximeterHeaderIcon,
+.trailerHealthIcon {
+  width: 27px;
+  height: 27px;
+  border: 1px solid rgba(197, 172, 211, 0.18);
+  border-radius: 4px;
+  background: rgba(167, 122, 189, 0.11);
+}
+
+.truckFillIcon img,
+.taximeterHeaderIcon img,
+.trailerHealthIcon img {
+  width: 15px;
+  height: 15px;
+  filter: brightness(0) invert(1);
+  opacity: 0.8;
+}
+
+.truckFillTitle,
+.taximeterHeaderText,
+.trailerHealthTitle,
+.truckTrackerLabel {
+  color: var(--ob-text);
+  font-family: GilroySBold, "Segoe UI", sans-serif;
+  font-size: 13px;
+  line-height: 1.2;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.truckFillCount,
+.trailerHealthPctBadge,
+.truckTrackerCount {
+  min-width: 40px;
+  padding: 5px 7px;
+  border: 1px solid var(--ob-border-strong);
+  border-radius: 3px;
+  color: var(--ob-accent-soft);
+  background: rgba(167, 122, 189, 0.1);
+  font-family: GilroySBold, "Segoe UI", sans-serif;
+  font-size: 11px;
+  line-height: 1;
+  text-align: center;
+}
+
+.truckFillBody,
+.trailerHealthBody,
+.truckTrackerBody {
+  padding: 11px 13px 12px;
+}
+
+.truckFillBar,
+.trailerHealthBar,
+.truckTrackerRoad {
+  border-radius: 1px;
+  background: rgba(255, 255, 255, 0.075);
+}
+
+.truckFillProgress,
+.truckTrackerFill {
+  border-radius: 1px;
+  background: var(--ob-accent);
+}
+
+.truckFillPct,
+.trailerHealthLabel,
+.truckTrackerStatus {
+  color: var(--ob-muted);
+  font-family: GilroyMedium, "Segoe UI", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0;
+}
+
+.truckTrackerCount,
+.truckTrackerTruck,
+.truckTrackerEnd {
+  color: var(--ob-accent-soft);
+}
+
+.truckTrackerTruck {
+  filter: drop-shadow(0 0 5px rgba(167, 122, 189, 0.38));
+}
+
+.taximeterBody {
+  gap: 0;
+  padding: 7px 13px;
+}
+
+.taximeterRow {
+  min-height: 32px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.045);
+}
+
+.taximeterRow:last-child {
+  border-bottom: 0;
+}
+
+.taximeterLabel {
+  color: var(--ob-muted);
+  font-family: GilroyMedium, "Segoe UI", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0;
+}
+
+.taximeterValue,
+.taximeterValue.fare,
+.taximeterValue.time,
+.taximeterValue.dist {
+  min-width: 86px;
+  padding: 4px 6px;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 3px;
+  color: var(--ob-text);
+  background: rgba(255, 255, 255, 0.035);
+  font-family: GilroySBold, "Segoe UI", sans-serif;
+  font-size: 14px;
+  text-shadow: none;
+}
+
+.taximeterValue.time.warning {
+  color: var(--tw-warning);
+  text-shadow: none;
+}
+
+.taximeterValue.time.critical {
+  color: var(--tw-error);
+  text-shadow: none;
+}
+
+.taximeterStatus {
+  padding: 7px 13px;
+  font-size: 10px;
+  letter-spacing: 0;
+}
+
+.taximeterStatus.normal {
+  border-top: 1px solid rgba(115, 184, 137, 0.2);
+  color: #91cba3;
+  background: rgba(115, 184, 137, 0.08);
+}
+
+.taximeterStatus.illegal {
+  border-top: 1px solid rgba(211, 107, 120, 0.25);
+  color: #e18b96;
+  background: rgba(211, 107, 120, 0.09);
+}
+
+.detectorCompass {
+  --cmp-deg: 1.3px;
+  width: 400px;
+  align-items: stretch;
+  padding: 7px;
+  border: 1px solid var(--ob-border);
+  border-left: 3px solid var(--ob-accent);
+  border-radius: 5px;
+  background: var(--ob-panel);
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.42);
+}
+
+.obscuriaJobHudRail > .detectorCompass.active {
+  position: fixed !important;
+  top: max(14px, 1.5vh) !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  display: flex !important;
+  transform: translateX(-50%) !important;
+  animation: none;
+}
+
+.detectorCompassTapeWrap {
+  height: 42px;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 3px;
+  background: var(--ob-panel-raised);
+}
+
+.detectorCompassChip {
+  align-self: center;
+  margin-top: -4px;
+  padding: 3px 9px;
+  border: 1px solid var(--ob-border-strong);
+  border-radius: 3px;
+  color: var(--ob-accent-soft);
+  background: #211b27;
+}
+
+.detectorCompassSignal {
+  align-self: center;
+  width: 72%;
+  height: 4px;
+  margin-top: 7px;
+  border-radius: 1px;
+  background: rgba(255, 255, 255, 0.075);
+}
+
+.detectorCompassSignalFill {
+  border-radius: 1px;
+  background: var(--ob-accent);
+  box-shadow: none;
+}
+
+.oxygenIndicator {
+  width: 70px;
+  height: 126px;
+  border: 1px solid var(--ob-border);
+  border-left: 3px solid var(--ob-accent);
+  border-radius: 5px;
+  background: var(--ob-panel);
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.38));
+}
+
+.oxygenTankSvg {
+  width: 47px;
+  height: 108px;
+}
+
+.oxygenTankBody {
+  stroke: rgba(167, 122, 189, 0.72);
+}
+
+#oxygenFillNormal stop:first-child {
+  stop-color: #765086;
+}
+
+#oxygenFillNormal stop:last-child {
+  stop-color: #c095d3;
+}
+
+/* Team, contracts and messages ------------------------------------------- */
+.coopLeaderboardPanel,
+.contractPanel {
+  width: 320px;
+  overflow: hidden;
+  border: 1px solid var(--ob-border);
+  border-left: 3px solid var(--ob-accent);
+  border-radius: 5px;
+  background: var(--ob-panel);
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.4);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.coopLeaderboardHeader,
+.contractPanelHeader {
+  min-height: 44px;
+  padding: 10px 13px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.065);
+  background:
+    linear-gradient(90deg, rgba(167, 122, 189, 0.13), transparent 62%),
+    var(--ob-panel-raised);
+}
+
+.coopLeaderboardHeaderText,
+.contractPanelHeaderText {
+  color: var(--ob-text);
+  font-family: GilroySBold, "Segoe UI", sans-serif;
+  font-size: 13px;
+  letter-spacing: 0;
+}
+
+.coopLeaderboardHeaderCount,
+.contractPanelHeaderCount {
+  padding: 5px 7px;
+  border: 1px solid var(--ob-border-strong);
+  border-radius: 3px;
+  color: var(--ob-accent-soft);
+  background: rgba(167, 122, 189, 0.1);
+  font-size: 11px;
+}
+
+.coopLeaderboardBody,
+.contractPanelBody {
+  padding: 7px 10px 8px;
+}
+
+.coopLeaderboardRow,
+.contractPanelTask {
+  min-height: 33px;
+  padding: 7px 5px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.045);
+  border-radius: 2px;
+}
+
+.coopLeaderboardName,
+.contractPanelTaskLabel {
+  color: rgba(245, 240, 247, 0.82);
+  font-size: 12px;
+}
+
+.contractPanelCheckbox {
+  width: 17px;
+  height: 17px;
+  border-radius: 3px;
+}
+
+.contractPanelProgressBar {
+  height: 3px;
+  border-radius: 1px;
+  background: rgba(255, 255, 255, 0.075);
+}
+
+.contractPanelProgressFill {
+  background: var(--ob-accent);
+}
+
+.notifContainer {
+  top: max(12px, 1.5vh) !important;
+  left: 8px !important;
+  right: auto !important;
+  bottom: auto !important;
+  width: 320px;
+  gap: 7px;
+}
+
+.notifCard {
+  min-height: 50px;
+  padding: 10px 12px;
+  border: 1px solid var(--ob-border);
+  border-left: 3px solid var(--ob-accent);
+  border-radius: 5px;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.38);
+}
+
+.notifCard::before {
+  border-radius: 4px;
+  background: var(--ob-panel);
+}
+
+.notifType--success {
+  border-left-color: var(--ob-success);
+}
+
+.notifType--error {
+  border-left-color: var(--tw-error);
+}
+
+.notifType--warning {
+  border-left-color: var(--tw-warning);
+}
+
+.notifIconBox {
+  width: 29px;
+  height: 29px;
+  border-radius: 4px;
+}
+
+.notifText {
+  color: rgba(245, 240, 247, 0.87);
+  font-size: 12px;
+  letter-spacing: 0;
+}
+
+.notifSlide-enter-from,
+.notifSlide-leave-to {
+  opacity: 0;
+  transform: translateX(-14px) scale(0.98);
+}
+
+/* Interaction helpers stay left of center without covering the HUD rail. */
+.drawTextContainer {
+  top: 62% !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+.drawTextCard {
+  min-height: 44px;
+  padding: 7px 11px 7px 7px;
+  border: 1px solid var(--ob-border);
+  border-left: 3px solid var(--ob-accent);
+  border-radius: 5px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.36);
+}
+
+.drawTextCard::before {
+  border: 0;
+  border-radius: 4px;
+  background: var(--ob-panel);
+}
+
+.drawTextKeyBadge {
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--ob-border-strong);
+  border-radius: 4px;
+  color: var(--ob-accent-soft);
+  background: rgba(167, 122, 189, 0.11);
+  font-size: 12px;
+}
+
+.drawTextLabel {
+  color: rgba(245, 240, 247, 0.84);
+  font-size: 12px;
+  letter-spacing: 0;
+}
+
+.actionProgressContainer {
+  left: 50% !important;
+  right: auto !important;
+  bottom: 18vh !important;
+  top: auto !important;
+  width: 112px;
+  min-height: 92px;
+  padding: 8px 10px;
+  border: 1px solid var(--ob-border);
+  border-left: 3px solid var(--ob-accent);
+  border-radius: 5px;
+  background: var(--ob-panel);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.36);
+  transform: translateX(-50%) !important;
+}
+
+.actionProgressTrack {
+  stroke: rgba(255, 255, 255, 0.09);
+}
+
+.actionProgressFill {
+  stroke: var(--ob-accent);
+}
+
+.actionProgressLabel {
+  max-width: 92px;
+  overflow: hidden;
+  color: rgba(245, 240, 247, 0.78);
+  font-size: 11px;
+  text-align: center;
+  text-overflow: ellipsis;
+}
+
+/* End-of-job decisions use the same left-side composition. */
+.finishJobModalOverlay {
+  justify-content: flex-start;
+  padding-right: 0;
+  padding-left: 8px;
+}
+
+.finishJobModal {
+  border: 1px solid var(--ob-border);
+  border-left: 3px solid var(--ob-success);
+  border-radius: 5px;
+  background: rgba(15, 13, 19, 0.98);
+  box-shadow: 0 24px 58px rgba(0, 0, 0, 0.48);
+}
+
+/* Solid Obscuria surfaces: no glass blur on employment UI. */
+[data-hlsl] {
+  background: var(--ob-panel-raised) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.settingsModal {
+  border: 1px solid var(--ob-border);
+  background: var(--ob-panel);
+  box-shadow: 0 24px 58px rgba(0, 0, 0, 0.5);
+}
+
+.settingsModalCards {
+  align-items: stretch;
+}
+
+.settingsModalCard {
+  text-align: center;
+}
+
+.settingsModalCard span {
+  width: 100%;
+  min-height: 2.2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5px;
+  text-align: center;
+  line-height: 1.1;
+}
+
+@media (max-width: 1366px) {
+  .obscuriaJobHudRail {
+    top: 25vh;
+    left: 8px;
+    width: min(782px, calc(100vw - 16px));
+    height: 48vh;
+  }
+
+  .truckFillIndicator,
+  .taximeterIndicator,
+  .trailerHealthIndicator,
+  .coopLeaderboardPanel,
+  .contractPanel {
+    width: 300px;
+  }
+
+  .truckTrackerPanel,
+  .detectorCompass {
+    width: 370px;
+  }
+
+  .notifContainer {
+    left: 8px !important;
+    width: 300px;
+  }
+
+  .actionProgressContainer {
+    left: 50% !important;
+  }
+}

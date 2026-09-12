@@ -1,0 +1,18 @@
+{
+  "name": "ob-ilegal-nui",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --base ./",
+    "build": "vite build --base ./ --outDir build --emptyOutDir",
+    "preview": "vite preview --host 127.0.0.1 --base ./ --outDir build"
+  },
+  "dependencies": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "vite": "4.5.14"
+  }
+}

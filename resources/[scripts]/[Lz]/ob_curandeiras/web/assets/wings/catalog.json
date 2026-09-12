@@ -1,0 +1,1682 @@
+[
+  {
+    "id": "asa_001",
+    "color": 1,
+    "label": "Crystal Blue",
+    "image": "assets/wings/catalog/asa_cor_001_crystal-blue.png",
+    "modelAvailable": true,
+    "effectColor": [
+      0.0936,
+      0.425,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_002",
+    "color": 2,
+    "label": "PRIMAL RED",
+    "image": "assets/wings/catalog/asa_cor_002_primal-red.png",
+    "modelAvailable": true,
+    "effectColor": [
+      0.78,
+      0.0936,
+      0.1069
+    ]
+  },
+  {
+    "id": "asa_003",
+    "color": 3,
+    "label": "Manifestação 003",
+    "image": "assets/wings/catalog/asa_cor_003_3.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3276,
+      0.78,
+      0.4058
+    ]
+  },
+  {
+    "id": "asa_004",
+    "color": 4,
+    "label": "Manifestação 004",
+    "image": "assets/wings/catalog/asa_cor_004_4.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.927,
+      0.7296,
+      0.3893
+    ]
+  },
+  {
+    "id": "asa_005",
+    "color": 5,
+    "label": "Manifestação 005",
+    "image": "assets/wings/catalog/asa_cor_005_5.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.78,
+      0.5928,
+      0.3276
+    ]
+  },
+  {
+    "id": "asa_006",
+    "color": 6,
+    "label": "Manifestação 006",
+    "image": "assets/wings/catalog/asa_cor_006_6.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.8328,
+      0.608,
+      0.2943
+    ]
+  },
+  {
+    "id": "asa_007",
+    "color": 7,
+    "label": "Manifestação 007",
+    "image": "assets/wings/catalog/asa_cor_007_7.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3061,
+      0.7704,
+      0.8108
+    ]
+  },
+  {
+    "id": "asa_008",
+    "color": 8,
+    "label": "Manifestação 008",
+    "image": "assets/wings/catalog/asa_cor_008_8.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.2445,
+      0.7506,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_009",
+    "color": 9,
+    "label": "Manifestação 009",
+    "image": "assets/wings/catalog/asa_cor_009_9.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3276,
+      0.7574,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_010",
+    "color": 10,
+    "label": "Manifestação 010",
+    "image": "assets/wings/catalog/asa_cor_010_10.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3515,
+      0.7896,
+      0.837
+    ]
+  },
+  {
+    "id": "asa_011",
+    "color": 11,
+    "label": "Manifestação 011",
+    "image": "assets/wings/catalog/asa_cor_011_11.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3276,
+      0.7203,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_012",
+    "color": 12,
+    "label": "Manifestação 012",
+    "image": "assets/wings/catalog/asa_cor_012_12.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.2532,
+      0.7383,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_013",
+    "color": 13,
+    "label": "Manifestação 013",
+    "image": "assets/wings/catalog/asa_cor_013_13.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.1991,
+      0.3638,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_014",
+    "color": 14,
+    "label": "Manifestação 014",
+    "image": "assets/wings/catalog/asa_cor_014_14.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.8547,
+      0.4793,
+      0.359
+    ]
+  },
+  {
+    "id": "asa_015",
+    "color": 15,
+    "label": "Manifestação 015",
+    "image": "assets/wings/catalog/asa_cor_015_15.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.2784,
+      0.3153,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_016",
+    "color": 16,
+    "label": "Manifestação 016",
+    "image": "assets/wings/catalog/asa_cor_016_16.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.0936,
+      0.3556,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_017",
+    "color": 17,
+    "label": "Manifestação 017",
+    "image": "assets/wings/catalog/asa_cor_017_17.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.4406,
+      0.3753,
+      0.8935
+    ]
+  },
+  {
+    "id": "asa_018",
+    "color": 18,
+    "label": "Manifestação 018",
+    "image": "assets/wings/catalog/asa_cor_018_18.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.7911,
+      0.2777,
+      0.4951
+    ]
+  },
+  {
+    "id": "asa_019",
+    "color": 19,
+    "label": "Manifestação 019",
+    "image": "assets/wings/catalog/asa_cor_019_19.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.6379,
+      0.3346,
+      0.7966
+    ]
+  },
+  {
+    "id": "asa_020",
+    "color": 20,
+    "label": "Manifestação 020",
+    "image": "assets/wings/catalog/asa_cor_020_20.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3276,
+      0.5754,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_021",
+    "color": 21,
+    "label": "Manifestação 021",
+    "image": "assets/wings/catalog/asa_cor_021_21.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3543,
+      0.4195,
+      0.8436
+    ]
+  },
+  {
+    "id": "asa_022",
+    "color": 22,
+    "label": "Manifestação 022",
+    "image": "assets/wings/catalog/asa_cor_022_22.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3276,
+      0.4751,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_023",
+    "color": 23,
+    "label": "Manifestação 023",
+    "image": "assets/wings/catalog/asa_cor_023_23.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3927,
+      0.589,
+      0.935
+    ]
+  },
+  {
+    "id": "asa_024",
+    "color": 24,
+    "label": "Manifestação 024",
+    "image": "assets/wings/catalog/asa_cor_024_24.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.4166,
+      0.5112,
+      0.992
+    ]
+  },
+  {
+    "id": "asa_025",
+    "color": 25,
+    "label": "Manifestação 025",
+    "image": "assets/wings/catalog/asa_cor_025_25.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.7444,
+      0.3344,
+      0.7962
+    ]
+  },
+  {
+    "id": "asa_026",
+    "color": 26,
+    "label": "Manifestação 026",
+    "image": "assets/wings/catalog/asa_cor_026_26.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3276,
+      0.78,
+      0.449
+    ]
+  },
+  {
+    "id": "asa_027",
+    "color": 27,
+    "label": "Manifestação 027",
+    "image": "assets/wings/catalog/asa_cor_027_27.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.2171,
+      0.5092,
+      0.7999
+    ]
+  },
+  {
+    "id": "asa_028",
+    "color": 28,
+    "label": "Manifestação 028",
+    "image": "assets/wings/catalog/asa_cor_028_28.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3276,
+      0.78,
+      0.3344
+    ]
+  },
+  {
+    "id": "asa_029",
+    "color": 29,
+    "label": "Manifestação 029",
+    "image": "assets/wings/catalog/asa_cor_029_29.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3276,
+      0.3363,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_030",
+    "color": 30,
+    "label": "Manifestação 030",
+    "image": "assets/wings/catalog/asa_cor_030_30.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3814,
+      0.8328,
+      0.908
+    ]
+  },
+  {
+    "id": "asa_031",
+    "color": 31,
+    "label": "Manifestação 031",
+    "image": "assets/wings/catalog/asa_cor_031_31.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.64,
+      0.78,
+      0.92
+    ]
+  },
+  {
+    "id": "asa_032",
+    "color": 32,
+    "label": "Manifestação 032",
+    "image": "assets/wings/catalog/asa_cor_032_32.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3276,
+      0.4272,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_033",
+    "color": 33,
+    "label": "Manifestação 033",
+    "image": "assets/wings/catalog/asa_cor_033_33.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3276,
+      0.4636,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_034",
+    "color": 34,
+    "label": "Manifestação 034",
+    "image": "assets/wings/catalog/asa_cor_034_34.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3276,
+      0.4874,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_035",
+    "color": 35,
+    "label": "Manifestação 035",
+    "image": "assets/wings/catalog/asa_cor_035_35.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3276,
+      0.4725,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_036",
+    "color": 36,
+    "label": "Manifestação 036",
+    "image": "assets/wings/catalog/asa_cor_036_36.png",
+    "modelAvailable": true,
+    "effectColor": [
+      0.3276,
+      0.5278,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_037",
+    "color": 37,
+    "label": "Manifestação 037",
+    "image": "assets/wings/catalog/asa_cor_037_37.png",
+    "modelAvailable": true,
+    "effectColor": [
+      0.3276,
+      0.499,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_038",
+    "color": 38,
+    "label": "Manifestação 038",
+    "image": "assets/wings/catalog/asa_cor_038_38.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3276,
+      0.5403,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_039",
+    "color": 39,
+    "label": "Manifestação 039",
+    "image": "assets/wings/catalog/asa_cor_039_39.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.7971,
+      0.3348,
+      0.5133
+    ]
+  },
+  {
+    "id": "asa_040",
+    "color": 40,
+    "label": "Manifestação 040",
+    "image": "assets/wings/catalog/asa_cor_040_40.png",
+    "modelAvailable": true,
+    "effectColor": [
+      0.78,
+      0.0936,
+      0.098
+    ]
+  },
+  {
+    "id": "asa_041",
+    "color": 41,
+    "label": "Manifestação 041",
+    "image": "assets/wings/catalog/asa_cor_041_41.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.78,
+      0.134,
+      0.1303
+    ]
+  },
+  {
+    "id": "asa_042",
+    "color": 42,
+    "label": "Manifestação 042",
+    "image": "assets/wings/catalog/asa_cor_042_42.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.78,
+      0.1044,
+      0.1252
+    ]
+  },
+  {
+    "id": "asa_043",
+    "color": 43,
+    "label": "Manifestação 043",
+    "image": "assets/wings/catalog/asa_cor_043_43.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.78,
+      0.2543,
+      0.2477
+    ]
+  },
+  {
+    "id": "asa_044",
+    "color": 44,
+    "label": "Manifestação 044",
+    "image": "assets/wings/catalog/asa_cor_044_44.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.78,
+      0.3276,
+      0.5448
+    ]
+  },
+  {
+    "id": "asa_045",
+    "color": 45,
+    "label": "Manifestação 045",
+    "image": "assets/wings/catalog/asa_cor_045_45.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.967,
+      0.4062,
+      0.5924
+    ]
+  },
+  {
+    "id": "asa_046",
+    "color": 46,
+    "label": "Manifestação 046",
+    "image": "assets/wings/catalog/asa_cor_046_46.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.9769,
+      0.4103,
+      0.4256
+    ]
+  },
+  {
+    "id": "asa_047",
+    "color": 47,
+    "label": "Manifestação 047",
+    "image": "assets/wings/catalog/asa_cor_047_47.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.9597,
+      0.4031,
+      0.4369
+    ]
+  },
+  {
+    "id": "asa_048",
+    "color": 48,
+    "label": "Manifestação 048",
+    "image": "assets/wings/catalog/asa_cor_048_48.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.78,
+      0.3276,
+      0.4261
+    ]
+  },
+  {
+    "id": "asa_049",
+    "color": 49,
+    "label": "Manifestação 049",
+    "image": "assets/wings/catalog/asa_cor_049_49.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.4248,
+      0.2294,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_050",
+    "color": 50,
+    "label": "Manifestação 050",
+    "image": "assets/wings/catalog/asa_cor_050_50.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.592,
+      0.3276,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_051",
+    "color": 51,
+    "label": "Manifestação 051",
+    "image": "assets/wings/catalog/asa_cor_051_51.png",
+    "modelAvailable": true,
+    "effectColor": [
+      0.5292,
+      0.3276,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_052",
+    "color": 52,
+    "label": "Manifestação 052",
+    "image": "assets/wings/catalog/asa_cor_052_52.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.5656,
+      0.3276,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_053",
+    "color": 53,
+    "label": "Manifestação 053",
+    "image": "assets/wings/catalog/asa_cor_053_53.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.78,
+      0.6302,
+      0.2917
+    ]
+  },
+  {
+    "id": "asa_054",
+    "color": 54,
+    "label": "Manifestação 054",
+    "image": "assets/wings/catalog/asa_cor_054_54.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.9743,
+      0.8026,
+      0.4092
+    ]
+  },
+  {
+    "id": "asa_055",
+    "color": 55,
+    "label": "Manifestação 055",
+    "image": "assets/wings/catalog/asa_cor_055_55.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.942,
+      0.7666,
+      0.3957
+    ]
+  },
+  {
+    "id": "asa_056",
+    "color": 56,
+    "label": "Manifestação 056",
+    "image": "assets/wings/catalog/asa_cor_056_56.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.1106,
+      0.4341,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_057",
+    "color": 57,
+    "label": "Manifestação 057",
+    "image": "assets/wings/catalog/asa_cor_057_57.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.0958,
+      0.4184,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_058",
+    "color": 58,
+    "label": "Manifestação 058",
+    "image": "assets/wings/catalog/asa_cor_058_58.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.2368,
+      0.4725,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_059",
+    "color": 59,
+    "label": "Manifestação 059",
+    "image": "assets/wings/catalog/asa_cor_059_59.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.5543,
+      0.78,
+      0.3276
+    ]
+  },
+  {
+    "id": "asa_060",
+    "color": 60,
+    "label": "Manifestação 060",
+    "image": "assets/wings/catalog/asa_cor_060_60.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.4514,
+      0.3276,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_061",
+    "color": 61,
+    "label": "Manifestação 061",
+    "image": "assets/wings/catalog/asa_cor_061_61.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.78,
+      0.6164,
+      0.3276
+    ]
+  },
+  {
+    "id": "asa_062",
+    "color": 62,
+    "label": "Manifestação 062",
+    "image": "assets/wings/catalog/asa_cor_062_62.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.78,
+      0.5387,
+      0.3276
+    ]
+  },
+  {
+    "id": "asa_063",
+    "color": 63,
+    "label": "Manifestação 063",
+    "image": "assets/wings/catalog/asa_cor_063_63.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.78,
+      0.6302,
+      0.3276
+    ]
+  },
+  {
+    "id": "asa_064",
+    "color": 64,
+    "label": "Manifestação 064",
+    "image": "assets/wings/catalog/asa_cor_064_64.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.78,
+      0.5075,
+      0.3276
+    ]
+  },
+  {
+    "id": "asa_065",
+    "color": 65,
+    "label": "Manifestação 065",
+    "image": "assets/wings/catalog/asa_cor_065_65.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.78,
+      0.6621,
+      0.3276
+    ]
+  },
+  {
+    "id": "asa_066",
+    "color": 66,
+    "label": "Manifestação 066",
+    "image": "assets/wings/catalog/asa_cor_066_66.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.78,
+      0.6816,
+      0.3276
+    ]
+  },
+  {
+    "id": "asa_067",
+    "color": 67,
+    "label": "Manifestação 067",
+    "image": "assets/wings/catalog/asa_cor_067_67.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.78,
+      0.6582,
+      0.3276
+    ]
+  },
+  {
+    "id": "asa_068",
+    "color": 68,
+    "label": "Manifestação 068",
+    "image": "assets/wings/catalog/asa_cor_068_68.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.64,
+      0.78,
+      0.92
+    ]
+  },
+  {
+    "id": "asa_069",
+    "color": 69,
+    "label": "Manifestação 069",
+    "image": "assets/wings/catalog/asa_cor_069_69.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.78,
+      0.3359,
+      0.0936
+    ]
+  },
+  {
+    "id": "asa_070",
+    "color": 70,
+    "label": "Manifestação 070",
+    "image": "assets/wings/catalog/asa_cor_070_70.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.78,
+      0.3612,
+      0.0936
+    ]
+  },
+  {
+    "id": "asa_071",
+    "color": 71,
+    "label": "Manifestação 071",
+    "image": "assets/wings/catalog/asa_cor_071_71.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.7865,
+      0.3858,
+      0.0944
+    ]
+  },
+  {
+    "id": "asa_072",
+    "color": 72,
+    "label": "Manifestação 072",
+    "image": "assets/wings/catalog/asa_cor_072_72.png",
+    "modelAvailable": false,
+    "effectColor": [
+      1.0,
+      0.4859,
+      0.1644
+    ]
+  },
+  {
+    "id": "asa_073",
+    "color": 73,
+    "label": "Manifestação 073",
+    "image": "assets/wings/catalog/asa_cor_073_73.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.78,
+      0.3879,
+      0.2213
+    ]
+  },
+  {
+    "id": "asa_074",
+    "color": 74,
+    "label": "Manifestação 074",
+    "image": "assets/wings/catalog/asa_cor_074_74.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.78,
+      0.4179,
+      0.2433
+    ]
+  },
+  {
+    "id": "asa_075",
+    "color": 75,
+    "label": "Manifestação 075",
+    "image": "assets/wings/catalog/asa_cor_075_75.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.78,
+      0.3804,
+      0.2045
+    ]
+  },
+  {
+    "id": "asa_076",
+    "color": 76,
+    "label": "Manifestação 076",
+    "image": "assets/wings/catalog/asa_cor_076_76.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.78,
+      0.1909,
+      0.5676
+    ]
+  },
+  {
+    "id": "asa_077",
+    "color": 77,
+    "label": "Manifestação 077",
+    "image": "assets/wings/catalog/asa_cor_077_77.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.8147,
+      0.3422,
+      0.4861
+    ]
+  },
+  {
+    "id": "asa_078",
+    "color": 78,
+    "label": "Manifestação 078",
+    "image": "assets/wings/catalog/asa_cor_078_78.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.78,
+      0.0936,
+      0.139
+    ]
+  },
+  {
+    "id": "asa_079",
+    "color": 79,
+    "label": "Manifestação 079",
+    "image": "assets/wings/catalog/asa_cor_079_79.png",
+    "modelAvailable": true,
+    "effectColor": [
+      0.3276,
+      0.78,
+      0.4153
+    ]
+  },
+  {
+    "id": "asa_080",
+    "color": 80,
+    "label": "Manifestação 080",
+    "image": "assets/wings/catalog/asa_cor_080_80.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3276,
+      0.6776,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_081",
+    "color": 81,
+    "label": "Manifestação 081",
+    "image": "assets/wings/catalog/asa_cor_081_81.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3337,
+      0.6503,
+      0.7945
+    ]
+  },
+  {
+    "id": "asa_082",
+    "color": 82,
+    "label": "Manifestação 082",
+    "image": "assets/wings/catalog/asa_cor_082_82.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.78,
+      0.3051,
+      0.174
+    ]
+  },
+  {
+    "id": "asa_083",
+    "color": 83,
+    "label": "Manifestação 083",
+    "image": "assets/wings/catalog/asa_cor_083_83.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.7826,
+      0.3663,
+      0.1306
+    ]
+  },
+  {
+    "id": "asa_084",
+    "color": 84,
+    "label": "Manifestação 084",
+    "image": "assets/wings/catalog/asa_cor_084_84.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.827,
+      0.5273,
+      0.3473
+    ]
+  },
+  {
+    "id": "asa_085",
+    "color": 85,
+    "label": "Manifestação 085",
+    "image": "assets/wings/catalog/asa_cor_085_85.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3618,
+      0.6622,
+      0.8615
+    ]
+  },
+  {
+    "id": "asa_086",
+    "color": 86,
+    "label": "Manifestação 086",
+    "image": "assets/wings/catalog/asa_cor_086_86.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.78,
+      0.3523,
+      0.1817
+    ]
+  },
+  {
+    "id": "asa_087",
+    "color": 87,
+    "label": "Manifestação 087",
+    "image": "assets/wings/catalog/asa_cor_087_87.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3494,
+      0.6566,
+      0.832
+    ]
+  },
+  {
+    "id": "asa_088",
+    "color": 88,
+    "label": "Manifestação 088",
+    "image": "assets/wings/catalog/asa_cor_088_88.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3691,
+      0.6819,
+      0.8787
+    ]
+  },
+  {
+    "id": "asa_089",
+    "color": 89,
+    "label": "Manifestação 089",
+    "image": "assets/wings/catalog/asa_cor_089_89.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3403,
+      0.6243,
+      0.8101
+    ]
+  },
+  {
+    "id": "asa_090",
+    "color": 90,
+    "label": "Manifestação 090",
+    "image": "assets/wings/catalog/asa_cor_090_90.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3629,
+      0.6673,
+      0.8642
+    ]
+  },
+  {
+    "id": "asa_091",
+    "color": 91,
+    "label": "Manifestação 091",
+    "image": "assets/wings/catalog/asa_cor_091_91.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3722,
+      0.6968,
+      0.8862
+    ]
+  },
+  {
+    "id": "asa_092",
+    "color": 92,
+    "label": "Manifestação 092",
+    "image": "assets/wings/catalog/asa_cor_092_92.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.394,
+      0.6601,
+      0.9382
+    ]
+  },
+  {
+    "id": "asa_093",
+    "color": 93,
+    "label": "Manifestação 093",
+    "image": "assets/wings/catalog/asa_cor_093_93.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3481,
+      0.6305,
+      0.8289
+    ]
+  },
+  {
+    "id": "asa_094",
+    "color": 94,
+    "label": "Manifestação 094",
+    "image": "assets/wings/catalog/asa_cor_094_94.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3915,
+      0.8053,
+      0.9322
+    ]
+  },
+  {
+    "id": "asa_095",
+    "color": 95,
+    "label": "Manifestação 095",
+    "image": "assets/wings/catalog/asa_cor_095_95.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.2986,
+      0.6702,
+      0.8078
+    ]
+  },
+  {
+    "id": "asa_096",
+    "color": 96,
+    "label": "Manifestação 096",
+    "image": "assets/wings/catalog/asa_cor_096_96.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.2522,
+      0.6839,
+      0.8089
+    ]
+  },
+  {
+    "id": "asa_097",
+    "color": 97,
+    "label": "Manifestação 097",
+    "image": "assets/wings/catalog/asa_cor_097_97.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.78,
+      0.7146,
+      0.3276
+    ]
+  },
+  {
+    "id": "asa_098",
+    "color": 98,
+    "label": "Manifestação 098",
+    "image": "assets/wings/catalog/asa_cor_098_98.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.78,
+      0.6881,
+      0.3276
+    ]
+  },
+  {
+    "id": "asa_099",
+    "color": 99,
+    "label": "Manifestação 099",
+    "image": "assets/wings/catalog/asa_cor_099_99.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3778,
+      0.7292,
+      0.8994
+    ]
+  },
+  {
+    "id": "asa_100",
+    "color": 100,
+    "label": "Manifestação 100",
+    "image": "assets/wings/catalog/asa_cor_100_100.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3699,
+      0.6871,
+      0.8808
+    ]
+  },
+  {
+    "id": "asa_101",
+    "color": 101,
+    "label": "Manifestação 101",
+    "image": "assets/wings/catalog/asa_cor_101_101.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.335,
+      0.503,
+      0.7975
+    ]
+  },
+  {
+    "id": "asa_102",
+    "color": 102,
+    "label": "Manifestação 102",
+    "image": "assets/wings/catalog/asa_cor_102_102.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3276,
+      0.439,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_103",
+    "color": 103,
+    "label": "Manifestação 103",
+    "image": "assets/wings/catalog/asa_cor_103_103.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.78,
+      0.3668,
+      0.3276
+    ]
+  },
+  {
+    "id": "asa_104",
+    "color": 104,
+    "label": "Manifestação 104",
+    "image": "assets/wings/catalog/asa_cor_104_104.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3276,
+      0.5818,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_105",
+    "color": 105,
+    "label": "Manifestação 105",
+    "image": "assets/wings/catalog/asa_cor_105_105.png",
+    "modelAvailable": true,
+    "effectColor": [
+      0.78,
+      0.3276,
+      0.5036
+    ]
+  },
+  {
+    "id": "asa_106",
+    "color": 106,
+    "label": "Manifestação 106",
+    "image": "assets/wings/catalog/asa_cor_106_106.png",
+    "modelAvailable": true,
+    "effectColor": [
+      0.78,
+      0.2915,
+      0.2899
+    ]
+  },
+  {
+    "id": "asa_107",
+    "color": 107,
+    "label": "Manifestação 107",
+    "image": "assets/wings/catalog/asa_cor_107_107.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.5076,
+      0.78,
+      0.3276
+    ]
+  },
+  {
+    "id": "asa_108",
+    "color": 108,
+    "label": "Manifestação 108",
+    "image": "assets/wings/catalog/asa_cor_108_108.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3276,
+      0.78,
+      0.6222
+    ]
+  },
+  {
+    "id": "asa_109",
+    "color": 109,
+    "label": "Manifestação 109",
+    "image": "assets/wings/catalog/asa_cor_109_109.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3276,
+      0.78,
+      0.6682
+    ]
+  },
+  {
+    "id": "asa_110",
+    "color": 110,
+    "label": "Manifestação 110",
+    "image": "assets/wings/catalog/asa_cor_110_110.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3276,
+      0.78,
+      0.7009
+    ]
+  },
+  {
+    "id": "asa_111",
+    "color": 111,
+    "label": "Manifestação 111",
+    "image": "assets/wings/catalog/asa_cor_111_111.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.9108,
+      0.3549,
+      0.2775
+    ]
+  },
+  {
+    "id": "asa_112",
+    "color": 112,
+    "label": "Manifestação 112",
+    "image": "assets/wings/catalog/asa_cor_112_112.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.8812,
+      0.2647,
+      0.1749
+    ]
+  },
+  {
+    "id": "asa_113",
+    "color": 113,
+    "label": "Manifestação 113",
+    "image": "assets/wings/catalog/asa_cor_113_113.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.8156,
+      0.3288,
+      0.2906
+    ]
+  },
+  {
+    "id": "asa_114",
+    "color": 114,
+    "label": "Manifestação 114",
+    "image": "assets/wings/catalog/asa_cor_114_114.png",
+    "modelAvailable": true,
+    "effectColor": [
+      0.78,
+      0.5371,
+      0.2486
+    ]
+  },
+  {
+    "id": "asa_115",
+    "color": 115,
+    "label": "Manifestação 115",
+    "image": "assets/wings/catalog/asa_cor_115_115.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.9504,
+      0.4749,
+      0.1583
+    ]
+  },
+  {
+    "id": "asa_116",
+    "color": 116,
+    "label": "Manifestação 116",
+    "image": "assets/wings/catalog/asa_cor_116_116.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.64,
+      0.78,
+      0.92
+    ]
+  },
+  {
+    "id": "asa_117",
+    "color": 117,
+    "label": "Manifestação 117",
+    "image": "assets/wings/catalog/asa_cor_117_117.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3997,
+      0.3276,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_118",
+    "color": 118,
+    "label": "Manifestação 118",
+    "image": "assets/wings/catalog/asa_cor_118_118.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3315,
+      0.3242,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_119",
+    "color": 119,
+    "label": "Manifestação 119",
+    "image": "assets/wings/catalog/asa_cor_119_119.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3578,
+      0.3276,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_120",
+    "color": 120,
+    "label": "Manifestação 120",
+    "image": "assets/wings/catalog/asa_cor_120_120.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3345,
+      0.3276,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_121",
+    "color": 121,
+    "label": "Manifestação 121",
+    "image": "assets/wings/catalog/asa_cor_121_121.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3276,
+      0.4117,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_122",
+    "color": 122,
+    "label": "Manifestação 122",
+    "image": "assets/wings/catalog/asa_cor_122_122.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3908,
+      0.3276,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_123",
+    "color": 123,
+    "label": "Manifestação 123",
+    "image": "assets/wings/catalog/asa_cor_123_123.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3276,
+      0.3713,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_124",
+    "color": 124,
+    "label": "Manifestação 124",
+    "image": "assets/wings/catalog/asa_cor_124_124.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3276,
+      0.3472,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_125",
+    "color": 125,
+    "label": "Manifestação 125",
+    "image": "assets/wings/catalog/asa_cor_125_125.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3381,
+      0.4087,
+      0.8051
+    ]
+  },
+  {
+    "id": "asa_126",
+    "color": 126,
+    "label": "Manifestação 126",
+    "image": "assets/wings/catalog/asa_cor_126_126.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.2551,
+      0.4594,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_127",
+    "color": 127,
+    "label": "Manifestação 127",
+    "image": "assets/wings/catalog/asa_cor_127_127.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.2073,
+      0.78,
+      0.5092
+    ]
+  },
+  {
+    "id": "asa_128",
+    "color": 128,
+    "label": "Manifestação 128",
+    "image": "assets/wings/catalog/asa_cor_128_128.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.2692,
+      0.78,
+      0.5939
+    ]
+  },
+  {
+    "id": "asa_129",
+    "color": 129,
+    "label": "Manifestação 129",
+    "image": "assets/wings/catalog/asa_cor_129_129.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3276,
+      0.632,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_130",
+    "color": 130,
+    "label": "Manifestação 130",
+    "image": "assets/wings/catalog/asa_cor_130_130.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3276,
+      0.5637,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_131",
+    "color": 131,
+    "label": "Manifestação 131",
+    "image": "assets/wings/catalog/asa_cor_131_131.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3276,
+      0.6555,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_132",
+    "color": 132,
+    "label": "Manifestação 132",
+    "image": "assets/wings/catalog/asa_cor_132_132.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.78,
+      0.1931,
+      0.4231
+    ]
+  },
+  {
+    "id": "asa_133",
+    "color": 133,
+    "label": "Manifestação 133",
+    "image": "assets/wings/catalog/asa_cor_133_133.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.78,
+      0.1229,
+      0.1445
+    ]
+  },
+  {
+    "id": "asa_134",
+    "color": 134,
+    "label": "Manifestação 134",
+    "image": "assets/wings/catalog/asa_cor_134_134.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.4444,
+      0.3276,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_135",
+    "color": 135,
+    "label": "Manifestação 135",
+    "image": "assets/wings/catalog/asa_cor_135_135.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.6342,
+      0.3276,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_136",
+    "color": 136,
+    "label": "Manifestação 136",
+    "image": "assets/wings/catalog/asa_cor_136_136.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3276,
+      0.78,
+      0.667
+    ]
+  },
+  {
+    "id": "asa_137",
+    "color": 137,
+    "label": "Manifestação 137",
+    "image": "assets/wings/catalog/asa_cor_137_137.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3762,
+      0.482,
+      0.8958
+    ]
+  },
+  {
+    "id": "asa_138",
+    "color": 138,
+    "label": "Manifestação 138",
+    "image": "assets/wings/catalog/asa_cor_138_138.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3198,
+      0.3601,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_139",
+    "color": 139,
+    "label": "Manifestação 139",
+    "image": "assets/wings/catalog/asa_cor_139_139.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.3276,
+      0.4242,
+      0.78
+    ]
+  },
+  {
+    "id": "asa_140",
+    "color": 140,
+    "label": "Manifestação 140",
+    "image": "assets/wings/catalog/asa_cor_140_140.png",
+    "modelAvailable": false,
+    "effectColor": [
+      0.2541,
+      0.36,
+      0.78
+    ]
+  }
+]

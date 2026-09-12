@@ -1,0 +1,765 @@
+{
+    "language": "en",
+    "timerLocation": "en-US",
+    "disableMusicSystem": false,
+    "YOUTUBE_API_KEY": "AIzaSyCj6M93YEZKPFVgcncUGy_NNPSh3SVNPjA",
+
+    "money": {
+        "prefix": ".",
+        "symbol": "$"
+    },
+    "nearbys": [
+        "bank",
+        "shop",
+        "clothing",
+        "garage",
+        "mechanic",
+        "gunshop"
+    ],
+
+    "resolution": {
+        "width": 1920,
+        "height": 1080
+    },
+
+    "customizations": {
+        "rightCorner": {
+            "style": "modern",
+            "colors": {
+                "text": "#FFFFFF",
+                "icons": "#FFFFFF"
+            },
+            "elements_behaviors": {
+                "server_infos": {
+                    "hide": false,
+                    "disable": false,
+                    "positions": { 
+                        "old": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "boxed_dynamic": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "modern": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "simple": {
+                            "x": 0,
+                            "y": 0
+                        }
+                    }
+                },
+                "time_date": {
+                    "hide": false,
+                    "disable": false,
+                    "positions": { 
+                        "old": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "boxed_dynamic": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "modern": {
+                            "x": 0,
+                            "y": 0
+                        }
+                    }
+                },
+                "playerId": {
+                    "hide": false,
+                    "disable": false,
+                    "positions": { 
+                        "old": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "boxed_dynamic": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "modern": {
+                            "x": 0,
+                            "y": 0
+                        }
+                    }
+                },
+                "playerCount": {
+                    "hide": false,
+                    "disable": false,
+                    "positions": { 
+                        "old": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "boxed_dynamic": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "modern": {
+                            "x": 0,
+                            "y": 0
+                        }
+                    }
+                },
+                "job": {
+                    "hide": false,
+                    "disable": false,
+                    "positions": { 
+                        "old": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "boxed_dynamic": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "modern": {
+                            "x": 0,
+                            "y": 0
+                        }
+                    }
+                },
+                "gang": {
+                    "hide": false,
+                    "disable": false,
+                    "positions": { 
+                        "old": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "boxed_dynamic": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "modern": {
+                            "x": 0,
+                            "y": 0
+                        }
+                    }
+                },
+                "money": {
+                    "hide": false,
+                    "disable": false,
+                    "positions": { 
+                        "old": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "boxed_dynamic": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "modern": {
+                            "x": 0,
+                            "y": 0
+                        }
+                    }
+                },
+                "bank": {
+                    "hide": false,
+                    "disable": false,
+                    "positions": { 
+                        "old": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "boxed_dynamic": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "modern": {
+                            "x": 0,
+                            "y": 0
+                        }
+                    }
+                },
+                "blackMoney": {
+                    "hide": false,
+                    "disable": false,
+                    "positions": { 
+                        "old": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "boxed_dynamic": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "modern": {
+                            "x": 0,
+                            "y": 0
+                        }
+                    }
+                },
+                "weapon": {
+                    "hide": false,
+                    "disable": false,
+                    "positions": { 
+                        "old": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "boxed_dynamic": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "modern": {
+                            "x": 0,
+                            "y": 0
+                        }
+                    }
+                }
+            }
+        },
+        "carhud": {
+            "style": "modern",
+            "speedType": "kmh",
+            "behaviors": {
+                "modern": {
+                    "position": { "x": 0, "y": 0 },
+                    "colors": {
+                        "fuel": "#97FF71",
+                        "speed": "#CAFF89",
+                        "rpm": "#FFFFFF",
+                        "text": "#D9D9D9",
+                        "indicator": "#FF5558",
+                        "watercraft_radar": "#00FFAA"
+                    }
+                },
+                "agressive": {
+                    "position": { "x": 0, "y": 0 },
+                    "colors": {
+                        "rpm": "#D9D9D9",
+                        "red": "#FF6467",
+                        "fuel": "#97FF71",
+                        "text": "#D9D9D9",
+                        "indicator": "#FF5558",
+                        "watercraft_radar": "#00FFAA"
+                    }
+                },
+                "sport": {
+                    "position": { "x": 0, "y": 0 },
+                    "colors": {
+                        "rpm": "#FF6467",
+                        "speed": "#FF6467",
+                        "fuel": "#97FF71",
+                        "text": "#D9D9D9"
+                    }
+                },
+                "simple": {
+                    "position": { "x": 0, "y": 0 },
+                    "colors": {
+                        "text": "#D9D9D9",
+                        "speed": "#D9D9D9",
+                        "icons": "#D9D9D9",
+                        "fuel": "#D9D9D9",
+                        "warning": "#FF6467"
+                    }
+                },
+                "simplev2": {
+                    "position": { "x": 0, "y": 0 },
+                    "colors": {
+                        "rpm": "#D9D9D9",
+                        "text": "#D9D9D9",
+                        "fuel": "#D9D9D9",
+                        "speed": "#D9D9D9",
+                        "icons": "#D9D9D9",
+                        "warning": "#FF6467"
+                    }
+                },
+                "circle": {
+                    "position": { "x": 0, "y": 0 },
+                    "colors": {
+                        "rpm": "#D9D9D9",
+                        "text": "#D9D9D9",
+                        "fuel": "#97FF71",
+                        "speed": "#D9D9D9",
+                        "icons": "#D9D9D9",
+                        "orange": "#FE9A00",
+                        "warning": "#FF6467",
+                        "indicator": "#FF6467"
+                    }
+                }
+            }
+        },
+        "status": {
+            "style": "hexagon",
+            "behaviors": {
+                "circle": {
+                    "health": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "trail": "#D35959"
+                        }
+                    },
+                    "armour": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "trail": "#5991D3"
+                        }
+                    },
+                    "hunger": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "trail": "#9D61FF"
+                        }
+                    },
+                    "thirst": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "trail": "#77FF61"
+                        }
+                    },
+                    "stress": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "trail": "#FF61C9"
+                        }
+                    },
+                    "stamina": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "trail": "#FFFFFF"  
+                        }
+                    }
+                },
+                "circlev2": {
+                    "health_armour": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "health": {
+                                "trail": "#FFFFFF"
+                            },
+                            "armour": {
+                                "trail": "#5991D3"
+                            }
+                        }
+                    },
+                    "hunger_thirst": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "hunger": {
+                                "trail": "#FFFFFF"
+                            },
+                            "thirst": {
+                                "trail": "#97FF71"
+                            }
+                        }
+                    },
+                    "stress": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#FFFFFF"  
+                        }
+                    },
+                    "stamina": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#FFFFFF"  
+                        }
+                    }
+                },
+                "circlev3": {
+                    "health": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "trail": "#F89889"
+                        }
+                    },
+                    "armour": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "trail": "#A4CCFF"
+                        }
+                    },
+                    "hunger": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "trail": "#FDBE81"
+                        }
+                    },
+                    "thirst": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "trail": "#97F3A6"
+                        }
+                    },
+                    "stress": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "trail": "#E29CB9"
+                        }
+                    },
+                    "stamina": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "trail": "#FCF7D9"  
+                        }
+                    }
+                },
+                "circlev4": {
+                    "health": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "trail": "#F89889"
+                        }
+                    },
+                    "armour": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "trail": "#A4CCFF"
+                        }
+                    },
+                    "hunger": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "trail": "#FDBE81"
+                        }
+                    },
+                    "thirst": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "trail": "#97F3A6"
+                        }
+                    },
+                    "stress": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "trail": "#E29CB9"
+                        }
+                    },
+                    "stamina": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "trail": "#FCF7D9"  
+                        }
+                    }
+                },
+                "square": {
+                    "health": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#D35959",
+                            "trail": "#D35959"
+                        }
+                    },
+                    "armour": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#5991D3",
+                            "trail": "#5991D3"
+                        }
+                    },
+                    "hunger": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#f4c574",
+                            "trail": "#f4c574"
+                        }
+                    },
+                    "thirst": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#6fd485",
+                            "trail": "#6fd485"
+                        }
+                    },
+                    "stress": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#FF61C9",
+                            "trail": "#FF61C9"
+                        }
+                    },
+                    "stamina": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#FFFFFF"  
+                        }
+                    }
+                },
+                "squarev2": {
+                    "health": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#D35959"
+                        }
+                    },
+                    "armour": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#5991D3"
+                        }
+                    },
+                    "hunger": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#f4c574"
+                        }
+                    },
+                    "thirst": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#6fd485"
+                        }
+                    },
+                    "stress": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#FF61C9"
+                        }
+                    },
+                    "stamina": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#d9d9d9"  
+                        }
+                    }
+                },
+                "hexagon": {
+                    "health": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#D35959"
+                        }
+                    },
+                    "armour": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#5991D3"
+                        }
+                    },
+                    "hunger": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#f4c574"
+                        }
+                    },
+                    "thirst": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#6fd485"
+                        }
+                    },
+                    "stress": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#FF61C9"
+                        }
+                    },
+                    "stamina": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#d9d9d9"  
+                        }
+                    }
+                },
+                "wave": {
+                    "health": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#D35959"
+                        }
+                    },
+                    "armour": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#5991D3"
+                        }
+                    },
+                    "hunger": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#f4c574"
+                        }
+                    },
+                    "thirst": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#6fd485"
+                        }
+                    },
+                    "stress": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#FF61C9"
+                        }
+                    },
+                    "stamina": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#d9d9d9"  
+                        }
+                    }
+                },
+                "simple": {
+                    "health": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#D35959"
+                        }
+                    },
+                    "armour": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#5991D3"
+                        }
+                    },
+                    "hunger": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#f4c574"
+                        }
+                    },
+                    "thirst": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#6fd485"
+                        }
+                    },
+                    "stress": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#FF61C9"
+                        }
+                    },
+                    "stamina": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#d9d9d9"  
+                        }
+                    }
+                },
+                "simplev2": {
+                    "health": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "text": "#FFFFFF",
+                            "icon": "#D35959"
+                        }
+                    },
+                    "armour": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "text": "#FFFFFF",
+                            "icon": "#5991D3"
+                        }
+                    },
+                    "hunger": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "text": "#FFFFFF",
+                            "icon": "#f4c574"
+                        }
+                    },
+                    "thirst": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "text": "#FFFFFF",
+                            "icon": "#6fd485"
+                        }
+                    },
+                    "stress": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "text": "#FFFFFF",
+                            "icon": "#FF61C9"
+                        }
+                    },
+                    "stamina": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "text": "#FFFFFF",
+                            "icon": "#d9d9d9"  
+                        }
+                    }
+                },
+                "regular": {
+                    "health": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#FFFFFF"
+                        }
+                    },
+                    "armour": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#5991D3"
+                        }
+                    },
+                    "hunger": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#f4c574"
+                        }
+                    },
+                    "thirst": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#6fd485"
+                        }
+                    },
+                    "stress": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#FF61C9"
+                        }
+                    },
+                    "stamina": {
+                        "position": { "x": 0, "y": 0 },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#d9d9d9"  
+                        }
+                    }
+                }
+            }
+        },
+        "quickMenu": { "x": 0, "y": 0 },
+        "location": { "x": 0, "y": 0 },
+
+        "version": 1.1,
+        "mapType": "square",
+        "fuelType": "litres",
+        "mapRadius": false,
+        "minimapShow": false,
+        "performance": "balanced"
+    }
+}

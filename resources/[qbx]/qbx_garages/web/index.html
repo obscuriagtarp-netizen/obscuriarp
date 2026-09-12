@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="pt-BR" style="background:transparent">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Garagem</title>
+  <style>html,body{background:transparent!important}body{opacity:0;pointer-events:none}</style>
+  <link rel="stylesheet" href="styles.css?v=13">
+</head>
+<body>
+  <div id="app" class="garage-app is-hidden" hidden>
+    <div class="world-vignette" aria-hidden="true"></div>
+
+    <header class="garage-heading surface">
+      <div class="heading-mark" aria-hidden="true">
+        <img src="icons/garage-heading-v2.png" alt="">
+      </div>
+      <div class="heading-copy">
+        <h1 id="garage-title">Garagem</h1>
+      </div>
+      <button id="close-button" class="icon-button" type="button" title="Fechar" aria-label="Fechar garagem">
+        <svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+      </button>
+    </header>
+
+    <aside class="vehicle-inspector surface" aria-label="Veículo selecionado">
+      <div class="selection-state">
+        <span id="vehicle-class" class="eyebrow">Automóvel</span>
+        <span id="vehicle-state" class="state-label"><i></i> Disponível</span>
+      </div>
+      <h2 id="vehicle-name">Nenhum veículo</h2>
+      <div class="vehicle-meta">
+        <span id="vehicle-brand">Aguardando seleção</span>
+        <span id="vehicle-model">MODELO</span>
+      </div>
+
+      <div class="plate-line">
+        <span>Placa registrada</span>
+        <strong id="vehicle-plate">--------</strong>
+      </div>
+
+      <div class="detail-tabs" role="tablist" aria-label="Dados do veículo">
+        <button class="detail-tab is-active" data-view="condition" type="button">Condição</button>
+        <button class="detail-tab" data-view="tunings" type="button">Preparação</button>
+      </div>
+      <div id="detail-content" class="detail-content"></div>
+
+      <div class="inspector-actions">
+        <button id="favorite-button" class="secondary-button" type="button" title="Favoritar" aria-label="Favoritar veículo">
+          <svg viewBox="0 0 24 24"><path d="m12 3 2.8 5.6 6.2.9-4.5 4.4 1.1 6.2L12 17.2l-5.6 2.9 1.1-6.2L3 9.5l6.2-.9L12 3Z"></path></svg>
+        </button>
+        <button id="spawn-button" class="primary-button" type="button">
+          <span id="spawn-label">Retirar veículo</span>
+          <svg viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg>
+        </button>
+      </div>
+    </aside>
+
+    <aside class="fleet-panel surface" aria-label="Veículos registrados">
+      <div class="fleet-header">
+        <div>
+          <span class="eyebrow">Seus registros</span>
+          <h2>Veículos</h2>
+        </div>
+        <span id="fleet-count" class="fleet-count">0</span>
+      </div>
+
+      <label class="search-field" for="vehicle-search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+        <input id="vehicle-search" type="search" autocomplete="off" placeholder="Buscar nome, modelo ou placa">
+      </label>
+
+      <div class="fleet-filters" role="group" aria-label="Filtros dos veículos">
+        <button class="filter-button is-active" data-filter="all" type="button">Todos</button>
+        <button class="filter-button" data-filter="available" type="button">Disponíveis</button>
+        <button class="filter-button" data-filter="favorites" type="button">Favoritos</button>
+      </div>
+
+      <div id="vehicle-list" class="vehicle-list" tabindex="0">
+        <div id="vehicle-list-empty" class="empty-state" hidden>
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+          <span>Nenhum registro encontrado</span>
+        </div>
+      </div>
+    </aside>
+
+    <nav class="selection-controls surface" aria-label="Navegação entre veículos">
+      <button id="previous-button" class="control-button" type="button" aria-label="Veículo anterior">
+        <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"></path></svg>
+      </button>
+      <span id="selection-index">00 / 00</span>
+      <button id="next-button" class="control-button" type="button" aria-label="Próximo veículo">
+        <svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"></path></svg>
+      </button>
+    </nav>
+  </div>
+  <script src="app.js?v=9"></script>
+</body>
+</html>

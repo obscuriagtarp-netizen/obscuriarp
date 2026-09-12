@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obscuria | Introdução</title>
+    <style>
+        html, body { background: transparent !important; }
+        #app[hidden] { display: none !important; }
+    </style>
+    <link rel="stylesheet" href="style.css?v=11">
+</head>
+<body>
+    <main id="app" class="is-hidden" aria-hidden="true" hidden>
+        <div id="background" class="scene-background"></div>
+        <div class="scene-tone" aria-hidden="true"></div>
+
+        <section class="tutorial-shell" aria-live="polite">
+            <header class="scene-header">
+                <img class="brand-emblem" src="assets/ui/obscuria-emblem.png" alt="">
+                <div>
+                    <p id="modeLabel" class="mode-label">INTRODUÇÃO</p>
+                    <p class="brand-name">OBSCURIA</p>
+                </div>
+                <button id="closeButton" class="icon-button" type="button" title="Fechar" aria-label="Fechar tutorial">×</button>
+            </header>
+
+            <div id="content" class="scene-content character-left">
+                <figure class="character-stage">
+                    <img id="character" class="character-image" alt="Guia de Obscuria">
+                </figure>
+
+                <article id="pageSheet" class="page-sheet">
+                    <header class="page-heading">
+                        <p id="eyebrow" class="eyebrow"></p>
+                        <div class="title-card">
+                            <h1 id="title"></h1>
+                            <span class="title-line" aria-hidden="true"></span>
+                        </div>
+                        <p id="dialogue" class="dialogue-text"></p>
+                        <p id="speaker" class="speaker"></p>
+                    </header>
+
+                    <div id="slideModule" class="slide-module"></div>
+
+                    <div id="choices" class="choices" aria-label="Opções de diálogo"></div>
+                </article>
+            </div>
+
+            <footer class="navigation">
+                <button id="previousButton" class="nav-arrow previous" type="button" title="Tela anterior" aria-label="Tela anterior">‹</button>
+
+                <div class="progress-block">
+                    <div id="progressDots" class="progress-dots" aria-label="Progresso do tutorial"></div>
+                </div>
+
+                <button id="nextButton" class="nav-arrow next" type="button" title="Próxima tela" aria-label="Próxima tela">›</button>
+            </footer>
+        </section>
+    </main>
+
+    <script src="app.js?v=11"></script>
+</body>
+</html>
