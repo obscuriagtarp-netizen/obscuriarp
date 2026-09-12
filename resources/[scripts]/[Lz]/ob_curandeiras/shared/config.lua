@@ -249,13 +249,14 @@ Config.Serenity = {
     distance = 14.0,
     cooldown = 50000,
     essenceCost = 15,
+    selfManaRestore = 20,
     channelDuration = 3500,
     effectDuration = 30000,
 }
 
 Config.StopBleeding = {
     distance = 10.0,
-    cooldown = 5000,
+    cooldown = 50000,
     essenceCost = 15,
     channelDuration = 3800,
     effectDuration = 6000,
@@ -306,5 +307,5 @@ Config.Compatibility = {
         'hud:client:UpdateStress',
     },
     medicalResource = 'qbx_medical',
-    bleedingClientEvents = {}, 
+    bleedingClientEvents = {},
 }

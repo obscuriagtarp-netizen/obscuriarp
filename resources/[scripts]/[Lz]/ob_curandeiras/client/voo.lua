@@ -851,6 +851,7 @@ local function updateCamera(boosting)
         frontBlendSpeed
     )
 
+    -- A visao frontal apenas reposiciona a camera; a direcao do voo fica intacta.
     if not frontView then
         local mouseX = GetDisabledControlNormal(0, 1)
         local mouseY = GetDisabledControlNormal(0, 2)

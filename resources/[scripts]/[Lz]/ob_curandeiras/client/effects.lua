@@ -410,8 +410,9 @@ RegisterNetEvent('ob_curandeiras:client:targetFx', function(netId, kind, duratio
     end)
 end)
 
-RegisterNetEvent('ob_curandeiras:client:serenityApplied', function()
+RegisterNetEvent('ob_curandeiras:client:serenityApplied', function(_, restoredMana)
     if source ~= 65535 then return end
+    -- Atualiza o estado local antes de avisar HUDs que ainda usam o evento legado.
     LocalPlayer.state:set(Config.Compatibility.stressStateKey or 'stress', 0, true)
     for _, eventName in ipairs(Config.Compatibility.stressClientEvents or {}) do
         TriggerEvent(eventName, 0)
@@ -419,7 +420,9 @@ RegisterNetEvent('ob_curandeiras:client:serenityApplied', function()
     StopGameplayCamShaking(true)
     ObCurandeiras.Notify(
         'Serenidade',
-        'A tensão abandona seu corpo e sua mente se acalma.',
+        (tonumber(restoredMana) or 0) > 0
+            and ('Sua mente se acalma e %d de mana são restaurados.'):format(restoredMana)
+            or 'A tensão abandona seu corpo e sua mente se acalma.',
         'success',
         6000
     )

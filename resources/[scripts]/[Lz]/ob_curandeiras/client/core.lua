@@ -275,7 +275,7 @@ local function abilities()
         {
             id = 'serenidade', slot = 3, input = 3, key = '3',
             label = 'Serenidade',
-            description = 'Dissipar estresse, medo, ansiedade e exaustão.',
+            description = 'Dissipar estresse e exaustão; em si mesma, recuperar 20 de mana.',
             icon = 'nui://ob_curandeiras/web/icons/serenidade.png',
             clientEvent = 'ob_curandeiras:client:serenity',
         },

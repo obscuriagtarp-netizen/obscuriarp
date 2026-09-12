@@ -773,7 +773,7 @@ local function startFlightSustain(source, token)
     end)
 end
 
-local function authorize(source, abilityId, deferCooldown)
+local function authorize(source, abilityId, deferCooldown, essenceCostOverride)
     abilityId = tostring(abilityId or '')
     local factory = abilityConfig[abilityId]
     if not factory or not isHealer(source) then
@@ -793,7 +793,8 @@ local function authorize(source, abilityId, deferCooldown)
         return denied(('O poder ainda se recupera (%ss).'):format(math.ceil(remaining / 1000)))
     end
     local config = factory()
-    local consumed, essenceState = removeEssence(source, config.essenceCost)
+    local essenceCost = essenceCostOverride ~= nil and essenceCostOverride or config.essenceCost
+    local consumed, essenceState = removeEssence(source, essenceCost)
     if not consumed then
         local current = math.max(0, tonumber(essenceState and essenceState.value) or 0)
         local maximum = math.max(0, tonumber(essenceState and essenceState.max) or 0)
@@ -1138,7 +1139,7 @@ local function applyGradualHeal(targetSource, duration, fraction)
     )
 end
 
-local function applySerenity(targetSource)
+local function applySerenity(targetSource, restoredMana)
     local state = Player(targetSource).state
     state:set(Config.Compatibility.stressStateKey or 'stress', 0, true)
     setMetadata(targetSource, Config.Compatibility.stressMetadataKey, 0)
@@ -1148,7 +1149,12 @@ local function applySerenity(targetSource)
     state:set('obFear', false, true)
     state:set('obAnxiety', false, true)
     state:set('obExhausted', false, true)
-    TriggerClientEvent('ob_curandeiras:client:serenityApplied', targetSource, Config.Serenity.effectDuration)
+    TriggerClientEvent(
+        'ob_curandeiras:client:serenityApplied',
+        targetSource,
+        Config.Serenity.effectDuration,
+        math.max(0, math.floor(tonumber(restoredMana) or 0))
+    )
     SetTimeout(Config.Serenity.effectDuration, function()
         if serenityTokens[targetSource] == token and GetPlayerName(targetSource) then
             Player(targetSource).state:set('obSerene', false, true)
@@ -1203,7 +1209,8 @@ lib.callback.register('ob_curandeiras:server:useTargetAbility', function(source,
         and GetResourceState(Config.Compatibility.medicalResource or 'qbx_medical') ~= 'started' then
         return denied('O sistema medical esta indisponivel. Tente novamente em instantes.')
     end
-    local authorized = authorize(source, abilityId, false)
+    local selfSerenity = abilityId == 'serenidade' and targetSource == source
+    local authorized = authorize(source, abilityId, false, selfSerenity and 0 or nil)
     if not authorized.success then return authorized end
 
     local channelDuration = math.max(800, config.channelDuration)
@@ -1278,7 +1285,16 @@ lib.callback.register('ob_curandeiras:server:useTargetAbility', function(source,
         if abilityId == 'cura_vital' then
             applyGradualHeal(targetSource, Config.VitalHeal.healDuration, Config.VitalHeal.healFraction)
         elseif abilityId == 'serenidade' then
-            applySerenity(targetSource)
+            local restoredMana = 0
+            if targetSource == source and GetResourceState('ob_essencias') == 'started' then
+                local restoreAmount = math.max(0, math.floor(tonumber(Config.Serenity.selfManaRestore) or 20))
+                local before, maximum = exports.ob_essencias:GetEssencia(source)
+                if restoreAmount > 0 and exports.ob_essencias:AddEssencia(source, restoreAmount) == true then
+                    local after = exports.ob_essencias:GetEssencia(source)
+                    restoredMana = math.max(0, math.min(tonumber(maximum) or 0, tonumber(after) or 0) - (tonumber(before) or 0))
+                end
+            end
+            applySerenity(targetSource, restoredMana)
         else
             stopBleeding(targetSource)
             applyGradualHeal(
