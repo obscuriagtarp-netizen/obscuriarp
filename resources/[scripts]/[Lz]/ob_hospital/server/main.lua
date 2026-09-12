@@ -5,6 +5,7 @@ local queuePatientLocks = {}
 local queueRepeatCooldowns = {}
 local acceptingQueueTicket = false
 local databaseReady = false
+local treatmentLocks = {}
 
 local function trim(value)
     local text = tostring(value or ''):gsub('^%s+', ''):gsub('%s+$', '')
@@ -96,6 +97,159 @@ local function canManageBilling(src)
     local job = identity.job
     local isHospitalStaff = (job.name == Config.Job.name or job.type == Config.Job.type) and job.onduty ~= false
     return isHospitalStaff and jobGrade(job) >= (tonumber(Config.Job.receptionGrade) or 0)
+end
+
+local function canManageStaff(src)
+    if isAdmin(src) then return true end
+    local identity = playerIdentity(src)
+    if not identity then return false end
+    local job = identity.job
+    return job.name == Config.Job.name
+        and job.onduty ~= false
+        and jobGrade(job) >= (tonumber(Config.Job.managerGrade) or 4)
+end
+
+local function hospitalJobGrades()
+    local job = exports.qbx_core:GetJob(Config.Job.name) or {}
+    local grades = {}
+    for grade, entry in pairs(job.grades or {}) do
+        local numericGrade = tonumber(grade)
+        if numericGrade then
+            grades[#grades + 1] = {
+                grade = numericGrade,
+                label = trim(entry.name) or ('Grau ' .. numericGrade),
+                isBoss = entry.isboss == true
+            }
+        end
+    end
+    table.sort(grades, function(a, b) return a.grade < b.grade end)
+    return grades
+end
+
+local function staffName(row)
+    local charinfo = decode(row.charinfo, {})
+    local first = trim(charinfo.firstname or charinfo.name)
+    local last = trim(charinfo.lastname or charinfo.lastName)
+    if first and last then return first .. ' ' .. last end
+    return first or last or trim(row.player_name) or tostring(row.citizenid)
+end
+
+local function loadHospitalStaff()
+    local rows = MySQL.query.await([[
+        SELECT pg.citizenid, pg.grade, p.charinfo, p.name AS player_name
+        FROM player_groups pg
+        LEFT JOIN players p ON p.citizenid = pg.citizenid
+        WHERE pg.type = 'job' AND pg.`group` = ?
+        ORDER BY pg.grade DESC, p.name ASC
+    ]], { Config.Job.name }) or {}
+    local grades, gradeMap = hospitalJobGrades(), {}
+    for _, entry in ipairs(grades) do gradeMap[entry.grade] = entry end
+
+    local members = {}
+    for _, row in ipairs(rows) do
+        local grade = math.max(0, math.floor(tonumber(row.grade) or 0))
+        local gradeInfo = gradeMap[grade] or { label = 'Grau ' .. grade, isBoss = false }
+        local onlinePlayer = exports.qbx_core:GetPlayerByCitizenId(row.citizenid)
+        local onlineData = onlinePlayer and onlinePlayer.PlayerData or nil
+        local onlineJob = onlineData and onlineData.job or {}
+        local source = onlineData and tonumber(onlineData.source) or nil
+        local identity = source and playerIdentity(source) or nil
+        local primary = onlineJob.name == Config.Job.name
+        members[#members + 1] = {
+            citizenid = tostring(row.citizenid),
+            source = source,
+            name = identity and identity.name or staffName(row),
+            grade = grade,
+            role = gradeInfo.label,
+            isBoss = gradeInfo.isBoss == true,
+            online = onlineData ~= nil,
+            primary = primary,
+            onDuty = primary and onlineJob.onduty ~= false
+        }
+    end
+    return members, grades
+end
+
+local function nearbyHireCandidates(src, members)
+    local ped = GetPlayerPed(src)
+    if ped <= 0 then return {} end
+    local coords = GetEntityCoords(ped)
+    local maxDistance = tonumber(Config.Management.hireDistance) or 5.0
+    local existing = {}
+    for _, member in ipairs(members or {}) do existing[member.citizenid] = true end
+
+    local candidates = {}
+    for _, playerId in ipairs(GetPlayers()) do
+        local targetSource = tonumber(playerId)
+        if targetSource and targetSource ~= src then
+            local target = playerIdentity(targetSource)
+            local targetPed = GetPlayerPed(targetSource)
+            if target and target.citizenid and not existing[target.citizenid] and targetPed > 0 then
+                local distance = #(coords - GetEntityCoords(targetPed))
+                if distance <= maxDistance then
+                    candidates[#candidates + 1] = {
+                        source = targetSource,
+                        citizenid = target.citizenid,
+                        name = target.name,
+                        distance = math.floor(distance * 10 + 0.5) / 10
+                    }
+                end
+            end
+        end
+    end
+    table.sort(candidates, function(a, b) return a.distance < b.distance end)
+    return candidates
+end
+
+local function managementPayload(src)
+    local members, grades = loadHospitalStaff()
+    local identity = playerIdentity(src)
+    local online, onDuty = 0, 0
+    for _, member in ipairs(members) do
+        if member.online then online = online + 1 end
+        if member.onDuty then onDuty = onDuty + 1 end
+    end
+    return {
+        ok = true,
+        staff = members,
+        grades = grades,
+        candidates = nearbyHireCandidates(src, members),
+        summary = { total = #members, online = online, onDuty = onDuty, offline = #members - online },
+        actor = {
+            citizenid = identity and identity.citizenid or '',
+            grade = identity and jobGrade(identity.job) or 0,
+            isAdmin = isAdmin(src)
+        }
+    }
+end
+
+local function staffMember(citizenid)
+    return MySQL.single.await([[
+        SELECT citizenid, grade FROM player_groups
+        WHERE citizenid = ? AND type = 'job' AND `group` = ?
+        LIMIT 1
+    ]], { citizenid, Config.Job.name })
+end
+
+local function canChangeStaffMember(src, member, desiredGrade)
+    if isAdmin(src) then return true end
+    local actor = playerIdentity(src)
+    if not actor or actor.citizenid == member.citizenid then return false, 'cannot_manage_self' end
+    local actorGrade = jobGrade(actor.job)
+    if (tonumber(member.grade) or 0) >= actorGrade then return false, 'manager_hierarchy' end
+    if desiredGrade and desiredGrade >= actorGrade then return false, 'manager_hierarchy' end
+    return true
+end
+
+local function recordManagementActivity(src, action, payload)
+    local actor = playerIdentity(src)
+    if not actor then return end
+    pcall(function()
+        MySQL.insert.await([[
+            INSERT INTO ob_hospital_activity (actor_identifier, actor_name, action, payload)
+            VALUES (?, ?, ?, ?)
+        ]], { actor.citizenid, actor.name, action, encode(payload) })
+    end)
 end
 
 local function doctorCount()
@@ -502,9 +656,10 @@ local function panelBootstrap(src)
             name = identity.name,
             citizenid = identity.citizenid,
             grade = jobGrade(identity.job),
-            isManager = jobGrade(identity.job) >= Config.Job.managerGrade,
+            isManager = canManageStaff(src),
             isAdmin = isAdmin(src),
-            canEditRecords = canEditRecords(src)
+            canEditRecords = canEditRecords(src),
+            canManageStaff = canManageStaff(src)
         },
         doctorCount = doctorCount(),
         calls = calls,
@@ -806,6 +961,82 @@ function actions.bootstrap(src, data)
     end
     if not isDoctor(src) and not isAdmin(src) then return { ok = false, error = 'not_authorized' } end
     return panelBootstrap(src)
+end
+
+function actions.management(src)
+    if not canManageStaff(src) then return { ok = false, error = 'not_manager' } end
+    return managementPayload(src)
+end
+
+function actions.hireStaff(src, data)
+    if not canManageStaff(src) then return { ok = false, error = 'not_manager' } end
+    local targetSource = tonumber(data.source)
+    local target = targetSource and playerIdentity(targetSource) or nil
+    local targetPed = targetSource and GetPlayerPed(targetSource) or 0
+    if not target or not target.citizenid or targetPed <= 0 then return { ok = false, error = 'target_player_not_found' } end
+    if targetSource == src then return { ok = false, error = 'cannot_manage_self' } end
+    if not nearCoords(src, GetEntityCoords(targetPed), tonumber(Config.Management.hireDistance) or 5.0) then
+        return { ok = false, error = 'target_not_nearby' }
+    end
+    if staffMember(target.citizenid) then return { ok = false, error = 'already_staff' } end
+
+    local grade = math.max(0, math.floor(tonumber(Config.Management.initialGrade) or 0))
+    local success = exports.qbx_core:AddPlayerToJob(target.citizenid, Config.Job.name, grade)
+    if success ~= true then return { ok = false, error = 'job_update_failed' } end
+    if Config.Management.setPrimaryJobOnHire == true then
+        exports.qbx_core:SetPlayerPrimaryJob(target.citizenid, Config.Job.name)
+    end
+    recordManagementActivity(src, 'staff_hired', { citizenid = target.citizenid, grade = grade })
+    notify(targetSource, 'Você foi contratado pelo Instituto Médico de Obscuria.', 'success')
+    notify(src, ('%s foi contratado com sucesso.'):format(target.name), 'success')
+    return managementPayload(src)
+end
+
+function actions.setStaffGrade(src, data)
+    if not canManageStaff(src) then return { ok = false, error = 'not_manager' } end
+    local citizenid = clip(data.citizenid, 64)
+    local desiredGrade = math.floor(tonumber(data.grade) or -1)
+    local member = citizenid ~= '' and staffMember(citizenid) or nil
+    if not member then return { ok = false, error = 'member_not_found' } end
+
+    local validGrade = false
+    for _, grade in ipairs(hospitalJobGrades()) do
+        if grade.grade == desiredGrade then validGrade = true break end
+    end
+    if not validGrade then return { ok = false, error = 'invalid_grade' } end
+    local allowed, reason = canChangeStaffMember(src, member, desiredGrade)
+    if not allowed then return { ok = false, error = reason } end
+
+    local success = exports.qbx_core:AddPlayerToJob(citizenid, Config.Job.name, desiredGrade)
+    if success ~= true then return { ok = false, error = 'job_update_failed' } end
+    recordManagementActivity(src, 'staff_grade_changed', {
+        citizenid = citizenid,
+        previousGrade = tonumber(member.grade) or 0,
+        grade = desiredGrade
+    })
+    local target = exports.qbx_core:GetPlayerByCitizenId(citizenid)
+    if target and target.PlayerData and target.PlayerData.source then
+        notify(target.PlayerData.source, 'Seu cargo no Instituto Médico foi atualizado.', 'inform')
+    end
+    return managementPayload(src)
+end
+
+function actions.fireStaff(src, data)
+    if not canManageStaff(src) then return { ok = false, error = 'not_manager' } end
+    local citizenid = clip(data.citizenid, 64)
+    local member = citizenid ~= '' and staffMember(citizenid) or nil
+    if not member then return { ok = false, error = 'member_not_found' } end
+    local allowed, reason = canChangeStaffMember(src, member)
+    if not allowed then return { ok = false, error = reason } end
+
+    local success = exports.qbx_core:RemovePlayerFromJob(citizenid, Config.Job.name)
+    if success ~= true then return { ok = false, error = 'job_update_failed' } end
+    recordManagementActivity(src, 'staff_fired', { citizenid = citizenid, grade = tonumber(member.grade) or 0 })
+    local target = exports.qbx_core:GetPlayerByCitizenId(citizenid)
+    if target and target.PlayerData and target.PlayerData.source then
+        notify(target.PlayerData.source, 'Você foi desligado do Instituto Médico de Obscuria.', 'inform')
+    end
+    return managementPayload(src)
 end
 
 function actions.joinQueue(src)
@@ -1310,12 +1541,117 @@ local function useExistingMedicalItem(src, itemName, callbackName)
     if remove then exports.ox_inventory:RemoveItem(src, itemName, 1) end
 end
 
+local function treatmentOption(optionId)
+    for _, option in ipairs(Config.Treatment.options or {}) do
+        if option.id == optionId then return option end
+    end
+end
+
+local function openTreatmentMenu(src)
+    if not isDoctor(src) then
+        notify(src, 'Apenas profissionais em serviço podem aplicar medicamentos em outras pessoas.', 'error')
+        return
+    end
+    local counts = {}
+    for _, option in ipairs(Config.Treatment.options or {}) do
+        if counts[option.item] == nil then
+            counts[option.item] = exports.ox_inventory:Search(src, 'count', option.item) or 0
+        end
+    end
+    TriggerClientEvent('ob_hospital:client:openTreatmentMenu', src, counts)
+end
+
+RegisterNetEvent('ob_hospital:server:openTreatmentMenu', function()
+    openTreatmentMenu(source)
+end)
+
+RegisterNetEvent('ob_hospital:server:applyTreatment', function(targetSource, optionId)
+    local src = source
+    local now = GetGameTimer()
+    if treatmentLocks[src] and treatmentLocks[src] > now then return end
+    treatmentLocks[src] = now + 1500
+
+    if not isDoctor(src) then return end
+    local option = treatmentOption(tostring(optionId or ''))
+    targetSource = tonumber(targetSource)
+    if not option or not targetSource or targetSource == src then return end
+
+    local target = getPlayer(targetSource)
+    local targetPed = GetPlayerPed(targetSource)
+    if not target or targetPed <= 0 then notify(src, 'Paciente indisponível.', 'error') return end
+    if not nearCoords(src, GetEntityCoords(targetPed), tonumber(Config.Treatment.maxDistance) or 3.0) then
+        notify(src, 'O paciente se afastou.', 'error')
+        return
+    end
+
+    local metadata = target.PlayerData.metadata or {}
+    local unconscious = metadata.isdead == true or metadata.inlaststand == true
+    if option.revive == true and not unconscious then
+        notify(src, 'Este paciente não está inconsciente.', 'error')
+        return
+    end
+    if option.revive ~= true and unconscious then
+        notify(src, 'Reanime o paciente antes de aplicar este tratamento.', 'error')
+        return
+    end
+    if exports.ox_inventory:Search(src, 'count', option.item) < 1 then
+        notify(src, ('Você não possui %s.'):format(option.label), 'error')
+        return
+    end
+    if not exports.ox_inventory:RemoveItem(src, option.item, 1) then
+        notify(src, 'Não foi possível consumir o medicamento.', 'error')
+        return
+    end
+
+    if option.revive == true then
+        exports.qbx_medical:Revive(targetSource)
+    elseif option.heal == 'full' then
+        TriggerClientEvent('qbx_medical:client:heal', targetSource, 'full')
+    elseif option.heal == 'partial' then
+        exports.qbx_medical:HealPartially(targetSource)
+    end
+
+    local stressRelief = math.max(0, math.floor(tonumber(option.stress) or 0))
+    if stressRelief > 0 then
+        local currentStress = tonumber(metadata.stress) or 0
+        target.Functions.SetMetaData('stress', math.max(0, currentStress - stressRelief))
+    end
+    TriggerClientEvent('ob_hospital:client:receiveTreatment', targetSource, {
+        health = math.max(0, math.floor(tonumber(option.health) or 0)),
+        revived = option.revive == true,
+        label = option.label
+    })
+    local targetIdentity = playerIdentity(targetSource)
+    notify(src, ('%s aplicado em %s.'):format(option.label, targetIdentity and targetIdentity.name or 'paciente'), 'success')
+    notify(targetSource, ('Você recebeu: %s.'):format(option.label), 'success')
+end)
+
 exports.qbx_core:CreateUseableItem('gauze', function(src)
     useExistingMedicalItem(src, 'gauze', 'hospital:client:UseBandage')
 end)
 
 exports.qbx_core:CreateUseableItem('medical_kit', function(src)
-    useExistingMedicalItem(src, 'medical_kit', 'hospital:client:UseFirstAid')
+    openTreatmentMenu(src)
+end)
+
+exports.qbx_core:CreateUseableItem('firstaid', function(src)
+    if isDoctor(src) then
+        openTreatmentMenu(src)
+    else
+        lib.callback.await('hospital:client:UseFirstAid', src)
+    end
+end)
+
+exports.qbx_core:CreateUseableItem('painkillers', function(src)
+    if exports.ox_inventory:Search(src, 'count', 'painkillers') < 1 then return end
+    local remove = lib.callback.await('hospital:client:UsePainkillers', src)
+    if not remove or not exports.ox_inventory:RemoveItem(src, 'painkillers', 1) then return end
+    local player = getPlayer(src)
+    if not player then return end
+    local metadata = player.PlayerData.metadata or {}
+    local relief = 25
+    player.Functions.SetMetaData('stress', math.max(0, (tonumber(metadata.stress) or 0) - relief))
+    notify(src, 'O analgésico reduziu sua dor e seu estresse.', 'success')
 end)
 
 exports.qbx_core:CreateUseableItem(Config.Stretcher.item, function(src)
@@ -1381,6 +1717,7 @@ end)
 
 AddEventHandler('playerDropped', function()
     local src = source
+    treatmentLocks[src] = nil
     local netId = patientStretchers[src]
     if netId and activeStretchers[netId] then activeStretchers[netId].patient = nil end
     patientStretchers[src] = nil

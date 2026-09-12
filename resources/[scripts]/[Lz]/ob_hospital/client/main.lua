@@ -222,9 +222,9 @@ local function addTargets()
     })
 end
 
--- RegisterCommand('hospitalpagamento', function()
---     openInterface('billing')
--- end, false)
+RegisterCommand('hospitalpagamento', function()
+    openInterface('billing')
+end, false)
 
 RegisterNetEvent('ob_hospital:client:dispatchUpdate', function(call, isNew)
     if isNew and isDoctor() then
@@ -248,6 +248,77 @@ RegisterNetEvent('ob_hospital:client:billingChanged', function()
     requestServer('billing', {}, function(payload)
         if payload.ok then SendNUIMessage({ action = 'billingUpdate', payload = payload }) end
     end)
+end)
+
+local function closestTreatmentPlayer()
+    local playerId = lib.getClosestPlayer(GetEntityCoords(PlayerPedId()), tonumber(Config.Treatment.maxDistance) or 3.0, false)
+    if not playerId then
+        exports.qbx_core:Notify('Nenhum paciente próximo.', 'error')
+        return
+    end
+    return playerId
+end
+
+RegisterNetEvent('ob_hospital:client:openTreatmentMenu', function(counts)
+    if not isDoctor() then return end
+    local playerId = closestTreatmentPlayer()
+    if not playerId then return end
+    local targetSource = GetPlayerServerId(playerId)
+    local targetName = GetPlayerName(playerId) or ('ID ' .. targetSource)
+    local options = {}
+
+    for _, configuredOption in ipairs(Config.Treatment.options or {}) do
+        local treatment = configuredOption
+        local count = math.max(0, math.floor(tonumber(counts and counts[treatment.item]) or 0))
+        options[#options + 1] = {
+            title = treatment.label,
+            description = ('%s\nDisponível: %d'):format(treatment.description or '', count),
+            icon = treatment.icon or 'kit-medical',
+            disabled = count < 1,
+            onSelect = function()
+                local currentPlayer = closestTreatmentPlayer()
+                if not currentPlayer or GetPlayerServerId(currentPlayer) ~= targetSource then
+                    exports.qbx_core:Notify('O paciente selecionado não está mais próximo.', 'error')
+                    return
+                end
+                local completed = lib.progressCircle({
+                    duration = math.max(1000, math.floor(tonumber(Config.Treatment.progressDuration) or 6500)),
+                    position = 'bottom',
+                    label = treatment.label,
+                    useWhileDead = false,
+                    canCancel = true,
+                    disable = { move = true, car = true, combat = true, mouse = false },
+                    anim = { dict = 'mini@cpr@char_a@cpr_str', clip = 'cpr_pumpchest' }
+                })
+                if completed then
+                    TriggerServerEvent('ob_hospital:server:applyTreatment', targetSource, treatment.id)
+                else
+                    exports.qbx_core:Notify('Atendimento cancelado.', 'error')
+                end
+            end
+        }
+    end
+
+    lib.registerContext({
+        id = 'ob_hospital_treatment',
+        title = ('Atender %s'):format(targetName),
+        options = options
+    })
+    lib.showContext('ob_hospital_treatment')
+end)
+
+RegisterNetEvent('ob_hospital:client:receiveTreatment', function(effect)
+    effect = type(effect) == 'table' and effect or {}
+    if effect.revived then Wait(500) end
+    local amount = math.max(0, math.floor(tonumber(effect.health) or 0))
+    if amount > 0 then
+        local ped = PlayerPedId()
+        SetEntityHealth(ped, math.min(GetEntityMaxHealth(ped), GetEntityHealth(ped) + amount))
+    end
+end)
+
+exports('OpenTreatmentMenu', function()
+    TriggerServerEvent('ob_hospital:server:openTreatmentMenu')
 end)
 
 RegisterNetEvent('ob_hospital:client:subscriptionUpdate', function(citizenid, plan)
@@ -280,7 +351,7 @@ RegisterCommand('192', function(_, args)
     TriggerServerEvent('ob_hospital:server:createCall', reason ~= '' and reason or Config.Dispatch.defaultReason, 'normal')
 end, false)
 
-RegisterKeyMapping('hospitalpainel', 'Abrir painel médico', 'keyboard', 'F9')
+RegisterKeyMapping('hospitalpainel', 'Abrir painel médico', 'keyboard', 'F6')
 
 CreateThread(function()
     while GetResourceState('ox_target') ~= 'started' do Wait(500) end

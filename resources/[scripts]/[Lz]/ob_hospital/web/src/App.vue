@@ -1,10 +1,10 @@
 <script setup>
 import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 import {
-  Activity, Ambulance, Bell, Boxes, Check, ChevronRight, CircleUserRound, ClipboardList,
+  Activity, Ambulance, Bell, Boxes, BriefcaseBusiness, Check, ChevronRight, CircleUserRound, ClipboardList,
   Clock3, CreditCard, Eye, FilePlus2, HeartPulse, MapPin, Pencil, Plus, ReceiptText,
-  Save, Search, ShieldCheck, ShoppingBag, Stethoscope, Thermometer, Trash2,
-  UserRoundSearch, UsersRound, X
+  RefreshCw, Save, Search, ShieldCheck, ShoppingBag, Stethoscope, Thermometer, Trash2,
+  UserMinus, UserPlus, UserRoundSearch, UsersRound, X
 } from 'lucide-vue-next';
 import bodyFront from './assets/body-front.png';
 import bodyBack from './assets/body-back.png';
@@ -59,9 +59,11 @@ const nearbyBillingPatients = ref([]);
 const selectedBillingSource = ref('');
 const invoiceDraft = reactive({ amount: '', description: '' });
 const billingBusy = ref('');
+const management = reactive({ staff: [], grades: [], candidates: [], summary: { total: 0, online: 0, onDuty: 0, offline: 0 }, actor: {} });
+const managementBusy = ref('');
 
 const previewPayload = {
-  mode: 'panel', user: { name: '', citizenid: '', grade: 0, isManager: false, isAdmin: false, canEditRecords: true },
+  mode: 'panel', user: { name: '', citizenid: '', grade: 4, isManager: true, isAdmin: false, canEditRecords: true, canManageStaff: true },
   doctorCount: 0, calls: [], queue: [],
   metrics: { records_today: 0, patients: 0, resolved_today: 0 },
   recentPatients: [], billing: { plan: { enabled: true, name: 'Plano Obscuria Saúde', monthlyPrice: 5000, intervalDays: 30 }, maxInvoiceAmount: 1000000 },
@@ -80,6 +82,22 @@ const previewBillingPayload = {
   plan: { enabled: true, name: 'Plano Obscuria Saúde', monthlyPrice: 5000, intervalDays: 30 }
 };
 
+const previewManagement = {
+  ok: true,
+  staff: [
+    { citizenid: 'OB-1001', source: 4, name: 'Helena Duarte', grade: 4, role: 'Diretora Clínica', online: true, primary: true, onDuty: true },
+    { citizenid: 'OB-2034', source: 12, name: 'Samuel Reis', grade: 2, role: 'Médico', online: true, primary: true, onDuty: false },
+    { citizenid: 'OB-3178', name: 'Marina Costa', grade: 1, role: 'Paramédica', online: false, primary: false, onDuty: false }
+  ],
+  grades: [
+    { grade: 0, label: 'Estagiário' }, { grade: 1, label: 'Paramédico' }, { grade: 2, label: 'Médico' },
+    { grade: 3, label: 'Cirurgião' }, { grade: 4, label: 'Diretor Clínico', isBoss: true }
+  ],
+  candidates: [{ source: 27, citizenid: 'OB-4410', name: 'Lucas Martins', distance: 2.1 }],
+  summary: { total: 3, online: 2, onDuty: 1, offline: 1 },
+  actor: { citizenid: 'OB-1001', grade: 4, isAdmin: false }
+};
+
 const shopItems = [
   { name: 'gauze', label: 'Gaze estéril', price: 120, description: 'Curativo para ferimentos leves.' },
   { name: 'bandage', label: 'Bandagem', price: 180, description: 'Bandagem de uso emergencial.' },
@@ -94,7 +112,8 @@ const nav = [
   { id: 'dispatch', label: 'Emergências', hint: 'Ocorrências externas', icon: Ambulance },
   { id: 'patients', label: 'Pacientes', hint: 'Prontuários e histórico', icon: UsersRound },
   { id: 'triage', label: 'Triagem', hint: 'Avaliação clínica', icon: Stethoscope },
-  { id: 'reception', label: 'Recepção', hint: 'Planos e pagamentos', icon: CreditCard }
+  { id: 'reception', label: 'Recepção', hint: 'Planos e pagamentos', icon: CreditCard },
+  { id: 'management', label: 'Gerência', hint: 'Equipe e plantão', icon: BriefcaseBusiness, managerOnly: true }
 ];
 
 const frontRegions = [
@@ -131,6 +150,7 @@ const boardQueue = computed(() => {
 const selectedParts = computed(() => triage.bodyParts.map(key => [...frontRegions, ...backRegions].find(item => item.key === key)?.label || key));
 const allBodyRegions = [...frontRegions, ...backRegions];
 const canEditRecords = computed(() => payload.value?.user?.canEditRecords === true);
+const navItems = computed(() => nav.filter(item => !item.managerOnly || payload.value?.user?.canManageStaff === true));
 const selectedBillingPatient = computed(() => nearbyBillingPatients.value.find(patient => String(patient.source) === String(selectedBillingSource.value)) || null);
 const vitalFields = [
   { key: 'heartRate', label: 'Frequência cardíaca' }, { key: 'pressure', label: 'Pressão arterial' },
@@ -168,6 +188,7 @@ async function nui(action, data = {}) {
     if (action === 'createInvoice') return { ok: true, covered: false, code: 'HOSP-204801', amount: Number(data.amount) };
     if (action === 'proposeSubscription') return { ok: true, plan: previewPayload.billing.plan };
     if (action === 'billing') return structuredClone(previewBillingPayload);
+    if (['management', 'hireStaff', 'setStaffGrade', 'fireStaff'].includes(action)) return structuredClone(previewManagement);
     if (action === 'payInvoice') {
       const result = structuredClone(payload.value);
       result.invoices = (result.invoices || []).filter(invoice => invoice.id !== data.id);
@@ -758,7 +779,89 @@ async function cancelSubscription() {
   toast('Plano cancelado. Não haverá novas cobranças.');
 }
 
-watch(view, next => { if (next === 'reception') loadNearbyBillingPatients(); });
+function managementError(error) {
+  return {
+    not_manager: 'Acesso restrito à direção do hospital.',
+    target_player_not_found: 'O jogador selecionado não está mais disponível.',
+    target_not_nearby: 'O jogador precisa permanecer próximo para ser contratado.',
+    already_staff: 'Esta pessoa já faz parte da equipe médica.',
+    member_not_found: 'Este funcionário não pertence mais à equipe.',
+    invalid_grade: 'O cargo selecionado não existe.',
+    cannot_manage_self: 'Você não pode alterar o próprio vínculo por este painel.',
+    manager_hierarchy: 'Você não pode alterar alguém do mesmo nível ou superior.',
+    job_update_failed: 'O Qbox não conseguiu atualizar o vínculo profissional.'
+  }[error] || 'Não foi possível atualizar a equipe médica.';
+}
+
+function applyManagement(response) {
+  management.staff = Array.isArray(response.staff) ? response.staff : [];
+  management.grades = Array.isArray(response.grades) ? response.grades : [];
+  management.candidates = Array.isArray(response.candidates) ? response.candidates : [];
+  management.summary = response.summary || { total: 0, online: 0, onDuty: 0, offline: 0 };
+  management.actor = response.actor || {};
+}
+
+async function loadManagement() {
+  if (managementBusy.value) return;
+  managementBusy.value = 'refresh';
+  const response = await nui('management');
+  managementBusy.value = '';
+  if (!response.ok) { toast(managementError(response.error), 'error'); return; }
+  applyManagement(response);
+}
+
+function canManageMember(member) {
+  if (management.actor?.isAdmin) return true;
+  return member.citizenid !== management.actor?.citizenid && Number(member.grade) < Number(management.actor?.grade || 0);
+}
+
+function selectableGrades(member) {
+  if (management.actor?.isAdmin) return management.grades;
+  return management.grades.filter(grade => Number(grade.grade) < Number(management.actor?.grade || 0) || Number(grade.grade) === Number(member.grade));
+}
+
+function staffStatus(member) {
+  if (member.onDuty) return 'Em serviço';
+  if (member.online) return member.primary ? 'Fora de serviço' : 'Outro emprego ativo';
+  return 'Offline';
+}
+
+async function hireStaff(candidate) {
+  if (managementBusy.value) return;
+  managementBusy.value = `hire-${candidate.source}`;
+  const response = await nui('hireStaff', { source: candidate.source });
+  managementBusy.value = '';
+  if (!response.ok) { toast(managementError(response.error), 'error'); return; }
+  applyManagement(response);
+  toast(`${candidate.name} foi contratado para a equipe médica.`);
+}
+
+async function changeStaffGrade(member, event) {
+  const grade = Number(event.target.value);
+  if (grade === Number(member.grade) || managementBusy.value) return;
+  managementBusy.value = `grade-${member.citizenid}`;
+  const response = await nui('setStaffGrade', { citizenid: member.citizenid, grade });
+  managementBusy.value = '';
+  if (!response.ok) { event.target.value = String(member.grade); toast(managementError(response.error), 'error'); return; }
+  applyManagement(response);
+  toast(`Cargo de ${member.name} atualizado.`);
+}
+
+async function fireStaff(member) {
+  if (managementBusy.value || !canManageMember(member)) return;
+  if (!window.confirm(`Desligar ${member.name} da equipe médica?`)) return;
+  managementBusy.value = `fire-${member.citizenid}`;
+  const response = await nui('fireStaff', { citizenid: member.citizenid });
+  managementBusy.value = '';
+  if (!response.ok) { toast(managementError(response.error), 'error'); return; }
+  applyManagement(response);
+  toast(`${member.name} foi desligado da equipe.`);
+}
+
+watch(view, next => {
+  if (next === 'reception') loadNearbyBillingPatients();
+  if (next === 'management') loadManagement();
+});
 
 watch([bodyView, () => [...triage.bodyParts], hoveredPart], scheduleBodyDraw, { deep: true });
 watch([view, selectedPatient], () => nextTick(scheduleBodyDraw));
@@ -887,7 +990,7 @@ onBeforeUnmount(() => {
 
         <nav class="side-nav">
           <span class="side-caption">CENTRAL CLÍNICA</span>
-          <button v-for="item in nav" :key="item.id" :class="{ active: view === item.id }" @click="view = item.id">
+          <button v-for="item in navItems" :key="item.id" :class="{ active: view === item.id }" @click="view = item.id">
             <span class="nav-icon"><component :is="item.icon" :size="18" /></span>
             <span><strong>{{ item.label }}</strong><small>{{ item.hint }}</small></span>
             <ChevronRight :size="15" />
@@ -1053,6 +1156,49 @@ onBeforeUnmount(() => {
                   <div class="plan-builder-body"><div><span>Mensalidade</span><strong>$ {{ money(payload?.billing?.plan?.monthlyPrice || 0) }}</strong><small>Renovação bancária automática a cada {{ payload?.billing?.plan?.intervalDays || 30 }} dias.</small></div><p>O balconista envia a proposta; o paciente revisa, aceita e paga a primeira mensalidade na maquininha.</p><button class="secondary-button" :disabled="!selectedBillingPatient || billingBusy !== '' || !payload?.billing?.plan?.enabled" @click="proposeSubscription"><Plus :size="15" />{{ billingBusy === 'plan' ? 'Enviando...' : 'Oferecer plano ao paciente' }}</button></div>
                 </section>
               </div>
+            </div>
+          </template>
+
+          <template v-else-if="view === 'management'">
+            <section class="management-summary">
+              <article><span>Equipe cadastrada</span><strong>{{ management.summary.total || 0 }}</strong><small>profissionais</small></article>
+              <article><span>Conectados</span><strong>{{ management.summary.online || 0 }}</strong><small>na cidade</small></article>
+              <article><span>Em serviço</span><strong>{{ management.summary.onDuty || 0 }}</strong><small>no plantão</small></article>
+              <button class="secondary-button" :disabled="managementBusy !== ''" @click="loadManagement"><RefreshCw :size="15" />{{ managementBusy === 'refresh' ? 'Atualizando...' : 'Atualizar equipe' }}</button>
+            </section>
+
+            <div class="management-layout">
+              <section class="staff-roster surface">
+                <header class="section-head"><div><span>Quadro profissional</span><h2>Equipe do Instituto Médico</h2></div><b>{{ management.staff.length }}</b></header>
+                <div class="staff-table-head"><span>Profissional</span><span>Situação</span><span>Cargo</span><span>Ações</span></div>
+                <div class="staff-table-body">
+                  <article v-for="member in management.staff" :key="member.citizenid" class="staff-member-row">
+                    <div class="staff-member-identity">
+                      <span class="patient-initials">{{ member.name.split(' ').map(part => part[0]).slice(0, 2).join('') }}</span>
+                      <div><strong>{{ member.name }}</strong><small>{{ member.citizenid }}<template v-if="member.source"> · ID {{ member.source }}</template></small></div>
+                    </div>
+                    <span class="duty-status" :data-status="member.onDuty ? 'duty' : member.online ? 'online' : 'offline'"><i></i>{{ staffStatus(member) }}</span>
+                    <select :value="member.grade" :disabled="!canManageMember(member) || managementBusy !== ''" @change="changeStaffGrade(member, $event)">
+                      <option v-for="grade in selectableGrades(member)" :key="grade.grade" :value="grade.grade">{{ grade.label }}</option>
+                    </select>
+                    <button class="staff-remove" title="Demitir profissional" :disabled="!canManageMember(member) || managementBusy !== ''" @click="fireStaff(member)"><UserMinus :size="16" /></button>
+                  </article>
+                  <div v-if="!management.staff.length" class="management-empty"><UsersRound :size="28" /><strong>Nenhum profissional cadastrado</strong><span>Os funcionários contratados aparecerão aqui.</span></div>
+                </div>
+              </section>
+
+              <section class="hire-panel surface">
+                <header class="section-head"><div><span>Recrutamento</span><h2>Jogadores próximos</h2></div><UserPlus :size="20" /></header>
+                <p class="hire-hint">A contratação adiciona o jogador ao cargo inicial configurado para o hospital.</p>
+                <div class="candidate-list">
+                  <article v-for="candidate in management.candidates" :key="candidate.source">
+                    <span class="patient-initials">{{ candidate.name.split(' ').map(part => part[0]).slice(0, 2).join('') }}</span>
+                    <div><strong>{{ candidate.name }}</strong><small>ID {{ candidate.source }} · {{ candidate.distance }} m</small></div>
+                    <button class="primary-button" :disabled="managementBusy !== ''" @click="hireStaff(candidate)"><UserPlus :size="14" />{{ managementBusy === `hire-${candidate.source}` ? 'Contratando...' : 'Contratar' }}</button>
+                  </article>
+                  <div v-if="!management.candidates.length" class="management-empty compact"><UserRoundSearch :size="25" /><strong>Ninguém por perto</strong><span>Aproxime o jogador e atualize a lista.</span></div>
+                </div>
+              </section>
             </div>
           </template>
 

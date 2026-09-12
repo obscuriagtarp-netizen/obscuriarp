@@ -9,6 +9,12 @@ Config.Job = {
     receptionGrade = 0
 }
 
+Config.Management = {
+    hireDistance = 5.0,
+    initialGrade = 0,
+    setPrimaryJobOnHire = true
+}
+
 Config.AdminAce = 'obscuria.hospital.admin'
 Config.AdminPermissions = { 'admin', 'god' }
 Config.HospitalKey = 'pillbox'
@@ -118,6 +124,57 @@ Config.Stretcher = {
     patientOffset = vec3(0.0, 0.0, 1.05),
     patientRotation = vec3(0.0, 0.0, 180.0),
     maxPatientDistance = 3.0
+}
+
+Config.Treatment = {
+    maxDistance = 3.0,
+    progressDuration = 6500,
+    options = {
+        {
+            id = 'first_aid',
+            item = 'firstaid',
+            label = 'Aplicar primeiros socorros',
+            description = 'Estabiliza ferimentos e recupera parte da vida.',
+            icon = 'kit-medical',
+            health = 35,
+            heal = 'partial'
+        },
+        {
+            id = 'bandage',
+            item = 'bandage',
+            label = 'Aplicar bandagem',
+            description = 'Trata ferimentos leves e recupera parte da vida.',
+            icon = 'bandage',
+            health = 20,
+            heal = 'partial'
+        },
+        {
+            id = 'painkillers',
+            item = 'painkillers',
+            label = 'Administrar analgésico',
+            description = 'Reduz dor, estresse e recupera um pouco da vida.',
+            icon = 'pills',
+            health = 5,
+            stress = 25
+        },
+        {
+            id = 'medical_kit',
+            item = 'medical_kit',
+            label = 'Usar kit médico avançado',
+            description = 'Trata todos os ferimentos e recupera bastante vida.',
+            icon = 'briefcase-medical',
+            health = 60,
+            heal = 'full'
+        },
+        {
+            id = 'revive',
+            item = 'firstaid',
+            label = 'Reanimar paciente',
+            description = 'Uso exclusivo em pacientes inconscientes.',
+            icon = 'heart-pulse',
+            revive = true
+        }
+    }
 }
 
 Config.Triage = {
