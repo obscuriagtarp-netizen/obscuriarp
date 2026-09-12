@@ -592,6 +592,22 @@ Config.Stores = {
             vector3(293.56317138672, -572.60675048828, 43.26),
             vector3(296.28656005859, -570.330078125, 43.26)
         }
+    },
+    {
+        type = "clothing",
+        coords = vector4(-1017.1, -426.64, 38.62, 332.41),
+        size = vector3(4, 4, 4),
+        rotation = 45,
+        usePoly = false, -- false => uses the size + rotation to create the zone | true => uses points to create the zone
+        showBlip = false, -- overrides the blip visibilty configured above for the group
+        --targetModel = "s_m_m_doctor_01", -- overrides the target ped configured for the group
+        --targetScenario = "" -- overrides the target scenario configure for the group
+        points = {
+            vector3(-1018.24, -424.66, 38.62),
+            vector3(-1016.12, -427.18, 38.62),
+            vector3(-1017.1, -426.37, 40.12),
+            vector3(-1018.02, -427.01, 38.62)
+        }
     }
 }
 

@@ -8,6 +8,7 @@ return {
 			{ name = 'agua', price = 8 },
 			{ name = 'taco', price = 18 },
 			{ name = 'chocolate', price = 10 },
+			{ name = 'mochila_pequena', price = 1200 },
 		}, locations = {
 			vec3(25.7, -1347.3, 29.49),
 			vec3(-3038.71, 585.9, 7.9),
@@ -59,19 +60,27 @@ return {
 		}
 	},
 
-	-- YouTool = {
-	-- 	name = 'YouTool',
-	-- 	blip = {
-	-- 		id = 402, colour = 69, scale = 0.8
-	-- 	}, inventory = {
-	-- 		{ name = 'lockpick', price = 10 }
-	-- 	}, locations = {
-	-- 		vec3(2748.0, 3473.0, 55.67),
-	-- 		vec3(342.99, -1298.26, 32.51)
-	-- 	}, targets = {
-	-- 		{ loc = vec3(2746.8, 3473.13, 55.67), length = 0.6, width = 3.0, heading = 65.0, minZ = 55.0, maxZ = 56.8, distance = 3.0 }
-	-- 	}
-	-- },
+	DigitalDeen = {
+		name = 'Digital Deen',
+		blip = {
+			id = 355, colour = 69, scale = 0.8
+		}, inventory = {
+			{ name = 'radio', price = 100 },
+			{ name = 'phone', price = 300 },
+		}, locations = {
+			vec3(-658.04, -853.88, 23.49),
+			vec3(393.3, -832.38, 28.29),
+			vec3(1137.51, -470.96, 65.65),
+			vec3(-509.8, 278.38, 82.31),
+
+
+		}, targets = {
+			{ loc = vec3(-658.04, -853.88, 23.49), length = 0.5, width = 0.5, heading = 96.0, minZ = 46.4, maxZ = 46.8, distance = 1.5 },
+			{ loc = vec3(393.3, -832.38, 28.29), length = 0.5, width = 0.5, heading = 96.0, minZ = 46.4, maxZ = 46.8, distance = 1.5 },
+			{ loc = vec3(1137.51, -470.96, 65.65), length = 0.5, width = 0.5, heading = 96.0, minZ = 46.4, maxZ = 46.8, distance = 1.5 },
+			{ loc = vec3(-509.8, 278.38, 82.31), length = 0.5, width = 0.5, heading = 96.0, minZ = 46.4, maxZ = 46.8, distance = 1.5 }, --COLOCAR COORDENADAS AQUI, SÓ COLOCAR NA MESMA ORDEM DA DE CIMA.
+		}
+	},
 
 	Ammunation = {
 		name = 'Ammunation',
@@ -124,21 +133,26 @@ return {
 	},
 
 	Medicine = {
-		name = 'Medicine Cabinet',
+		name = 'Loja Medicinal',
 		groups = {
 			['ambulance'] = 0
 		},
 		blip = {
 			id = 403, colour = 69, scale = 0.8
 		}, inventory = {
-			{ name = 'medical_kit', price = 26 },
-			{ name = 'bandage', price = 5 }
+			{ name = 'gauze', price = 10 },
+			{ name = 'bandage', price = 10 },
+			{ name = 'painkillers', price = 10 },
+			{ name = 'firstaid', price = 10 },
+			{ name = 'medical_kit', price = 10 },
+			{ name = 'medical_stretcher', price = 10 },
 		}, locations = {
-			vec3(306.3687, -601.5139, 43.28406)
+			vec3(-1039.55, -423.06, 38.61), -- COLOCAR CDS EM ALGUM LUGAR BOM NO HOSPITAL PARA ELES COMPRAREM. 
 		}, targets = {
 
 		}
 	},
+
 
 	VendingMachineDrinks = {
 		name = 'Vending Machine',
