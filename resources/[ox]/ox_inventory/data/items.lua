@@ -239,7 +239,7 @@ return {
     },
 
     ['victoriawand'] = {
-        label = 'Varinha Victoria',
+        label = 'Varinha Bruxa',
         weight = 250,
         stack = false,
         close = true,
