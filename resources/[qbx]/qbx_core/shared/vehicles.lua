@@ -7202,7 +7202,7 @@ return {
     },
     kamikaze_defender = {
         name = 'Defender',
-        brand = 'OBSCURIA',
+        brand = 'OB',
         model = 'KamiKaze_Defender',
         price = 0,
         category = 'suvs',
@@ -7212,7 +7212,7 @@ return {
     --VIPS 
     ['16charger'] = {
         name = 'Lodge Charger',
-        brand = 'OBSCURIA',
+        brand = 'OB',
         model = '16charger',
         price = 0,
         category = 'super',
@@ -7221,7 +7221,7 @@ return {
     },
     ['2f2fgtr34'] = {
         name = 'R34',
-        brand = 'OBSCURIA',
+        brand = 'OB',
         model = '2f2fgtr34',
         price = 0,
         category = 'super',
@@ -7230,7 +7230,7 @@ return {
     },
     ['18performante'] = {
         name = 'Huracan Performante',
-        brand = 'OBSCURIA',
+        brand = 'OB',
         model = '18performante',
         price = 0,
         category = 'super',
@@ -7239,7 +7239,7 @@ return {
     },
     ['19gv80'] = {
         name = 'Tundra PRO',
-        brand = 'OBSCURIA',
+        brand = 'OB',
         model = '19gv80',
         price = 0,
         category = 'super',
@@ -7248,7 +7248,7 @@ return {
     },
     ['20xb7'] = {
         name = 'X7 SPORT',
-        brand = 'OBSCURIA',
+        brand = 'OB',
         model = '20xb7',
         price = 0,
         category = 'super',
@@ -7257,7 +7257,7 @@ return {
     },
     ['18Velar'] = {
         name = 'Velar',
-        brand = 'OBSCURIA',
+        brand = 'OB',
         model = '18Velar',
         price = 0,
         category = 'super',
@@ -7266,7 +7266,7 @@ return {
     },
     ['21rsq8'] = {
         name = 'RS Q8',
-        brand = 'OBSCURIA',
+        brand = 'OB',
         model = '21rsq8',
         price = 0,
         category = 'super',
@@ -7275,7 +7275,7 @@ return {
     },
     ['17mansorypnmr'] = {
         name = 'Panamera Mansory',
-        brand = 'OBSCURIA',
+        brand = 'OB',
         model = '17mansorypnmr',
         price = 0,
         category = 'super',
@@ -7284,7 +7284,7 @@ return {
     },
     ['2ncsbmwm8'] = {
         name = 'M8 Kit',
-        brand = 'OBSCURIA',
+        brand = 'OB',
         model = '2ncsbmwm8',
         price = 0,
         category = 'super',
@@ -7293,12 +7293,44 @@ return {
     },
     ['2ncsx7'] = {
         name = 'Cherooke',
-        brand = 'OBSCURIA',
+        brand = 'OB',
         model = '2ncsx7 ',
         price = 0,
         category = 'super',
         type = 'automobile',
         hash = `2ncsx7 `,
+    },
+
+
+    -- beta testers
+    ['nissantitan17'] = {
+        name = 'Titan 17',
+        brand = 'Bug',
+        model = 'nissantitan17 ',
+        price = 0,
+        category = 'super',
+        type = 'automobile',
+        hash = `nissantitan17 `,
+    },
+    ['zx6r'] = {
+        name = 'ZX 6R',
+        brand = 'Beta',
+        model = 'zx6r ',
+        price = 0,
+        category = 'super',
+        type = 'automobile',
+        hash = `zx6r `,
+    },
+
+    -- Boster
+    ['oycdefender'] = {
+        name = 'Defender',
+        brand = 'Booster',
+        model = 'oycdefender ',
+        price = 0,
+        category = 'super',
+        type = 'automobile',
+        hash = `oycdefender `,
     },
 
     tvtrailer = {

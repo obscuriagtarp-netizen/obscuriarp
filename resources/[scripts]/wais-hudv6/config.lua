@@ -10,7 +10,7 @@ Config.ShowDebug = false -- If you set this to `true`, the debug messages will b
 Config.ClockType = 24 --[[ 12 = 12 hour clock 9.30 PM || 24 = 24 hour clock 21.30 ]]
 Config.ShowICTime = false -- If you set it to `true`, the in-game time will be displayed. If you set it to `false`, UTC (OOC) Time will be displayed.
 Config.ShowMapOnFoot = false -- If `true` is set, the player can see the map when not in the vehicle. If `false`, the map will only be visible when in the vehicle.
-Config.SendStatusAlert = false -- If this option is `true`, the player will be notified if the hunger or thirst value falls below 20. Tick `false` if you do not want to use this system
+Config.SendStatusAlert = true -- If this option is `true`, the player will be notified if the hunger or thirst value falls below 20. Tick `false` if you do not want to use this system
 Config.StressSystem = true -- If you make `true`, stress will come next to the status bars. You will be able to see your stress values. You need to use a script for qb-stress esx for QBCore
 Config.DisableRightCorner = false -- If you want to disable the top right corner, set it to `true`. This will hide all server and player information. If set to `false`, users can see and customize the top right corner.
 Config.DisableMapAnimation = false -- If you set it to `true`, the minimap loading animation will be disabled. If you set it to `false`, the minimap loading animation will be enabled.

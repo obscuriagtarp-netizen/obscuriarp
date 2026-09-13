@@ -442,7 +442,7 @@ Config.MetaSystem               = {
     -- [EDIT] On-screen grouping mask (X = digit). Must match total digits = prefix + phoneNumberLength.
     -- US default (10 digits): '(XXX) XXX-XXXX'
     -- French mobile (06 + 8 = 10 digits): 'XX XX XX XX XX'
-    phoneNumberMask = '(XXX) XXX-XXXX',
+    phoneNumberMask = '(XX) XXX-XXXX',
 }
 
 --──────────────────────────────────────────────────────────────────────────────
