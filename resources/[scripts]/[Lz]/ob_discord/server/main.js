@@ -42,6 +42,7 @@ try {
         snapshot: targetId => game('snapshot', { targetId }), screenshot,
         apply: request => game('apply', request),
         profile: request => game('profile', request),
+        admin: request => game('admin', request),
         delay: ms => new Promise(resolve => setTimeout(resolve, ms)),
     });
     journal = createJournal(entries, data => {

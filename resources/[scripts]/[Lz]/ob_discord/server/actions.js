@@ -1,6 +1,6 @@
 const { randomUUID, createHash } = require('crypto');
 
-function createActions({ snapshot, screenshot, apply, profile, delay, now = Date.now }) {
+function createActions({ snapshot, screenshot, apply, profile, admin, delay, now = Date.now }) {
     const evidence = new Map();
     const locks = new Set();
     const recent = new Map();
@@ -16,6 +16,10 @@ function createActions({ snapshot, screenshot, apply, profile, delay, now = Date
         if (locks.has(request.targetId)) return { error: 'busy' };
         locks.add(request.targetId);
         try {
+            if (request.operation === 'admin') {
+                if (request.mode !== 'staff' || typeof admin !== 'function') return { error: 'disabled' };
+                return await admin(request);
+            }
             if (request.revive || request.action === 'revive') return { error: 'revive_disabled' };
             if (request.operation === 'profile') return await profile(request);
             for (const [key, value] of evidence) if (value.expires < now()) evidence.delete(key);

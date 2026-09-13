@@ -21,6 +21,26 @@ Config = {
         },
     },
     Staff = { Enabled = true, CustomDestination = true },
+    Admin = {
+        Enabled = true,
+        AllowRevive = true,
+        MedicalResource = 'qbx_medical',
+        MulticharResource = 'ob_multichar',
+        Destinations = {
+            inicial = {
+                label = 'Local inicial',
+                coords = vec4(-540.58, -212.02, 37.65, 208.88),
+            },
+            hotel = {
+                label = 'Hotel Ravenwood',
+                coords = vec4(-940.85, -385.03, 39.0, 24.39),
+            },
+            hospital = {
+                label = 'Hospital',
+                coords = vec4(-1007.17, -419.11, 38.62, 27.33),
+            },
+        },
+    },
     BlockedStates = {
         'obscuriaPowerBlocked', 'magicFauna', 'obHypnotized',
         'obInVehicleAttachment', 'obHealerFlight', 'inTrunk', 'intrunk',

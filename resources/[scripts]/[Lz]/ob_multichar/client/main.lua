@@ -9,6 +9,7 @@ local bootstrapActive = false
 local characterPreload
 local characterPreloadGeneration = 0
 local selectionCam
+local forcedFlowMode
 local currentScene
 local previewGeneration = 0
 local awaitingClassSelection = false
@@ -424,13 +425,26 @@ local function openCharacterSelection()
         return
     end
 
+    local forceCreation = forcedFlowMode == 'creation'
+    forcedFlowMode = nil
+    local creationAvailable = false
     local selectedSlot
     local selectedCharacter
-    for i = 1, #characters do
-        if not characters[i].empty then
-            selectedSlot = i
-            selectedCharacter = characters[i]
-            break
+    if forceCreation then
+        for i = 1, #characters do
+            if characters[i].empty then
+                selectedSlot = characters[i].slot or i
+                creationAvailable = true
+                break
+            end
+        end
+    else
+        for i = 1, #characters do
+            if not characters[i].empty then
+                selectedSlot = characters[i].slot or i
+                selectedCharacter = characters[i]
+                break
+            end
         end
     end
 
@@ -451,6 +465,14 @@ local function openCharacterSelection()
     setBusy(false)
     setUiVisible(true)
     ensureScreenVisible()
+
+    if forceCreation then
+        if creationAvailable then
+            sendUi('openCreate')
+        else
+            sendUi('error', { message = 'Não existe uma vaga livre para criar outro personagem.' })
+        end
+    end
 
     CreateThread(function()
         if selectedCharacter then
@@ -820,6 +842,11 @@ RegisterNUICallback('deleteCharacter', function(data, cb)
     if uiOpen and type(data.citizenid) == 'string' then
         CreateThread(function() deleteCharacter(data.citizenid) end)
     end
+end)
+
+RegisterNetEvent('ob_multichar:client:prepareAdminFlow', function(mode)
+    if mode ~= 'selection' and mode ~= 'creation' then return end
+    forcedFlowMode = mode
 end)
 
 RegisterNetEvent('qbx_core:client:playerLoggedOut', function()

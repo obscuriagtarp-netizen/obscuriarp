@@ -426,6 +426,8 @@ window.addEventListener('message', ({ data }) => {
         post('uiAck');
     }
 
+    if (data.action === 'openCreate') openCreate();
+
     if (data.action === 'busy') {
         if (payload.active === true) {
             showLoading(payload.label || 'Aguarde...');

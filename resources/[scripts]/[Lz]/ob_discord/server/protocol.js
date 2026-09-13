@@ -20,19 +20,32 @@ function authorize(secret, headers, body, now = Date.now()) {
 function validate(data, guildId) {
     if (!data || typeof data !== 'object' || Array.isArray(data)) return false;
     const keys = ['requestId', 'operation', 'guildId', 'ticketId', 'ownerId', 'actorId', 'targetId',
-        'mode', 'evidenceId', 'evidenceMessageId', 'action', 'revive', 'destination', 'visual'];
+        'mode', 'evidenceId', 'evidenceMessageId', 'action', 'revive', 'destination', 'destinationKey',
+        'adminSession', 'visual'];
     if (Object.keys(data).some(key => !keys.includes(key))) return false;
     if (!UUID.test(data.requestId) || !ID.test(data.guildId) || data.guildId !== guildId
         || !['ticketId', 'ownerId', 'actorId'].every(key => ID.test(data[key]))
-        || !(data.operation === 'profile' && data.mode === 'self' && data.targetId === 0)
-            && (!Number.isInteger(data.targetId) || data.targetId < 1 || data.targetId > 65535)
         || !['self', 'staff'].includes(data.mode)
         || (data.mode === 'self' && data.actorId !== data.ownerId)) return false;
+    if (data.targetId === 0) {
+        if (data.operation !== 'profile' || data.mode !== 'self') return false;
+    } else if (!Number.isInteger(data.targetId) || data.targetId < 1 || data.targetId > 65535) return false;
+
     if (data.operation === 'inspect' || data.operation === 'profile') {
-        return !['evidenceId', 'evidenceMessageId', 'action', 'revive', 'destination', 'visual'].some(key => key in data);
+        return !['evidenceId', 'evidenceMessageId', 'action', 'revive', 'destination', 'destinationKey',
+            'adminSession', 'visual']
+            .some(key => key in data);
+    }
+    if (data.operation === 'admin') {
+        if (data.mode !== 'staff' || !['revive', 'teleport', 'character_selection', 'character_creation'].includes(data.action)
+            || !/^[A-Za-z0-9:_-]{1,100}$/.test(data.adminSession || '')
+            || ['evidenceId', 'evidenceMessageId', 'revive', 'destination', 'visual'].some(key => key in data)) return false;
+        if (data.action === 'teleport') return /^[a-z0-9_-]{1,40}$/.test(data.destinationKey || '');
+        return !('destinationKey' in data);
     }
     if (data.operation !== 'execute' || !UUID.test(data.evidenceId) || !ID.test(data.evidenceMessageId)
-        || !['rescue', 'teleport'].includes(data.action) || data.revive !== false) return false;
+        || !['rescue', 'teleport'].includes(data.action) || data.revive !== false
+        || 'destinationKey' in data || 'adminSession' in data) return false;
     if (data.mode === 'self' && (data.action !== 'rescue' || data.destination)) return false;
     if (data.destination) {
         const d = data.destination;
@@ -65,7 +78,8 @@ function createJournal(entries, persist, dispatch, now = Date.now) {
         let output;
         try { output = await dispatch(data); } catch { output = { error: 'internal' }; }
         entries[data.requestId].status = 'complete';
-        entries[data.requestId].result = output.image || data.operation === 'profile' ? { error: 'evidence_expired' } : output;
+        entries[data.requestId].result = output.image || data.operation === 'profile'
+            ? { error: 'evidence_expired' } : output;
         persist(entries);
         if (cache.size >= 32) cache.delete(cache.keys().next().value);
         cache.set(data.requestId, output);
