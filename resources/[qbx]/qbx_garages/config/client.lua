@@ -9,6 +9,8 @@ local garageMarker = {
 return {
     enableClient = true, -- disable to create your own client interface
     engineOn = true, -- If true, the engine will be on upon taking the vehicle out.
+    disableAutoHelmet = true, -- Prevents GTA from automatically equipping a helmet on motorcycles.
+    spawnTimeoutMs = 15000, -- Releases the local request if the server cannot deliver the vehicle.
     universalGarages = false, -- CAR garages accept every ground vehicle type.
     debugPoly = false,
     spawnGhost = {

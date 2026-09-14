@@ -77,6 +77,17 @@ local function normalizeId(value)
     return tostring(value or ''):lower():gsub('[^%w_%-]', '')
 end
 
+local function isEnabled(value)
+    if value == true then return true end
+    if value == false or value == nil then return false end
+
+    local numeric = tonumber(value)
+    if numeric ~= nil then return numeric == 1 end
+
+    value = tostring(value):lower()
+    return value == 'true' or value == 'yes' or value == 'on'
+end
+
 local function currencyFor(shop)
     return tostring(shop.currency or 'money'):lower() == 'crypto' and 'crypto' or 'money'
 end
@@ -100,12 +111,35 @@ end
 
 local function takePayment(source, amount, currency)
     if amount <= 0 then return true end
+
+    if currency == 'money' then
+        local cash = accountBalance(source, 'cash')
+        local bank = accountBalance(source, 'bank')
+        if cash + bank < amount then return false end
+
+        local cashAmount = math.min(cash, amount)
+        local bankAmount = amount - cashAmount
+        if cashAmount > 0 and not changeBalance(source, 'cash', cashAmount, 'RemoveMoney') then return false end
+
+        if bankAmount > 0 and not changeBalance(source, 'bank', bankAmount, 'RemoveMoney') then
+            if cashAmount > 0 then changeBalance(source, 'cash', cashAmount, 'AddMoney') end
+            return false
+        end
+
+        return true, { cash = cashAmount, bank = bankAmount }
+    end
+
     if accountBalance(source, currency) < amount then return false end
-    return changeBalance(source, currency, amount, 'RemoveMoney')
+    if not changeBalance(source, currency, amount, 'RemoveMoney') then return false end
+    return true, { [currency] = amount }
 end
 
-local function refundPayment(source, amount, currency)
-    if amount > 0 then changeBalance(source, currency, amount, 'AddMoney') end
+local function refundPayment(source, receipt)
+    if type(receipt) ~= 'table' then return end
+    for account, amount in pairs(receipt) do
+        amount = tonumber(amount) or 0
+        if amount > 0 then changeBalance(source, account, amount, 'AddMoney') end
+    end
 end
 
 local function paymentError(currency)
@@ -303,6 +337,12 @@ local function createTables()
     if not columnInfo('vg_dealership_vehicles', 'duration_days') then
         update('ALTER TABLE vg_dealership_vehicles ADD COLUMN duration_days INT DEFAULT NULL AFTER purchase_type')
     end
+    local imageColumn = columnInfo('vg_dealership_vehicles', 'image')
+    if not imageColumn then
+        update('ALTER TABLE vg_dealership_vehicles ADD COLUMN image TEXT DEFAULT NULL AFTER duration_days')
+    elseif tostring(imageColumn.DATA_TYPE or ''):lower() ~= 'text' then
+        update('ALTER TABLE vg_dealership_vehicles MODIFY COLUMN image TEXT DEFAULT NULL')
+    end
     if not columnInfo('vg_dealership_sales', 'purchase_type') then
         update("ALTER TABLE vg_dealership_sales ADD COLUMN purchase_type VARCHAR(20) NOT NULL DEFAULT 'permanent' AFTER currency")
     end
@@ -349,7 +389,8 @@ local function vehiclePayload(row, shopId, source)
         tax = tax, taxLabel = taxLabel, total = price + tax,
         stock = stock, purchaseType = period, durationDays = tonumber(row.duration_days) or periodDays(period),
         durationLabel = periodLabel(period), durationShort = periodShort(period),
-        available = tonumber(row.enabled) == 1 and (stock < 0 or stock > 0), enabled = tonumber(row.enabled) == 1, image = row.image,
+        available = isEnabled(row.enabled) and stock ~= 0, enabled = isEnabled(row.enabled), image = row.image,
+        displayOrder = tonumber(row.display_order) or 0,
     }
 end
 
@@ -427,7 +468,7 @@ lib.callback.register('ob_concessionaria:buyVehicle', function(source, shopId, v
     if purchaseLocks[cid] then return { ok = false, message = 'Aguarde a compra anterior terminar.', type = 'error' } end
 
     local row = rowById(vehicleId)
-    if not row or row.dealership ~= shopId or tonumber(row.enabled) ~= 1 then return { ok = false, message = 'Veículo indisponível.', type = 'error' } end
+    if not row or row.dealership ~= shopId or not isEnabled(row.enabled) then return { ok = false, message = 'Veículo indisponível.', type = 'error' } end
     if tonumber(row.stock) == 0 then return { ok = false, message = 'Este veículo está esgotado.', type = 'error' } end
     local registered, registerError = vehicleIsRegistered(row.model)
     if not registered then return { ok = false, message = registerError, type = 'error' } end
@@ -438,7 +479,8 @@ lib.callback.register('ob_concessionaria:buyVehicle', function(source, shopId, v
     local price, discount, discountPercent = vipPrice(source, originalPrice)
     local tax = taxFor(shopId, price)
     local total = price + tax
-    if not takePayment(source, total, currency) then
+    local paid, paymentReceipt = takePayment(source, total, currency)
+    if not paid then
         purchaseLocks[cid] = nil
         return { ok = false, message = paymentError(currency), type = 'error' }
     end
@@ -447,7 +489,7 @@ lib.callback.register('ob_concessionaria:buyVehicle', function(source, shopId, v
     local expiry = expiryFor(row.purchase_type)
     local registeredVehicle, registerMessage = insertPlayerVehicle(source, row, plate, expiry)
     if not registeredVehicle then
-        refundPayment(source, total, currency)
+        refundPayment(source, paymentReceipt)
         purchaseLocks[cid] = nil
         return { ok = false, message = registerMessage or 'Não foi possível registrar o veículo.', type = 'error' }
     end
@@ -470,22 +512,25 @@ lib.callback.register('ob_concessionaria:startTestDrive', function(source, shopI
     local shop = dealership(shopId)
     if not shop or not nearDealership(source, shopId) or testDrivePlayers[source] then return { ok = false, message = 'Test drive indisponível.', type = 'error' } end
     local row = rowById(vehicleId)
-    if not row or row.dealership ~= shopId or tonumber(row.enabled) ~= 1 then return { ok = false, message = 'Veículo indisponível.', type = 'error' } end
+    if not row or row.dealership ~= shopId or not isEnabled(row.enabled) then return { ok = false, message = 'Veículo indisponível.', type = 'error' } end
     if Config.TestDrive.enabled == false then return { ok = false, message = 'Test drive desativado.', type = 'error' } end
 
     local cfg = Config.TestDrive
     local price = tonumber(cfg.price) or 0
     local currency = tostring(cfg.currency or 'money'):lower() == 'crypto' and 'crypto' or 'money'
-    if not takePayment(source, price, currency) then return { ok = false, message = paymentError(currency), type = 'error' } end
-    testDrivePlayers[source] = true
+    local paid, paymentReceipt = takePayment(source, price, currency)
+    if not paid then return { ok = false, message = paymentError(currency), type = 'error' } end
+    testDrivePlayers[source] = { payment = paymentReceipt }
     SetPlayerRoutingBucket(source, (tonumber(cfg.bucketBase) or 9000) + source)
     return { ok = true, model = row.model, seconds = tonumber(cfg.seconds) or 45, spawn = cfg.spawn }
 end)
 
-lib.callback.register('ob_concessionaria:finishTestDrive', function(source)
-    if testDrivePlayers[source] then
+lib.callback.register('ob_concessionaria:finishTestDrive', function(source, cancelled)
+    local session = testDrivePlayers[source]
+    if session then
         SetPlayerRoutingBucket(source, 0)
         testDrivePlayers[source] = nil
+        if cancelled then refundPayment(source, session.payment) end
     end
     return { ok = true }
 end)
@@ -508,15 +553,29 @@ lib.callback.register('ob_concessionaria:adminSaveVehicle', function(source, dat
     local registered, registerError = vehicleIsRegistered(model)
     if not registered then return { ok = false, message = registerError, type = 'error' } end
 
+    local recordId = tonumber(data.id)
+    local duplicate = query('SELECT id FROM vg_dealership_vehicles WHERE dealership = ? AND model = ? LIMIT 1', { shopId, model })[1]
+    if duplicate and tonumber(duplicate.id) ~= recordId then
+        return { ok = false, message = 'Este modelo já está cadastrado nesta concessionária.', type = 'error' }
+    end
+
     local values = { shopId, tostring(data.category or 'carro'), model, tostring(data.name), tostring(data.brand or ''), tonumber(data.price) or 0,
         tonumber(data.stock) or 0, periodId(data.purchaseType), periodDays(data.purchaseType), tostring(data.image or ''), data.enabled == false and 0 or 1, tonumber(data.displayOrder) or 0 }
-    if tonumber(data.id) and tonumber(data.id) > 0 then
-        values[#values + 1] = tonumber(data.id)
-        update('UPDATE vg_dealership_vehicles SET dealership = ?, category = ?, model = ?, name = ?, brand = ?, price = ?, stock = ?, purchase_type = ?, duration_days = ?, image = ?, enabled = ?, display_order = ? WHERE id = ?', values)
+    if recordId and recordId > 0 then
+        values[#values + 1] = recordId
+        local ok, result = pcall(update, 'UPDATE vg_dealership_vehicles SET dealership = ?, category = ?, model = ?, name = ?, brand = ?, price = ?, stock = ?, purchase_type = ?, duration_days = ?, image = ?, enabled = ?, display_order = ? WHERE id = ?', values)
+        if not ok then
+            print(('^1[%s] Falha ao atualizar veículo: %s^7'):format(RESOURCE, tostring(result)))
+            return { ok = false, message = 'Não foi possível atualizar o veículo. Confira os dados e tente novamente.', type = 'error' }
+        end
     else
-        insert([[INSERT INTO vg_dealership_vehicles
+        local ok, result = pcall(insert, [[INSERT INTO vg_dealership_vehicles
             (dealership, category, model, name, brand, price, stock, purchase_type, duration_days, image, enabled, display_order)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]], values)
+        if not ok or not result then
+            print(('^1[%s] Falha ao cadastrar veículo: %s^7'):format(RESOURCE, tostring(result)))
+            return { ok = false, message = 'Não foi possível cadastrar o veículo. Confira os dados e tente novamente.', type = 'error' }
+        end
     end
     return { ok = true, message = 'Veículo salvo.', payload = adminPayload() }
 end)
@@ -525,7 +584,13 @@ lib.callback.register('ob_concessionaria:adminSetVehicleEnabled', function(sourc
     local unavailable = databaseUnavailable()
     if unavailable then return unavailable end
     if not hasStaffAccess(source) then return { ok = false, message = 'Você não tem permissão.', type = 'error' } end
-    update('UPDATE vg_dealership_vehicles SET enabled = ? WHERE id = ?', { enabled and 1 or 0, tonumber(id) or 0 })
+    local vehicleId = tonumber(id)
+    if not vehicleId or not rowById(vehicleId) then return { ok = false, message = 'Veículo não encontrado.', type = 'error' } end
+    local ok, result = pcall(update, 'UPDATE vg_dealership_vehicles SET enabled = ? WHERE id = ?', { enabled and 1 or 0, vehicleId })
+    if not ok then
+        print(('^1[%s] Falha ao alterar status do veículo: %s^7'):format(RESOURCE, tostring(result)))
+        return { ok = false, message = 'Não foi possível alterar o status do veículo.', type = 'error' }
+    end
     return { ok = true, message = enabled and 'Veículo ativado.' or 'Veículo pausado.', payload = adminPayload() }
 end)
 

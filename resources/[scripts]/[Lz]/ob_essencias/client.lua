@@ -160,11 +160,7 @@ RegisterNetEvent('qbx_core:client:onSetMetaData', function(key, _, newValue)
     end
 
     if key == essence.maxKey and newValue ~= nil then
-        local maxValue = tonumber(newValue)
-        if maxValue and maxValue ~= essence.max then
-            essence.max = maxValue
-            publishEssence()
-        end
+        refresh(0)
     end
 end)
 
@@ -173,8 +169,14 @@ RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
 end)
 
 AddEventHandler('onClientResourceStart', function(resourceName)
-    if resourceName == GetCurrentResourceName() or resourceName == 'qbx_core' then
+    if resourceName == GetCurrentResourceName() or resourceName == 'qbx_core' or resourceName == 'ob_boxes' then
         refresh(700)
+    end
+end)
+
+AddEventHandler('onClientResourceStop', function(resourceName)
+    if resourceName == 'ob_boxes' then
+        refresh(50)
     end
 end)
 

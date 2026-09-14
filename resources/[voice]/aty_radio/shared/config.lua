@@ -11,7 +11,7 @@ Config = {
     },
 
     CommandSettings = {
-        Enable = false,
+        Enable = true,
         Command = "radio",
     },
 

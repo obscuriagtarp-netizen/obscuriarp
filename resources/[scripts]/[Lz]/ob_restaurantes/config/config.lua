@@ -7,6 +7,17 @@ Config.AdminPermissions = { 'admin', 'god' }
 Config.ManagerGrade = 4
 Config.CraftMaxQuantity = 20
 
+-- Todas as novas receitas usam este unico item no ox_inventory. Nome, imagem,
+-- peso, tipo e efeitos de cada produto ficam na metadata criada pelo restaurante.
+Config.RestaurantProduct = {
+    item = 'produto_restaurante',
+    defaultType = 'food',
+    defaultWeight = 250,
+    minWeight = 10,
+    maxWeight = 5000,
+    useTime = 2500
+}
+
 Config.InteractionDistance = 2.2
 Config.NearbyCustomerDistance = 5.0
 Config.DisplayRenderDistance = 16.0
@@ -141,6 +152,7 @@ Config.Restaurants = {
     }
 }
 
+-- Mantém os dados históricos, mas remove estabelecimentos antigos da listagem.
 Config.DisabledRestaurants = {
     'ravenwood_cafe'
 }
@@ -183,8 +195,10 @@ Config.SeedRecipes = {
         description = 'Pao tostado, carne e salada fresca.',
         price = 280,
         prepTime = 8,
-        outputItem = 'hamburguer',
+        outputItem = 'produto_restaurante',
         outputAmount = 1,
+        productType = 'food',
+        itemWeight = 280,
         icon = 'sandwich',
         effects = { hunger = 25 },
         ingredients = {
@@ -201,8 +215,10 @@ Config.SeedRecipes = {
         description = 'Porcao crocante preparada na hora.',
         price = 140,
         prepTime = 6,
-        outputItem = 'batata_frita',
+        outputItem = 'produto_restaurante',
         outputAmount = 1,
+        productType = 'food',
+        itemWeight = 180,
         icon = 'salad',
         effects = { hunger = 15 },
         ingredients = {
@@ -217,8 +233,10 @@ Config.SeedRecipes = {
         description = 'Bebida gelada servida no copo da casa.',
         price = 90,
         prepTime = 3,
-        outputItem = 'refrigerante',
+        outputItem = 'produto_restaurante',
         outputAmount = 1,
+        productType = 'drink',
+        itemWeight = 300,
         icon = 'cup-soda',
         effects = { thirst = 22 },
         ingredients = {
@@ -234,15 +252,20 @@ Config.SeedRecipes = {
         description = 'Hamburguer, batatas e bebida em uma unica embalagem.',
         price = 460,
         prepTime = 12,
-        outputItem = 'combo_box',
+        outputItem = 'produto_restaurante',
         outputAmount = 1,
+        productType = 'food',
+        itemWeight = 850,
         icon = 'package-open',
         isCombo = true,
         effects = { hunger = 30, thirst = 25 },
         ingredients = {
-            { item = 'hamburguer', label = 'Hamburguer', amount = 1 },
-            { item = 'batata_frita', label = 'Batatas', amount = 1 },
-            { item = 'refrigerante', label = 'Refrigerante', amount = 1 }
+            { item = 'pao', label = 'Pao', amount = 1 },
+            { item = 'carne', label = 'Carne', amount = 1 },
+            { item = 'salad', label = 'Salada', amount = 1 },
+            { item = 'batata', label = 'Batata', amount = 2 },
+            { item = 'water', label = 'Agua', amount = 1 },
+            { item = 'xarope', label = 'Xarope', amount = 1 }
         },
         contents = {
             { item = 'hamburguer', label = 'Hamburguer da Casa', amount = 1 },

@@ -593,7 +593,7 @@ Config.Stores = {
             vector3(296.28656005859, -570.330078125, 43.26)
         }
     },
-    {
+    { -- hospital
         type = "clothing",
         coords = vector4(-1017.1, -426.64, 38.62, 332.41),
         size = vector3(4, 4, 4),
@@ -607,6 +607,22 @@ Config.Stores = {
             vector3(-1016.12, -427.18, 38.62),
             vector3(-1017.1, -426.37, 40.12),
             vector3(-1018.02, -427.01, 38.62)
+        }
+    },
+    { -- Mecanica Akuma
+        type = "clothing",
+        coords = vector4(-342.59, -145.53, 38.06, 332.41),
+        size = vector3(4, 4, 4),
+        rotation = 45,
+        usePoly = false, -- false => uses the size + rotation to create the zone | true => uses points to create the zone
+        showBlip = false, -- overrides the blip visibilty configured above for the group
+        --targetModel = "s_m_m_doctor_01", -- overrides the target ped configured for the group
+        --targetScenario = "" -- overrides the target scenario configure for the group
+        points = {
+            vector3(-344.97, -144.65, 38.06),
+            vector3(-340.83, -146.44, 38.06),
+            vector3(-343.3, -147.09, 38.06),
+            vector3(-343.01, -145.99, 40.76),
         }
     }
 }

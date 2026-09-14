@@ -11,6 +11,7 @@ const failOpen = GetConvar('ob_discord_whitelist_fail_open', 'false') === 'true'
 const roleSyncEnabled = GetConvar('ob_discord_role_sync_enabled', 'true') === 'true';
 const configured = secret.length >= 32 && validBaseUrl(baseUrl);
 const pendingSync = new Map();
+let unavailableWarningShown = false;
 
 function validBaseUrl(value) {
     try {
@@ -83,6 +84,15 @@ function isRetryableConnectionError(error) {
         || ['timeout', 'socket hang up'].includes(error?.message);
 }
 
+function cleanDisplayName(value) {
+    if (typeof value !== 'string') return '';
+    const cleaned = value.normalize('NFKC')
+        .replace(/[\u0000-\u001f\u007f]/g, '')
+        .replace(/\s+/gu, ' ')
+        .trim();
+    return [...cleaned].slice(0, 64).join('');
+}
+
 async function checkWhitelistAccess(discord) {
     const retryDelays = [0, 300, 900];
     let lastError;
@@ -128,10 +138,23 @@ on('playerConnecting', async (_name, _setKickReason, deferrals) => {
 });
 
 async function sendRoleSync(payload, attempt = 0) {
-    if (!configured || !roleSyncEnabled) return;
+    if (!roleSyncEnabled) return;
+    if (!configured) {
+        if (!unavailableWarningShown) {
+            unavailableWarningShown = true;
+            console.error(`[${resource}] Cargos Discord não sincronizados: configure ob_discord_secret e ob_discord_bot_url.`);
+        }
+        return;
+    }
     try {
         const result = await perform('/v1/city/sync', payload);
         if (!result.ok) throw new Error(result.error || 'sync_rejected');
+        if (result.added || result.removed) {
+            console.log(`[${resource}] Cargos sincronizados para Discord final ${payload.discordId.slice(-4)}: +${result.added || 0} -${result.removed || 0}.`);
+        }
+        if (result.nicknameUpdated) {
+            console.log(`[${resource}] Nome do primeiro personagem sincronizado para Discord final ${payload.discordId.slice(-4)}.`);
+        }
         if (result.warnings?.length) console.warn(`[${resource}] Sincronização com avisos: ${result.warnings.join(', ')}`);
     } catch (error) {
         const delays = [5000, 15000, 30000, 60000, 120000];
@@ -155,6 +178,7 @@ on('ob_discord:internal:syncRoles', raw => {
         citizenid: payload.citizenid,
         class: typeof payload.class === 'string' ? payload.class.toLowerCase().slice(0, 50) : '',
         vips: [...new Set(payload.vips.map(value => String(value).toLowerCase()).filter(value => /^[a-z0-9_-]{1,50}$/.test(value)))].slice(0, 16),
+        displayName: cleanDisplayName(payload.displayName),
     };
     const previous = pendingSync.get(clean.discordId);
     if (previous) clearTimeout(previous.timer);

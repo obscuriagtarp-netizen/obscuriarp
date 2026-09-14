@@ -35,13 +35,31 @@ return {
 			heading = 340,
 			minZ = 43.34,
 			maxZ = 44.74,
-			label = 'Open personal locker'
+			label = 'Abrir baú'
 		},
 		name = 'emslocker',
-		label = 'Personal Locker',
-		owner = true,
+		label = 'Baú Hospital',
+		owner = false,
 		slots = 70,
-		weight = 70000,
+		weight = 170000,
 		groups = {['ambulance'] = 0}
+	},
+	{
+		coords = vec3(-332.41, -155.54, 38.06),
+		target = {
+			loc = vec3(-332.41, -155.54, 38.06),
+			length = 0.6,
+			width = 1.8,
+			heading = 340,
+			minZ = 43.34,
+			maxZ = 44.74,
+			label = 'Abrir baú'
+		},
+		name = 'mechaniclocker',
+		label = 'Baú Mechanic',
+		owner = false,
+		slots = 70,
+		weight = 170000,
+		groups = {['mechanic'] = 0}
 	},
 }

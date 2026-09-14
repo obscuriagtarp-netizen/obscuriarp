@@ -2,6 +2,23 @@ local oxmysql = exports.oxmysql
 local SessionJoin = {}
 local playtimeReady = false
 
+local function ensurePlaytimeTable()
+    if playtimeReady then return end
+    oxmysql:executeSync([[
+        CREATE TABLE IF NOT EXISTS `playtime` (
+            `passport` VARCHAR(80) NOT NULL,
+            `total_seconds` INT NOT NULL DEFAULT 0,
+            `last_join_ts` BIGINT DEFAULT NULL,
+            `updated_at` BIGINT NOT NULL DEFAULT 0,
+            PRIMARY KEY (`passport`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    ]])
+    pcall(function()
+        oxmysql:executeSync("ALTER TABLE `playtime` MODIFY COLUMN `passport` VARCHAR(80) NOT NULL")
+    end)
+    playtimeReady = true
+end
+
 local function mapGender(value)
     if value == nil then return "Indefinido" end
     if type(value) == "number" then
@@ -20,21 +37,7 @@ local function formatPlaytime(totalSeconds)
 end
 
 local function ensurePlayRow(identifier)
-    if not playtimeReady then
-        oxmysql:executeSync([[
-            CREATE TABLE IF NOT EXISTS `playtime` (
-                `passport` VARCHAR(80) NOT NULL,
-                `total_seconds` INT NOT NULL DEFAULT 0,
-                `last_join_ts` BIGINT DEFAULT NULL,
-                `updated_at` BIGINT NOT NULL DEFAULT 0,
-                PRIMARY KEY (`passport`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-        ]])
-        pcall(function()
-            oxmysql:executeSync("ALTER TABLE `playtime` MODIFY COLUMN `passport` VARCHAR(80) NOT NULL")
-        end)
-        playtimeReady = true
-    end
+    ensurePlaytimeTable()
     oxmysql:insertSync([[
         INSERT INTO playtime (passport, total_seconds, last_join_ts, updated_at)
         VALUES (?, 0, NULL, ?)
@@ -195,6 +198,13 @@ local function getVipProfile(src)
 end
 
 local function buildPlayerInfo(src)
+    local player = Utils.getPlayer(src)
+    local playerData = player and player.PlayerData
+    local charinfo = playerData and playerData.charinfo
+    if type(playerData) ~= "table" or type(charinfo) ~= "table" or not playerData.citizenid then
+        return { ok = false, loading = true }
+    end
+
     local identifier = Utils.getPassport(src)
     local identity = Utils.getIdentity(src)
     local job = Utils.getJob(src)
@@ -202,6 +212,7 @@ local function buildPlayerInfo(src)
     local currentWeight, maxWeight, inventoryItems = getInventoryStats(src)
     local classLabel, classAffinity, classWeakness = getPlayerClass(src, identifier)
     local vipTier, vipExpiresAt = getVipProfile(src)
+    local runes = Utils.getRunes(src)
 
     if identifier and not SessionJoin[identifier] then
         startSession(identifier)
@@ -225,8 +236,8 @@ local function buildPlayerInfo(src)
 
         wallet = Utils.getMoney(src, "cash"),
         bank = Utils.getMoney(src, "bank"),
-        vipMoney = Utils.getRunes(src),
-        runes = Utils.getRunes(src),
+        vipMoney = runes,
+        runes = runes,
 
         job = job.label or "Desempregado",
         jobLevel = job.gradeName or job.grade,
@@ -250,15 +261,17 @@ local function buildPlayerInfo(src)
     }
 end
 
+CreateThread(ensurePlaytimeTable)
+
 RegisterNetEvent("MagicPause:server:getPlayerInfo", function(token)
     local src = source
     TriggerClientEvent("MagicPause:client:serverResponse", src, token, buildPlayerInfo(src))
 end)
 
-AddEventHandler("playerJoining", function()
+AddEventHandler("QBCore:Server:OnPlayerLoaded", function()
     local src = source
     CreateThread(function()
-        Wait(1000)
+        Wait(250)
         local identifier = Utils.getPassport(src)
         if identifier then startSession(identifier) end
     end)

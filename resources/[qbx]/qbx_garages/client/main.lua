@@ -72,6 +72,65 @@ local markerPreviewUntil = 0
 local markerPreviewRunning = false
 local ghostVehicles = {}
 
+local function disableAutomaticHelmet(ped)
+    if config.disableAutoHelmet == false or not ped or ped == 0 then return end
+    SetPedHelmet(ped, false)
+end
+
+local function prepareVehicleForSpawn(vehicle)
+    local modelName = tostring(vehicle and vehicle.modelName or '')
+    local definition = VEHICLES[modelName] or VEHICLES[modelName:lower()]
+    local model = definition and (tonumber(definition.hash) or joaat(definition.model or modelName))
+    if not model or model == 0 or not IsModelInCdimage(model) or not IsModelAVehicle(model) then
+        exports.qbx_core:Notify(locale('error.spawn_invalid_model'), 'error')
+        return false
+    end
+
+    vehicle.props = type(vehicle.props) == 'table' and vehicle.props or {}
+    vehicle.props.model = model
+    return true
+end
+
+local function awaitSpawn(event, ...)
+    local response = promise.new()
+    local pending = true
+    local args = table.pack(...)
+
+    CreateThread(function()
+        local success, result = pcall(function()
+            return lib.callback.await(event, false, table.unpack(args, 1, args.n))
+        end)
+        if pending then
+            pending = false
+            response:resolve({ success = success, result = result })
+        end
+    end)
+
+    SetTimeout(math.max(5000, tonumber(config.spawnTimeoutMs) or 15000), function()
+        if not pending then return end
+        pending = false
+        response:resolve({ timeout = true })
+    end)
+
+    local result = Citizen.Await(response)
+    if result.timeout then return nil, 'timeout' end
+    if not result.success then return nil, 'failed' end
+    return result.result
+end
+
+CreateThread(function()
+    Wait(0)
+    disableAutomaticHelmet(cache.ped or PlayerPedId())
+end)
+
+lib.onCache('ped', function(ped)
+    disableAutomaticHelmet(ped)
+end)
+
+lib.onCache('vehicle', function(vehicle)
+    if vehicle then disableAutomaticHelmet(cache.ped or PlayerPedId()) end
+end)
+
 local function restoreGhostVehicle(record)
     local vehicle = record and record.vehicle
     if not vehicle or vehicle == 0 or not DoesEntityExist(vehicle) then return end
@@ -539,6 +598,7 @@ local function takeOutOfGarage(vehicle, garageName, accessPoint)
         exports.qbx_core:Notify(locale('error.spawn_in_progress'), 'error')
         return
     end
+    if not prepareVehicleForSpawn(vehicle) then return end
     spawnLock = true
 
     local success, result = pcall(function()
@@ -548,12 +608,16 @@ local function takeOutOfGarage(vehicle, garageName, accessPoint)
         end
 
         local netId
+        local spawnError
         if vehicle.fixed then
-            netId = lib.callback.await('qbx_garages:server:spawnFixedVehicle', false, garageName, vehicle.fixedIndex, accessPoint)
+            netId, spawnError = awaitSpawn('qbx_garages:server:spawnFixedVehicle', garageName, vehicle.fixedIndex, accessPoint)
         else
-            netId = lib.callback.await('qbx_garages:server:spawnVehicle', false, vehicle.id, garageName, accessPoint)
+            netId, spawnError = awaitSpawn('qbx_garages:server:spawnVehicle', vehicle.id, garageName, accessPoint)
         end
-        if not netId then return end
+        if not netId then
+            exports.qbx_core:Notify(locale(spawnError == 'timeout' and 'error.spawn_timeout' or 'error.spawn_failed'), 'error')
+            return
+        end
 
         local veh = lib.waitFor(function()
             if NetworkDoesEntityExistWithNetworkId(netId) then
@@ -571,7 +635,10 @@ local function takeOutOfGarage(vehicle, garageName, accessPoint)
         end
     end)
     spawnLock = false
-    assert(success, result)
+    if not success then
+        print(('^1[qbx_garages] Falha local ao retirar veículo: %s^7'):format(tostring(result)))
+        exports.qbx_core:Notify(locale('error.spawn_failed'), 'error')
+    end
 end
 
 ---@param garageName string

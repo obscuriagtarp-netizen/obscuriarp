@@ -28,6 +28,17 @@ local function setMetadata(source, key, value)
     return ok and result ~= false
 end
 
+local function getExternalMaxBonus(source, classId)
+    if GetResourceState('ob_boxes') ~= 'started' then return 0 end
+
+    local ok, bonus = pcall(function()
+        return exports.ob_boxes:GetEssenceBonus(source, classId)
+    end)
+    if not ok then return 0 end
+
+    return math.max(0, math.floor(tonumber(bonus) or 0))
+end
+
 local function buildPayload(source, initialize)
     local player = getPlayer(source)
     if not player then
@@ -44,7 +55,9 @@ local function buildPayload(source, initialize)
         }
     end
 
-    local maxValue = tonumber(metadata[definition.maxKey]) or tonumber(definition.max) or 100
+    local storedMax = tonumber(metadata[definition.maxKey])
+    local baseMax = storedMax or tonumber(definition.max) or 100
+    local maxValue = baseMax + getExternalMaxBonus(source, classId)
     local value = tonumber(metadata[definition.key])
     if value == nil then
         value = math.min(maxValue, tonumber(definition.initial) or maxValue)
@@ -54,8 +67,8 @@ local function buildPayload(source, initialize)
     value = math.max(0, math.min(maxValue, math.floor(value + 0.5)))
 
     if initialize then
-        if tonumber(metadata[definition.maxKey]) ~= maxValue then
-            setMetadata(source, definition.maxKey, maxValue)
+        if storedMax == nil then
+            setMetadata(source, definition.maxKey, baseMax)
         end
         if tonumber(metadata[definition.key]) ~= value then
             setMetadata(source, definition.key, value)
@@ -70,6 +83,7 @@ local function buildPayload(source, initialize)
         label = definition.label,
         value = value,
         max = maxValue,
+        baseMax = baseMax,
     }
 end
 

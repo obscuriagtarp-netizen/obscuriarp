@@ -1,4 +1,5 @@
 local logger = require '@qbx_core.modules.logger'
+local spawningVehicles = {}
 
 local function enableSpawnGhost(netId)
     local ghost = Config.spawnGhost
@@ -50,14 +51,30 @@ local function getAvailableSpawnPoint(accessPoint)
     end
 end
 
+local function preparePlayerVehicle(playerVehicle)
+    local modelName = tostring(playerVehicle and playerVehicle.modelName or '')
+    local definition = VEHICLES[modelName] or VEHICLES[modelName:lower()]
+    local props = playerVehicle and playerVehicle.props
+    if not definition or type(props) ~= 'table' then return nil, modelName end
+
+    local model = tonumber(definition.hash) or joaat(definition.model or modelName)
+    local plate = tostring(props.plate or ''):gsub('^%s+', ''):gsub('%s+$', '')
+    if not model or model == 0 or plate == '' then return nil, modelName end
+
+    props.model = model
+    props.plate = plate
+    return props, modelName
+end
+
 ---@param source number
 ---@param vehicleId integer
 ---@param garageName string
 ---@param accessPointIndex integer
 ---@return number? netId
 lib.callback.register('qbx_garages:server:spawnVehicle', function (source, vehicleId, garageName, accessPointIndex)
+    vehicleId = tonumber(vehicleId)
     local garage = TryGetGarage(source, garageName)
-    if not garage then return end
+    if not garage or not vehicleId then return end
 
     local accessPoint = garage.accessPoints[accessPointIndex]
     if not accessPoint then
@@ -111,6 +128,22 @@ lib.callback.register('qbx_garages:server:spawnVehicle', function (source, vehic
         exports.qbx_core:Notify(source, locale('error.not_correct_type'), 'error')
         return
     end
+    local props, modelName = preparePlayerVehicle(playerVehicle)
+    if not props then
+        logger.log({
+            source = source,
+            message = ('Invalid vehicle data prevented garage spawn. vehicleId=%s model=%s'):format(vehicleId, modelName),
+            webhook = Config.logging.webhook.error,
+            event = 'error',
+            color = 'red'
+        })
+        exports.qbx_core:Notify(source, locale('error.spawn_invalid_model'), 'error')
+        return
+    end
+    if spawningVehicles[vehicleId] then
+        exports.qbx_core:Notify(source, locale('error.spawn_in_progress'), 'error')
+        return
+    end
     if garageType == GarageType.DEPOT and FindPlateOnServer(playerVehicle.props.plate) then -- If depot, check if vehicle is not already spawned on the map
         return exports.qbx_core:Notify(source, locale('error.not_impound'), 'error')
     end
@@ -126,14 +159,29 @@ lib.callback.register('qbx_garages:server:spawnVehicle', function (source, vehic
         end
     end
 
-    playerVehicle.props.lockState = 1 -- Modify the veh props lock state here to avoid conflicts with the vehicleConfig.noLock system.
+    props.lockState = 1 -- Modify the veh props lock state here to avoid conflicts with the vehicleConfig.noLock system.
 
-    local netId, veh = qbx.spawnVehicle({
-        spawnSource = spawnCoords,
-        model = playerVehicle.props.model,
-        props = playerVehicle.props,
-        warp = Config.warpInVehicle and GetPlayerPed(source) or false,
-    })
+    spawningVehicles[vehicleId] = source
+    local success, netId, veh = pcall(function()
+        return qbx.spawnVehicle({
+            spawnSource = spawnCoords,
+            model = props.model,
+            props = props,
+            warp = Config.warpInVehicle and GetPlayerPed(source) or false,
+        })
+    end)
+    spawningVehicles[vehicleId] = nil
+    if not success or not netId or not veh or veh == 0 then
+        logger.log({
+            source = source,
+            message = ('Vehicle spawn failed. vehicleId=%s model=%s'):format(vehicleId, modelName),
+            webhook = Config.logging.webhook.error,
+            event = 'error',
+            color = 'red'
+        })
+        exports.qbx_core:Notify(source, locale('error.spawn_failed'), 'error')
+        return
+    end
 
     if Config.doorsLocked then
         if GetResourceState('qbx_vehiclekeys') == 'started' then

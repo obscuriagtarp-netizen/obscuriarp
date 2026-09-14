@@ -4,7 +4,8 @@ export const state = reactive({
   visible: false,
   screen: "main",
   currentSection: null,
-  menuItems: []
+  menuItems: [],
+  playerInfo: null
 });
 
 export function openSection(item) {
@@ -38,11 +39,16 @@ export function closeMenu() {
 export function handleNuiMessage(data) {
   if (data.action === "open") {
     state.menuItems = data.menuItems || [];
+    if (data.playerInfo && typeof data.playerInfo === "object") state.playerInfo = data.playerInfo;
     state.screen = data.screen || "geral";
     state.currentSection = null;
     state.visible = true;
   } else if (data.action === "close") {
     state.visible = false;
+  } else if (data.action === "updatePlayerInfo") {
+    if (data.playerInfo && typeof data.playerInfo === "object") state.playerInfo = data.playerInfo;
+  } else if (data.action === "clearPlayerInfo") {
+    state.playerInfo = null;
   } else if (data.action === "refreshFactions") {
     window.dispatchEvent(new CustomEvent("magicpause:refresh-factions"));
   }

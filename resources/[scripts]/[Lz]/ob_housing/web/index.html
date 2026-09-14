@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imóveis Obscuria</title>
+    <style>
+        html, body { margin: 0; background: transparent !important; }
+        #app.is-hidden { display: none !important; }
+    </style>
+    <link rel="stylesheet" href="styles.css?v=4">
+</head>
+<body>
+    <div id="app" class="app is-hidden">
+        <section class="panel" aria-label="Painel de imóveis">
+            <header class="topbar">
+                <div class="brand-mark" aria-hidden="true"><img src="images/olho-branco.png?v=4" alt=""></div>
+                <div class="heading">
+                    <p class="eyebrow">OBSCURIA</p>
+                    <h1>Imóveis</h1>
+                    <p id="pageSubtitle">Encontre um lugar para chamar de seu.</p>
+                </div>
+                <div class="header-stats">
+                    <div><strong id="catalogCount">0</strong><span>NO CATÁLOGO</span></div>
+                    <div><strong id="mineCount">0</strong><span>MEUS IMÓVEIS</span></div>
+                </div>
+                <button id="closeButton" class="icon-button" type="button" aria-label="Fechar">X</button>
+            </header>
+
+            <nav class="tabs" aria-label="Seções">
+                <button class="tab is-active" data-view="catalog" type="button">Catálogo</button>
+                <button class="tab" data-view="mine" type="button">Meus imóveis</button>
+                <button class="tab admin-only" data-view="admin" type="button">Administração</button>
+            </nav>
+
+            <main class="content">
+                <section id="catalogView" class="view is-active">
+                    <div class="toolbar">
+                        <label class="search-field">
+                            <span>BUSCAR</span>
+                            <input id="catalogSearch" type="search" maxlength="80" placeholder="Nome ou região">
+                        </label>
+                        <div class="segmented" aria-label="Tipo de imóvel">
+                            <button type="button" class="is-active" data-filter="all">Todos</button>
+                            <button type="button" data-filter="house">Casas</button>
+                            <button type="button" data-filter="apartment">Apartamentos</button>
+                        </div>
+                    </div>
+                    <div id="catalogGrid" class="property-grid"></div>
+                    <div id="catalogEmpty" class="empty-state is-hidden">
+                        <div class="empty-symbol">+</div>
+                        <strong>Nenhum imóvel encontrado</strong>
+                        <span>A busca não encontrou opções disponíveis.</span>
+                    </div>
+                </section>
+
+                <section id="mineView" class="view">
+                    <div class="section-heading">
+                        <div>
+                            <p class="eyebrow">PATRIMÔNIO</p>
+                            <h2>Seus endereços</h2>
+                        </div>
+                        <span id="mineSummary" class="quiet-pill">0 propriedades</span>
+                    </div>
+                    <div id="mineGrid" class="property-grid"></div>
+                    <div id="mineEmpty" class="empty-state is-hidden">
+                        <div class="empty-symbol">+</div>
+                        <strong>Nenhum imóvel vinculado</strong>
+                        <span>Seus apartamentos e casas aparecerão aqui.</span>
+                    </div>
+                </section>
+
+                <section id="adminView" class="view admin-layout">
+                    <aside class="admin-list-pane">
+                        <div class="section-heading compact">
+                            <div>
+                                <p class="eyebrow">GESTÃO</p>
+                                <h2>Imóveis cadastrados</h2>
+                            </div>
+                            <button id="newPropertyButton" class="primary-button" type="button">Novo</button>
+                        </div>
+                        <label class="search-field slim">
+                            <span>FILTRAR</span>
+                            <input id="adminSearch" type="search" maxlength="80" placeholder="Nome ou chave">
+                        </label>
+                        <div id="adminList" class="admin-list"></div>
+                    </aside>
+
+                    <form id="propertyForm" class="property-form">
+                        <div class="form-heading">
+                            <div>
+                                <p id="editorEyebrow" class="eyebrow">NOVO CADASTRO</p>
+                                <h2 id="editorTitle">Criar imóvel</h2>
+                            </div>
+                            <div class="form-actions">
+                                <button id="ownersButton" class="secondary-button edit-only" type="button">Proprietários</button>
+                                <button id="grantButton" class="secondary-button edit-only" type="button">Conceder</button>
+                                <button id="previewButton" class="secondary-button edit-only" type="button">Visitar</button>
+                                <button id="archiveButton" class="danger-button edit-only" type="button">Arquivar</button>
+                                <button class="primary-button" type="submit">Salvar</button>
+                            </div>
+                        </div>
+
+                        <div class="form-scroll">
+                            <div class="form-section">
+                                <div class="form-section-title"><strong>Identidade</strong><span>Como o imóvel aparece no catálogo.</span></div>
+                                <div class="form-grid two">
+                                    <label><span>Nome</span><input name="label" maxlength="80" required></label>
+                                    <label><span>Chave única</span><input name="key" maxlength="64" pattern="[a-z0-9_-]+" required></label>
+                                </div>
+                                <label><span>Descrição</span><textarea name="description" maxlength="500" rows="3"></textarea></label>
+                                <div class="form-grid three">
+                                    <label><span>Tipo</span><select name="type"><option value="house">Casa</option><option value="apartment">Apartamento</option></select></label>
+                                    <label><span>Disponibilidade</span><select name="ownershipMode"><option value="unique">Exclusiva</option><option value="instanced">Instanciada</option></select></label>
+                                    <label>
+                                        <span>Interior</span>
+                                        <div class="field-with-action">
+                                            <select name="presetKey" id="presetSelect"></select>
+                                            <button id="previewPresetButton" class="secondary-button" type="button" title="Visitar este modelo por até 5 minutos">Visualizar</button>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <div class="form-section-title"><strong>Comercial</strong><span>Venda comum ou benefício de plano VIP.</span></div>
+                                <div class="form-grid three">
+                                    <label><span>Valor</span><input name="price" type="number" min="0" max="2000000000" value="0"></label>
+                                    <label><span>Conta</span><select name="paymentAccount"><option value="bank">Banco</option><option value="cash">Dinheiro</option></select></label>
+                                    <label title="Quando preenchido, o imóvel é entregue pelo sistema VIP e não fica disponível para compra comum."><span>Benefício VIP</span><input name="vipTier" maxlength="40" placeholder="Ex.: eclipse"></label>
+                                </div>
+                                <div class="toggle-row">
+                                    <label><input name="listed" type="checkbox" checked><span>Exibir no catálogo</span></label>
+                                    <label><input name="purchasable" type="checkbox" checked><span>Permitir compra</span></label>
+                                    <label><input name="starter" type="checkbox"><span>Apartamento inicial</span></label>
+                                    <label><input name="enabled" type="checkbox" checked><span>Imóvel ativo</span></label>
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <div class="form-section-title"><strong>Pontos no mundo</strong><span>As coordenadas são capturadas onde seu personagem estiver.</span></div>
+                                <div id="pointFields" class="point-grid">
+                                    <div class="point-row" data-point="entrance"><div><strong>Entrada externa</strong><span>Não definida</span></div><button type="button">Capturar</button></div>
+                                    <div class="point-row" data-point="entry"><div><strong>Entrada interna</strong><span>Do interior selecionado</span></div><button type="button">Capturar</button></div>
+                                    <div class="point-row" data-point="exit"><div><strong>Saída interna</strong><span>Do interior selecionado</span></div><button type="button">Capturar</button></div>
+                                    <div class="point-row" data-point="stash"><div><strong>Baú</strong><span>Do interior selecionado</span></div><button type="button">Capturar</button></div>
+                                    <div class="point-row" data-point="wardrobe"><div><strong>Guarda-roupa</strong><span>Do interior selecionado</span></div><button type="button">Capturar</button></div>
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <div class="form-section-title"><strong>Baú</strong><span>Capacidade vinculada a cada propriedade.</span></div>
+                                <div class="form-grid two">
+                                    <label><span>Espaços</span><input name="stashSlots" type="number" min="5" max="200" value="30"></label>
+                                    <label><span>Peso em kg</span><input name="stashWeightKg" type="number" min="5" max="2000" value="50"></label>
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <div class="form-section-title image-heading"><div><strong>Galeria</strong><span>A primeira imagem será a capa.</span></div><button id="addImageButton" type="button" class="secondary-button">Adicionar imagem</button></div>
+                                <div id="galleryEditor" class="gallery-editor"></div>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+            </main>
+        </section>
+
+        <div id="detailsModal" class="modal is-hidden" role="dialog" aria-modal="true">
+            <div class="modal-panel details-panel">
+                <button class="icon-button modal-close" type="button" data-close-modal="detailsModal" aria-label="Fechar">X</button>
+                <div id="detailsGallery" class="details-gallery"></div>
+                <div class="details-body">
+                    <div class="details-title"><div><p id="detailsType" class="eyebrow"></p><h2 id="detailsName"></h2></div><span id="detailsStatus" class="status-badge"></span></div>
+                    <p id="detailsDescription" class="details-description"></p>
+                    <div class="details-facts">
+                        <div><span>VALOR</span><strong id="detailsPrice"></strong></div>
+                        <div><span>BAÚ</span><strong id="detailsStash"></strong></div>
+                        <div><span>ACESSO</span><strong id="detailsMode"></strong></div>
+                    </div>
+                    <div id="detailsActions" class="details-actions"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="grantModal" class="modal is-hidden" role="dialog" aria-modal="true">
+            <form id="grantForm" class="modal-panel compact-modal">
+                <button class="icon-button modal-close" type="button" data-close-modal="grantModal" aria-label="Fechar">X</button>
+                <p class="eyebrow">CONCESSÃO</p>
+                <h2>Entregar imóvel</h2>
+                <p id="grantPropertyName" class="modal-copy"></p>
+                <label><span>Citizen ID</span><input name="citizenid" maxlength="64" required></label>
+                <div class="form-grid two">
+                    <label><span>Origem</span><select name="acquisition"><option value="admin">Administração</option><option value="vip">VIP</option><option value="event">Evento</option></select></label>
+                    <label><span>Dias</span><input name="durationDays" type="number" min="0" max="3650" value="0"></label>
+                </div>
+                <button class="primary-button full" type="submit">Confirmar concessão</button>
+            </form>
+        </div>
+
+        <div id="accessModal" class="modal is-hidden" role="dialog" aria-modal="true">
+            <div class="modal-panel compact-modal">
+                <button class="icon-button modal-close" type="button" data-close-modal="accessModal" aria-label="Fechar">X</button>
+                <p class="eyebrow">CHAVES</p>
+                <h2 id="accessPropertyName">Moradores</h2>
+                <form id="accessForm" class="inline-form">
+                    <input name="citizenid" maxlength="64" placeholder="Citizen ID" required>
+                    <select name="role"><option value="resident">Morador</option><option value="guest">Visitante</option></select>
+                    <button class="primary-button" type="submit">Adicionar</button>
+                </form>
+                <div id="accessList" class="access-list"></div>
+            </div>
+        </div>
+
+        <div id="ownersModal" class="modal is-hidden" role="dialog" aria-modal="true">
+            <div class="modal-panel compact-modal">
+                <button class="icon-button modal-close" type="button" data-close-modal="ownersModal" aria-label="Fechar">X</button>
+                <p class="eyebrow">PROPRIETÁRIOS</p>
+                <h2 id="ownersPropertyName">Concessões</h2>
+                <p class="modal-copy">Vínculos ativos e expirados deste imóvel.</p>
+                <div id="ownersList" class="access-list"></div>
+            </div>
+        </div>
+
+        <div id="confirmModal" class="modal is-hidden" role="dialog" aria-modal="true">
+            <div class="modal-panel confirm-panel">
+                <p class="eyebrow">CONFIRMAÇÃO</p>
+                <h2 id="confirmTitle">Confirmar compra</h2>
+                <p id="confirmCopy" class="modal-copy"></p>
+                <div class="confirm-actions">
+                    <button class="secondary-button" type="button" data-close-modal="confirmModal">Cancelar</button>
+                    <button id="confirmButton" class="primary-button" type="button">Confirmar</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="toast" class="toast is-hidden" role="status"></div>
+    </div>
+    <script src="app.js?v=4"></script>
+</body>
+</html>

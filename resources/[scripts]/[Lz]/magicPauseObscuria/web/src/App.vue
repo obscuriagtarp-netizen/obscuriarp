@@ -26,7 +26,7 @@ const screens = {
   factions: Factions
 };
 
-const profile = ref({ id: "", name: "Carregando", avatar: "", runes: 0 });
+const profile = ref({ id: "", name: "", avatar: "", runes: 0 });
 const factionPayload = ref(null);
 const vipPayload = ref(null);
 const ticketsPayload = ref(null);
@@ -256,22 +256,31 @@ async function refreshProfile() {
   loadingProfile.value = true;
   try {
     const info = await nui("getPlayerInfo");
-    profile.value = {
-      id: info.passport || info.id || "",
-      name: info.name || "Cidadão",
-      avatar: info.avatar || "",
-      runes: info.runes ?? info.vipMoney ?? 0
-    };
+    applyPlayerInfo(info);
   } finally {
     loadingProfile.value = false;
   }
+}
+
+function applyPlayerInfo(info) {
+  if (!info || typeof info !== "object") return;
+  profile.value = {
+    id: info.passport || info.id || profile.value.id || "",
+    name: info.name || profile.value.name || "",
+    avatar: info.avatar || profile.value.avatar || "",
+    runes: info.runes ?? info.vipMoney ?? profile.value.runes ?? 0
+  };
 }
 
 async function refreshFactions() {
   const payload = await nui("getFactions");
   if (payload && payload.profile) {
     factionPayload.value = payload;
-    profile.value = { ...payload.profile, runes: payload.runes ?? profile.value.runes ?? 0 };
+    profile.value = {
+      ...profile.value,
+      avatar: profile.value.avatar || payload.profile.avatar || "",
+      runes: payload.runes ?? profile.value.runes ?? 0
+    };
   }
 }
 
@@ -353,13 +362,22 @@ async function onRefreshFactions() {
 }
 
 watch(
+  () => state.playerInfo,
+  (info) => {
+    if (info) applyPlayerInfo(info);
+    else profile.value = { id: "", name: "", avatar: "", runes: 0 };
+  },
+  { immediate: true }
+);
+
+watch(
   () => state.visible,
   async (visible) => {
     if (!visible) return;
     openedAt.value = Date.now();
     if (!state.screen || state.screen === "main") state.screen = "geral";
-    await refreshProfile();
-    await refreshFactions();
+    applyPlayerInfo(state.playerInfo);
+    await Promise.allSettled([refreshProfile(), refreshFactions()]);
     ensureAvailableScreen();
     if (state.screen === "vip") await refreshVipStore();
     if (state.screen === "tickets") await refreshTickets();
@@ -406,7 +424,7 @@ onBeforeUnmount(() => {
             </div>
             <div class="profile-copy">
               <small>Personagem ativo</small>
-              <strong>{{ profile.name }}</strong>
+              <strong>{{ profile.name || "Personagem" }}</strong>
               <span>Passaporte {{ profile.id || "-" }}</span>
             </div>
             <button class="profile-runes" type="button" title="Abrir Loja VIP" @click="openRuneDeposit">
@@ -453,7 +471,7 @@ onBeforeUnmount(() => {
         <main class="content-panel">
           <component
             :is="activeScreen"
-            v-bind="state.screen === 'factions' ? { payload: factionPayload } : state.screen === 'vip' ? { payload: vipPayload } : state.screen === 'tickets' ? { payload: ticketsPayload, i18n: ticketsPayload?.locale } : state.screen === 'battlepass' ? { payload: battlePassPayload, i18n: battlePassPayload?.locale } : state.screen === 'estabelecimentos' ? { payload: establishmentsPayload } : state.screen === 'ranking' ? { payload: rankingsPayload } : {}"
+            v-bind="state.screen === 'geral' ? { payload: state.playerInfo } : state.screen === 'factions' ? { payload: factionPayload } : state.screen === 'vip' ? { payload: vipPayload } : state.screen === 'tickets' ? { payload: ticketsPayload, i18n: ticketsPayload?.locale } : state.screen === 'battlepass' ? { payload: battlePassPayload, i18n: battlePassPayload?.locale } : state.screen === 'estabelecimentos' ? { payload: establishmentsPayload } : state.screen === 'ranking' ? { payload: rankingsPayload } : {}"
             @refresh="state.screen === 'vip' ? refreshVipStore() : state.screen === 'tickets' ? refreshTickets($event) : state.screen === 'battlepass' ? refreshBattlePass() : state.screen === 'estabelecimentos' ? refreshEstablishments() : refreshFactions()"
           />
         </main>

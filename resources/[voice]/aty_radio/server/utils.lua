@@ -1,7 +1,7 @@
 local Avatars = {}
 local Init = {
-    Frameworks  =  { "es_extended", "qb-core" },
-    Inventories =  { "qb-inventory", "esx_inventoryhud", "qs-inventory", "codem-inventory", "gfx-inventory", "ox_inventory", "ps-inventory" },
+    Frameworks  =  { "es_extended", "qb-core", "qbx_core" },
+    Inventories =  {"ox_inventory"},
 }
 
 initialized = false
@@ -57,21 +57,20 @@ end
 
 function InitFramework()
     if Utils.Framework ~= nil then return end
-    for i = 1, #Init.Frameworks do
-        if IsDuplicityVersion() then
-            if GetResourceState(Init.Frameworks[i]) == "started" then
-                Utils.Framework = Init.Frameworks[i]
-                Utils.FrameworkObject = InitFrameworkObject()
-                Utils.FrameworkShared = InitFrameworkShared()
-            end
-        else
-            if GetResourceState(Init.Frameworks[i]) == "started" then
-                Utils.Framework = Init.Frameworks[i]
 
+    while Utils.Framework == nil do
+        for i = 1, #Init.Frameworks do
+            local resourceName = Init.Frameworks[i]
+            if GetResourceState(resourceName) == "started" then
+                Utils.FrameworkResource = resourceName
+                Utils.Framework = resourceName == "qbx_core" and "qb-core" or resourceName
                 Utils.FrameworkObject = InitFrameworkObject()
                 Utils.FrameworkShared = InitFrameworkShared()
+                return
             end
         end
+
+        Wait(250)
     end
 end
 
@@ -446,7 +445,7 @@ HasItemData = {
         return xPlayer.getInventoryItem(item).count >= count
     end,
     ["qb-inventory"] = function(source, item, count)
-        return exports["qb-inventory"]:HasItem(source, item, count)
+        return exports["ox_inventory"]:GetItemCount(source, item) >= count
     end,
     ["gfx-inventory"] = function(source, item, count)
         local item = exports["gfx-inventory"]:GetItemByName(source, "inventory", item)

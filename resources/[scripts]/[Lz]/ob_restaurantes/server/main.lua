@@ -48,6 +48,22 @@ local function validImage(value)
     return nil
 end
 
+local function restaurantProductItem()
+    return validKey((Config.RestaurantProduct or {}).item, 64) or 'produto_restaurante'
+end
+
+local function normalizeProductType(value)
+    return tostring(value or '') == 'drink' and 'drink' or 'food'
+end
+
+local function normalizeProductWeight(value)
+    local settings = Config.RestaurantProduct or {}
+    local minimum = math.max(0, math.floor(tonumber(settings.minWeight) or 10))
+    local maximum = math.max(minimum, math.floor(tonumber(settings.maxWeight) or 5000))
+    local fallback = math.max(minimum, math.floor(tonumber(settings.defaultWeight) or 250))
+    return math.min(maximum, math.max(minimum, math.floor(tonumber(value) or fallback)))
+end
+
 local function isRateLimited(src, action)
     if src <= 0 then return false end
     local now = GetGameTimer()
@@ -123,13 +139,30 @@ end
 
 local function buildRecipeMetadata(recipe, restaurantId)
     local effects = normalizeRecipeEffects(recipe.effects, false) or {}
+    local productType = normalizeProductType(recipe.product_type or recipe.productType)
     local metadata = {
         label = recipe.name,
+        description = cleanText(recipe.description, 255),
+        type = productType == 'drink' and 'Bebida artesanal' or 'Comida artesanal',
+        weight = normalizeProductWeight(recipe.item_weight or recipe.itemWeight),
         restaurant = restaurantId,
         recipe = recipe.name,
         restaurantRecipeId = tonumber(recipe.recipe_id or recipe.id),
-        restaurantEffects = effects
+        restaurantEffects = effects,
+        restaurantProduct = true,
+        restaurantProductType = productType
     }
+
+    local image = validImage(recipe.image)
+    if image and image ~= '' then
+        if image:match('^https://') then
+            metadata.imageurl = image
+        else
+            local fileName = image:gsub('\\', '/'):match('([^/]+)$') or image
+            metadata.image = fileName:gsub('%.png$', '')
+        end
+    end
+
     if recipe.is_combo == 1 or recipe.is_combo == true then
         metadata.contents = Restaurant.jsonDecode(recipe.contents, {})
     end
@@ -214,6 +247,8 @@ local function migrate()
     ensureColumn('ob_restaurant_recipes', 'old_price', 'INT UNSIGNED NULL AFTER `price`')
     ensureColumn('ob_restaurant_recipes', 'menu_badge', "VARCHAR(32) NOT NULL DEFAULT '' AFTER `old_price`")
     ensureColumn('ob_restaurant_recipes', 'featured', 'TINYINT(1) NOT NULL DEFAULT 0 AFTER `menu_badge`')
+    ensureColumn('ob_restaurant_recipes', 'product_type', "VARCHAR(16) NOT NULL DEFAULT 'food' AFTER `output_amount`")
+    ensureColumn('ob_restaurant_recipes', 'item_weight', 'INT UNSIGNED NOT NULL DEFAULT 250 AFTER `product_type`')
     ensureColumn('ob_restaurant_recipes', 'craft_steps', 'LONGTEXT NULL AFTER `contents`')
     ensureColumn('ob_restaurant_recipes', 'effects', 'LONGTEXT NULL AFTER `craft_steps`')
     ensureColumn('ob_restaurants', 'is_open', 'TINYINT(1) NOT NULL DEFAULT 1 AFTER `enabled`')
@@ -264,13 +299,14 @@ local function seed()
             MySQL.update.await([[
                 INSERT IGNORE INTO ob_restaurant_recipes
                     (restaurant_id, recipe_key, category_key, name, description, image, icon, price,
-                     prep_time, output_item, output_amount, is_combo, ingredients, contents, craft_steps, effects, enabled)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
+                     prep_time, output_item, output_amount, product_type, item_weight, is_combo, ingredients, contents, craft_steps, effects, enabled)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
             ]], {
                 restaurant.id, recipe.key, recipe.category, recipe.name, recipe.description or '', recipe.image or '',
                 recipe.icon or 'utensils', math.max(0, math.floor(recipe.price or 0)),
                 math.max(1, math.floor(recipe.prepTime or 5)), recipe.outputItem,
-                math.max(1, math.floor(recipe.outputAmount or 1)), recipe.isCombo and 1 or 0,
+                math.max(1, math.floor(recipe.outputAmount or 1)), normalizeProductType(recipe.productType),
+                normalizeProductWeight(recipe.itemWeight), recipe.isCombo and 1 or 0,
                 Restaurant.jsonEncode(recipe.ingredients), Restaurant.jsonEncode(recipe.contents or {}),
                 Restaurant.jsonEncode(normalizeCraftSteps(recipe.craftSteps or {})),
                 Restaurant.jsonEncode(normalizeRecipeEffects(recipe.effects, false) or {})
@@ -294,7 +330,7 @@ local function loadCatalog(restaurantId)
     ]], { restaurantId }) or {})
 
     local recipes = decodeRows(MySQL.query.await([[
-        SELECT * FROM ob_restaurant_recipes WHERE restaurant_id = ? ORDER BY category_key, name
+        SELECT * FROM ob_restaurant_recipes WHERE restaurant_id = ? AND enabled = 1 ORDER BY category_key, name
     ]], { restaurantId }) or {})
 
     return categories, recipes
@@ -476,6 +512,35 @@ local function loadMembers(restaurant)
     return members, grades
 end
 
+local inventoryItemOptions
+
+local function loadInventoryItemOptions()
+    if inventoryItemOptions then return inventoryItemOptions end
+
+    local ok, registeredItems = pcall(function()
+        return exports.ox_inventory:Items()
+    end)
+    local options = {}
+
+    if ok and type(registeredItems) == 'table' then
+        local productItem = restaurantProductItem()
+        for name, item in pairs(registeredItems) do
+            if name ~= productItem and type(item) == 'table' and item.weapon ~= true then
+                options[#options + 1] = {
+                    name = tostring(name),
+                    label = cleanText(item.label, 80) or tostring(name)
+                }
+            end
+        end
+        table.sort(options, function(left, right)
+            return left.label:lower() < right.label:lower()
+        end)
+    end
+
+    inventoryItemOptions = options
+    return inventoryItemOptions
+end
+
 local function restaurantPayload(src, restaurant, mode)
     local categories, recipes = loadCatalog(restaurant.id)
     local canWork = Restaurant.canWork(src, restaurant)
@@ -515,6 +580,7 @@ local function restaurantPayload(src, restaurant, mode)
         payload.points = decodeRows(MySQL.query.await('SELECT * FROM ob_restaurant_points WHERE restaurant_id = ? ORDER BY type, id', { restaurant.id }) or {})
         payload.dashboard = dashboard(restaurant.id)
         payload.members, payload.jobGrades = loadMembers(restaurant)
+        payload.inventoryItems = loadInventoryItemOptions()
     end
     return payload
 end
@@ -910,7 +976,8 @@ end
 handlers.collectProduction = function(src, data)
     local productionId = tonumber(data.productionId)
     local production = MySQL.single.await([[
-        SELECT p.*, r.name, r.output_item, r.output_amount, r.is_combo, r.contents, r.effects
+        SELECT p.*, r.name, r.description, r.image, r.output_item, r.output_amount,
+               r.product_type, r.item_weight, r.is_combo, r.contents, r.effects
         FROM ob_restaurant_productions p
         INNER JOIN ob_restaurant_recipes r ON r.id = p.recipe_id
         WHERE p.id = ? AND p.employee_identifier = ? AND p.status = 'preparing'
@@ -945,10 +1012,10 @@ handlers.saveRecipe = function(src, data)
     local recipe = type(data.recipe) == 'table' and data.recipe or {}
     local limits = Config.ManagementLimits or {}
     local name = cleanText(recipe.name, 96)
-    local outputItem = validKey(recipe.outputItem or recipe.output_item, 64)
+    local outputItem = restaurantProductItem()
     local categoryKey = validKey(recipe.categoryKey or recipe.category_key, 48)
     if not name or not outputItem or not categoryKey then return { ok = false, error = 'invalid_recipe' } end
-    if not Restaurant.itemExists(outputItem) then return { ok = false, error = 'unknown_inventory_item', item = outputItem } end
+    if not Restaurant.itemExists(outputItem) then return { ok = false, error = 'restaurant_product_item_missing', item = outputItem } end
 
     local categoryExists = MySQL.scalar.await([[
         SELECT COUNT(*) FROM ob_restaurant_categories
@@ -993,9 +1060,6 @@ handlers.saveRecipe = function(src, data)
     local craftSteps = normalizeCraftSteps(recipe.craftSteps or recipe.craft_steps)
     local effects, effectError = normalizeRecipeEffects(recipe.effects, true)
     if not effects then return { ok = false, error = effectError } end
-    if next(effects) and not ((Config.RecipeEffects or {}).items or {})[outputItem] then
-        return { ok = false, error = 'recipe_effect_item_not_supported', item = outputItem }
-    end
 
     local recipeId = tonumber(recipe.id)
     local image = validImage(recipe.image)
@@ -1005,17 +1069,21 @@ handlers.saveRecipe = function(src, data)
     if oldPrice <= price then oldPrice = nil end
     local menuBadge = cleanText(recipe.menuBadge or recipe.menu_badge, 32) or ''
     local featured = (recipe.featured == true or recipe.featured == 1) and 1 or 0
+    local productType = normalizeProductType(recipe.productType or recipe.product_type)
+    local itemWeight = normalizeProductWeight(recipe.itemWeight or recipe.item_weight)
     if recipeId then
         local changed = MySQL.update.await([[
             UPDATE ob_restaurant_recipes SET category_key = ?, name = ?, description = ?, image = ?, icon = ?,
                 price = ?, old_price = ?, menu_badge = ?, featured = ?, prep_time = ?, output_item = ?,
-                output_amount = ?, is_combo = ?, ingredients = ?, contents = ?, craft_steps = ?, effects = ?, enabled = ?
+                output_amount = ?, product_type = ?, item_weight = ?, is_combo = ?, ingredients = ?, contents = ?,
+                craft_steps = ?, effects = ?, enabled = ?
             WHERE id = ? AND restaurant_id = ?
         ]], {
             categoryKey, name, cleanText(recipe.description, 255) or '', image,
             cleanText(recipe.icon, 48) or 'utensils', price, oldPrice, menuBadge, featured,
             math.min(math.floor(tonumber(limits.maxPrepSeconds) or 1800), math.max(1, math.floor(tonumber(recipe.prepTime or recipe.prep_time) or 5))), outputItem,
             math.min(math.floor(tonumber(limits.maxOutputAmount) or 100), math.max(1, math.floor(tonumber(recipe.outputAmount or recipe.output_amount) or 1))),
+            productType, itemWeight,
             (recipe.isCombo == true or recipe.is_combo == true or recipe.is_combo == 1) and 1 or 0,
             Restaurant.jsonEncode(ingredients), Restaurant.jsonEncode(contents), Restaurant.jsonEncode(craftSteps), Restaurant.jsonEncode(effects),
             recipe.enabled == false and 0 or 1,
@@ -1027,15 +1095,16 @@ handlers.saveRecipe = function(src, data)
         recipeId = MySQL.insert.await([[
             INSERT INTO ob_restaurant_recipes
                 (restaurant_id, recipe_key, category_key, name, description, image, icon, price, old_price,
-                 menu_badge, featured, prep_time, output_item, output_amount, is_combo, ingredients, contents,
-                 craft_steps, effects, enabled)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                 menu_badge, featured, prep_time, output_item, output_amount, product_type, item_weight, is_combo,
+                 ingredients, contents, craft_steps, effects, enabled)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ]], {
             restaurant.id, recipeKey, categoryKey, name, cleanText(recipe.description, 255) or '',
             image, cleanText(recipe.icon, 48) or 'utensils',
             price, oldPrice, menuBadge, featured,
             math.min(math.floor(tonumber(limits.maxPrepSeconds) or 1800), math.max(1, math.floor(tonumber(recipe.prepTime) or 5))),
-            outputItem, math.min(math.floor(tonumber(limits.maxOutputAmount) or 100), math.max(1, math.floor(tonumber(recipe.outputAmount) or 1))), recipe.isCombo and 1 or 0,
+            outputItem, math.min(math.floor(tonumber(limits.maxOutputAmount) or 100), math.max(1, math.floor(tonumber(recipe.outputAmount) or 1))),
+            productType, itemWeight, recipe.isCombo and 1 or 0,
             Restaurant.jsonEncode(ingredients), Restaurant.jsonEncode(contents), Restaurant.jsonEncode(craftSteps), Restaurant.jsonEncode(effects),
             recipe.enabled == false and 0 or 1
         })
@@ -1380,11 +1449,13 @@ end)
 
 AddEventHandler('ox_inventory:usedItem', function(src, itemName, _, metadata)
     src = tonumber(src)
+    local isRestaurantProduct = tostring(itemName or '') == restaurantProductItem()
     local itemSettings = ((Config.RecipeEffects or {}).items or {})[tostring(itemName or '')]
-    if not src or not itemSettings then return end
+    if not src or (not isRestaurantProduct and not itemSettings) then return end
+    if isRestaurantProduct and (type(metadata) ~= 'table' or metadata.restaurantProduct ~= true) then return end
 
     local hasRecipeMetadata = type(metadata) == 'table' and metadata.restaurantEffects ~= nil
-    local rawEffects = hasRecipeMetadata and metadata.restaurantEffects or itemSettings.fallback
+    local rawEffects = hasRecipeMetadata and metadata.restaurantEffects or (itemSettings and itemSettings.fallback)
     local effects = normalizeRecipeEffects(rawEffects, false)
     if not effects or not next(effects) then return end
 

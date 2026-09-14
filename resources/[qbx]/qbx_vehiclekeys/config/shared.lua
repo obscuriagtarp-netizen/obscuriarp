@@ -42,7 +42,7 @@ return {
         ---@type table<VehicleType, VehicleConfig>
         types = { -- known types: automobile, bike, boat, heli, plane, submarine, trailer, train
             bike = {
-                noLock = true
+                noLock = false
             },
             -- automobile = {
             --     noLock = false,

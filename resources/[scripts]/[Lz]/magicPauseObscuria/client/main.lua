@@ -6,6 +6,49 @@ local nativeMapOpen = false
 local nativeMapWasActive = false
 local suppressToggleUntil = 0
 local externalNuiSuppressUntil = 0
+local cachedPlayerInfo
+
+local function trim(value)
+    value = tostring(value or ""):gsub("^%s+", ""):gsub("%s+$", "")
+    return value ~= "" and value or nil
+end
+
+local function getImmediatePlayerInfo()
+    local ok, playerData = pcall(function()
+        return exports.qbx_core:GetPlayerData()
+    end)
+    if not ok or type(playerData) ~= "table" then return cachedPlayerInfo end
+
+    local charinfo = type(playerData.charinfo) == "table" and playerData.charinfo or {}
+    local firstname = trim(charinfo.firstname or charinfo.firstName)
+    local lastname = trim(charinfo.lastname or charinfo.lastName)
+    local characterName = firstname and lastname and (firstname .. " " .. lastname) or firstname or lastname
+    local money = type(playerData.money) == "table" and playerData.money or {}
+    local job = type(playerData.job) == "table" and playerData.job or {}
+    local jobGrade = type(job.grade) == "table" and job.grade or {}
+    local gang = type(playerData.gang) == "table" and playerData.gang or {}
+
+    if not characterName or not trim(playerData.citizenid) then return cachedPlayerInfo end
+
+    local info = {}
+    for key, value in pairs(cachedPlayerInfo or {}) do info[key] = value end
+    info.name = characterName
+    info.passport = trim(playerData.citizenid)
+    if charinfo.gender == 0 or tostring(charinfo.gender):lower() == "male" then
+        info.gender = "Masculino"
+    elseif charinfo.gender == 1 or tostring(charinfo.gender):lower() == "female" then
+        info.gender = "Feminino"
+    else
+        info.gender = charinfo.gender
+    end
+    info.phone = trim(charinfo.phone or charinfo.phoneNumber)
+    info.wallet = tonumber(money.cash) or 0
+    info.bank = tonumber(money.bank) or 0
+    info.job = trim(job.label or job.name)
+    info.jobLevel = trim(jobGrade.name) or tonumber(jobGrade.level) or tonumber(jobGrade.grade)
+    info.org = trim(gang.name) ~= "none" and trim(gang.label or gang.name) or "Nenhuma"
+    return info
+end
 
 local function TrackExternalNuiFocus(now)
     if not isMenuOpen and IsNuiFocused() then
@@ -31,7 +74,10 @@ local function OpenEscMenu()
     isMenuOpen = true
     SetPauseMenuActive(false)
     SetNuiFocus(true, true)
-    SendNUIMessage({ action = "open" })
+    SendNUIMessage({
+        action = "open",
+        playerInfo = getImmediatePlayerInfo()
+    })
 end
 
 function CloseEscMenu()
@@ -185,7 +231,40 @@ RegisterNetEvent("MagicPause:client:openAppearanceVoucher", function()
 end)
 
 RegisterNUICallback("getPlayerInfo", function(_, cb)
-    requestServer("MagicPause:server:getPlayerInfo", {}, cb)
+    requestServer("MagicPause:server:getPlayerInfo", {}, function(payload)
+        if type(payload) == "table" and payload.name and payload.passport then
+            cachedPlayerInfo = payload
+            if isMenuOpen then
+                SendNUIMessage({ action = "updatePlayerInfo", playerInfo = payload })
+            end
+        end
+        cb(payload)
+    end)
+end)
+
+local function refreshPlayerInfoCache()
+    requestServer("MagicPause:server:getPlayerInfo", {}, function(payload)
+        if type(payload) ~= "table" or not payload.name or not payload.passport then return end
+        cachedPlayerInfo = payload
+        if isMenuOpen then
+            SendNUIMessage({ action = "updatePlayerInfo", playerInfo = payload })
+        end
+    end)
+end
+
+RegisterNetEvent("QBCore:Client:OnPlayerLoaded", function()
+    cachedPlayerInfo = nil
+    SetTimeout(750, refreshPlayerInfoCache)
+end)
+
+RegisterNetEvent("QBCore:Client:OnPlayerUnload", function()
+    cachedPlayerInfo = nil
+    SendNUIMessage({ action = "clearPlayerInfo" })
+end)
+
+CreateThread(function()
+    Wait(1500)
+    refreshPlayerInfoCache()
 end)
 
 RegisterNUICallback("getRankings", function(_, cb)

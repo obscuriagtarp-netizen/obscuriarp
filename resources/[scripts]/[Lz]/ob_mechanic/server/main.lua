@@ -26,9 +26,63 @@ local function getCitizenId(player)
     return citizenid ~= '' and citizenid or nil
 end
 
+local function locationPoint(location, rawPoint, pointIndex)
+    local point = type(rawPoint) == 'table' and rawPoint or nil
+    if point and point.enabled == false then return nil end
+
+    local coords = point and (point.coords or (point.x and point)) or rawPoint
+    if not coords or tonumber(coords.x) == nil or tonumber(coords.y) == nil or tonumber(coords.z) == nil then
+        return nil
+    end
+
+    local id = tostring(location.id or '')
+    if id == '' then return nil end
+    if pointIndex > 1 then id = ('%s:%s'):format(id, pointIndex) end
+
+    local blip
+    if point and point.blip ~= nil then
+        blip = point.blip
+    elseif pointIndex == 1 or location.blip and location.blip.eachPoint == true then
+        blip = location.blip
+    end
+
+    local marker = location.marker
+    if point and point.marker ~= nil then marker = point.marker end
+
+    return {
+        id = id,
+        locationId = tostring(location.id),
+        label = point and point.label or location.label,
+        coords = coords,
+        radius = tonumber(point and point.radius) or tonumber(location.radius) or 3.0,
+        jobs = location.jobs,
+        marker = marker,
+        blip = blip,
+    }
+end
+
+local function getLocationPoints(location)
+    local result = {}
+    local configured = type(location.points) == 'table' and location.points or nil
+
+    if configured and #configured > 0 then
+        for index, point in ipairs(configured) do
+            local entry = locationPoint(location, point, index)
+            if entry then result[#result + 1] = entry end
+        end
+    elseif location.coords then
+        local entry = locationPoint(location, location.coords, 1)
+        if entry then result[1] = entry end
+    end
+
+    return result
+end
+
 local function getLocation(locationId)
     for _, location in ipairs(MechanicConfig.Locations or {}) do
-        if location.id == locationId then return location end
+        for _, point in ipairs(getLocationPoints(location)) do
+            if point.id == locationId then return point end
+        end
     end
 end
 
@@ -100,7 +154,11 @@ local function getAllowedLocations(source)
 
     local allowed = {}
     for _, location in ipairs(MechanicConfig.Locations or {}) do
-        if jobMatches(player, location.jobs, true) then allowed[#allowed + 1] = location end
+        if jobMatches(player, location.jobs, true) then
+            for _, point in ipairs(getLocationPoints(location)) do
+                allowed[#allowed + 1] = point
+            end
+        end
     end
     return allowed
 end
@@ -478,7 +536,8 @@ CreateThread(function()
         plate varchar(16) NOT NULL,
         payload longtext NOT NULL,
         updated_at timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-        PRIMARY KEY (citizenid, plate)
+        PRIMARY KEY (citizenid, plate),
+        KEY idx_ob_mechanic_pending_updated (updated_at)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci]])
     databaseReady = true
     debugPrint('integração Qbox pronta')

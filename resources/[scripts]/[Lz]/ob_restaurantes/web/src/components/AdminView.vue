@@ -1,6 +1,6 @@
 <script setup>
 import { computed, reactive, ref, watch } from "vue";
-import { ArrowDown, ArrowUp, BadgeDollarSign, BanknoteArrowDown, BarChart3, Droplets, HeartPulse, MapPin, Pencil, Plus, Sandwich, Save, Trash2, Utensils } from "lucide-vue-next";
+import { ArrowDown, ArrowUp, BadgeDollarSign, BanknoteArrowDown, BarChart3, Droplets, HeartPulse, MapPin, PackagePlus, Pencil, Plus, Sandwich, Save, Trash2, Utensils } from "lucide-vue-next";
 import DynamicIcon from "./DynamicIcon.vue";
 import { nuiRequest } from "../nui";
 
@@ -8,14 +8,17 @@ const props = defineProps({ payload: { type: Object, required: true } });
 const emit = defineEmits(["feedback", "refresh"]);
 const tab = ref("overview");
 const saving = ref(false);
+const deletingRecipeId = ref(null);
 const withdrawAmount = ref("");
 const restaurantForm = reactive({ label: "", commissionRate: 0.3, managerGrade: 4, theme: "obscuria" });
 const categoryForm = reactive({ key: "", label: "", icon: "utensils", sortOrder: 10 });
 const pointForm = reactive({ id: null, type: "pos", label: "", useCurrent: true, enabled: true });
-const recipeForm = reactive({ id: null, name: "", key: "", categoryKey: "meals", description: "", image: "", price: 0, oldPrice: 0, menuBadge: "", featured: false, prepTime: 5, outputItem: "", outputAmount: 1, isCombo: false, enabled: true, ingredientsText: "", contentsText: "", craftSteps: ["chop", "grill", "assemble"], effects: { hunger: 0, thirst: 0, stress: 0 } });
+const recipeForm = reactive({ id: null, name: "", key: "", categoryKey: "meals", description: "", image: "", price: 0, oldPrice: 0, menuBadge: "", featured: false, prepTime: 5, outputAmount: 1, productType: "food", itemWeight: 250, isCombo: false, enabled: true, ingredients: [{ item: "", label: "", amount: 1 }], contents: [], craftSteps: ["chop", "grill", "assemble"], effects: { hunger: 0, thirst: 0, stress: 0 } });
 
 const metrics = computed(() => props.payload.dashboard || { totals: {}, products: [], team: [], accountBalance: 0 });
 const activeCategories = computed(() => (props.payload.categories || []).filter((category) => category.enabled !== false));
+const inventoryItems = computed(() => props.payload.inventoryItems || []);
+const inventoryItemMap = computed(() => new Map(inventoryItems.value.map((item) => [item.name, item])));
 const categoryIcons = [
   { value: "utensils", label: "Pratos" },
   { value: "cup-soda", label: "Bebidas" },
@@ -77,13 +80,32 @@ function syncRestaurant() {
 }
 watch(() => props.payload.restaurant, syncRestaurant, { immediate: true, deep: true });
 
-function linesToItems(text) {
-  return String(text || "").split("\n").map((line) => {
-    const [item, label, amount] = line.split("|").map((part) => part?.trim());
-    return item ? { item, label: label || item, amount: Math.max(1, Number(amount) || 1) } : null;
+function copyItemRows(items, emptyRow = false) {
+  const rows = (items || []).map((item) => ({
+    item: String(item.item || ""),
+    label: String(item.label || ""),
+    amount: Math.max(1, Number(item.amount) || 1),
+  }));
+  return rows.length || !emptyRow ? rows : [{ item: "", label: "", amount: 1 }];
+}
+function compactItemRows(items) {
+  return (items || []).map((entry) => {
+    const item = String(entry.item || "").trim();
+    const registered = inventoryItemMap.value.get(item);
+    return item ? {
+      item,
+      label: String(entry.label || registered?.label || item).trim(),
+      amount: Math.max(1, Math.floor(Number(entry.amount) || 1)),
+    } : null;
   }).filter(Boolean);
 }
-function itemsToLines(items) { return (items || []).map((item) => `${item.item}|${item.label || item.item}|${item.amount || 1}`).join("\n"); }
+function addItemRow(target) { target.push({ item: "", label: "", amount: 1 }); }
+function removeItemRow(target, index) { target.splice(index, 1); }
+function syncItemLabel(entry) {
+  const registered = inventoryItemMap.value.get(String(entry.item || "").trim());
+  if (registered) entry.label = registered.label;
+}
+function registeredItemLabel(name) { return inventoryItemMap.value.get(String(name || "").trim())?.label || "Item não selecionado"; }
 function stepKeys(steps) { return (steps || []).map((step) => typeof step === "string" ? step : step.type).filter((step) => craftActionOptions.some((option) => option.value === step)); }
 function addCraftStep(type) { if (type && recipeForm.craftSteps.length < 8) recipeForm.craftSteps.push(type); }
 function removeCraftStep(index) { recipeForm.craftSteps.splice(index, 1); }
@@ -129,29 +151,37 @@ function editRecipe(recipe) {
     id: recipe.id, name: recipe.name, key: recipe.recipe_key, categoryKey: recipe.category_key,
     description: recipe.description, image: recipe.image, price: Number(recipe.price),
     oldPrice: Number(recipe.old_price || 0), menuBadge: recipe.menu_badge || "", featured: recipe.featured === true,
-    prepTime: Number(recipe.prep_time), outputItem: recipe.output_item, outputAmount: Number(recipe.output_amount),
+    prepTime: Number(recipe.prep_time), outputAmount: Number(recipe.output_amount),
+    productType: recipe.product_type === "drink" ? "drink" : "food", itemWeight: Number(recipe.item_weight || 250),
     isCombo: recipe.is_combo, enabled: recipe.enabled !== false,
-    ingredientsText: itemsToLines(recipe.ingredients), contentsText: itemsToLines(recipe.contents),
+    ingredients: copyItemRows(recipe.ingredients, true), contents: copyItemRows(recipe.contents),
     craftSteps: stepKeys(recipe.craft_steps),
     effects: normalizedEffects(recipe.effects),
   });
   tab.value = "recipes";
 }
 function resetRecipe() {
-  Object.assign(recipeForm, { id: null, name: "", key: "", categoryKey: activeCategories.value[0]?.category_key || "meals", description: "", image: "", price: 0, oldPrice: 0, menuBadge: "", featured: false, prepTime: 5, outputItem: "", outputAmount: 1, isCombo: false, enabled: true, ingredientsText: "", contentsText: "", craftSteps: ["chop", "grill", "assemble"], effects: { hunger: 0, thirst: 0, stress: 0 } });
+  Object.assign(recipeForm, { id: null, name: "", key: "", categoryKey: activeCategories.value[0]?.category_key || "meals", description: "", image: "", price: 0, oldPrice: 0, menuBadge: "", featured: false, prepTime: 5, outputAmount: 1, productType: "food", itemWeight: 250, isCombo: false, enabled: true, ingredients: [{ item: "", label: "", amount: 1 }], contents: [], craftSteps: ["chop", "grill", "assemble"], effects: { hunger: 0, thirst: 0, stress: 0 } });
 }
 async function saveRecipe() {
   if (selectedEffectCount.value > effectLimits.value.maxSelected) return emit("feedback", `Escolha no máximo ${effectLimits.value.maxSelected} efeitos por receita.`, "error");
+  const ingredients = compactItemRows(recipeForm.ingredients);
+  if (!String(recipeForm.name || "").trim() || !recipeForm.categoryKey) return emit("feedback", "Preencha o nome e a categoria da receita.", "error");
+  if (!ingredients.length) return emit("feedback", "Adicione ao menos um ingrediente.", "error");
   saving.value = true;
-  const result = await nuiRequest("saveRecipe", { restaurantId: props.payload.restaurant.id, recipe: { ...recipeForm, effects: normalizedEffects(recipeForm.effects), ingredients: linesToItems(recipeForm.ingredientsText), contents: linesToItems(recipeForm.contentsText) } });
+  const result = await nuiRequest("saveRecipe", { restaurantId: props.payload.restaurant.id, recipe: { ...recipeForm, effects: normalizedEffects(recipeForm.effects), ingredients, contents: compactItemRows(recipeForm.contents) } });
   saving.value = false;
   if (!result.ok) return emit("feedback", result.error, "error");
   emit("feedback", "Receita salva no catálogo.", "success"); resetRecipe(); emit("refresh");
 }
 async function deleteRecipe(recipe) {
+  if (deletingRecipeId.value) return;
+  deletingRecipeId.value = recipe.id;
   const result = await nuiRequest("deleteRecipe", { restaurantId: props.payload.restaurant.id, recipeId: recipe.id });
+  deletingRecipeId.value = null;
   if (!result.ok) return emit("feedback", result.error, "error");
-  emit("feedback", "Receita desativada.", "success"); emit("refresh");
+  if (Number(recipeForm.id) === Number(recipe.id)) resetRecipe();
+  emit("feedback", "Receita removida do catálogo.", "success"); emit("refresh");
 }
 async function saveCategory() {
   const categoryName = categoryForm.label.trim();
@@ -223,12 +253,23 @@ async function deletePoint(point) {
 
     <div v-else-if="tab === 'recipes'" class="admin-scroll recipes-admin">
       <section class="admin-section recipe-editor">
-        <header><Plus :size="19" /><div><small>{{ recipeForm.id ? 'Edição' : 'Nova receita' }}</small><h3>{{ recipeForm.id ? recipeForm.name : 'Criar item do cardápio' }}</h3></div><button v-if="recipeForm.id" class="text-command" @click="resetRecipe">Nova receita</button></header>
+        <header><PackagePlus :size="19" /><div><small>{{ recipeForm.id ? 'Edição' : 'Nova receita' }}</small><h3>{{ recipeForm.id ? recipeForm.name : 'Criar item do cardápio' }}</h3></div><button v-if="recipeForm.id" class="text-command" @click="resetRecipe">Nova receita</button></header>
+        <datalist id="restaurant-inventory-items"><option v-for="item in inventoryItems" :key="item.name" :value="item.name" :label="item.label" /></datalist>
         <div class="form-row"><label><span>Nome</span><input v-model="recipeForm.name" /></label><label><span>Categoria</span><select v-model="recipeForm.categoryKey"><option v-for="category in activeCategories" :key="category.category_key" :value="category.category_key">{{ category.label }}</option></select></label></div>
         <label><span>Descrição</span><input v-model="recipeForm.description" /></label>
         <div class="form-row triple"><label><span>Preço atual</span><input v-model="recipeForm.price" type="number" min="0" /></label><label><span>Preço anterior</span><input v-model="recipeForm.oldPrice" type="number" min="0" placeholder="Use para promoções" /></label><label><span>Preparo em segundos</span><input v-model="recipeForm.prepTime" type="number" min="1" /></label></div>
         <label><span>Selo do cardápio</span><input v-model="recipeForm.menuBadge" maxlength="32" placeholder="Novidade, edição limitada..." /></label>
-        <div class="form-row"><label><span>Item de saída</span><input v-model="recipeForm.outputItem" /></label><label><span>Quantidade</span><input v-model="recipeForm.outputAmount" type="number" min="1" /></label></div>
+        <section class="product-settings-editor">
+          <div class="product-type-field">
+            <span>Tipo do produto</span>
+            <div class="product-type-options">
+              <button type="button" :class="{ active: recipeForm.productType === 'food' }" @click="recipeForm.productType = 'food'"><Sandwich :size="15" /> Comida</button>
+              <button type="button" :class="{ active: recipeForm.productType === 'drink' }" @click="recipeForm.productType = 'drink'"><Droplets :size="15" /> Bebida</button>
+            </div>
+          </div>
+          <label><span>Quantidade produzida</span><input v-model="recipeForm.outputAmount" type="number" min="1" /></label>
+          <label><span>Peso por unidade (g)</span><input v-model="recipeForm.itemWeight" type="number" min="10" max="5000" /></label>
+        </section>
         <section class="recipe-effects-editor">
           <header><div><small>Efeitos ao consumir</small><strong>Status da receita</strong></div><span>{{ selectedEffectCount }}/{{ effectLimits.maxSelected }}</span></header>
           <div class="recipe-effects-grid">
@@ -243,7 +284,18 @@ async function deletePoint(point) {
           </div>
         </section>
         <label><span>Imagem opcional</span><input v-model="recipeForm.image" placeholder="https://... ou caminho NUI" /></label>
-        <label><span>Ingredientes, uma linha por item</span><textarea v-model="recipeForm.ingredientsText" placeholder="item|Nome legível|quantidade" /></label>
+        <section class="item-rows-editor">
+          <header><div><small>Ingredientes necessários</small><strong>Selecione os itens e informe as quantidades</strong></div><button type="button" @click="addItemRow(recipeForm.ingredients)"><Plus :size="14" /> Ingrediente</button></header>
+          <div class="item-rows-list">
+            <article v-for="(ingredient, index) in recipeForm.ingredients" :key="`ingredient-${index}`">
+              <label class="item-code-field"><span>Item do inventário</span><input v-model.trim="ingredient.item" list="restaurant-inventory-items" placeholder="Digite para pesquisar" @input="syncItemLabel(ingredient)" /><small>{{ registeredItemLabel(ingredient.item) }}</small></label>
+              <label><span>Nome na receita</span><input v-model.trim="ingredient.label" placeholder="Preenchido automaticamente" /></label>
+              <label class="item-amount-field"><span>Quantidade</span><input v-model.number="ingredient.amount" type="number" min="1" /></label>
+              <button type="button" title="Remover ingrediente" @click="removeItemRow(recipeForm.ingredients, index)"><Trash2 :size="15" /></button>
+            </article>
+            <p v-if="!recipeForm.ingredients.length">Nenhum ingrediente adicionado.</p>
+          </div>
+        </section>
         <section class="craft-flow-editor">
           <header><div><small>Roteiro de animações</small><strong>O que o funcionário fará durante o preparo</strong></div><span>{{ recipeForm.craftSteps.length }}/8 etapas</span></header>
           <div class="craft-action-picker">
@@ -259,14 +311,25 @@ async function deletePoint(point) {
           </div>
           <p v-else>Sem etapas: o craft usará o fluxo automático da categoria.</p>
         </section>
-        <label v-if="recipeForm.isCombo"><span>Conteúdo exibido na box</span><textarea v-model="recipeForm.contentsText" placeholder="item|Nome legível|quantidade" /></label>
+        <section v-if="recipeForm.isCombo" class="item-rows-editor combo-contents-editor">
+          <header><div><small>Conteúdo da box</small><strong>Itens informados na descrição do combo</strong></div><button type="button" @click="addItemRow(recipeForm.contents)"><Plus :size="14" /> Item</button></header>
+          <div class="item-rows-list">
+            <article v-for="(content, index) in recipeForm.contents" :key="`content-${index}`">
+              <label class="item-code-field"><span>Item do inventário</span><input v-model.trim="content.item" list="restaurant-inventory-items" placeholder="Digite para pesquisar" @input="syncItemLabel(content)" /><small>{{ registeredItemLabel(content.item) }}</small></label>
+              <label><span>Nome exibido</span><input v-model.trim="content.label" placeholder="Preenchido automaticamente" /></label>
+              <label class="item-amount-field"><span>Quantidade</span><input v-model.number="content.amount" type="number" min="1" /></label>
+              <button type="button" title="Remover item" @click="removeItemRow(recipeForm.contents, index)"><Trash2 :size="15" /></button>
+            </article>
+            <p v-if="!recipeForm.contents.length">Nenhum conteúdo adicional informado.</p>
+          </div>
+        </section>
         <div class="toggle-row"><label><input v-model="recipeForm.isCombo" type="checkbox" /> É uma box ou combo</label><label><input v-model="recipeForm.featured" type="checkbox" /> Destaque da casa</label><label><input v-model="recipeForm.enabled" type="checkbox" /> Disponível no cardápio</label></div>
         <button class="primary-command" :disabled="saving" @click="saveRecipe"><Save :size="17" /> Salvar receita</button>
       </section>
       <section class="admin-section recipe-library">
         <header><Utensils :size="19" /><div><small>Catálogo atual</small><h3>{{ payload.recipes.length }} receitas</h3></div></header>
         <div class="recipe-library-list">
-          <article v-for="recipe in payload.recipes" :key="recipe.id"><div><b>{{ recipe.name }}</b><small>{{ recipe.output_item }} · {{ money(recipe.price) }} · {{ stepKeys(recipe.craft_steps).length || 'auto' }} etapas</small></div><button title="Editar" @click="editRecipe(recipe)"><Pencil :size="16" /></button><button title="Desativar" @click="deleteRecipe(recipe)"><Trash2 :size="16" /></button></article>
+          <article v-for="recipe in payload.recipes" :key="recipe.id"><div><b>{{ recipe.name }}</b><small>{{ recipe.product_type === 'drink' ? 'Bebida' : 'Comida' }} · {{ money(recipe.price) }} · {{ stepKeys(recipe.craft_steps).length || 'auto' }} etapas</small></div><button title="Editar" @click="editRecipe(recipe)"><Pencil :size="16" /></button><button title="Excluir" :disabled="deletingRecipeId === recipe.id" @click="deleteRecipe(recipe)"><Trash2 :size="16" /></button></article>
         </div>
       </section>
       <section class="admin-section category-editor">

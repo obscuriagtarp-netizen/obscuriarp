@@ -2,6 +2,7 @@ local RESOURCE = GetCurrentResourceName()
 local RoleSync = Config.RoleSync or {}
 local LINK_FILE = 'data/discord-links.json'
 local DiscordLinks = {}
+local databaseWarningAt = 0
 
 do
     local raw = LoadResourceFile(RESOURCE, LINK_FILE)
@@ -13,6 +14,57 @@ end
 
 local function normalize(value)
     return tostring(value or ''):lower():gsub('^%s+', ''):gsub('%s+$', '')
+end
+
+local function cleanNamePart(value)
+    return tostring(value or '')
+        :gsub('[%c]', '')
+        :gsub('%s+', ' ')
+        :gsub('^%s+', '')
+        :gsub('%s+$', '')
+end
+
+local function characterName(charinfo)
+    if type(charinfo) == 'string' then
+        local ok, decoded = pcall(json.decode, charinfo)
+        charinfo = ok and decoded or nil
+    end
+    if type(charinfo) ~= 'table' then return '' end
+    local firstname = cleanNamePart(charinfo.firstname)
+    local lastname = cleanNamePart(charinfo.lastname)
+    return cleanNamePart(('%s %s'):format(firstname, lastname))
+end
+
+local function firstCharacterName(source, citizenid, player)
+    if GetResourceState('oxmysql') == 'started' then
+        local license = source and GetPlayerIdentifierByType(tostring(source), 'license') or ''
+        local license2 = source and GetPlayerIdentifierByType(tostring(source), 'license2') or ''
+        local playerLicense = player and player.PlayerData and player.PlayerData.license or ''
+        local ok, rows = pcall(function()
+            return exports.oxmysql:query_async([[
+                SELECT candidate.charinfo
+                FROM players AS candidate
+                INNER JOIN players AS selected ON selected.citizenid = ?
+                WHERE candidate.license = selected.license
+                    OR (selected.userId IS NOT NULL AND candidate.userId = selected.userId)
+                    OR candidate.license = ?
+                    OR candidate.license = ?
+                    OR candidate.license = ?
+                ORDER BY COALESCE(candidate.cid, 2147483647), candidate.id
+                LIMIT 1
+            ]], { tostring(citizenid), license, license2, playerLicense })
+        end)
+        if ok and type(rows) == 'table' and rows[1] then
+            local name = characterName(rows[1].charinfo)
+            if name ~= '' then return name end
+        elseif not ok and GetGameTimer() - databaseWarningAt > 60000 then
+            databaseWarningAt = GetGameTimer()
+            print(('[%s] Nome do primeiro personagem nao consultado no banco: %s'):format(RESOURCE, tostring(rows)))
+        end
+    end
+
+    -- Mantem a sincronizacao disponivel durante uma indisponibilidade temporaria do banco.
+    return characterName(player and player.PlayerData and player.PlayerData.charinfo)
 end
 
 local function discordId(source)
@@ -65,7 +117,7 @@ local function getVips(citizenid, payload)
     return result
 end
 
-local function emitSync(discord, citizenid, class, vips)
+local function emitSync(discord, citizenid, class, vips, displayName)
     discord = tostring(discord or '')
     if #discord < 17 or #discord > 20 or not discord:match('^%d+$') then return false end
     TriggerEvent('ob_discord:internal:syncRoles', json.encode({
@@ -73,6 +125,7 @@ local function emitSync(discord, citizenid, class, vips)
         citizenid = tostring(citizenid),
         class = class or '',
         vips = vips or {},
+        displayName = displayName or '',
     }))
     return true
 end
@@ -80,7 +133,7 @@ end
 local function saveDiscordLink(citizenid, discord)
     local previous = DiscordLinks[citizenid]
     if previous == discord then return end
-    if previous then emitSync(previous, citizenid, '', {}) end
+    if previous then emitSync(previous, citizenid, '', {}, '') end
     DiscordLinks[citizenid] = discord
     SaveResourceFile(RESOURCE, LINK_FILE, json.encode(DiscordLinks), -1)
 end
@@ -99,7 +152,13 @@ local function syncPlayer(source)
     end
     local citizenid = tostring(player.PlayerData.citizenid)
     saveDiscordLink(citizenid, discord)
-    return emitSync(discord, citizenid, getClass(source, citizenid, player), getVips(citizenid))
+    return emitSync(
+        discord,
+        citizenid,
+        getClass(source, citizenid, player),
+        getVips(citizenid),
+        firstCharacterName(source, citizenid, player)
+    )
 end
 
 local function syncAll()
@@ -108,6 +167,14 @@ local function syncAll()
         syncPlayer(tonumber(source))
     end
 end
+
+CreateThread(function()
+    local seconds = math.max(60, math.floor(tonumber(RoleSync.ReconcileSeconds) or 300))
+    while true do
+        Wait(seconds * 1000)
+        syncAll()
+    end
+end)
 
 AddEventHandler('QBCore:Server:PlayerLoaded', function(player)
     if not player or not player.PlayerData then return end
@@ -126,7 +193,13 @@ AddEventHandler('ob_vip:server:membershipChanged', function(citizenid, payload)
     citizenid = tostring(citizenid or '')
     local discord = DiscordLinks[citizenid]
     if discord then
-        emitSync(discord, citizenid, getClass(nil, citizenid, nil), getVips(citizenid, payload))
+        emitSync(
+            discord,
+            citizenid,
+            getClass(nil, citizenid, nil),
+            getVips(citizenid, payload),
+            firstCharacterName(nil, citizenid, nil)
+        )
     end
 end)
 

@@ -23,11 +23,20 @@ return {
                 type = 'gang',
             },
         },
+
         ambulance = {
             coords = vec3(-1003.19, -418.63, 39.02),
             size = vec3(1.5, 1.5, 1.5),
             rotation = 207.32,
             type = 'job',
         },
+
+        mechanic = {
+            coords = vec3(-349.91, -172.49, 38.06),
+            size = vec3(1.5, 1.5, 1.5),
+            rotation = 207.32,
+            type = 'job',
+        },
+
     },
 }

@@ -60,7 +60,7 @@ function Utils.getIdentity(src)
     local data = player and player.PlayerData or {}
     local charinfo = type(data.charinfo) == "table" and data.charinfo or {}
     return {
-        firstName = trim(charinfo.firstname) or trim(charinfo.name),
+        firstName = trim(charinfo.firstname) or trim(charinfo.firstName),
         lastName = trim(charinfo.lastname) or trim(charinfo.lastName),
         phone = trim(charinfo.phone) or trim(charinfo.phoneNumber),
         gender = charinfo.gender,
@@ -73,7 +73,7 @@ function Utils.getName(src)
     local identity = Utils.getIdentity(src)
     local first, last = identity.firstName, identity.lastName
     if first and last then return first .. " " .. last end
-    return first or last or GetPlayerName(tonumber(src) or 0) or ("Citizen " .. tostring(src))
+    return first or last or "Cidadão de Obscuria"
 end
 
 function Utils.getJob(src)

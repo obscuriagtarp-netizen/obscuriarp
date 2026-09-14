@@ -384,7 +384,7 @@ Inventory.Stashes = setmetatable(lib.load('data.stashes'), {
                             },
                         })
                     end
-                else
+                elseif stash.coords then
                     stash.target = nil
                     stash.point = lib.points.new({
                         coords = stash.coords,

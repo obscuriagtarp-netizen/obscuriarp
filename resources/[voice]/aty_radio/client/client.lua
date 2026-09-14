@@ -8,38 +8,55 @@ Answers = 0
 ExamPed = nil
 ExampBlip = nil
 
+local function OpenRadioMenu()
+    if UiOpen then return true end
+
+    if not MumbleIsActive() then
+        TriggerEvent("chat:addMessage", {
+            color = {255, 0, 0},
+            multiline = true,
+            args = {"Radio", "Mumble is not active"}
+        })
+
+        return false
+    end
+
+    SetNuiFocus(true, true)
+    SendNUIMessage({
+        action = "openMenu",
+    })
+    UiOpen = true
+
+    CreateRadioProp()
+
+    RequestAnimDict("cellphone@")
+    while not HasAnimDictLoaded("cellphone@") do
+        Wait(100)
+    end
+
+    TaskPlayAnim(PlayerPedId(), "cellphone@", "cellphone_text_in", 8.0, 8.0, -1, 50, 0, false, false, false)
+    return true
+end
+
 if Config.CommandSettings.Enable then
     RegisterCommand(Config.CommandSettings.Command, function()
-        if not MumbleIsActive() then
-            return TriggerEvent("chat:addMessage", {
-                color = {255, 0, 0},
-                multiline = true,
-                args = {"Radio", "Mumble is not active"}
-            })
-        end
-
         if Config.ItemSettings.RequireItem then
             if not TriggerCallback("hasItem", Config.ItemSettings.Item) then
                 return Config.Notify("You do not have a radio", "Radio", "error")
             end
         end
 
-        SetNuiFocus(true, true)
-        SendNUIMessage({
-            action = "openMenu",
-        })
-        UiOpen = true
-
-        CreateRadioProp()
-
-        RequestAnimDict("cellphone@")
-        while not HasAnimDictLoaded("cellphone@") do
-            Wait(100)
-        end
-
-        TaskPlayAnim(PlayerPedId(), "cellphone@", "cellphone_text_in", 8.0, 8.0, -1, 50, 0, false, false, false)
+        OpenRadioMenu()
     end)
 end
+
+exports('useRadio', function(data)
+    exports.ox_inventory:useItem(data, function(usedItem)
+        if usedItem then
+            OpenRadioMenu()
+        end
+    end)
+end)
 
 RegisterNUICallback("closeMenu", function(_, cb)
     SetNuiFocus(0, 0)
@@ -530,28 +547,6 @@ CreateThread(function()
     end 
 end)
 
-RegisterNetEvent("aty_radio:client:openRadio", function()
-    if not MumbleIsActive() then
-        return TriggerEvent("chat:addMessage", {
-            color = {255, 0, 0},
-            multiline = true,
-            args = {"Radio", "Mumble is not active"}
-        })
-    end
-
-    SetNuiFocus(true, true)
-    SendNUIMessage({
-        action = "openMenu",
-    })
-    UiOpen = true
-
-    CreateRadioProp()
-
-    RequestAnimDict("cellphone@")
-    while not HasAnimDictLoaded("cellphone@") do
-        Wait(100)
-    end
-
-    TaskPlayAnim(PlayerPedId(), "cellphone@", "cellphone_text_in", 8.0, 8.0, -1, 50, 0, false, false, false)
-end)
+RegisterNetEvent("aty_radio:client:openRadio", OpenRadioMenu)
+RegisterNetEvent("mm_radio:client:use", OpenRadioMenu)
 

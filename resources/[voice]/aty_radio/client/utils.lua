@@ -224,7 +224,7 @@ function ClearTableKeys(t)
 end
 
 local Init = {
-  Frameworks  =  { "es_extended", "qb-core" },
+  Frameworks  =  { "es_extended", "qb-core", "qbx_core" },
 }
 
 Utils = {
@@ -239,21 +239,20 @@ end)
 
 function InitFramework()
   if Utils.Framework ~= nil then return end
-  for i = 1, #Init.Frameworks do
-      if IsDuplicityVersion() then
-          if GetResourceState(Init.Frameworks[i]) == "started" then
-              Utils.Framework = Init.Frameworks[i]
-              Utils.FrameworkObject = InitFrameworkObject()
-              Utils.FrameworkShared = InitFrameworkShared()
-          end
-      else
-          if GetResourceState(Init.Frameworks[i]) == "started" then
-              Utils.Framework = Init.Frameworks[i]
 
+  while Utils.Framework == nil do
+      for i = 1, #Init.Frameworks do
+          local resourceName = Init.Frameworks[i]
+          if GetResourceState(resourceName) == "started" then
+              Utils.FrameworkResource = resourceName
+              Utils.Framework = resourceName == "qbx_core" and "qb-core" or resourceName
               Utils.FrameworkObject = InitFrameworkObject()
               Utils.FrameworkShared = InitFrameworkShared()
+              return
           end
       end
+
+      Wait(250)
   end
 end
 
@@ -297,4 +296,3 @@ function InitFrameworkShared()
       return Utils.FrameworkObject.Config
   end
 end
-

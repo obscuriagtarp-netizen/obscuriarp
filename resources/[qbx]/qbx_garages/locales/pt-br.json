@@ -9,7 +9,10 @@
         "not_enough": "Dinheiro insuficiente",
         "vehicle_occupied": "Você não pode guardar este veículo pois ele não está vazio",
         "in_vehicle": "Você já está em um veículo...",
-        "spawn_in_progress": "Por favor, aguarde enquanto seu veículo é entregue..."
+        "spawn_in_progress": "Por favor, aguarde enquanto seu veículo é entregue...",
+        "spawn_failed": "Não foi possível entregar este veículo. Tente novamente.",
+        "spawn_timeout": "A entrega demorou demais e foi liberada. Tente novamente.",
+        "spawn_invalid_model": "Este veículo está com o modelo inválido ou indisponível. Avise a equipe."
     },
     "success": {
         "vehicle_parked": "Você estacionou seu veículo"

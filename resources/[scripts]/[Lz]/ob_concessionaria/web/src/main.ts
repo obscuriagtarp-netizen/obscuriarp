@@ -123,19 +123,25 @@ const emptyForm = (): AdminForm => ({
   displayOrder: 0
 });
 
-function nui<T = NuiResponse>(event: string, payload: unknown = {}): Promise<T> {
+async function nui<T = NuiResponse>(event: string, payload: unknown = {}): Promise<T> {
   const resource = typeof GetParentResourceName === 'function' ? GetParentResourceName() : 'ob_concessionaria';
-  return fetch(`https://${resource}/${event}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json; charset=UTF-8' },
-    body: JSON.stringify(payload)
-  }).then(async (response) => {
-    try {
-      return (await response.json()) as T;
-    } catch {
-      return {} as T;
-    }
-  });
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), 15000);
+
+  try {
+    const response = await fetch(`https://${resource}/${event}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+      body: JSON.stringify(payload),
+      signal: controller.signal
+    });
+
+    return (await response.json()) as T;
+  } catch {
+    return { ok: false, message: 'A concessionária demorou para responder. Tente novamente.' } as T;
+  } finally {
+    window.clearTimeout(timeout);
+  }
 }
 
 function money(value: number, currency: Currency = 'money'): string {
@@ -224,9 +230,13 @@ createApp({
     const adminSearch = ref('');
     const adminDealership = ref('all');
     const adminForm = ref<AdminForm>(emptyForm());
-    const busy = ref(false);
+    const storeAction = ref<'buy' | 'testDrive' | null>(null);
+    const adminBusy = ref(false);
     const toasts = ref<Toast[]>([]);
     let toastId = 0;
+
+    const buying = computed(() => storeAction.value === 'buy');
+    const testingVehicle = computed(() => storeAction.value === 'testDrive');
 
     const dealership = computed(() => payload.value?.dealership);
     const player = computed(() => payload.value?.player);
@@ -322,6 +332,7 @@ createApp({
       payload.value = data;
       mode.value = 'store';
       visible.value = true;
+      storeAction.value = null;
       selectedId.value = data.vehicles?.[0]?.id || null;
       activeCategory.value = 'all';
       search.value = '';
@@ -334,13 +345,27 @@ createApp({
       }
     }
 
-    function setAdminPayload(data: AdminPayload) {
+    function setAdminPayload(data: AdminPayload, resetView = false) {
+      const selectedFormId = resetView ? null : adminForm.value.id;
       admin.value = data;
       mode.value = 'admin';
       visible.value = true;
-      adminSearch.value = '';
-      adminDealership.value = 'all';
-      if (!adminForm.value.id) newVehicle();
+      adminBusy.value = false;
+
+      if (resetView) {
+        adminSearch.value = '';
+        adminDealership.value = 'all';
+        adminForm.value = emptyForm();
+        newVehicle();
+        return;
+      }
+
+      const refreshedVehicle = selectedFormId
+        ? data.vehicles.find((vehicle) => vehicle.id === selectedFormId)
+        : null;
+
+      if (refreshedVehicle) editVehicle(refreshedVehicle);
+      else if (!selectedFormId) newVehicle();
     }
 
     const previewParams = new URLSearchParams(window.location.search);
@@ -455,60 +480,70 @@ createApp({
 
     async function buyVehicle() {
       const vehicle = selected.value;
-      if (!vehicle || busy.value || !vehicle.available) return;
+      if (!vehicle || storeAction.value || !vehicle.available) return;
 
-      busy.value = true;
-      const result = await nui<NuiResponse>('buyVehicle', { id: vehicle.id });
-      busy.value = false;
-
-      if (result.message) showToast(result.message, result.ok ? 'success' : 'error');
-      if (result.payload && 'dealership' in result.payload) refreshStore(result.payload);
+      storeAction.value = 'buy';
+      try {
+        const result = await nui<NuiResponse>('buyVehicle', { id: vehicle.id });
+        if (result.message) showToast(result.message, result.ok ? 'success' : 'error');
+        if (result.payload && 'dealership' in result.payload) refreshStore(result.payload);
+      } finally {
+        storeAction.value = null;
+      }
     }
 
     async function testDrive() {
       const vehicle = selected.value;
-      if (!vehicle || busy.value || payload.value?.testDrive?.enabled === false) return;
+      if (!vehicle || storeAction.value || payload.value?.testDrive?.enabled === false) return;
 
-      busy.value = true;
-      const result = await nui<NuiResponse>('testDrive', { id: vehicle.id });
-      busy.value = false;
-
-      if (result.message) showToast(result.message, result.ok ? 'success' : 'error');
+      storeAction.value = 'testDrive';
+      try {
+        const result = await nui<NuiResponse>('testDrive', { id: vehicle.id });
+        if (result.message) showToast(result.message, result.ok ? 'success' : 'error');
+      } finally {
+        storeAction.value = null;
+      }
     }
 
     async function saveAdminVehicle() {
-      if (busy.value) return;
-      busy.value = true;
-      const result = await nui<NuiResponse>('adminSaveVehicle', adminForm.value);
-      busy.value = false;
-
-      if (result.message) showToast(result.message, result.ok ? 'success' : 'error');
-      if (result.payload && 'dealerships' in result.payload) setAdminPayload(result.payload);
+      if (adminBusy.value) return;
+      adminBusy.value = true;
+      try {
+        const result = await nui<NuiResponse>('adminSaveVehicle', adminForm.value);
+        if (result.message) showToast(result.message, result.ok ? 'success' : 'error');
+        if (result.payload && 'dealerships' in result.payload) setAdminPayload(result.payload);
+      } finally {
+        adminBusy.value = false;
+      }
     }
 
     async function toggleAdminVehicle(vehicle: Vehicle) {
-      if (busy.value) return;
-      busy.value = true;
-      const result = await nui<NuiResponse>('adminSetVehicleEnabled', { id: vehicle.id, enabled: !toBoolean(vehicle.enabled, true) });
-      busy.value = false;
-
-      if (result.message) showToast(result.message, result.ok ? 'success' : 'error');
-      if (result.payload && 'dealerships' in result.payload) setAdminPayload(result.payload);
+      if (adminBusy.value) return;
+      adminBusy.value = true;
+      try {
+        const result = await nui<NuiResponse>('adminSetVehicleEnabled', { id: vehicle.id, enabled: !toBoolean(vehicle.enabled, true) });
+        if (result.message) showToast(result.message, result.ok ? 'success' : 'error');
+        if (result.payload && 'dealerships' in result.payload) setAdminPayload(result.payload);
+      } finally {
+        adminBusy.value = false;
+      }
     }
 
     async function deleteAdminVehicle() {
-      if (!adminForm.value.id || busy.value) return;
+      if (!adminForm.value.id || adminBusy.value) return;
       const confirmed = window.confirm('Remover este veiculo da concessionaria?');
       if (!confirmed) return;
 
-      busy.value = true;
-      const result = await nui<NuiResponse>('adminDeleteVehicle', { id: adminForm.value.id });
-      busy.value = false;
-
-      if (result.message) showToast(result.message, result.ok ? 'success' : 'error');
-      if (result.payload && 'dealerships' in result.payload) {
-        setAdminPayload(result.payload);
-        newVehicle();
+      adminBusy.value = true;
+      try {
+        const result = await nui<NuiResponse>('adminDeleteVehicle', { id: adminForm.value.id });
+        if (result.message) showToast(result.message, result.ok ? 'success' : 'error');
+        if (result.payload && 'dealerships' in result.payload) {
+          adminForm.value = emptyForm();
+          setAdminPayload(result.payload);
+        }
+      } finally {
+        adminBusy.value = false;
       }
     }
 
@@ -516,7 +551,7 @@ createApp({
       const data = event.data || {};
       if (data.action === 'open' && data.data) setStorePayload(data.data);
       if (data.action === 'refresh' && data.data) refreshStore(data.data);
-      if (data.action === 'openAdmin' && data.data) setAdminPayload(data.data);
+      if (data.action === 'openAdmin' && data.data) setAdminPayload(data.data, true);
       if (data.action === 'refreshAdmin' && data.data) setAdminPayload(data.data);
       if (data.action === 'close') visible.value = false;
     });
@@ -538,7 +573,9 @@ createApp({
       selected,
       filteredVehicles,
       balance,
-      busy,
+      buying,
+      testingVehicle,
+      adminBusy,
       toasts,
       currency,
       admin,
@@ -703,14 +740,14 @@ createApp({
             </div>
 
             <div class="action-footer">
-              <button type="button" class="btn-ghost" :disabled="busy || !selected.available" @click="testDrive">
+              <button type="button" class="btn-ghost" :disabled="buying || testingVehicle || !selected.available" @click="testDrive">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="7"></circle><path d="M12 13l3-3M9 3h6M12 6V3"></path></svg>
                 <span>Test drive · {{ payload.testDrive?.seconds || 45 }}s</span>
                 <b>{{ payload.testDrive?.price ? money(payload.testDrive.price, payload.testDrive.currency || 'money') : 'Grátis' }}</b>
               </button>
-              <button type="button" class="btn-primary" :disabled="busy || !selected.available" @click="buyVehicle">
+              <button type="button" class="btn-primary" :disabled="buying || testingVehicle || !selected.available" @click="buyVehicle">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 17h14M7 17l1-5h8l1 5M8 12l1.2-3h5.6L16 12"></path><circle cx="8.5" cy="16.5" r="1"></circle><circle cx="15.5" cy="16.5" r="1"></circle></svg>
-                <span>{{ busy ? 'Processando...' : 'Comprar veículo' }}</span>
+                <span>{{ buying ? 'Processando...' : 'Comprar veículo' }}</span>
                 <svg class="action-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
               </button>
             </div>
@@ -854,12 +891,12 @@ createApp({
             </div>
 
             <div class="action-footer">
-              <button type="button" class="btn-danger" :disabled="!adminForm.id || busy" @click="deleteAdminVehicle">Excluir</button>
-              <button type="button" class="btn-ghost" :disabled="!adminForm.id || busy" @click="toggleAdminVehicle({ ...adminForm, id: adminForm.id || 0, total: adminForm.price, tax: 0, available: adminForm.stock > 0 })">
+              <button type="button" class="btn-danger" :disabled="!adminForm.id || adminBusy" @click="deleteAdminVehicle">Excluir</button>
+              <button type="button" class="btn-ghost" :disabled="!adminForm.id || adminBusy" @click="toggleAdminVehicle({ ...adminForm, id: adminForm.id || 0, total: adminForm.price, tax: 0, available: adminForm.stock > 0 })">
                 {{ adminForm.enabled ? 'Pausar' : 'Ativar' }}
               </button>
-              <button type="button" class="btn-primary" :disabled="busy" @click="saveAdminVehicle">
-                {{ busy ? 'Salvando...' : 'Salvar Dados' }}
+              <button type="button" class="btn-primary" :disabled="adminBusy" @click="saveAdminVehicle">
+                {{ adminBusy ? 'Salvando...' : 'Salvar Dados' }}
               </button>
             </div>
           </aside>

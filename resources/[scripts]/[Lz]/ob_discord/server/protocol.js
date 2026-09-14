@@ -37,7 +37,7 @@ function validate(data, guildId) {
             .some(key => key in data);
     }
     if (data.operation === 'admin') {
-        if (data.mode !== 'staff' || !['revive', 'teleport', 'character_selection', 'character_creation'].includes(data.action)
+        if (data.mode !== 'staff' || !['revive', 'teleport', 'character_selection', 'clothing_menu'].includes(data.action)
             || !/^[A-Za-z0-9:_-]{1,100}$/.test(data.adminSession || '')
             || ['evidenceId', 'evidenceMessageId', 'revive', 'destination', 'visual'].some(key => key in data)) return false;
         if (data.action === 'teleport') return /^[a-z0-9_-]{1,40}$/.test(data.destinationKey || '');

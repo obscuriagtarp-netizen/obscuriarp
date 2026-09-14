@@ -13,6 +13,37 @@ local craftingPointTypes = {
     assembly = true
 }
 
+local restaurantProductAnimations = {
+    food = {
+        anim = { dict = 'mp_player_inteat@burger', clip = 'mp_player_int_eat_burger' },
+        prop = { model = `prop_cs_burger_01`, pos = vec3(0.02, 0.01, -0.02), rot = vec3(-70.0, 0.0, 0.0) }
+    },
+    drink = {
+        anim = { dict = 'mp_player_intdrink', clip = 'loop_bottle' },
+        prop = { model = `prop_ld_can_01`, pos = vec3(0.01, 0.01, 0.06), rot = vec3(5.0, 5.0, -180.5) }
+    }
+}
+
+exports('useRestaurantProduct', function(data, slot)
+    local metadata = type(slot) == 'table' and slot.metadata or nil
+    if type(metadata) ~= 'table' or metadata.restaurantProduct ~= true then return end
+
+    local productType = metadata.restaurantProductType == 'drink' and 'drink' or 'food'
+    local presentation = restaurantProductAnimations[productType]
+    local completed = exports.ox_lib:progressBar({
+        duration = math.max(750, math.floor(tonumber((Config.RestaurantProduct or {}).useTime) or 2500)),
+        label = ('%s %s'):format(productType == 'drink' and 'Bebendo' or 'Comendo', metadata.label or 'produto'),
+        canCancel = true,
+        disable = { car = true, combat = true },
+        anim = presentation.anim,
+        prop = presentation.prop
+    })
+
+    if completed then
+        exports.ox_inventory:useItem(data, nil, true)
+    end
+end)
+
 local function requestServer(action, payload, callback)
     requestId = requestId + 1
     requests[requestId] = callback

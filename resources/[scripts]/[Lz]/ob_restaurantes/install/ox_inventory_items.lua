@@ -4,6 +4,7 @@
 ['salad'] = { label = 'Salada fresca', weight = 80, stack = true },
 ['batata'] = { label = 'Batata', weight = 120, stack = true },
 ['xarope'] = { label = 'Xarope de refrigerante', weight = 120, stack = true },
+['produto_restaurante'] = { label = 'Produto de restaurante', description = 'Produto preparado por um estabelecimento.', weight = 0, stack = true, close = true, consume = 1, client = { image = 'burger.png', export = 'ob_restaurantes.useRestaurantProduct' } },
 ['hamburguer'] = { label = 'Hamburguer da Casa', weight = 280, stack = true, close = true, consume = 1, client = { anim = 'eating', prop = 'burger', usetime = 2500, cancel = true } },
 ['batata_frita'] = { label = 'Batatas da Casa', weight = 180, stack = true, close = true, consume = 1, client = { anim = 'eating', prop = { model = `prop_food_bs_chips`, pos = vec3(0.02, 0.01, -0.02), rot = vec3(-70.0, 0.0, 0.0) }, usetime = 2500, cancel = true } },
 ['refrigerante'] = { label = 'Refrigerante', weight = 300, stack = true, close = true, consume = 1, client = { anim = { dict = 'mp_player_intdrink', clip = 'loop_bottle' }, prop = { model = `prop_ld_can_01`, pos = vec3(0.01, 0.01, 0.06), rot = vec3(5.0, 5.0, -180.5) }, usetime = 2500, cancel = true } },

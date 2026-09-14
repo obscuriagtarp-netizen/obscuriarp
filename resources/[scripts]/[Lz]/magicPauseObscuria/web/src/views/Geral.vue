@@ -1,10 +1,14 @@
 <script setup>
 import characterMalePNG from "../public/characters/character-male.png";
 import characterFemalePNG from "../public/characters/character-female.png";
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import runeIcon from "../assets/imgs/runa-icon.png";
 
-const playerInfo = ref({
+const props = defineProps({
+  payload: { type: Object, default: null }
+});
+
+const emptyPlayerInfo = () => ({
   name: "",
   passport: "",
   gender: "",
@@ -29,6 +33,7 @@ const playerInfo = ref({
   classAffinity: "",
   classWeakness: ""
 });
+const playerInfo = ref(emptyPlayerInfo());
 const previewMode = new URLSearchParams(window.location.search).get("preview") === "1";
 
 const money = (value) => Number(value || 0).toLocaleString("pt-BR");
@@ -78,15 +83,20 @@ const classRows = computed(() => [
   { label: "VIP atual", value: vipDisplay.value, vip: playerInfo.value.vipTier && playerInfo.value.vipTier !== "Nenhum" }
 ]);
 
-async function fetchNui(eventName, data = {}) {
-  const resource = (window.GetParentResourceName && window.GetParentResourceName()) || "MagicPause";
-  const res = await fetch(`https://${resource}/${eventName}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json; charset=UTF-8" },
-    body: JSON.stringify(data)
-  });
-  return res.json().catch(() => ({}));
-}
+watch(
+  () => props.payload,
+  (payload) => {
+    if (payload && typeof payload === "object") {
+      const changedCharacter = playerInfo.value.passport
+        && payload.passport
+        && String(playerInfo.value.passport) !== String(payload.passport);
+      playerInfo.value = { ...(changedCharacter ? emptyPlayerInfo() : playerInfo.value), ...payload };
+    } else if (!previewMode) {
+      playerInfo.value = emptyPlayerInfo();
+    }
+  },
+  { immediate: true }
+);
 
 onMounted(async () => {
   if (previewMode) {
@@ -116,10 +126,7 @@ onMounted(async () => {
       classAffinity: "Magia",
       classWeakness: "Fogo"
     };
-    return;
   }
-  const info = await fetchNui("getPlayerInfo");
-  if (info && typeof info === "object") playerInfo.value = { ...playerInfo.value, ...info };
 });
 </script>
 

@@ -612,12 +612,13 @@ return {
     },
 
     ['radio'] = {
-        label = 'Radio',
+        label = 'Rádio',
         weight = 1000,
         allowArmed = true,
         consume = 0,
         client = {
-            event = 'mm_radio:client:use'
+            image = 'radio.png',
+            export = 'aty_radio.useRadio'
         }
     },
 
@@ -1078,6 +1079,20 @@ return {
 		client = { image = 'burger.png' },
 	},
 
+    ['produto_restaurante'] = { 
+        label = 'Produto de restaurante', 
+        description = 'Produto preparado por um estabelecimento.', 
+        weight = 0, 
+        stack = true, 
+        close = true, 
+        consume = 1, 
+        client = { 
+            image = 'burger.png', 
+            export = 'ob_restaurantes.useRestaurantProduct' 
+        } 
+    },
+
+
 	['frasco_vazio'] = {
 		label = 'Frasco vazio',
 		description = 'Um frasco limpo usado para armazenar sangue sobrenatural.',
@@ -1113,6 +1128,92 @@ return {
 		close = true,
 		client = { image = 'couro_puma.png' },
 	},
+    ['caixa_colares'] = {
+		label = 'Caixa de Colares de Classe',
+		description = 'Permite escolher um dos quatro colares de classe.',
+		weight = 900,
+		stack = false,
+		close = true,
+		consume = 0,
+		client = { image = 'caixa_colares.png' },
+		server = { export = 'ob_boxes.useBox' },
+	},
+
+	['caixa_elixires'] = {
+		label = 'Caixa de Elixires',
+		description = 'Permite escolher um dos quatro elixires de classe.',
+		weight = 700,
+		stack = false,
+		close = true,
+		consume = 0,
+		client = { image = 'caixa_elixires.png' },
+		server = { export = 'ob_boxes.useBox' },
+	},
+
+	['pocao_mana'] = {
+		label = 'Poção de Mana',
+		description = 'Restaura 40 de mana. Uso exclusivo para bruxas.',
+		weight = 250,
+		stack = true,
+		close = true,
+		consume = 1,
+		client = {
+			image = 'pocao_mana.png',
+			anim = { dict = 'mp_player_intdrink', clip = 'loop_bottle' },
+			prop = { model = `prop_ld_flow_bottle`, pos = vec3(0.02, 0.02, 0.02), rot = vec3(0.0, 0.0, -1.5) },
+			usetime = 3500,
+		},
+		server = { export = 'ob_boxes.usePotion' },
+	},
+
+	['elixir_fadas'] = {
+		label = 'Elixir das Fadas',
+		description = 'Restaura 40 de energia. Uso exclusivo para curandeiras.',
+		weight = 250,
+		stack = true,
+		close = true,
+		consume = 1,
+		client = {
+			image = 'elixir_fadas.png',
+			anim = { dict = 'mp_player_intdrink', clip = 'loop_bottle' },
+			prop = { model = `prop_ld_flow_bottle`, pos = vec3(0.02, 0.02, 0.02), rot = vec3(0.0, 0.0, -1.5) },
+			usetime = 3500,
+		},
+		server = { export = 'ob_boxes.usePotion' },
+	},
+
+	['elixir_sangue'] = {
+		label = 'Elixir de Sangue',
+		description = 'Restaura 40 de sangue. Uso exclusivo para vampiros.',
+		weight = 280,
+		stack = true,
+		close = true,
+		consume = 1,
+		client = {
+			image = 'elixir_sangue.png',
+			anim = { dict = 'mp_player_intdrink', clip = 'loop_bottle' },
+			prop = { model = `prop_ld_flow_bottle`, pos = vec3(0.02, 0.02, 0.02), rot = vec3(0.0, 0.0, -1.5) },
+			usetime = 3500,
+		},
+		server = { export = 'ob_boxes.usePotion' },
+	},
+
+	['elixir_sabedoria'] = {
+		label = 'Elixir da Sabedoria',
+		description = 'Cura 50 de vida e deixa a velocidade em 1.25 por 10 minutos. Uso exclusivo para humanos.',
+		weight = 280,
+		stack = true,
+		close = true,
+		consume = 1,
+		client = {
+			image = 'elixir_sabedoria.png',
+			anim = { dict = 'mp_player_intdrink', clip = 'loop_bottle' },
+			prop = { model = `prop_ld_flow_bottle`, pos = vec3(0.02, 0.02, 0.02), rot = vec3(0.0, 0.0, -1.5) },
+			usetime = 3500,
+		},
+		server = { export = 'ob_boxes.usePotion' },
+	},
+
 
 	['amuleto_eclipse'] = {
 		label = 'Amuleto do Eclipse',

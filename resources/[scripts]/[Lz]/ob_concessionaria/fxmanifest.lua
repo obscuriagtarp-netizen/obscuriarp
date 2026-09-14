@@ -40,6 +40,7 @@ files {
     'web/assets/images/*.jpeg',
     'web/assets/images/*.webp',
     'web/assets/images/*.png',
+    'web/assets/fonts/*.ttf',
     'web/assets/icons/*.png'
 }
 

@@ -2,6 +2,15 @@ local function discordId(id)
     return (GetPlayerIdentifierByType(id, 'discord') or ''):gsub('^discord:', '')
 end
 
+local function onlineSource(id)
+    id = tonumber(id)
+    if not id or id < 1 then return nil end
+    for _, source in ipairs(GetPlayers()) do
+        if tonumber(source) == id then return tonumber(source) end
+    end
+    return nil
+end
+
 local function amount(value)
     local number = tonumber(value)
     if not number or number ~= number or math.abs(number) == math.huge then return nil end
@@ -37,8 +46,10 @@ function ReadDiscordPlayerProfile(request)
             end
         end
     end
-    local player = id and id > 0 and exports.qbx_core:GetPlayer(id)
-    if not player or not GetPlayerName(id) then return { error = 'offline' } end
+    id = onlineSource(id)
+    if not id then return { error = 'offline' } end
+    local player = exports.qbx_core:GetPlayer(id)
+    if not player then return { error = 'not_ready' } end
     if request.mode == 'self' and discordId(id) ~= request.actorId then return { error = 'identity_mismatch' } end
     local data = player.PlayerData
     if not data or not data.citizenid then return { error = 'not_ready' } end
@@ -65,9 +76,9 @@ function ReadDiscordPlayerProfile(request)
             end
         end
     end
-
+    -- Uma consulta SQL pode ceder a execucao. Nunca devolva dados de uma sessao substituida.
     local current = exports.qbx_core:GetPlayer(id)
-    if not current or current.PlayerData.citizenid ~= citizen or not GetPlayerName(id)
+    if not onlineSource(id) or not current or current.PlayerData.citizenid ~= citizen
         or (request.mode == 'self' and discordId(id) ~= request.actorId) then return { error = 'session_changed' } end
     local ped = type(GetPlayerPed) == 'function' and GetPlayerPed(id) or 0
     local health = type(GetEntityHealth) == 'function' and amount(GetEntityHealth(ped)) or nil

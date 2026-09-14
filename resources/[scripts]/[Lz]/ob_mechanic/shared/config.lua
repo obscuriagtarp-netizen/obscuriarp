@@ -23,8 +23,15 @@ MechanicConfig.Locations = {
     {
         id = 'central',
         label = 'Automotiva Akuma',
-        coords = vec3(-337.56, -136.58, 39.01),
         radius = 3.0,
+        points = {
+            { coords = vec3(-336.36, -138.79, 38.06) },
+            { coords = vec3(-332.92, -129.89, 38.06) },
+            { coords = vec3(-329.99, -121.92, 38.06) },
+            { coords = vec3(-327.19, -114.52, 38.06) },
+            { coords = vec3(-347.66, -122.56, 38.06) },
+            { coords = vec3(-345.14, -114.51, 38.06) },
+        },
         jobs = { 'mechanic' },
         marker = {
             enabled = true,

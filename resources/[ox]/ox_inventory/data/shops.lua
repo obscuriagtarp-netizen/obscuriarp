@@ -72,8 +72,6 @@ return {
 			vec3(393.3, -832.38, 28.29),
 			vec3(1137.51, -470.96, 65.65),
 			vec3(-509.8, 278.38, 82.31),
-
-
 		}, targets = {
 			{ loc = vec3(-658.04, -853.88, 23.49), length = 0.5, width = 0.5, heading = 96.0, minZ = 46.4, maxZ = 46.8, distance = 1.5 },
 			{ loc = vec3(393.3, -832.38, 28.29), length = 0.5, width = 0.5, heading = 96.0, minZ = 46.4, maxZ = 46.8, distance = 1.5 },
@@ -131,29 +129,6 @@ return {
 			{ loc = vec3(453.21, -980.03, 30.68), length = 0.5, width = 3.0, heading = 270.0, minZ = 30.5, maxZ = 32.0, distance = 6 }
 		}
 	},
-
-	Medicine = {
-		name = 'Loja Medicinal',
-		groups = {
-			['ambulance'] = 0
-		},
-		blip = {
-			id = 403, colour = 69, scale = 0.8
-		}, inventory = {
-			{ name = 'gauze', price = 10 },
-			{ name = 'bandage', price = 10 },
-			{ name = 'painkillers', price = 10 },
-			{ name = 'firstaid', price = 10 },
-			{ name = 'medical_kit', price = 10 },
-			{ name = 'medical_stretcher', price = 10 },
-		}, locations = {
-			vec3(-1039.55, -423.06, 38.61),
-		}, targets = {
-			{ loc = vec3(-1039.55, -423.06, 38.61), length = 0.5, width = 3.0, heading = 270.0, minZ = 30.5, maxZ = 32.0, distance = 6 },
-
-		}
-	},
-
 
 	VendingMachineDrinks = {
 		name = 'Vending Machine',

@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS `vg_dealership_vehicles` (
   `stock` INT NOT NULL DEFAULT 0,
   `purchase_type` VARCHAR(20) NOT NULL DEFAULT 'permanent',
   `duration_days` INT DEFAULT NULL,
-  `image` VARCHAR(255) DEFAULT NULL,
+  `image` TEXT DEFAULT NULL,
   `enabled` TINYINT(1) NOT NULL DEFAULT 1,
   `display_order` INT NOT NULL DEFAULT 0,
   `metadata` LONGTEXT DEFAULT NULL,
@@ -29,6 +29,9 @@ ALTER TABLE `vg_dealership_vehicles`
 
 ALTER TABLE `vg_dealership_vehicles`
   ADD COLUMN IF NOT EXISTS `duration_days` INT DEFAULT NULL AFTER `purchase_type`;
+
+ALTER TABLE `vg_dealership_vehicles`
+  MODIFY COLUMN `image` TEXT DEFAULT NULL;
 
 CREATE TABLE IF NOT EXISTS `vg_dealership_sales` (
   `id` INT NOT NULL AUTO_INCREMENT,

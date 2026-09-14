@@ -76,7 +76,7 @@ local function startTestDrive(result)
     local model = joaat(tostring(result.model or ''))
     if not IsModelInCdimage(model) or not IsModelAVehicle(model) then
         notify('Modelo indisponível para test drive.', 'error')
-        lib.callback.await('ob_concessionaria:finishTestDrive', false)
+        lib.callback.await('ob_concessionaria:finishTestDrive', false, true)
         return
     end
 
@@ -85,7 +85,7 @@ local function startTestDrive(result)
     while not HasModelLoaded(model) and GetGameTimer() < loadDeadline do Wait(20) end
     if not HasModelLoaded(model) then
         notify('O veículo demorou demais para carregar.', 'error')
-        lib.callback.await('ob_concessionaria:finishTestDrive', false)
+        lib.callback.await('ob_concessionaria:finishTestDrive', false, true)
         return
     end
 
@@ -182,15 +182,30 @@ RegisterNUICallback('close', function(_, cb)
 end)
 
 RegisterNUICallback('buyVehicle', function(data, cb)
-    local result = activeDealership and lib.callback.await('ob_concessionaria:buyVehicle', false, activeDealership, data and data.id) or { ok = false, message = 'Concessionária não encontrada.' }
-    cb(result or { ok = false })
+    local ok, result = pcall(function()
+        return activeDealership and lib.callback.await('ob_concessionaria:buyVehicle', false, activeDealership, data and data.id)
+            or { ok = false, message = 'Concessionária não encontrada.' }
+    end)
+    if not ok then
+        print(('^1[%s] Falha ao comprar veículo: %s^7'):format(RESOURCE, tostring(result)))
+        result = { ok = false, message = 'Não foi possível concluir a compra agora.' }
+    end
+    result = result or { ok = false, message = 'A concessionária não respondeu à compra.' }
+    cb(result)
     if result and result.message and not result.ok then notify(result.message, 'error') end
-    if result and result.payload then SendNUIMessage({ action = 'refresh', data = result.payload }) end
 end)
 
 RegisterNUICallback('testDrive', function(data, cb)
-    local result = activeDealership and lib.callback.await('ob_concessionaria:startTestDrive', false, activeDealership, data and data.id) or { ok = false, message = 'Concessionária não encontrada.' }
-    cb(result or { ok = false })
+    local ok, result = pcall(function()
+        return activeDealership and lib.callback.await('ob_concessionaria:startTestDrive', false, activeDealership, data and data.id)
+            or { ok = false, message = 'Concessionária não encontrada.' }
+    end)
+    if not ok then
+        print(('^1[%s] Falha ao iniciar test drive: %s^7'):format(RESOURCE, tostring(result)))
+        result = { ok = false, message = 'Não foi possível iniciar o test drive agora.' }
+    end
+    result = result or { ok = false, message = 'A concessionária não respondeu ao test drive.' }
+    cb(result)
     if not result or not result.ok then
         if result and result.message then notify(result.message, 'error') end
         return
@@ -201,24 +216,39 @@ RegisterNUICallback('testDrive', function(data, cb)
 end)
 
 RegisterNUICallback('adminSaveVehicle', function(data, cb)
-    local result = lib.callback.await('ob_concessionaria:adminSaveVehicle', false, data or {}) or { ok = false }
+    local ok, result = pcall(lib.callback.await, 'ob_concessionaria:adminSaveVehicle', false, data or {})
+    if not ok then
+        print(('^1[%s] Falha ao salvar veículo: %s^7'):format(RESOURCE, tostring(result)))
+        result = { ok = false, message = 'Não foi possível salvar o veículo agora.' }
+    elseif not result then
+        result = { ok = false, message = 'A concessionária não respondeu ao cadastro.' }
+    end
     cb(result)
     if result.message and not result.ok then notify(result.message, 'error') end
-    if result.payload then SendNUIMessage({ action = 'refreshAdmin', data = result.payload }) end
 end)
 
 RegisterNUICallback('adminSetVehicleEnabled', function(data, cb)
-    local result = lib.callback.await('ob_concessionaria:adminSetVehicleEnabled', false, data and data.id, data and data.enabled) or { ok = false }
+    local ok, result = pcall(lib.callback.await, 'ob_concessionaria:adminSetVehicleEnabled', false, data and data.id, data and data.enabled)
+    if not ok then
+        print(('^1[%s] Falha ao alterar status do veículo: %s^7'):format(RESOURCE, tostring(result)))
+        result = { ok = false, message = 'Não foi possível alterar o status do veículo.' }
+    elseif not result then
+        result = { ok = false, message = 'A concessionária não respondeu à alteração.' }
+    end
     cb(result)
     if result.message and not result.ok then notify(result.message, 'error') end
-    if result.payload then SendNUIMessage({ action = 'refreshAdmin', data = result.payload }) end
 end)
 
 RegisterNUICallback('adminDeleteVehicle', function(data, cb)
-    local result = lib.callback.await('ob_concessionaria:adminDeleteVehicle', false, data and data.id) or { ok = false }
+    local ok, result = pcall(lib.callback.await, 'ob_concessionaria:adminDeleteVehicle', false, data and data.id)
+    if not ok then
+        print(('^1[%s] Falha ao excluir veículo: %s^7'):format(RESOURCE, tostring(result)))
+        result = { ok = false, message = 'Não foi possível excluir o veículo.' }
+    elseif not result then
+        result = { ok = false, message = 'A concessionária não respondeu à exclusão.' }
+    end
     cb(result)
     if result.message and not result.ok then notify(result.message, 'error') end
-    if result.payload then SendNUIMessage({ action = 'refreshAdmin', data = result.payload }) end
 end)
 
 RegisterCommand('conceclose', closeUi, false)

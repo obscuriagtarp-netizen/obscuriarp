@@ -44,6 +44,39 @@ Config.Shops = {
 			{ name = 'medical_stretcher', price = 10 },
         },
     },
+    mechanic = {
+        enabled = true,
+        label = 'Loja Mecânico',
+        access = {
+            jobs = { mechanic = 0 },
+            requireDuty = true,
+        },
+        locations = {
+            vec3(-349.35, -140.34, 38.06),
+        },
+        inventory = {
+			{ name = 'repairkit', price = 10 },
+			{ name = 'tirerepairkit', price = 10 },
+        },
+    },
+    mechanicFood = {
+        enabled = true,
+        label = 'Loja de comida',
+        -- access = {
+        --     jobs = { mechanic = 0 },
+        --     requireDuty = true,
+        -- },
+        locations = {
+            vec3(-344.77, -154.75, 38.06),
+        },
+        inventory = {
+			{ name = 'coca_cola', price = 12 },
+			{ name = 'agua', price = 8 },
+			{ name = 'taco', price = 18 },
+			{ name = 'chocolate', price = 10 },
+			{ name = 'mochila_pequena', price = 1200 },
+        },
+    },
 
     -- gang_example = {
     --     enabled = false,

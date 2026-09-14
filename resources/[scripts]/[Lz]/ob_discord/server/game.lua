@@ -155,11 +155,10 @@ local function adminAction(request)
         return { ok = true, source = before.source, action = request.action, revived = true }
     end
 
-    if request.action == 'character_selection' or request.action == 'character_creation' then
+    if request.action == 'character_selection' then
         local multichar = cfg.MulticharResource or 'ob_multichar'
         if GetResourceState(multichar) ~= 'started' then return { error = 'multichar_offline' } end
-        local mode = request.action == 'character_creation' and 'creation' or 'selection'
-        TriggerClientEvent('ob_multichar:client:prepareAdminFlow', before.source, mode)
+        TriggerClientEvent('ob_multichar:client:prepareAdminFlow', before.source, 'selection')
         Wait(150)
         local current = snapshot(before.source)
         if current.error or current.session ~= before.session or current.blocked then return { error = 'session_changed' } end
@@ -168,9 +167,17 @@ local function adminAction(request)
         return { ok = true, source = before.source, action = request.action }
     end
 
+    if request.action == 'clothing_menu' then
+        local appearance = cfg.AppearanceResource or 'illenium-appearance'
+        if GetResourceState(appearance) ~= 'started' then return { error = 'appearance_offline' } end
+        TriggerClientEvent('illenium-appearance:client:openClothingShopMenu', before.source, true)
+        return { ok = true, source = before.source, action = request.action }
+    end
+
     return { error = 'invalid_action' }
 end
 
+-- Apenas export server-side. Nenhum RegisterNetEvent concede acoes aos clientes.
 exports('TicketBridge', function(operation, encoded, callback)
     CreateThread(function()
         local ok, data = pcall(function()

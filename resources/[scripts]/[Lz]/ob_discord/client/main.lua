@@ -1,5 +1,6 @@
 local preparing = false
 
+-- Nao decide destino nem revive: apenas carrega a colisao do destino autorizado.
 RegisterNetEvent('ob_discord:prepare', function(destination)
     if type(destination) ~= 'table' or preparing then return end
     if type(destination.x) ~= 'number' or type(destination.y) ~= 'number' or type(destination.z) ~= 'number' then return end

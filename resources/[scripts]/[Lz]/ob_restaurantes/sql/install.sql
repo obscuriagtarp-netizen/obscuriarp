@@ -65,6 +65,8 @@ CREATE TABLE IF NOT EXISTS `ob_restaurant_recipes` (
   `prep_time` int unsigned NOT NULL DEFAULT 5,
   `output_item` varchar(64) NOT NULL,
   `output_amount` int unsigned NOT NULL DEFAULT 1,
+  `product_type` varchar(16) NOT NULL DEFAULT 'food',
+  `item_weight` int unsigned NOT NULL DEFAULT 250,
   `is_combo` tinyint(1) NOT NULL DEFAULT 0,
   `ingredients` longtext NOT NULL,
   `contents` longtext NULL,

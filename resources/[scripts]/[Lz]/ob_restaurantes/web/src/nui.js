@@ -19,10 +19,10 @@ export const previewContext = {
 };
 
 const previewRecipes = [
-  { id: 1, category_key: "meals", name: "Hamburguer da Casa", description: "Pao tostado, carne e salada fresca.", price: 280, old_price: 340, menu_badge: "Oferta da semana", featured: true, prep_time: 8, output_item: "hamburguer", icon: "sandwich", enabled: true, effects: { hunger: 25 }, ingredients: [{ item: "pao", label: "Pao", amount: 1 }, { item: "carne", label: "Carne", amount: 1 }] },
-  { id: 2, category_key: "meals", name: "Batatas da Casa", description: "Porcao crocante preparada na hora.", price: 140, prep_time: 6, output_item: "batata_frita", icon: "salad", enabled: true, effects: { hunger: 15 }, ingredients: [{ item: "batata", label: "Batata", amount: 2 }] },
-  { id: 3, category_key: "drinks", name: "Refrigerante", description: "Bebida gelada no copo da casa.", price: 90, prep_time: 3, output_item: "refrigerante", icon: "cup-soda", enabled: true, effects: { thirst: 22 }, ingredients: [{ item: "water", label: "Agua", amount: 1 }] },
-  { id: 4, category_key: "combos", name: "Combo da Casa", description: "Hamburguer, batatas e bebida em uma embalagem.", price: 460, prep_time: 12, output_item: "combo_box", icon: "package-open", enabled: true, is_combo: true, effects: { hunger: 30, thirst: 25 }, ingredients: [{ item: "hamburguer", label: "Hamburguer", amount: 1 }] },
+  { id: 1, category_key: "meals", name: "Hamburguer da Casa", description: "Pao tostado, carne e salada fresca.", price: 280, old_price: 340, menu_badge: "Oferta da semana", featured: true, prep_time: 8, output_item: "produto_restaurante", output_amount: 1, product_type: "food", item_weight: 280, icon: "sandwich", enabled: true, effects: { hunger: 25 }, ingredients: [{ item: "pao", label: "Pao", amount: 1 }, { item: "carne", label: "Carne", amount: 1 }] },
+  { id: 2, category_key: "meals", name: "Batatas da Casa", description: "Porcao crocante preparada na hora.", price: 140, prep_time: 6, output_item: "produto_restaurante", output_amount: 1, product_type: "food", item_weight: 180, icon: "salad", enabled: true, effects: { hunger: 15 }, ingredients: [{ item: "batata", label: "Batata", amount: 2 }] },
+  { id: 3, category_key: "drinks", name: "Refrigerante", description: "Bebida gelada no copo da casa.", price: 90, prep_time: 3, output_item: "produto_restaurante", output_amount: 1, product_type: "drink", item_weight: 300, icon: "cup-soda", enabled: true, effects: { thirst: 22 }, ingredients: [{ item: "water", label: "Agua", amount: 1 }] },
+  { id: 4, category_key: "combos", name: "Combo da Casa", description: "Hamburguer, batatas e bebida em uma embalagem.", price: 460, prep_time: 12, output_item: "produto_restaurante", output_amount: 1, product_type: "food", item_weight: 850, icon: "package-open", enabled: true, is_combo: true, effects: { hunger: 30, thirst: 25 }, ingredients: [{ item: "hamburguer", label: "Hamburguer", amount: 1 }] },
 ];
 
 const previewOrders = [
@@ -39,6 +39,14 @@ export const previewPayload = {
   permissions: customerPreview ? { work: false, manage: false, admin: false } : { work: true, manage: true, admin: true },
   commissionRate: 0.3,
   recipeEffects: { maxSelected: 2, maxAmount: 50, defaultAmount: 20 },
+  inventoryItems: [
+    { name: "agua", label: "Água" },
+    { name: "batata", label: "Batata" },
+    { name: "carne", label: "Carne preparada" },
+    { name: "pao", label: "Pão artesanal" },
+    { name: "salad", label: "Salada fresca" },
+    { name: "xarope", label: "Xarope de refrigerante" },
+  ],
   categories: [
     { category_key: "meals", label: "Pratos", icon: "utensils", enabled: true },
     { category_key: "drinks", label: "Bebidas", icon: "cup-soda", enabled: true },
@@ -64,6 +72,11 @@ export const previewPayload = {
 
 function mock(action, data) {
   if (action === "bootstrap") return Promise.resolve({ ...previewPayload, mode: data.mode || "pos" });
+  if (action === "deleteRecipe") {
+    const index = previewRecipes.findIndex((recipe) => Number(recipe.id) === Number(data.recipeId));
+    if (index >= 0) previewRecipes.splice(index, 1);
+    return Promise.resolve({ ok: index >= 0, error: index >= 0 ? undefined : "recipe_not_found" });
+  }
   if (action === "nearbyCustomers") return Promise.resolve({ ok: true, customers: [{ source: 2, name: "Lucien Moreau" }, { source: 3, name: "Aurora Bell" }] });
   if (action === "display") return Promise.resolve({ ok: true, restaurant: previewRestaurant, orders: previewOrders });
   if (action === "getOrders") return Promise.resolve({ ok: true, orders: previewOrders });
