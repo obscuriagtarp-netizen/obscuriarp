@@ -560,6 +560,9 @@ local function getVehicleCard(vehicle, garage)
     local primaryColor = props.color1 or props.primaryColor or props.customPrimaryColor
     local color = type(primaryColor) == 'table' and table.concat(primaryColor, ', ') or tostring(primaryColor or 'Original')
 
+    local vipRental = type(vehicle.vipRental) == 'table' and vehicle.vipRental or nil
+    local rentalExpired = vipRental and vipRental.managed == true and vipRental.active ~= true
+
     return {
         id = vehicle.id,
         fixed = vehicle.fixed == true,
@@ -570,8 +573,10 @@ local function getVehicleCard(vehicle, garage)
         plate = tostring(props.plate or 'SEM PLACA'):sub(1, 8),
         displayClass = getVehicleDisplayClass(vehicle, garage),
         state = vehicle.state,
-        stateLabel = vehicle.fixed and 'Serviço disponível' or (vehicle.state == VehicleState.IMPOUNDED and 'No pátio' or 'Pronto para retirar'),
+        stateLabel = rentalExpired and 'Mensalidade VIP vencida'
+            or (vehicle.fixed and 'Serviço disponível' or (vehicle.state == VehicleState.IMPOUNDED and 'No pátio' or 'Pronto para retirar')),
         depotPrice = formatGarageMoney(vehicle.depotPrice),
+        vipRental = vipRental,
         metrics = {
             engine = engine,
             body = body,
@@ -706,6 +711,41 @@ RegisterNUICallback('previewVehicle', function(data, cb)
     local selected = activeGarageVehicles[tostring(data and data.id)]
     local success, result = pcall(showPreviewVehicle, selected)
     cb({ ok = success and result == true })
+end)
+
+RegisterNUICallback('renewVipVehicle', function(data, cb)
+    if not garageUiOpen then
+        cb({ ok = false, error = 'garage_closed' })
+        return
+    end
+    local selected = activeGarageVehicles[tostring(data and data.id)]
+    if not selected or selected.fixed then
+        cb({ ok = false, error = 'rental_not_found' })
+        return
+    end
+    if GetResourceState('ob_vip') ~= 'started' then
+        cb({ ok = false, error = 'vip_unavailable' })
+        return
+    end
+
+    local result = lib.callback.await('ob_vip:server:renewVehicle', false, selected.id)
+        or { ok = false, error = 'renewal_failed' }
+    if result.ok and type(result.rental) == 'table' then
+        selected.vipRental = result.rental
+        exports.qbx_core:Notify(('Veículo liberado por mais %d dias.'):format(tonumber(result.rental.durationDays) or 30), 'success')
+    else
+        local messages = {
+            insufficient_runes = 'Você não possui Runas suficientes para renovar este veículo.',
+            rental_busy = 'Esta mensalidade já está sendo processada.',
+            rental_not_found = 'A mensalidade deste veículo não foi encontrada.',
+            rental_active = 'Este veículo já está com a mensalidade ativa.',
+            vip_unavailable = 'O sistema VIP não está disponível agora.',
+            slow_down = 'Aguarde um instante antes de tentar renovar novamente.',
+            database_initializing = 'O sistema VIP ainda está iniciando.',
+        }
+        exports.qbx_core:Notify(messages[result.error] or 'Não foi possível renovar o veículo. Nenhuma Runa foi perdida.', 'error')
+    end
+    cb(result)
 end)
 
 RegisterNUICallback('spawn', function(data, cb)

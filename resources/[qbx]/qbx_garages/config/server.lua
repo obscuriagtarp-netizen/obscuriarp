@@ -147,6 +147,38 @@ return {
                 }
             },
         },
+        concessionariaNormal = {
+            label = 'Parking',
+            vehicleType = VehicleType.CAR,
+            accessPoints = {
+                {
+                    blip = {
+                        name = 'Garagem Pública',
+                        sprite = 357,
+                        color = 3,
+                    },
+                    coords = vec4(-64.98, -1116.98, 25.43 + 1, 337.72),
+                    spawn = vec4(-53.32, -1117.58, 25.43 + 1, 5.54),
+                    preview = vec4(-55.8, -1110.49, 25.44 + 1, 74.73),
+                }
+            },
+        },
+        concessionariaVip = {
+            label = 'Parking',
+            vehicleType = VehicleType.CAR,
+            accessPoints = {
+                {
+                    blip = {
+                        name = 'Garagem Pública',
+                        sprite = 357,
+                        color = 3,
+                    },
+                    coords = vec4(-935.99, -2072.56, 8.4 + 1, 222.51),
+                    spawn = vec4(-943.61, -2081.08, 8.3 + 1, 228.28),
+                    preview = vec4(-940.42, -2091.68, 8.3 + 1, 139.07),
+                }
+            },
+        },
         -- intairport = {
         --     label = 'Airport Hangar',
         --     vehicleType = VehicleType.AIR,

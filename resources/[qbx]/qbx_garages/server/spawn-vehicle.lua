@@ -124,6 +124,37 @@ lib.callback.register('qbx_garages:server:spawnVehicle', function (source, vehic
         exports.qbx_core:Notify(source, locale('error.not_owned'), 'error')
         return
     end
+    if GetResourceState('ob_vip') == 'started' then
+        local called, allowed, rental = pcall(function()
+            return exports.ob_vip:CanUseVehicle(source, vehicleId)
+        end)
+        if not called then
+            exports.qbx_core:Notify(source, 'Não foi possível validar a mensalidade VIP agora.', 'error')
+            return
+        end
+        if allowed == false then
+            if rental and rental.validationUnavailable then
+                exports.qbx_core:Notify(source, 'O sistema VIP ainda está iniciando. Tente novamente em instantes.', 'error')
+                return
+            end
+            local price = rental and tonumber(rental.renewalRunes) or 0
+            exports.qbx_core:Notify(source, ('Mensalidade VIP vencida. Renove este veículo por %d Runas.'):format(price), 'error')
+            return
+        end
+    else
+        local queried, rental = pcall(MySQL.single.await, [[
+            SELECT expires_at, renewal_runes
+            FROM ob_vip_vehicle_rentals
+            WHERE vehicle_id = ? AND citizenid = ?
+            LIMIT 1
+        ]], { vehicleId, playerVehicle.citizenid })
+        if queried and rental and tonumber(rental.expires_at) <= os.time() then
+            exports.qbx_core:Notify(source, ('Mensalidade VIP vencida. Inicie o ob_vip para renovar por %d Runas.'):format(
+                tonumber(rental.renewal_runes) or 0
+            ), 'error')
+            return
+        end
+    end
     if not IsPlayerVehicleAllowedInGarage(playerVehicle, garage) then
         exports.qbx_core:Notify(source, locale('error.not_correct_type'), 'error')
         return

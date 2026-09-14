@@ -248,10 +248,21 @@ lib.callback.register('qbx_garages:server:getGarageVehicles', function(source, g
     local toSend = {}
     if not playerVehicles[1] and not garage.fixedVehicles then return end
 
+    local rentalStates = {}
+    if GetResourceState('ob_vip') == 'started' and playerVehicles[1] then
+        local vehicleIds = {}
+        for _, vehicle in pairs(playerVehicles) do vehicleIds[#vehicleIds + 1] = vehicle.id end
+        local called, result = pcall(function()
+            return exports.ob_vip:GetVehicleRentalStates(source, vehicleIds)
+        end)
+        if called and type(result) == 'table' then rentalStates = result end
+    end
+
     for _, vehicle in pairs(playerVehicles) do
         if not FindPlateOnServer(vehicle.props.plate) then
             if IsPlayerVehicleAllowedInGarage(vehicle, garage) then
                 OverrideFreeDepotPriceForOutVehicle(vehicle)
+                vehicle.vipRental = rentalStates[tostring(vehicle.id)]
                 toSend[#toSend + 1] = vehicle
             end
         end

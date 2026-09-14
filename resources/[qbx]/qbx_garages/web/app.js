@@ -27,7 +27,7 @@ function post(name, payload = {}) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
-  }).catch(() => ({ ok: false }));
+  }).then((response) => response.json()).catch(() => ({ ok: false, error: 'network' }));
 }
 
 function idOf(item) {
@@ -57,7 +57,7 @@ function visibleVehicles() {
   const query = state.query.trim().toLocaleLowerCase('pt-BR');
   return state.vehicles.filter((item) => {
     if (state.filter === 'favorites' && !state.favorites.has(idOf(item))) return false;
-    if (state.filter === 'available' && item.state === 2) return false;
+    if (state.filter === 'available' && (item.state === 2 || item.vipRental?.expired)) return false;
     if (!query) return true;
     return [item.name, item.brand, item.plate, item.model, item.displayClass]
       .filter(Boolean)
@@ -81,6 +81,11 @@ const classLabels = {
 function level(value) {
   const numeric = Number(value) || 0;
   return numeric <= 0 ? 'Original' : `Nível ${numeric + 1}`;
+}
+
+function rentalDate(timestamp) {
+  if (!timestamp) return 'Sem validade';
+  return new Date(Number(timestamp) * 1000).toLocaleDateString('pt-BR');
 }
 
 function renderDetails(item) {
@@ -115,7 +120,8 @@ function renderDetails(item) {
       <span class="metric-track"><span style="width:${Math.max(0, Math.min(100, Number(value) || 0))}%"></span></span>
       <strong class="metric-value">${Math.round(Number(value) || 0)}%</strong>
     </div>
-  `).join('') + `<div class="detail-line"><span>Cor registrada</span><strong>${escapeHtml(item.metrics?.color || 'Original')}</strong></div>`;
+  `).join('') + `<div class="detail-line"><span>Cor registrada</span><strong>${escapeHtml(item.metrics?.color || 'Original')}</strong></div>`
+    + (item.vipRental?.managed ? `<div class="detail-line rental-line"><span>Mensalidade VIP</span><strong>${item.vipRental.active ? `Ativa até ${rentalDate(item.vipRental.expiresAt)}` : `${Number(item.vipRental.renewalRunes) || 0} Runas / ${Number(item.vipRental.durationDays) || 30} dias`}</strong></div>` : '');
 }
 
 function renderSelected() {
@@ -137,6 +143,7 @@ function renderSelected() {
 
   const index = Math.max(0, visible.findIndex((vehicle) => idOf(vehicle) === state.selectedId));
   const depot = item.state === 2;
+  const rentalExpired = item.vipRental?.managed === true && item.vipRental?.active !== true;
   $('#vehicle-class').textContent = classLabels[item.displayClass] || 'Veículo';
   $('#vehicle-name').textContent = item.name || item.model || 'Veículo';
   $('#vehicle-brand').textContent = item.fixed ? 'Veículo de serviço' : (item.brand || 'Obscuria');
@@ -144,7 +151,10 @@ function renderSelected() {
   $('#vehicle-plate').textContent = item.plate || '--------';
   $('#vehicle-state').innerHTML = `<i></i> ${escapeHtml(item.stateLabel || 'Disponível')}`;
   $('#vehicle-state').classList.toggle('is-depot', depot);
-  $('#spawn-label').textContent = depot
+  $('#vehicle-state').classList.toggle('is-expired', rentalExpired);
+  $('#spawn-label').textContent = rentalExpired
+    ? `Renovar · ${Number(item.vipRental.renewalRunes) || 0} Runas`
+    : depot
     ? (item.depotPrice !== '0' ? `Retirar · $${item.depotPrice}` : 'Retirar do pátio')
     : 'Retirar veículo';
   $('#spawn-button').disabled = false;
@@ -177,7 +187,7 @@ function renderFleet() {
   vehicles.forEach((item, index) => {
     const id = idOf(item);
     const row = document.createElement('div');
-    row.className = `vehicle-row${id === state.selectedId ? ' is-selected' : ''}`;
+    row.className = `vehicle-row${id === state.selectedId ? ' is-selected' : ''}${item.vipRental?.expired ? ' is-expired' : ''}`;
     row.dataset.id = id;
     row.setAttribute('role', 'button');
     row.setAttribute('tabindex', '0');
@@ -276,9 +286,21 @@ $('#close-button').addEventListener('click', closeGarage);
 $('#favorite-button').addEventListener('click', () => toggleFavorite());
 $('#previous-button').addEventListener('click', () => moveSelection(-1));
 $('#next-button').addEventListener('click', () => moveSelection(1));
-$('#spawn-button').addEventListener('click', () => {
+$('#spawn-button').addEventListener('click', async () => {
   const item = selectedVehicle();
-  if (item) post('spawn', { id: item.id });
+  if (!item) return;
+  if (item.vipRental?.managed && !item.vipRental.active) {
+    $('#spawn-button').disabled = true;
+    const result = await post('renewVipVehicle', { id: item.id });
+    if (result?.ok && result.rental) {
+      item.vipRental = result.rental;
+      item.stateLabel = 'Pronto para retirar';
+      renderFleet();
+    }
+    renderSelected();
+    return;
+  }
+  post('spawn', { id: item.id });
 });
 $('#vehicle-search').addEventListener('input', (event) => {
   state.query = event.target.value;
@@ -315,7 +337,7 @@ if (preview.has('preview')) {
       { id: 2, model: 'sultanrs', name: 'Sultan RS', brand: 'Karin', plate: 'NOCTIS', displayClass: 'car', state: 1, stateLabel: 'Disponível', depotPrice: '0', metrics: { engine: 81, body: 76, fuel: 46, tyres: 92, color: 'Cinza aço' }, tunings: { engine: 4, armor: 1, turbo: true, brakes: 3, transmission: 3 } },
       { id: 3, model: 'bati', name: 'Bati 801', brand: 'Pegassi', plate: 'LUA 013', displayClass: 'motorcycle', state: 1, stateLabel: 'Disponível', depotPrice: '0', metrics: { engine: 100, body: 91, fuel: 63, tyres: 88, color: 'Vinho' }, tunings: { engine: 2, armor: 0, turbo: false, brakes: 2, transmission: 2 } },
       { id: 4, model: 'police', name: 'Interceptor', brand: 'Serviço', plate: 'OBPD 07', displayClass: 'police', fixed: true, state: 1, stateLabel: 'Serviço disponível', depotPrice: '0', metrics: { engine: 100, body: 100, fuel: 100, tyres: 100, color: 'Institucional' }, tunings: { engine: 3, armor: 3, turbo: true, brakes: 3, transmission: 3 } },
-      { id: 5, model: 'dubsta2', name: 'Dubsta', brand: 'Benefactor', plate: 'RAVEN', displayClass: 'truck', state: 2, stateLabel: 'No pátio', depotPrice: '2.500', metrics: { engine: 68, body: 59, fuel: 30, tyres: 74, color: 'Verde floresta' }, tunings: { engine: 1, armor: 2, turbo: false, brakes: 1, transmission: 1 } },
+      { id: 5, model: 'dubsta2', name: 'Dubsta', brand: 'Benefactor', plate: 'RAVEN', displayClass: 'vip', state: 1, stateLabel: 'Mensalidade VIP vencida', depotPrice: '0', vipRental: { managed: true, active: false, expired: true, expiresAt: 1789000000, durationDays: 30, renewalRunes: 150 }, metrics: { engine: 68, body: 59, fuel: 30, tyres: 74, color: 'Verde floresta' }, tunings: { engine: 1, armor: 2, turbo: false, brakes: 1, transmission: 1 } },
     ],
   });
 } else {
