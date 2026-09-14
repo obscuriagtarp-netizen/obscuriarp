@@ -74,6 +74,19 @@ CreateThread(function ()
             cb(newTransaction)
         end)
     end
+
+    RegisterNUICallback('creditState', function(_, cb)
+        cb(lib.callback.await('renewed-banking:server:creditState', false))
+    end)
+
+    RegisterNUICallback('creditPay', function(data, cb)
+        cb(lib.callback.await('renewed-banking:server:creditPay', false, data))
+    end)
+
+    RegisterNUICallback('refreshAccounts', function(_, cb)
+        cb(lib.callback.await('renewed-banking:server:initalizeBanking', false))
+    end)
+
     exports.ox_target:addModel(Config.atms, {{
         name = 'renewed_banking_openui',
         event = 'Renewed-Banking:client:openBankUI',

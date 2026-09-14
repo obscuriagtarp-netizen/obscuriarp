@@ -373,7 +373,7 @@ Config.Mail                     = {
 -- [INFO] Payment uses framework accounts (ESX: money/bank; QB mapped in custom).
 --──────────────────────────────────────────────────────────────────────────────
 Config.Messages                 = {
-    PaymentAccount = 'money',
+    PaymentAccount = 'bank',
     PaymentMin = 1,
     PaymentMax = 999999,
     PaymentStep = 10,
@@ -1168,7 +1168,6 @@ Config.PhoneApplications        = {
     { id = 'peachstore', label = 'Peach Store', icon = 'peachstore.webp', category = 'Utilities',              sizeMb = 98 },
     { id = 'map',        label = 'Maps',        icon = 'maps.webp',       category = 'Utilities',              sizeMb = 895 },
     { id = 'health',     label = 'Health',      icon = 'health.webp',     category = 'Creativity',             sizeMb = 125 },
-    { id = 'wallet',     label = 'Wallet',      icon = 'wallet.webp',     category = 'Productivity & Finance', sizeMb = 168 },
     { id = 'settings',   label = 'Settings',    icon = 'settings.webp',   category = 'Utilities',              sizeMb = 215 },
     { id = 'contacts',   label = 'Contacts',    icon = 'contacts.webp',   category = 'Social',                 sizeMb = 188 },
     { id = 'crypto',     label = 'Crypto',      icon = 'crypto.webp',     category = 'Productivity & Finance', sizeMb = 245 },
@@ -1198,7 +1197,7 @@ Config.HomeScreenDefaults       = {
         {
             id = 'finance',
             title = 'Finance',
-            apps = { 'wallet', 'crypto' },
+            apps = { 'crypto' },
         },
         {
             id = 'social',

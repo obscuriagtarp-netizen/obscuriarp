@@ -1,6 +1,36 @@
 local registered = {}
 local pushing
 local patientNetId
+local pushTextVisible = false
+
+local function showPushText()
+    if pushTextVisible then return end
+    lib.showTextUI(('[%s] Soltar maca'):format(Config.Stretcher.releaseKey or 'X'))
+    pushTextVisible = true
+end
+
+local function hidePushText()
+    if not pushTextVisible then return end
+    lib.hideTextUI()
+    pushTextVisible = false
+end
+
+local function playPushAnimation()
+    local animation = Config.Stretcher.pushAnimation
+    if not animation then return end
+
+    local ped = PlayerPedId()
+    if IsEntityPlayingAnim(ped, animation.dict, animation.clip, 3) then return end
+
+    lib.requestAnimDict(animation.dict, 10000)
+    TaskPlayAnim(ped, animation.dict, animation.clip, 2.0, 2.0, -1, animation.flag or 49, 0.0, false, false, false)
+end
+
+local function stopPushAnimation()
+    local animation = Config.Stretcher.pushAnimation
+    if not animation then return end
+    StopAnimTask(PlayerPedId(), animation.dict, animation.clip, 1.5)
+end
 
 local function requestControl(entity)
     if NetworkHasControlOfEntity(entity) then return true end
@@ -10,13 +40,56 @@ local function requestControl(entity)
     return NetworkHasControlOfEntity(entity)
 end
 
+local function ignoreNearbyVehicleCollisions(stretcher)
+    if not DoesEntityExist(stretcher) then return end
+
+    local stretcherCoords = GetEntityCoords(stretcher)
+    local maxDistance = Config.Stretcher.vehicleCollisionDistance or 15.0
+
+    for _, vehicle in ipairs(GetGamePool('CVehicle')) do
+        if DoesEntityExist(vehicle) and #(stretcherCoords - GetEntityCoords(vehicle)) <= maxDistance then
+            SetEntityNoCollisionEntity(stretcher, vehicle, false)
+            SetEntityNoCollisionEntity(vehicle, stretcher, false)
+        end
+    end
+end
+
 local function stopPushing()
-    if not pushing or not DoesEntityExist(pushing) then pushing = nil return end
-    requestControl(pushing)
-    DetachEntity(pushing, true, true)
-    PlaceObjectOnGroundProperly(pushing)
-    FreezeEntityPosition(pushing, true)
+    local stretcher = pushing
     pushing = nil
+    stopPushAnimation()
+    hidePushText()
+
+    if not stretcher or not DoesEntityExist(stretcher) then return end
+    requestControl(stretcher)
+    DetachEntity(stretcher, true, true)
+    PlaceObjectOnGroundProperly(stretcher)
+    SetEntityCollision(stretcher, true, true)
+    ignoreNearbyVehicleCollisions(stretcher)
+    FreezeEntityPosition(stretcher, true)
+end
+
+lib.addKeybind({
+    name = 'ob_hospital_release_stretcher',
+    description = 'Soltar maca',
+    defaultKey = Config.Stretcher.releaseKey or 'X',
+    onPressed = function()
+        if pushing then stopPushing() end
+    end
+})
+
+local function updatePushingPosition(ped, stretcher)
+    local offset = Config.Stretcher.pushOffset
+    local target = GetOffsetFromEntityInWorldCoords(ped, offset.x, offset.y, offset.z)
+    local pedCoords = GetEntityCoords(ped)
+    local foundGround, groundZ = GetGroundZFor_3dCoord(target.x, target.y, pedCoords.z + 2.0, false)
+    local targetZ = foundGround and groundZ + (Config.Stretcher.pushGroundOffset or 0.0) or target.z
+    local rotation = Config.Stretcher.pushRotation
+
+    SetEntityCoordsNoOffset(stretcher, target.x, target.y, targetZ, false, false, false)
+    SetEntityRotation(stretcher, rotation.x, rotation.y, GetEntityHeading(ped) + rotation.z, 2, true)
+    SetEntityVelocity(stretcher, 0.0, 0.0, 0.0)
+    SetEntityCollision(stretcher, true, true)
 end
 
 local function closestPlayer(maxDistance)
@@ -37,6 +110,8 @@ end
 local function registerTarget(entity)
     if registered[entity] or not DoesEntityExist(entity) then return end
     registered[entity] = true
+    SetEntityCollision(entity, true, true)
+    ignoreNearbyVehicleCollisions(entity)
     exports.ox_target:addLocalEntity(entity, {
         {
             name = 'ob_hospital_stretcher_push',
@@ -48,14 +123,12 @@ local function registerTarget(entity)
                 if pushing == data.entity then stopPushing() return end
                 if pushing then stopPushing() end
                 if not requestControl(data.entity) then return end
-                FreezeEntityPosition(data.entity, false)
-                AttachEntityToEntity(
-                    data.entity, PlayerPedId(), 0,
-                    Config.Stretcher.pushOffset.x, Config.Stretcher.pushOffset.y, Config.Stretcher.pushOffset.z,
-                    Config.Stretcher.pushRotation.x, Config.Stretcher.pushRotation.y, Config.Stretcher.pushRotation.z,
-                    false, false, true, false, 2, true
-                )
+                DetachEntity(data.entity, true, true)
+                FreezeEntityPosition(data.entity, true)
                 pushing = data.entity
+                updatePushingPosition(PlayerPedId(), data.entity)
+                playPushAnimation()
+                showPushText()
             end
         },
         {
@@ -103,19 +176,53 @@ RegisterNetEvent('ob_hospital:client:deployStretcher', function()
     local model = joaat(Config.Stretcher.models.raised)
     if not IsModelInCdimage(model) or not IsModelValid(model) then
         model = joaat(Config.Stretcher.fallbackModel)
-        exports.qbx_core:Notify('Pack de maca não encontrado; usando o modelo de contingência.', 'warning')
+        exports.qbx_core:Notify('Modelo da maca não carregou; usando uma cama hospitalar nativa.', 'warning')
+    end
+    if not IsModelInCdimage(model) or not IsModelValid(model) then
+        exports.qbx_core:Notify('Não foi possível carregar o modelo da maca.', 'error')
+        return
     end
     lib.requestModel(model, 10000)
     local spawn = GetOffsetFromEntityInWorldCoords(ped, Config.Stretcher.deployOffset.x, Config.Stretcher.deployOffset.y, Config.Stretcher.deployOffset.z)
     local object = CreateObject(model, spawn.x, spawn.y, spawn.z, true, true, false)
     SetEntityHeading(object, GetEntityHeading(ped))
     PlaceObjectOnGroundProperly(object)
+    SetEntityCollision(object, true, true)
+    ignoreNearbyVehicleCollisions(object)
     FreezeEntityPosition(object, true)
     local netId = NetworkGetNetworkIdFromEntity(object)
     SetNetworkIdCanMigrate(netId, true)
     registerTarget(object)
     TriggerServerEvent('ob_hospital:server:registerStretcher', netId)
     SetModelAsNoLongerNeeded(model)
+end)
+
+CreateThread(function()
+    while true do
+        if pushing then
+            local ped = PlayerPedId()
+            local invalidState = IsEntityDead(ped)
+                or IsPedRagdoll(ped)
+                or IsPedFalling(ped)
+                or IsPedInAnyVehicle(ped, false)
+                or not DoesEntityExist(pushing)
+
+            if invalidState then
+                stopPushing()
+                Wait(250)
+            else
+                updatePushingPosition(ped, pushing)
+                playPushAnimation()
+                DisableControlAction(0, 22, true) -- Jump
+                DisableControlAction(0, 23, true) -- Enter vehicle
+                DisableControlAction(0, 24, true) -- Attack
+                DisableControlAction(0, 25, true) -- Aim
+                Wait(0)
+            end
+        else
+            Wait(500)
+        end
+    end
 end)
 
 RegisterNetEvent('ob_hospital:client:deleteStretcher', function(netId)
@@ -187,11 +294,39 @@ CreateThread(function()
     end
 end)
 
-AddEventHandler('onResourceStop', function(resource)
-    if resource ~= GetCurrentResourceName() then return end
-    stopPushing()
-    if patientNetId then DetachEntity(PlayerPedId(), true, true) end
-    for entity in pairs(registered) do
-        if DoesEntityExist(entity) then exports.ox_target:removeLocalEntity(entity) end
+CreateThread(function()
+    while true do
+        local hasStretcher = false
+
+        for entity in pairs(registered) do
+            if DoesEntityExist(entity) then
+                hasStretcher = true
+                ignoreNearbyVehicleCollisions(entity)
+            else
+                registered[entity] = nil
+            end
+        end
+
+        Wait(hasStretcher and 100 or 1000)
     end
+end)
+
+AddEventHandler('onClientResourceStop', function(resource)
+    if resource ~= GetCurrentResourceName() then return end
+
+    pushing = nil
+    stopPushAnimation()
+    hidePushText()
+
+    if patientNetId then
+        patientNetId = nil
+        DetachEntity(PlayerPedId(), true, true)
+        ClearPedTasksImmediately(PlayerPedId())
+    end
+
+    for entity in pairs(registered) do
+        exports.ox_target:removeLocalEntity(entity)
+    end
+
+    registered = {}
 end)

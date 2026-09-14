@@ -2,11 +2,14 @@
   font-family: "Obscuria UI";
   src: url("./assets/tt-commons.woff") format("woff");
   font-display: swap;
+  font-style: normal;
+  font-weight: 300 800;
 }
 
 :root {
   font-family: "Obscuria UI", "Segoe UI", sans-serif;
   font-synthesis: none;
+  text-rendering: optimizeLegibility;
   color: #f0eaf1;
   --ink: #111015;
   --ink-soft: #17151c;
@@ -29,6 +32,7 @@
 
 * { box-sizing: border-box; letter-spacing: 0; }
 html, body, #app { width: 100%; height: 100%; margin: 0; overflow: hidden; background: transparent; }
+body { font-weight: 400; -webkit-font-smoothing: auto; }
 button, input, select, textarea { font: inherit; color: inherit; }
 button { border: 0; cursor: pointer; }
 button:disabled { cursor: default; opacity: .44; }
@@ -541,10 +545,10 @@ label > span { display: flex; align-items: center; gap: 5px; margin-bottom: 4px;
 
 .public-display-stack {
   position: fixed;
-  top: 3.2vh;
+  top: 24px;
   left: 50%;
   z-index: 900;
-  width: min(780px, 72vw);
+  width: min(780px, calc(100vw - 48px));
   transform: translateX(-50%);
 }
 .public-display {
@@ -731,7 +735,7 @@ label > span { display: flex; align-items: center; gap: 5px; margin-bottom: 4px;
 .announcement-enter-from, .announcement-leave-to { opacity: 0; transform: translateY(-6px); }
 
 @media (max-width: 1280px), (max-height: 720px) {
-  .restaurant-shell { width: 95vw; height: 92vh; min-height: 520px; grid-template-columns: 176px minmax(0, 1fr); }
+  .restaurant-shell { width: min(1380px, calc(100vw - 48px)); height: min(760px, calc(100vh - 48px)); min-height: 520px; grid-template-columns: 176px minmax(0, 1fr); }
   .restaurant-brand { height: 64px; padding: 9px 11px; }
   .restaurant-brand img { width: 34px; height: 34px; }
   .operator-card { margin-top: 7px; }
@@ -745,8 +749,8 @@ label > span { display: flex; align-items: center; gap: 5px; margin-bottom: 4px;
   .product-settings-editor { grid-template-columns: 1fr 1fr; }
   .product-type-field { grid-column: 1 / -1; }
   .item-rows-list article { grid-template-columns: minmax(115px, 1fr) minmax(95px, .9fr) 62px 28px; }
-  .point-shell { width: 95vw; height: 92vh; min-height: 520px; }
-  .public-menu-shell { width: min(980px, 94vw); height: 92vh; min-width: 700px; min-height: 500px; }
+  .point-shell { width: min(1380px, calc(100vw - 48px)); height: min(760px, calc(100vh - 48px)); min-height: 520px; }
+  .public-menu-shell { width: min(980px, calc(100vw - 48px)); height: min(760px, calc(100vh - 48px)); min-width: 700px; min-height: 500px; }
   .menu-catalog-intro { padding: 13px 18px 11px; }
   .menu-catalog-intro h2 { font-size: 21px; }
   .menu-category-tabs { padding: 0 18px 10px; }
@@ -756,4 +760,224 @@ label > span { display: flex; align-items: center; gap: 5px; margin-bottom: 4px;
   .menu-product-media { width: 108px; height: 108px; }
   .menu-product-labels { min-height: 21px; margin-bottom: 5px; }
   .menu-product-labels > span { height: 20px; padding: 0 6px; font-size: 8px; line-height: 20px; }
+}
+
+/* Readability pass: keep FiveM's CEF from rasterizing the whole interface on a
+   fractional transformed layer and keep operational text legible at 1080p. */
+.restaurant-shell,
+.point-shell,
+.public-menu-shell {
+  inset: 0;
+  margin: auto;
+  transform: none;
+}
+
+.customer-payment-shell {
+  inset: 0;
+  height: max-content;
+  margin: auto;
+  transform: none;
+}
+
+.public-display-stack {
+  right: 0;
+  left: 0;
+  margin-inline: auto;
+  transform: none;
+}
+
+.interface-enter-from,
+.interface-leave-to,
+.restaurant-shell.interface-enter-from,
+.restaurant-shell.interface-leave-to {
+  transform: translateY(7px);
+}
+
+.restaurant-shell small,
+.point-shell small,
+.customer-payment-shell small,
+.public-display small {
+  color: #b3acb7;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.restaurant-shell p,
+.point-shell p,
+.customer-payment-shell p,
+.public-display p {
+  color: #aaa3af;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+input,
+select,
+textarea {
+  border-color: #4a4450;
+  font-size: 12px;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #918a97;
+  opacity: 1;
+}
+
+.restaurant-brand small,
+.content-header small,
+.section-toolbar small,
+.operator-card small,
+.order-pane header small,
+.admin-section header small,
+.production-queue header small,
+.manual-charge header small {
+  color: #bca8c8;
+  font-size: 10px;
+}
+
+.restaurant-brand strong { font-size: 16px; }
+.operator-card b { font-size: 13px; }
+.operator-card em { color: #aaa3ad; font-size: 11px; }
+.restaurant-navigation > small { color: #a49ca8; font-size: 10px; }
+.restaurant-navigation button { color: #bdb6c1; }
+.restaurant-navigation button b { font-size: 13px; font-weight: 650; }
+.restaurant-navigation button small { color: #aaa3af; font-size: 11px; }
+.restaurant-sidebar > footer span,
+.restaurant-sidebar > footer small { color: #aaa3af; font-size: 11px; line-height: 1.35; }
+.restaurant-sidebar > footer strong { font-size: 20px; }
+
+.content-header h1 { font-size: 20px; }
+.section-toolbar h2 { font-size: 18px; }
+.connection-state { color: #b5aeb9; font-size: 11px; }
+.search-box { color: #aaa2af; }
+.category-tabs button { color: #bbb4bf; font-size: 11px; font-weight: 600; }
+
+.recipe-grid { grid-auto-rows: 124px; }
+.recipe-copy b { font-size: 13px; font-weight: 650; }
+.recipe-copy small { color: #aaa3af; font-size: 11px; line-height: 1.35; }
+.recipe-tile > strong { color: #e0d8e4; font-size: 13px; }
+
+.order-pane { overflow-y: auto; }
+.order-pane h2 { font-size: 17px; }
+label > span { color: #bbb4bf; font-size: 11px; font-weight: 550; }
+.cart-line b { font-size: 12px; }
+.cart-line small { color: #c6b6ce; font-size: 11px; }
+.stepper span { font-size: 12px; }
+.empty-state { color: #99919e; }
+.empty-state b { color: #c7c0ca; font-size: 12px; }
+.empty-state span { font-size: 11px; }
+.payment-choice > span { color: #b8b1bc; font-size: 11px; }
+.payment-choice button { color: #c0b9c4; font-size: 11px; font-weight: 600; }
+.order-total span { color: #b8b1bc; font-size: 11px; }
+.order-total strong { font-size: 21px; }
+.order-total small { color: #a49daa; font-size: 10px; line-height: 1.35; }
+.primary-command,
+.secondary-command { font-size: 12px; }
+
+.kitchen-column > header b { font-size: 13px; }
+.kitchen-column > header span { font-size: 10px; }
+.order-heading > strong { font-size: 12px; }
+.order-heading b { font-size: 12px; }
+.order-heading small { color: #aaa3af; font-size: 11px; }
+.kitchen-order li { color: #c3bdc6; font-size: 11px; }
+.kitchen-order p { color: #c9bfa7; font-size: 11px; }
+.kitchen-order p span { color: #a39ca7; font-size: 10px; }
+.kitchen-order > button { color: #cbc5ce; font-size: 11px; font-weight: 600; }
+.column-empty { color: #a29ba6; font-size: 11px; }
+
+.production-grid { grid-auto-rows: 192px; }
+.production-recipe header b { font-size: 13px; }
+.production-recipe header small { color: #aaa3af; font-size: 10px; }
+.production-recipe p { color: #aaa3af; font-size: 11px; }
+.production-recipe li { color: #c1bbc4; font-size: 10px; }
+.production-recipe > button { font-size: 11px; font-weight: 600; }
+.production-queue article b { font-size: 12px; }
+.production-queue article small { color: #aaa3af; font-size: 10px; }
+.empty-compact { color: #a29ba6; font-size: 11px; }
+
+.payment-row small { color: #aaa3af; font-size: 10px; }
+.payment-row b { font-size: 13px; }
+.payment-products { color: #b5aeb9; font-size: 11px; }
+.payment-row > strong { font-size: 16px; }
+.manual-charge > p { color: #aaa3af; font-size: 11px; }
+
+.admin-tabs button { color: #aaa3af; font-size: 11px; font-weight: 600; }
+.metric-row small { color: #aaa3af; font-size: 10px; }
+.metric-row strong { font-size: 19px; }
+.metric-row span { color: #aaa3af; font-size: 10px; }
+.admin-section > p { color: #aaa3af; font-size: 11px; }
+.inline-form button { font-size: 11px; font-weight: 600; }
+.analytics-lists li b { font-size: 11px; }
+.analytics-lists li small { color: #aaa3af; font-size: 10px; }
+.analytics-lists li strong { font-size: 11px; }
+.recipe-library article b,
+.point-list article b { font-size: 11px; }
+.recipe-library article small,
+.point-list article small { color: #aaa3af; font-size: 10px; }
+.toggle-row label { color: #bdb6c1; font-size: 11px; }
+.product-type-field > span { color: #bbb4bf; font-size: 11px; }
+.product-type-options button { color: #b8b1bd; font-size: 11px; font-weight: 600; }
+.item-rows-editor > header small,
+.recipe-effects-editor > header small,
+.craft-flow-editor > header small { font-size: 10px; }
+.item-rows-editor > header strong,
+.recipe-effects-editor > header strong,
+.craft-flow-editor > header strong { font-size: 12px; }
+.item-rows-editor > header button { font-size: 10px; font-weight: 600; }
+.item-rows-list label > span { font-size: 10px; }
+.item-code-field > small { color: #a198a6; font-size: 10px; }
+.item-rows-list > p { color: #aaa3af; font-size: 10px; }
+.recipe-effects-editor > header > span { font-size: 10px; }
+.recipe-effect-switch strong { font-size: 11px; }
+.recipe-effect-switch small { color: #a69eab; font-size: 10px; }
+.recipe-effect-amount input { font-size: 11px; }
+.recipe-effect-amount > span { font-size: 9px; }
+.craft-flow-editor > header > span { color: #aaa3af; font-size: 10px; }
+.craft-action-picker button { font-size: 10px; font-weight: 600; }
+.craft-step-list article > b { font-size: 10px; }
+.craft-step-list article strong { font-size: 11px; }
+.craft-step-list article small { color: #a69eab; font-size: 10px; }
+.craft-flow-editor > p { color: #aaa3af; font-size: 10px; }
+.text-command { font-size: 10px; font-weight: 600; }
+.category-icon-picker button small { font-size: 9px; }
+.category-list article b { font-size: 11px; }
+.category-list article small { color: #aaa3af; font-size: 10px; }
+
+.display-brand small { color: #bca8c8; font-size: 10px; }
+.display-brand strong { font-size: 16px; }
+.display-online { color: #b5aeb9; font-size: 10px; }
+.display-column > header small { color: #aaa3af; font-size: 10px; }
+.display-column > header strong { font-size: 13px; }
+.display-column > header > b { font-size: 10px; }
+.display-codes article strong { font-size: 12px; }
+.display-codes article span { color: #d0c9d3; font-size: 11px; }
+.display-codes p { color: #aaa3af; font-size: 10px; }
+.announcement-banner { font-size: 13px; }
+.restaurant-toast { font-size: 12px; line-height: 1.4; }
+
+.point-shell-brand span small,
+.public-menu-brand > div small { color: #bca8c8; font-size: 10px; }
+.point-shell-brand span strong,
+.public-menu-brand > div strong { font-size: 16px; }
+.point-shell-status > span { color: #b5aeb9; font-size: 10px; }
+
+.menu-catalog-intro small { font-size: 12px; }
+.menu-catalog-intro p { color: #514b54; font-size: 13px; }
+.menu-catalog-intro > span { color: #443e47; font-size: 12px; }
+.menu-category-tabs button { color: #554f58; }
+.menu-category-tabs button b { font-size: 14px; }
+.menu-category-tabs button small { color: #625c65; font-size: 11px; }
+.menu-product-labels > span { font-size: 10px; }
+.menu-product-labels > small { color: #625b66; font-size: 10px; }
+.menu-product-copy p { color: #4f4952; font-size: 13px; }
+.menu-product-price > span small { color: #6e6671; font-size: 10px; }
+.menu-product-price del { color: #746d76; font-size: 11px; }
+.menu-catalog-empty p { color: #625b66; font-size: 11px; }
+.menu-catalog-footer { color: #625b64; font-size: 11px; }
+.menu-catalog-footer strong { font-size: 12px; }
+
+@media (max-width: 1280px), (max-height: 720px) {
+  .recipe-grid { grid-auto-rows: 124px; }
+  .menu-product-labels > span { font-size: 10px; }
 }

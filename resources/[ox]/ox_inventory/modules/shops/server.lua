@@ -169,17 +169,43 @@ lib.callback.register('ox_inventory:openShop', function(source, data)
 	return { label = playerInv.label, type = playerInv.type, slots = playerInv.slots, weight = playerInv.weight, maxWeight = playerInv.maxWeight }, shop
 end)
 
+local function canUseCredit(inv, currency, price)
+	if currency ~= 'money' or price < 1 or GetResourceState('ob_bank') ~= 'started' then return false end
+	local creditAmount = math.max(0, price - Inventory.GetItemCount(inv, currency))
+	if creditAmount < 1 then return false end
+	local ok, allowed = pcall(function()
+		return exports.ob_bank:CanChargeCredit(inv.id, creditAmount)
+	end)
+    return ok and allowed == true
+end
+
 local function canAffordItem(inv, currency, price)
 	local canAfford = price >= 0 and Inventory.GetItemCount(inv, currency) >= price
+	if not canAfford and canUseCredit(inv, currency, price) then return true end
 
 	return canAfford or {
 		type = 'error',
-		description = locale('cannot_afford', ('%s%s'):format((currency == 'money' and locale('$') or math.groupdigits(price)), (currency == 'money' and math.groupdigits(price) or ' '..Items(currency).label)))
+		description = currency == 'money' and 'Saldo e limite do cartão insuficientes.' or locale('cannot_afford', ('%s%s'):format(math.groupdigits(price), ' '..Items(currency).label))
 	}
 end
 
-local function removeCurrency(inv, currency, price)
-	Inventory.RemoveItem(inv, currency, price)
+local function removeCurrency(inv, currency, price, shopType, itemName)
+	local walletAmount = Inventory.GetItemCount(inv, currency)
+	if walletAmount >= price then
+		return Inventory.RemoveItem(inv, currency, price) == true
+	end
+	if not canUseCredit(inv, currency, price) then return false end
+	local cashAmount = math.min(walletAmount, price)
+	local creditAmount = price - cashAmount
+	if cashAmount > 0 and Inventory.RemoveItem(inv, currency, cashAmount) ~= true then return false end
+
+	local transactionId = ('OX-%s-%s-%s-%s-%06d'):format(os.time(), tostring(inv.id), tostring(shopType), tostring(itemName), math.random(0, 999999))
+	local ok, charged = pcall(function()
+		return exports.ob_bank:ChargeCredit(inv.id, creditAmount, tostring(shopType or 'Loja'), ('Compra de %s'):format(itemName or 'item'), transactionId)
+	end)
+	if ok and charged == true then return true end
+	if cashAmount > 0 then Inventory.AddItem(inv, currency, cashAmount) end
+	return false
 end
 
 local function isRequiredGrade(grade, rank)
@@ -272,9 +298,12 @@ lib.callback.register('ox_inventory:buyItem', function(source, data)
 					currency = currency,
 				}) then return false end
 
+				if not removeCurrency(playerInv, currency, price, shopType, metadata?.label or fromItem.label) then
+					return false, false, { type = 'error', description = 'Não foi possível concluir o pagamento.' }
+				end
+
 				Inventory.SetSlot(playerInv, fromItem, count, metadata, data.toSlot)
 				playerInv.weight = newWeight
-				removeCurrency(playerInv, currency, price)
 
 				if fromData.count then
 					shop.items[data.fromSlot].count = fromData.count - count

@@ -1715,6 +1715,22 @@ RegisterNetEvent('ob_hospital:server:removeStretcherPatient', function(netId)
     TriggerClientEvent('ob_hospital:client:setOnStretcher', patient, netId, false)
 end)
 
+AddEventHandler('onResourceStop', function(resource)
+    if resource ~= GetCurrentResourceName() then return end
+
+    for netId, state in pairs(activeStretchers) do
+        if state.patient then
+            TriggerClientEvent('ob_hospital:client:setOnStretcher', state.patient, netId, false)
+        end
+
+        local entity = NetworkGetEntityFromNetworkId(netId)
+        if entity ~= 0 and DoesEntityExist(entity) then DeleteEntity(entity) end
+    end
+
+    activeStretchers = {}
+    patientStretchers = {}
+end)
+
 AddEventHandler('playerDropped', function()
     local src = source
     treatmentLocks[src] = nil

@@ -55,11 +55,6 @@ local function payBill(source, billId)
         return true
     end
 
-    local balance = sfr:getAccountMoney(source, Config.Wallet.account)
-    if type(balance) ~= 'number' or balance < price then
-        return false
-    end
-
     if not sfr:removeAccountMoney(source, Config.Wallet.account, price) then
         return false
     end

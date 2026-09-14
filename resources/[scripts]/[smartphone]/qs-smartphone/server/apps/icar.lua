@@ -53,10 +53,6 @@ Core.callback('icar:valetPay', function(source, _identifier, _scopeId, _data)
     if price == 0 then
         return Core.ok({ paid = 0 })
     end
-    local balance = sfr:getAccountMoney(source, account)
-    if balance < price then
-        return Core.fail('NO_MONEY', i18n.t('apps.icar.backend.no_money'))
-    end
     if not sfr:removeAccountMoney(source, account, price) then
         return Core.fail('PAYMENT_FAILED', i18n.t('apps.icar.backend.payment_failed'))
     end

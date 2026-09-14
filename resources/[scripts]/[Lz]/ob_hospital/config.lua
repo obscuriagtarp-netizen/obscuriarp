@@ -117,10 +117,18 @@ Config.Stretcher = {
         lowered = 'loweredstrykergurney',
         seated = 'sittingstrykergurney'
     },
-    fallbackModel = 'prop_ld_binbag_01',
+    fallbackModel = 'v_med_bed2',
     deployOffset = vec3(0.0, 1.4, -1.0),
-    pushOffset = vec3(0.0, 1.25, -0.95),
-    pushRotation = vec3(0.0, 0.0, 180.0),
+    pushOffset = vec3(0.0, 1.25, 0.0),
+    pushRotation = vec3(0.0, 0.0, 90.0),
+    pushGroundOffset = 0.0,
+    vehicleCollisionDistance = 15.0,
+    releaseKey = 'X',
+    pushAnimation = {
+        dict = 'anim@heists@box_carry@',
+        clip = 'idle',
+        flag = 49
+    },
     patientOffset = vec3(0.0, 0.0, 1.05),
     patientRotation = vec3(0.0, 0.0, 180.0),
     maxPatientDistance = 3.0

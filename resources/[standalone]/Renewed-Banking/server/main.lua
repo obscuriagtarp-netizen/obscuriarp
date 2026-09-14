@@ -1,6 +1,39 @@
 local cachedAccounts = {}
 local cachedPlayers = {}
 
+local function creditResource()
+    local credit = Config.credit or {}
+    return credit.enabled ~= false and tostring(credit.resource or 'ob_bank') or nil
+end
+
+local function creditResponse(source)
+    local resource = creditResource()
+    if not resource or GetResourceState(resource) ~= 'started' then
+        return { ok = false, error = 'O serviço de crédito está indisponível.' }
+    end
+    local ok, response = pcall(function() return exports[resource]:GetCreditState(source) end)
+    if not ok or type(response) ~= 'table' then
+        return { ok = false, error = 'Não foi possível consultar o cartão.' }
+    end
+    return response
+end
+
+
+local function isCreditBlocked(source)
+    local resource = creditResource()
+    if not resource or GetResourceState(resource) ~= 'started' then return false end
+    local ok, blocked = pcall(function() return exports[resource]:IsAccountBlocked(source) end)
+    return ok and blocked == true
+end
+
+local function notifyBlocked(source)
+    Notify(source, {
+        title = locale('bank_name'),
+        description = 'Sua conta está bloqueada. Quite a fatura do cartão para regularizar.',
+        type = 'error'
+    })
+end
+
 CreateThread(function()
     Wait(500)
     if not LoadResourceFile("Renewed-Banking", 'web/public/build/bundle.js') or GetCurrentResourceName() ~= "Renewed-Banking" then
@@ -96,6 +129,7 @@ local function getBankData(source)
         amount = funds.bank,
         cash = funds.cash,
         transactions = cachedPlayers[cid].transactions,
+        restricted = isCreditBlocked(source),
     }
 
     local jobs = GetJobs(Player)
@@ -132,6 +166,29 @@ end
 lib.callback.register('renewed-banking:server:initalizeBanking', function(source)
     local bankData = getBankData(source)
     return bankData
+end)
+
+lib.callback.register('renewed-banking:server:creditState', function(source)
+    return creditResponse(source)
+end)
+
+lib.callback.register('renewed-banking:server:creditPay', function(source, data)
+    local resource = creditResource()
+    if not resource or GetResourceState(resource) ~= 'started' then
+        return { ok = false, error = 'O serviço de crédito está indisponível.' }
+    end
+    data = type(data) == 'table' and data or {}
+    local requestId = tostring(data.requestId or ''):sub(1, 96)
+    if #requestId < 16 or not requestId:match('^[%w%-_:]+$') then
+        return { ok = false, error = 'Identificador do pagamento inválido.' }
+    end
+    local ok, response = pcall(function()
+        return exports[resource]:PayCreditInvoice(source, data.amount, requestId)
+    end)
+    if not ok or type(response) ~= 'table' then
+        return { ok = false, error = 'Não foi possível pagar a fatura.' }
+    end
+    return response
 end)
 
 -- Events
@@ -270,6 +327,7 @@ end
 exports('removeAccountMoney', RemoveAccountMoney)
 
 lib.callback.register('Renewed-Banking:server:withdraw', function(source, data)
+    if not cachedAccounts[data.fromAccount] and isCreditBlocked(source) then notifyBlocked(source) return false end
     local Player = GetPlayerObject(source)
     local amount = tonumber(data.amount)
     if not amount or amount < 1 then
@@ -300,6 +358,7 @@ lib.callback.register('Renewed-Banking:server:withdraw', function(source, data)
 end)
 
 lib.callback.register('Renewed-Banking:server:transfer', function(source, data)
+    if not cachedAccounts[data.fromAccount] and isCreditBlocked(source) then notifyBlocked(source) return false end
     local Player = GetPlayerObject(source)
     local amount = tonumber(data.amount)
     if not amount or amount < 1 then

@@ -52,7 +52,9 @@ end
 
 ---@return number
 local function defaultMoneyCheck()
-	return exports.ox_inventory:GetItemCount('money')
+	local cash = exports.ox_inventory:GetItemCount('money')
+	local credit = math.max(0, tonumber(LocalPlayer.state.obCreditAvailable) or 0)
+	return cash + credit
 end
 
 utils.getMoney = defaultMoneyCheck

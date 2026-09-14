@@ -127,10 +127,16 @@ function framework:removeAccountMoney(source, account, amount)
         return
     end
     if self:getAccountMoney(source, account) < amount then
+        if (account == 'cash' or account == 'bank') and GetResourceState('ob_bank') == 'started' then
+            local transactionId = ('PHONE-%s-%s-%06d'):format(os.time(), source, math.random(0, 999999))
+            local ok, charged = pcall(function()
+                return exports.ob_bank:ChargeCredit(source, amount, 'Loja do celular', 'Compra pelo smartphone', transactionId)
+            end)
+            if ok and charged == true then return true end
+        end
         return false
     end
-    player.Functions.RemoveMoney(account, amount)
-    return true
+    return player.Functions.RemoveMoney(account, amount, 'qs_smartphone_purchase') == true
 end
 
 function framework:addAccountMoney(source, account, amount)

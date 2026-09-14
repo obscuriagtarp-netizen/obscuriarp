@@ -24,15 +24,24 @@ end
 ---@param price number
 ---@return boolean?
 local function defaultPaymentMethod(playerId, price)
-	local success = ox_inventory:RemoveItem(playerId, 'money', price)
-
-	if success then return true end
-
 	local money = ox_inventory:GetItemCount(playerId, 'money')
+	if money >= price then return ox_inventory:RemoveItem(playerId, 'money', price) == true end
+
+	local cashAmount = math.min(money, price)
+	local creditAmount = price - cashAmount
+	if creditAmount > 0 and GetResourceState('ob_bank') == 'started' then
+		if cashAmount > 0 and ox_inventory:RemoveItem(playerId, 'money', cashAmount) ~= true then return end
+		local transactionId = ('FUEL-%s-%s-%06d'):format(os.time(), playerId, math.random(0, 999999))
+		local ok, charged = pcall(function()
+			return exports.ob_bank:ChargeCredit(playerId, creditAmount, 'Posto de combustível', 'Abastecimento', transactionId)
+		end)
+		if ok and charged == true then return true end
+		if cashAmount > 0 then ox_inventory:AddItem(playerId, 'money', cashAmount) end
+	end
 
 	TriggerClientEvent('ox_lib:notify', playerId, {
 		type = 'error',
-		description = locale('not_enough_money', price - money)
+		description = 'Saldo e limite do cartão insuficientes.'
 	})
 end
 

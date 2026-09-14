@@ -83,6 +83,7 @@ local function ensureVipStore()
             `delivered` TINYINT(1) NOT NULL DEFAULT 0,
             `delivery_token` VARCHAR(96) DEFAULT NULL,
             `delivery_started_at` BIGINT DEFAULT NULL,
+            `delivery_error` VARCHAR(255) DEFAULT NULL,
             `created_at` BIGINT NOT NULL,
             `paid_at` BIGINT DEFAULT NULL,
             PRIMARY KEY (`id`),
@@ -94,6 +95,7 @@ local function ensureVipStore()
     ]])
     ensureColumn("magic_pause_vip_orders", "delivery_token", "VARCHAR(96) DEFAULT NULL AFTER `delivered`")
     ensureColumn("magic_pause_vip_orders", "delivery_started_at", "BIGINT DEFAULT NULL AFTER `delivery_token`")
+    ensureColumn("magic_pause_vip_orders", "delivery_error", "VARCHAR(255) DEFAULT NULL AFTER `delivery_started_at`")
     ensureIndex("magic_pause_vip_orders", "status_created", "`status`, `created_at`")
     ensureIndex("magic_pause_vip_orders", "passport_payment_status", "`passport`, `payment_method`, `status`, `created_at`")
     query([[
@@ -581,43 +583,58 @@ local function deliverProduct(src, product, orderId)
     end
 
     local delivered = true
+    local failureReason
     for _, action in ipairs(product.deliveries or {}) do
         local kind = tostring(action.type or ""):lower()
         local amount = tonumber(action.amount) or 1
+        local actionDelivered = true
 
         if kind == "item" then
-            delivered = Utils.giveItem(src, action.item, amount, action.metadata) and delivered
+            actionDelivered = Utils.giveItem(src, action.item, amount, action.metadata)
+            if not actionDelivered then failureReason = failureReason or ("Não foi possível entregar o item %s. Verifique cadastro e espaço no inventário."):format(tostring(action.item or "")) end
         elseif kind == "money" or kind == "cash" then
-            delivered = Utils.addMoney(src, "cash", amount, deliveryReason) and delivered
+            actionDelivered = Utils.addMoney(src, "cash", amount, deliveryReason)
         elseif kind == "bank" then
-            delivered = Utils.addMoney(src, "bank", amount, deliveryReason) and delivered
+            actionDelivered = Utils.addMoney(src, "bank", amount, deliveryReason)
         elseif kind == "runes" then
-            delivered = Utils.addRunes(src, amount, deliveryReason) and delivered
+            actionDelivered = Utils.addRunes(src, amount, deliveryReason)
         elseif kind == "vip" then
             if GetResourceState("ob_vip") ~= "started" then
-                delivered = false
+                actionDelivered = false
+                failureReason = failureReason or "O resource ob_vip não está iniciado."
             else
-                local ok, success = pcall(function()
-                    return exports.ob_vip:AddVip(passport, action.vip, tonumber(action.days) or 30, {
+                local ok, success, vipError = pcall(function()
+                    return exports.ob_vip:AddVip(src, action.vip, tonumber(action.days) or 30, {
                         grantedBy = "magicPauseObscuria",
                         reason = deliveryReason,
                         metadata = { orderId = orderId, productId = product.id }
                     })
                 end)
-                delivered = ok and success == true and delivered
+                actionDelivered = ok and success == true
+                if not actionDelivered then
+                    failureReason = failureReason or tostring(ok and vipError or success or "O ob_vip recusou a entrega.")
+                end
             end
         elseif kind == "character_slot" then
-            delivered = grantCharacterSlot(src, orderId, amount) and delivered
+            actionDelivered = grantCharacterSlot(src, orderId, amount)
         elseif kind == "command" then
-            delivered = runCommandTemplate(src, passport, product, action) and delivered
+            actionDelivered = runCommandTemplate(src, passport, product, action)
         elseif kind == "server_event" and action.event then
             TriggerEvent(action.event, src, passport, product, action)
         elseif kind == "client_event" and action.event then
             TriggerClientEvent(action.event, src, product, action)
+        else
+            actionDelivered = false
+            failureReason = failureReason or ("Tipo de entrega inválido: %s"):format(kind ~= "" and kind or "vazio")
+        end
+
+        if not actionDelivered then
+            delivered = false
+            failureReason = failureReason or ("A entrega %s foi recusada."):format(kind)
         end
     end
 
-    return delivered
+    return delivered, failureReason
 end
 
 exports("GetExtraCharacterSlots", function(sourceOrLicense, fallbackLicense)
@@ -663,12 +680,12 @@ local function markDelivered(src, orderId, product)
         return false, "processing"
     end
 
-    local safeCall, delivered = pcall(deliverProduct, src, product, orderId)
+    local safeCall, delivered, deliveryError = pcall(deliverProduct, src, product, orderId)
     if safeCall and delivered then
         local completed = update([[
             UPDATE magic_pause_vip_orders
             SET delivered = 1, delivery_token = NULL, delivery_started_at = NULL,
-                status = 'paid', paid_at = COALESCE(paid_at, ?)
+                delivery_error = NULL, status = 'paid', paid_at = COALESCE(paid_at, ?)
             WHERE id = ? AND delivered = 2 AND delivery_token = ?
         ]], { now(), orderId, claimToken })
         if completed > 0 then return true, "delivered" end
@@ -676,15 +693,20 @@ local function markDelivered(src, orderId, product)
         return false, "processing"
     end
 
+    if not safeCall then deliveryError = tostring(delivered or "Falha interna na entrega.") end
+    deliveryError = tostring(deliveryError or "A integração recusou a entrega."):sub(1, 255)
+
     update([[
         UPDATE magic_pause_vip_orders
-        SET delivered = 0, delivery_token = NULL, delivery_started_at = NULL
+        SET delivered = 0, delivery_token = NULL, delivery_started_at = NULL, delivery_error = ?
         WHERE id = ? AND delivered = 2 AND delivery_token = ?
-    ]], { orderId, claimToken })
+    ]], { deliveryError, orderId, claimToken })
     if not safeCall then
-        print(("[MagicPause:VipStore] Falha interna ao entregar o pedido %s: %s"):format(tostring(orderId), tostring(delivered)))
+        print(("[MagicPause:VipStore] Falha interna ao entregar o pedido %s: %s"):format(tostring(orderId), deliveryError))
+    else
+        print(("[MagicPause:VipStore] Entrega recusada para o pedido %s: %s"):format(tostring(orderId), deliveryError))
     end
-    return false, "failed"
+    return false, "failed", deliveryError
 end
 
 local function normalizeStatus(value)
@@ -811,7 +833,7 @@ local function canCheckPixStatus(passport)
 end
 
 local function respondPaidDelivery(src, token, orderId, product, successMessage)
-    local delivered, state = markDelivered(src, orderId, product)
+    local delivered, state, deliveryError = markDelivered(src, orderId, product)
     if delivered then
         return respond(src, token, true, successMessage or "Pagamento aprovado e produto entregue.", {
             status = "paid",
@@ -824,13 +846,56 @@ local function respondPaidDelivery(src, token, orderId, product, successMessage)
             status = "processing"
         })
     end
-    return respond(src, token, false, "Pagamento confirmado, mas a entrega não foi concluída. Tente consultar novamente ou chame a equipe.", {
+    return respond(src, token, false, ("Pagamento confirmado, mas a entrega não foi concluída: %s"):format(
+        tostring(deliveryError or "motivo indisponível")
+    ), {
         status = "delivery_failed"
     })
 end
 
+local function canRetryPaidProduct(product)
+    local deliveries = product and product.deliveries or {}
+    if #deliveries == 0 then return false end
+
+    for _, action in ipairs(deliveries) do
+        local kind = tostring(action.type or ""):lower()
+        if kind ~= "vip" and kind ~= "character_slot" then return false end
+    end
+
+    return true
+end
+
+local function retryPaidDeliveries(src)
+    local passport = Utils.getPassport(src)
+    if not passport then return 0 end
+
+    local recovered = 0
+    local orders = query([[
+        SELECT id, product_id, metadata
+        FROM magic_pause_vip_orders
+        WHERE passport = ? AND status = 'paid' AND delivered = 0
+        ORDER BY id ASC
+        LIMIT 10
+    ]], { passport })
+
+    for _, order in ipairs(orders) do
+        local product = productFromOrder(order)
+        if canRetryPaidProduct(product) then
+            local delivered = markDelivered(src, tonumber(order.id), product)
+            if delivered then recovered = recovered + 1 end
+        end
+    end
+
+    return recovered
+end
+
 RegisterNetEvent("MagicPause:server:getVipStore", function(token)
     local src = source
+    ensureVipStore()
+    local recovered = retryPaidDeliveries(src)
+    if recovered > 0 then
+        exports.qbx_core:Notify(src, ("%d compra(s) pendente(s) foram entregues."):format(recovered), "success", 5000)
+    end
     TriggerClientEvent("MagicPause:client:serverResponse", src, token, buildPayload(src))
 end)
 
@@ -1003,9 +1068,11 @@ RegisterNetEvent("MagicPause:server:buyVipProductRunes", function(token, data)
         })
     end
 
-    local delivered = markDelivered(src, orderId, product)
+    local delivered, _, deliveryError = markDelivered(src, orderId, product)
     if not delivered then
-        return respond(src, token, false, "Compra registrada, mas a entrega falhou. Chame a equipe.", { balance = Utils.getRunes(src) })
+        return respond(src, token, false, ("Compra registrada, mas a entrega falhou: %s"):format(
+            tostring(deliveryError or "motivo indisponível")
+        ), { balance = Utils.getRunes(src) })
     end
 
     local successMessage = characterSlotAmount(product.id) > 0
@@ -1136,9 +1203,11 @@ RegisterNetEvent("MagicPause:server:createRuneDepositOrder", function(token, dat
         ]], { passport, Utils.getName(src), ("Depósito de %s Runas"):format(calc.runes), metadata, now(), now() })
 
         local product = productFromOrder({ product_id = "rune_deposit", metadata = metadata })
-        local delivered = markDelivered(src, orderId, product)
+        local delivered, _, deliveryError = markDelivered(src, orderId, product)
         if not delivered then
-            return respond(src, token, false, "Cupom aplicado, mas a entrega falhou. Chame a equipe.", { balance = Utils.getRunes(src) })
+            return respond(src, token, false, ("Cupom aplicado, mas a entrega falhou: %s"):format(
+                tostring(deliveryError or "motivo indisponível")
+            ), { balance = Utils.getRunes(src) })
         end
 
         return respond(src, token, true, "Cupom aplicado. Runas entregues com sucesso.", {

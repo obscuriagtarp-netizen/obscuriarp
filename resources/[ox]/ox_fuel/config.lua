@@ -35,7 +35,7 @@ return {
 		enabled = true,
 		duration = 5000,
 		price = 500,
-		refillPrice = 300,
+		refillPrice = 200,
 	},
 
 	---Modifies the fuel consumption rate of all vehicles - see [`SET_FUEL_CONSUMPTION_RATE_MULTIPLIER`](https://docs.fivem.net/natives/?_0x845F3E5C).

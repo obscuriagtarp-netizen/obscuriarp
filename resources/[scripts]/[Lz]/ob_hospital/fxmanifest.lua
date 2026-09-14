@@ -28,6 +28,7 @@ server_scripts {
 }
 
 dependencies {
+    'ob_hospital_assets',
     'qbx_core',
     'qbx_medical',
     'qbx_ambulancejob',
