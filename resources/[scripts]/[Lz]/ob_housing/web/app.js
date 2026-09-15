@@ -37,9 +37,11 @@ const errors = {
     house_limit: 'Você atingiu o limite de casas.',
     invalid_key: 'A chave deve usar letras minúsculas, números, _ ou -.',
     invalid_label: 'Informe um nome válido.',
+    invalid_model: 'Selecione um modelo de interior válido.',
     invalid_entrance: 'Capture a entrada externa.',
     invalid_interior: 'Complete os pontos do interior.',
     duplicate_key: 'Essa chave já está em uso.',
+    save_failed: 'Não foi possível salvar o imóvel. Consulte o console do servidor.',
     citizen_not_found: 'Citizen ID não encontrado.',
     invalid_expiry: 'Informe uma duração válida para a concessão.',
     already_owner: 'Este personagem já é o proprietário.',
@@ -50,6 +52,14 @@ const errors = {
     grant_failed: 'Não foi possível entregar o imóvel.',
     revoke_failed: 'Não foi possível remover o imóvel.',
     preview_disabled: 'A visualização de interiores está desativada.',
+    rental_not_found: 'Esta mensalidade não foi encontrada.',
+    rental_active: 'Esta mansão já está com a mensalidade ativa.',
+    rental_busy: 'Esta mensalidade já está sendo processada.',
+    insufficient_runes: 'Você não possui Runas suficientes para renovar.',
+    renewal_failed: 'Não foi possível renovar. Nenhuma Runa foi perdida.',
+    vip_unavailable: 'O sistema VIP não está disponível agora.',
+    housing_unavailable: 'O sistema de imóveis não está disponível agora.',
+    vip_property_unavailable: 'Não há uma mansão configurada para este plano VIP.',
     internal_error: 'Não foi possível concluir a ação.'
 };
 
@@ -79,7 +89,8 @@ const demoPayload = {
         { id: 4, key: 'mansao_eclipse', type: 'house', ownershipMode: 'instanced', label: 'Mansão Eclipse', description: 'Propriedade reservada para membros Eclipse e Arcano.', price: 0, purchasable: false, available: true, listed: true, status: 'available', vipTier: 'eclipse', gallery: [], stashSlots: 100, stashWeight: 300000, entrance: { x: 1, y: 1, z: 1 }, presetKey: 'bob_apartment_high' }
     ],
     mine: [
-        { id: 1, key: 'apartamento_inicial', type: 'apartment', ownershipMode: 'instanced', label: 'Apartamento Inicial', description: 'Seu primeiro endereço em Obscuria.', price: 0, available: true, starter: true, gallery: [], stashSlots: 20, stashWeight: 30000, entrance: { x: 1, y: 1, z: 1 }, ownershipId: 18, accessRole: 'owner', acquisition: 'starter' }
+        { id: 1, key: 'apartamento_inicial', type: 'apartment', ownershipMode: 'instanced', label: 'Apartamento Inicial', description: 'Seu primeiro endereço em Obscuria.', price: 0, available: true, starter: true, gallery: [], stashSlots: 20, stashWeight: 30000, entrance: { x: 1, y: 1, z: 1 }, ownershipId: 18, accessRole: 'owner', acquisition: 'starter' },
+        { id: 4, key: 'mansao_eclipse', type: 'house', ownershipMode: 'instanced', label: 'Mansão Eclipse', description: 'Propriedade reservada para membros Eclipse.', vipTier: 'eclipse', gallery: [], stashSlots: 100, stashWeight: 300000, entrance: { x: 1, y: 1, z: 1 }, ownershipId: 32, accessRole: 'owner', acquisition: 'vip', active: false, expiresAt: 1789000000, rental: { managed: true, active: false, expired: true, vip: 'eclipse', durationDays: 30, renewalRunes: 300, expiresAt: 1789000000 } }
     ]
 };
 demoPayload.admin = [demoPayload.mine[0], ...demoPayload.catalog];
@@ -149,6 +160,11 @@ function propertyType(property) {
     return property.type === 'apartment' ? 'Apartamento' : 'Casa';
 }
 
+function formatExpiry(timestamp) {
+    if (!timestamp) return 'Permanente';
+    return new Date(Number(timestamp) * 1000).toLocaleDateString('pt-BR');
+}
+
 function coverImage(property) {
     return Array.isArray(property.gallery) && property.gallery[0] ? property.gallery[0] : state.fallbackImage;
 }
@@ -163,25 +179,33 @@ function imageMarkup(property) {
 function cardMarkup(property, context) {
     const mine = context === 'mine';
     const available = property.available !== false;
+    const rentalExpired = mine && property.rental?.managed && !property.rental.active;
     const statusLabel = available ? 'Disponível' : 'Ocupado';
     const actions = mine
         ? `<button class="secondary-button" data-action="waypoint" data-id="${property.id}" type="button">GPS</button>
-           ${property.accessRole === 'owner' ? `<button class="primary-button" data-action="access" data-id="${property.id}" type="button">Chaves</button>` : ''}`
+           ${rentalExpired
+                ? `<button class="primary-button" data-action="renew-property" data-id="${property.id}" type="button">Renovar · ${Number(property.rental.renewalRunes) || 0} Runas</button>`
+                : property.accessRole === 'owner' ? `<button class="primary-button" data-action="access" data-id="${property.id}" type="button">Chaves</button>` : ''}`
         : `<button class="secondary-button" data-action="details" data-context="catalog" data-id="${property.id}" type="button">Detalhes</button>`;
 
-    return `<article class="property-card">
+    const linkLabel = rentalExpired ? 'VENCIDA' : property.rental?.managed
+        ? `ATÉ ${formatExpiry(property.rental.expiresAt)}`
+        : String(property.acquisition || 'proprietário').toUpperCase();
+    return `<article class="property-card${rentalExpired ? ' is-expired' : ''}">
         <div class="property-image">
             ${imageMarkup(property)}
             <div class="card-badges">
                 <span class="type-badge">${escapeHtml(propertyType(property))}</span>
-                ${property.vipTier ? `<span class="vip-badge">VIP ${escapeHtml(String(property.vipTier).toUpperCase())}</span>` : `<span class="status-badge ${available ? 'available' : 'unavailable'}">${statusLabel}</span>`}
+                ${rentalExpired
+                    ? '<span class="status-badge expired">Mensalidade vencida</span>'
+                    : property.vipTier ? `<span class="vip-badge">VIP ${escapeHtml(String(property.vipTier).toUpperCase())}</span>` : `<span class="status-badge ${available ? 'available' : 'unavailable'}">${statusLabel}</span>`}
             </div>
         </div>
         <div class="property-card-body">
             <h3>${escapeHtml(property.label)}</h3>
             <p>${escapeHtml(property.description || 'Imóvel cadastrado na rede Obscuria.')}</p>
             <div class="property-card-footer">
-                <div class="price-block"><span>${mine ? 'VÍNCULO' : 'VALOR'}</span><strong>${mine ? escapeHtml(String(property.acquisition || 'proprietário').toUpperCase()) : propertyPrice(property)}</strong></div>
+                <div class="price-block"><span>${mine ? 'VÍNCULO' : 'VALOR'}</span><strong>${mine ? escapeHtml(linkLabel) : propertyPrice(property)}</strong></div>
                 <div class="card-actions">${actions}</div>
             </div>
         </div>
@@ -205,12 +229,16 @@ function renderMine() {
     document.getElementById('mineSummary').textContent = `${state.mine.length} ${state.mine.length === 1 ? 'propriedade' : 'propriedades'}`;
 }
 
+function presetLabel(presetKey) {
+    return state.presets.find((preset) => preset.key === presetKey)?.label || presetKey || 'Sem modelo';
+}
+
 function renderAdminList() {
     const search = state.adminSearch.trim().toLowerCase();
-    const rows = state.admin.filter((property) => `${property.label} ${property.key}`.toLowerCase().includes(search));
+    const rows = state.admin.filter((property) => `${property.label} ${property.key} ${presetLabel(property.presetKey)}`.toLowerCase().includes(search));
     document.getElementById('adminList').innerHTML = rows.map((property) => `<button class="admin-row ${state.editor?.id === property.id ? 'is-active' : ''}" data-action="edit" data-id="${property.id}" type="button">
         <span class="admin-thumb">${imageMarkup(property)}</span>
-        <span><strong>${escapeHtml(property.label)}</strong><span>${escapeHtml(property.key)}</span></span>
+        <span><strong>${escapeHtml(property.label)}</strong><span>${escapeHtml(property.key)} · ${escapeHtml(presetLabel(property.presetKey))}</span></span>
         <em>${property.ownerCount || 0} ${Number(property.ownerCount) === 1 ? 'dono' : 'donos'}</em>
     </button>`).join('');
 }
@@ -378,12 +406,15 @@ function openDetails(property, context) {
     document.getElementById('detailsType').textContent = `${propertyType(property)}${property.vipTier ? ` | VIP ${String(property.vipTier).toUpperCase()}` : ''}`;
     document.getElementById('detailsName').textContent = property.label;
     document.getElementById('detailsDescription').textContent = property.description || 'Imóvel cadastrado na rede Obscuria.';
-    document.getElementById('detailsPrice').textContent = context === 'mine' ? String(property.acquisition || 'Proprietário') : propertyPrice(property);
+    const rentalExpired = context === 'mine' && property.rental?.managed && !property.rental.active;
+    document.getElementById('detailsPrice').textContent = context === 'mine' && property.rental?.managed
+        ? `${Number(property.rental.renewalRunes) || 0} Runas / ${Number(property.rental.durationDays) || 30} dias`
+        : context === 'mine' ? String(property.acquisition || 'Proprietário') : propertyPrice(property);
     document.getElementById('detailsStash').textContent = `${property.stashSlots || 0} espaços | ${Math.round((property.stashWeight || 0) / 1000)} kg`;
     document.getElementById('detailsMode').textContent = property.ownershipMode === 'instanced' ? 'Individual' : 'Exclusivo';
     const status = document.getElementById('detailsStatus');
-    status.textContent = property.available === false ? 'Ocupado' : 'Disponível';
-    status.className = `status-badge ${property.available === false ? 'unavailable' : 'available'}`;
+    status.textContent = rentalExpired ? 'Mensalidade vencida' : property.available === false ? 'Ocupado' : 'Disponível';
+    status.className = `status-badge ${rentalExpired ? 'expired' : property.available === false ? 'unavailable' : 'available'}`;
 
     const gallery = document.getElementById('detailsGallery');
     const images = Array.isArray(property.gallery) ? property.gallery : [];
@@ -398,7 +429,8 @@ function openDetails(property, context) {
         if (property.purchasable && property.available !== false) actions.push(`<button class="primary-button" data-action="purchase" data-id="${property.id}" type="button">Comprar</button>`);
         else if (property.vipTier) actions.push('<button class="primary-button" type="button" disabled>Benefício VIP</button>');
     } else if (context === 'mine' && property.accessRole === 'owner') {
-        actions.push(`<button class="primary-button" data-action="access" data-id="${property.id}" type="button">Gerenciar chaves</button>`);
+        if (rentalExpired) actions.push(`<button class="primary-button" data-action="renew-property" data-id="${property.id}" type="button">Renovar · ${Number(property.rental.renewalRunes) || 0} Runas</button>`);
+        else actions.push(`<button class="primary-button" data-action="access" data-id="${property.id}" type="button">Gerenciar chaves</button>`);
     }
     document.getElementById('detailsActions').innerHTML = actions.join('');
     openModal('detailsModal');
@@ -414,6 +446,14 @@ function confirmDialog(title, copy, action) {
 async function purchase(property) {
     const result = await request('purchase', { propertyId: property.id });
     if (!resultOk(result, `${property.label} agora pertence a você.`)) return;
+    closeModal('confirmModal');
+    closeModal('detailsModal');
+    await refresh('mine');
+}
+
+async function renewProperty(property) {
+    const result = await request('renewProperty', { ownershipId: property.ownershipId });
+    if (!resultOk(result, `${property.label} foi liberada por mais ${Number(property.rental?.durationDays) || 30} dias.`)) return;
     closeModal('confirmModal');
     closeModal('detailsModal');
     await refresh('mine');
@@ -668,6 +708,14 @@ document.addEventListener('click', (event) => {
     if (action === 'access') {
         const property = findProperty(id, 'mine') || state.selectedDetails?.property;
         if (property) openAccess(property);
+    }
+    if (action === 'renew-property') {
+        const property = findProperty(id, 'mine') || state.selectedDetails?.property;
+        if (property?.rental) confirmDialog(
+            'Renovar mansão',
+            `Pagar ${Number(property.rental.renewalRunes) || 0} Runas para liberar ${property.label} por mais ${Number(property.rental.durationDays) || 30} dias?`,
+            () => renewProperty(property)
+        );
     }
     if (action === 'edit') fillEditor(findProperty(id, 'admin'));
     if (action === 'remove-image') {

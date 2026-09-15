@@ -39,6 +39,12 @@ export const previewPayload = {
   permissions: customerPreview ? { work: false, manage: false, admin: false } : { work: true, manage: true, admin: true },
   commissionRate: 0.3,
   recipeEffects: { maxSelected: 2, maxAmount: 50, defaultAmount: 20 },
+  presentations: [
+    { key: "burger", label: "Hambúrguer", image: "nui://ox_inventory/web/images/burger.png", type: "food", animationLabel: "Comer", default: true },
+    { key: "sandwich", label: "Sanduíche", image: "nui://ox_inventory/web/images/sandwich.png", type: "food", animationLabel: "Comer", default: false },
+    { key: "coffee", label: "Copo de café", image: "nui://ox_inventory/web/images/coffee.png", type: "drink", animationLabel: "Beber", default: true },
+    { key: "soda_can", label: "Lata de refrigerante", image: "nui://ox_inventory/web/images/coca_cola.png", type: "drink", animationLabel: "Beber", default: false },
+  ],
   inventoryItems: [
     { name: "agua", label: "Água" },
     { name: "batata", label: "Batata" },

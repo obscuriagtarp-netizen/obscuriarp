@@ -7255,7 +7255,7 @@ return {
         type = 'automobile',
         hash = `20xb7`,
     },
-    ['18Velar'] = {
+    ['18velar'] = {
         name = 'Velar',
         brand = 'OB',
         model = '18Velar',
@@ -7385,6 +7385,17 @@ return {
         category = 'super',
         type = 'automobile',
         hash = `oycdefender`,
+    },
+
+    -- Serviço
+    ['dlambulance3'] = {
+        name = 'Ambulância',
+        brand = 'HP',
+        model = 'dlambulance3',
+        price = 0,
+        category = 'service',
+        type = 'automobile',
+        hash = `dlambulance3`,
     },
 
     tvtrailer = {

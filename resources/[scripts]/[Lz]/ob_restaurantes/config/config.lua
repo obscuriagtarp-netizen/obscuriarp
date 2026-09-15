@@ -138,6 +138,19 @@ Config.Restaurants = {
         theme = 'moomoo'
     },
     {
+        id = 'dreamycoffee',
+        label = 'Dreamy Coffee',
+        job = 'cafebeans',
+        managerGrade = 4,
+        commissionRate = 0.30,
+        callPrefix = 'D',
+        description = 'Cafeteria, refeições e atendimento ao público.',
+        locationLabel = 'Local do estabelecimento',
+        callText = 'Abra um chamado para solicitar atendimento.',
+        enabled = true,
+        theme = 'cafebeans'
+    },
+    {
         id = 'chinese_seoul',
         label = 'Chinese Seoul',
         job = 'chinese',

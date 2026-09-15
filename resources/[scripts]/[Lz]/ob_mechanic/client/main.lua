@@ -11,6 +11,7 @@ local availableLocations = {}
 local locationBlips = {}
 local previewCam = nil
 local vehicleReady = false
+local activeVehicleOwned = true
 local pendingResume = nil
 local lastCustomColors = {
     primary = nil,
@@ -659,9 +660,19 @@ local function getCurrentValue(vehicle, option)
     return nil
 end
 
-local function optionPrice(categoryId)
+local function optionPrice(categoryId, optionId, value)
     local prices = MechanicConfig.Shop.prices or {}
-    return tonumber(prices[categoryId]) or tonumber(MechanicConfig.Shop.defaultPrice) or 0
+    local price = tonumber(prices[categoryId]) or tonumber(MechanicConfig.Shop.defaultPrice) or 0
+    local levelPricing = MechanicConfig.Shop.levelPricing or {}
+
+    if type(levelPricing.options) == 'table' and levelPricing.options[optionId] == true then
+        local level = math.floor(tonumber(value) or -1)
+        if level >= 0 then
+            price = price * (1.0 + level * math.max(0, tonumber(levelPricing.step) or 0.5))
+        end
+    end
+
+    return math.floor(price)
 end
 
 local function captureOptionValues(vehicle)
@@ -686,7 +697,7 @@ local function refreshTotal()
             local original = baselineValues[option.id]
             local current = getCurrentValue(activeVehicle, option)
             if tostring(original) ~= tostring(current) then
-                total = total + optionPrice(category.id)
+                total = total + optionPrice(category.id, option.id, current)
             end
         end
     end
@@ -706,7 +717,8 @@ local function captureChangedOptions()
             if tostring(original) ~= tostring(current) then
                 changes[#changes + 1] = {
                     categoryId = category.id,
-                    optionId = option.id
+                    optionId = option.id,
+                    value = current
                 }
             end
         end
@@ -812,6 +824,10 @@ local function buildShopPayload(vehicle, locationLabel, activeCategoryId)
             if option.type ~= 'extra' or DoesExtraExist(vehicle, option.extraId) then
                 local values, current = buildOptionValues(vehicle, option)
                 if #values > 0 then
+                    for _, entry in ipairs(values) do
+                        entry.price = optionPrice(category.id, option.id, entry.value)
+                        entry.priceLabel = money(entry.price)
+                    end
                     local item = {}
                     for key, value in pairs(option) do item[key] = value end
                     item.values = values
@@ -843,7 +859,8 @@ local function buildShopPayload(vehicle, locationLabel, activeCategoryId)
 
     return {
         title = locationLabel or 'Automotiva Akuma',
-        subtitle = 'Personalização, performance e acabamento do veículo.',
+        subtitle = activeVehicleOwned and 'Personalização, performance e acabamento do veículo.'
+            or 'Veículo de NPC: somente o reparo está disponível.',
         ui = MechanicConfig.UI or {},
         categories = categories,
         activeCategoryId = activeCategoryId,
@@ -851,7 +868,8 @@ local function buildShopPayload(vehicle, locationLabel, activeCategoryId)
         totalLabel = money(currentTotal),
         usePayment = MechanicConfig.Shop.usePayment == true,
         damaged = isVehicleDamagedForShop(vehicle),
-        locked = not vehicleReady,
+        locked = not vehicleReady or not activeVehicleOwned,
+        npcVehicle = not activeVehicleOwned,
         repairPrice = MechanicConfig.Shop.repairPrice or 0,
         repairPriceLabel = money(MechanicConfig.Shop.repairPrice or 0)
     }
@@ -923,6 +941,7 @@ local function closeMenu(restore)
     baselineValues = {}
     currentTotal = 0
     vehicleReady = false
+    activeVehicleOwned = true
     lastCustomColors.primary = nil
     lastCustomColors.secondary = nil
     lastPaintColors.primary = 0
@@ -1121,7 +1140,7 @@ local function repairVehicle(vehicle, fixTires)
     SetVehicleUndriveable(vehicle, false)
 end
 
-RegisterNetEvent('VanguardMechanic:client:openShop', function(locationId, locationLabel, sessionToken)
+RegisterNetEvent('VanguardMechanic:client:openShop', function(locationId, locationLabel, sessionToken, vehicleOwned)
     if menuOpen then
         TriggerServerEvent('VanguardMechanic:server:closeSession', sessionToken)
         return
@@ -1147,6 +1166,7 @@ RegisterNetEvent('VanguardMechanic:client:openShop', function(locationId, locati
     activeLocationLabel = locationLabel
     activeSession = sessionToken
     activeVehicle = vehicle
+    activeVehicleOwned = vehicleOwned == true
     forcedToggleValues = {}
     baselineState = captureVehicleState(vehicle)
     baselineValues = captureOptionValues(vehicle)
@@ -1181,7 +1201,9 @@ RegisterNetEvent('VanguardMechanic:client:openShop', function(locationId, locati
         payload = buildShopPayload(vehicle, locationLabel)
     })
 
-    TriggerServerEvent('VanguardMechanic:server:requestPending', getPlate(vehicle))
+    if activeVehicleOwned then
+        TriggerServerEvent('VanguardMechanic:server:requestPending', getPlate(vehicle))
+    end
 end)
 
 RegisterNetEvent('VanguardMechanic:client:setLocations', function(locations)
@@ -1294,6 +1316,12 @@ end)
 
 RegisterNUICallback('apply', function(data, cb)
     data = type(data) == 'table' and data or {}
+    if not activeVehicleOwned then
+        notify('warning', MechanicConfig.Messages.npcVehicle)
+        cb({ ok = false })
+        return
+    end
+
     if not vehicleReady then
         notify('warning', 'Repare o veiculo antes de modificar.')
         cb({ ok = false })
@@ -1318,6 +1346,12 @@ end)
 
 RegisterNUICallback('checkout', function(_, cb)
     if not activeVehicle or not DoesEntityExist(activeVehicle) then
+        cb({ ok = false })
+        return
+    end
+
+    if not activeVehicleOwned then
+        notify('warning', MechanicConfig.Messages.npcVehicle)
         cb({ ok = false })
         return
     end
@@ -1532,7 +1566,20 @@ CreateThread(function()
             end
 
             if IsControlJustPressed(0, MechanicConfig.Keys.open or 38) then
-                TriggerServerEvent('VanguardMechanic:server:requestOpen', nearest.id)
+                local ped = PlayerPedId()
+                local vehicle = GetVehiclePedIsIn(ped, false)
+
+                if vehicle == 0 or not DoesEntityExist(vehicle) then
+                    notify('warning', MechanicConfig.Messages.needVehicle)
+                elseif MechanicConfig.Shop.requireDriver == true and GetPedInVehicleSeat(vehicle, -1) ~= ped then
+                    notify('warning', MechanicConfig.Messages.driverOnly)
+                else
+                    TriggerServerEvent('VanguardMechanic:server:requestOpen', {
+                        locationId = nearest.id,
+                        vehicleNetId = NetworkGetNetworkIdFromEntity(vehicle),
+                        plate = getPlate(vehicle)
+                    })
+                end
             end
         elseif hoverVisible then
             hoverVisible = false

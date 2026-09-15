@@ -37,7 +37,8 @@ posicione-o e confirme com `E`, ou cancele com `BACKSPACE`.
   na instância correta e não permite usar baú nem guarda-roupa.
 - Casas comuns podem ser compradas pelo catálogo. Ao informar um benefício VIP no cadastro,
   a venda comum é desativada e o imóvel fica apenas para concessão por painel ou export.
-- Concessões temporárias expiram automaticamente e removem quem ainda estiver no interior.
+- Concessões VIP vencidas permanecem em Meus Imóveis, mas bloqueiam entrada, baú e
+  chaves até a renovação em Runas pelo `ob_vip`.
 - O painel oferece 12 modelos residenciais do Bob74. `Visualizar` abre uma instância de
   demonstração por no máximo 5 minutos; `E` na saída encerra antes desse prazo.
 
@@ -64,6 +65,14 @@ local result = exports.ob_housing:GrantProperty(citizenid, 'mansao_eclipse', {
 exports.ob_housing:GrantVipProperty(citizenid, 'mansao_eclipse', 'eclipse', 30, {
     membershipId = membershipId
 })
+
+exports.ob_housing:GrantVipTierProperty(citizenid, 'eclipse', 30, {
+    membershipId = membershipId,
+    renewalRunes = 300
+})
+
+local rental = exports.ob_housing:GetVipRental(citizenid, ownershipId)
+exports.ob_housing:ExtendVipProperty(citizenid, ownershipId, 30)
 
 exports.ob_housing:RevokeProperty(citizenid, 'mansao_eclipse', 'vip_expired')
 exports.ob_housing:HasProperty(citizenid, 'mansao_eclipse')

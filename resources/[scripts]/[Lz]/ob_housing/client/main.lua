@@ -26,9 +26,11 @@ local errorMessages = {
     house_limit = 'Você atingiu o limite de casas.',
     invalid_key = 'Use uma chave única com letras minúsculas, números, _ ou -.',
     invalid_label = 'Informe um nome válido para o imóvel.',
+    invalid_model = 'Selecione um modelo de interior válido.',
     invalid_entrance = 'Capture uma entrada válida.',
     invalid_interior = 'Os pontos do interior estão incompletos.',
     duplicate_key = 'Já existe um imóvel com essa chave.',
+    save_failed = 'Não foi possível salvar o imóvel. Consulte o console do servidor.',
     citizen_not_found = 'Citizen ID não encontrado.',
     invalid_expiry = 'Informe uma duração válida para a concessão.',
     already_owner = 'O proprietário já possui acesso total.',
@@ -46,6 +48,12 @@ local errorMessages = {
     bell_cooldown = 'Aguarde um pouco antes de tocar novamente.',
     invite_expired = 'A autorização de entrada expirou. Toque a campainha novamente.',
     preview_disabled = 'A visualização de interiores está desativada.',
+    rental_not_found = 'Esta mensalidade não foi encontrada.',
+    rental_active = 'Esta mansão já está com a mensalidade ativa.',
+    rental_busy = 'Esta mensalidade já está sendo processada.',
+    insufficient_runes = 'Você não possui Runas suficientes para renovar.',
+    renewal_failed = 'Não foi possível renovar. Nenhuma Runa foi perdida.',
+    vip_unavailable = 'O sistema VIP não está disponível agora.',
     internal_error = 'Ocorreu um erro interno. Tente novamente.'
 }
 
@@ -209,6 +217,32 @@ local function openEntrance(property)
             description = 'Acessar sua propriedade',
             icon = property.type == 'apartment' and 'building' or 'house',
             onSelect = function() enterProperty(property.id, false) end
+        }
+    end
+
+    if response.expiredRental then
+        local rental = response.expiredRental
+        options[#options + 1] = {
+            title = ('Renovar por %d Runas'):format(tonumber(rental.renewalRunes) or 0),
+            description = ('Liberar a mansão por mais %d dias'):format(tonumber(rental.durationDays) or 30),
+            icon = 'gem',
+            onSelect = function()
+                local answer = lib.alertDialog({
+                    header = 'Renovar mansão',
+                    content = ('Pagar %d Runas para liberar este imóvel por mais %d dias?'):format(
+                        tonumber(rental.renewalRunes) or 0,
+                        tonumber(rental.durationDays) or 30
+                    ),
+                    centered = true,
+                    cancel = true,
+                    labels = { confirm = 'Renovar', cancel = 'Cancelar' }
+                })
+                if answer ~= 'confirm' then return end
+                local result = request('renewProperty', { ownershipId = rental.ownershipId })
+                if explain(result, 'Não foi possível renovar a mansão.') then
+                    notify(('Mansão liberada por mais %d dias.'):format(tonumber(rental.durationDays) or 30), 'success')
+                end
+            end
         }
     end
 
@@ -467,7 +501,7 @@ RegisterNUICallback('capturePoint', function(_, cb)
 end)
 
 RegisterCommand('casas', function()
-    if uiOpen or positionCapture or currentProperty then return end
+    if uiOpen or positionCapture then return end
     openUi(playerIsAdmin and 'admin' or 'mine')
 end, false)
 

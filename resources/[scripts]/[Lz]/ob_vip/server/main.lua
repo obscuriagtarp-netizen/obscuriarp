@@ -5,6 +5,10 @@ local cache = {}
 local inventoryState = {}
 local refreshCooldown = {}
 local nameChangeCooldown = {}
+local rentalLocks = {}
+local rentalCooldowns = {}
+local salarySessions = {}
+local salaryCitizenBySource = {}
 local syncCitizen
 
 local function debugLog(message)
@@ -14,7 +18,8 @@ local function debugLog(message)
 end
 
 local function normalize(value)
-    return tostring(value or ''):lower():gsub('^%s+', ''):gsub('%s+$', '')
+    local normalized = tostring(value or ''):lower():gsub('^%s+', ''):gsub('%s+$', '')
+    return normalized
 end
 
 local function plan(vip)
@@ -23,6 +28,23 @@ end
 
 local function now()
     return os.time()
+end
+
+local function decode(value, fallback)
+    if type(value) == 'table' then return value end
+    if type(value) ~= 'string' or value == '' then return fallback end
+    local ok, result = pcall(json.decode, value)
+    return ok and type(result) == 'table' and result or fallback
+end
+
+local function rentalDays(value)
+    return math.max(1, math.floor(tonumber(value)
+        or tonumber(Config.Rentals and Config.Rentals.durationDays)
+        or 30))
+end
+
+local function rentalRunes(value)
+    return math.max(0, math.floor(tonumber(value) or 0))
 end
 
 local function clone(value, seen)
@@ -87,6 +109,59 @@ local function activeRows(citizenid, timestamp)
           AND (expires_at IS NULL OR expires_at > ?)
         ORDER BY expires_at IS NULL DESC, expires_at DESC, id ASC
     ]], { citizenid, timestamp, timestamp }) or {}
+end
+
+local function startOnlineSalarySession(citizenid, source)
+    if not Config.Salary.onlineOnly then return true end
+
+    citizenid = tostring(citizenid or '')
+    source = tonumber(source)
+    local player = source and playerFromSource(source)
+    if citizenid == '' or not player or tostring(player.PlayerData.citizenid) ~= citizenid then return false end
+
+    local timestamp = now()
+    local rows = activeRows(citizenid, timestamp)
+    for _, row in ipairs(rows) do
+        local amount, interval = salaryConfig(row.vip)
+        if amount > 0 then
+            MySQL.update.await([[UPDATE ob_vip_memberships
+                SET next_salary_at = ? WHERE id = ? AND active = 1]], {
+                timestamp + interval, row.id
+            })
+        else
+            MySQL.update.await('UPDATE ob_vip_memberships SET next_salary_at = NULL WHERE id = ?', { row.id })
+        end
+    end
+
+    local previousCitizenid = salaryCitizenBySource[source]
+    if previousCitizenid and previousCitizenid ~= citizenid then
+        salarySessions[previousCitizenid] = nil
+    end
+
+    salarySessions[citizenid] = { source = source, startedAt = timestamp }
+    salaryCitizenBySource[source] = citizenid
+    debugLog(('Contagem de salario online iniciada para %s.'):format(citizenid))
+    return true
+end
+
+local function stopOnlineSalarySession(source)
+    source = tonumber(source)
+    if not source then return end
+
+    local citizenid = salaryCitizenBySource[source]
+    salaryCitizenBySource[source] = nil
+    if not citizenid then return end
+
+    local session = salarySessions[citizenid]
+    if session and tonumber(session.source) == source then
+        salarySessions[citizenid] = nil
+    end
+
+    if Config.Salary.onlineOnly and databaseReady then
+        MySQL.update('UPDATE ob_vip_memberships SET next_salary_at = NULL WHERE citizenid = ? AND active = 1', {
+            citizenid
+        })
+    end
 end
 
 local function aggregateValue(current, value, mode)
@@ -295,8 +370,86 @@ local function ensureMembershipEntitlements(row)
     local vehicleCount = math.max(0, math.floor(tonumber(cfg.vehicles and cfg.vehicles.count) or 0))
     for slot = 1, vehicleCount do
         createEntitlement(membershipId, citizenid, vip, 'vehicle', slot, nil, 1, {
-            expiresAt = expiresAt,
+            membershipExpiresAt = expiresAt,
+            durationDays = rentalDays(cfg.vehicles and cfg.vehicles.durationDays),
+            renewalRunes = rentalRunes(cfg.vehicles and cfg.vehicles.renewalRunes),
         })
+    end
+
+    local property = cfg.property
+    if property and property.enabled ~= false and normalize(property.tier or vip) ~= '' then
+        createEntitlement(membershipId, citizenid, vip, 'property', 1, nil, 1, {
+            membershipExpiresAt = expiresAt,
+            tier = normalize(property.tier or vip),
+            durationDays = rentalDays(property.durationDays),
+            renewalRunes = rentalRunes(property.renewalRunes),
+        })
+    end
+end
+
+local function processPropertyEntitlements(citizenid)
+    if GetResourceState('ob_housing') ~= 'started' then return end
+
+    local timestamp = now()
+    local rows = MySQL.query.await([[
+        SELECT entitlement.id, entitlement.membership_id, entitlement.vip, entitlement.metadata
+        FROM ob_vip_entitlements entitlement
+        INNER JOIN ob_vip_memberships membership ON membership.id = entitlement.membership_id
+        WHERE entitlement.citizenid = ?
+          AND entitlement.status = 'pending'
+          AND entitlement.benefit_kind = 'property'
+          AND membership.active = 1
+          AND membership.starts_at <= ?
+          AND (membership.expires_at IS NULL OR membership.expires_at > ?)
+        ORDER BY entitlement.id ASC
+    ]], { citizenid, timestamp, timestamp }) or {}
+
+    for _, entitlement in ipairs(rows) do
+        local cfg = plan(entitlement.vip)
+        local property = cfg and cfg.property
+        if property and property.enabled ~= false then
+            local metadata = decode(entitlement.metadata, {})
+            local durationDays = rentalDays(metadata.durationDays or property.durationDays)
+            local renewalPrice = rentalRunes(metadata.renewalRunes or property.renewalRunes)
+            local tier = normalize(metadata.tier or property.tier or entitlement.vip)
+            local token = ('property:%s:%s'):format(entitlement.id, GetGameTimer())
+            local reserved = MySQL.update.await([[
+                UPDATE ob_vip_entitlements
+                SET status = 'processing', claim_token = ?, error = NULL
+                WHERE id = ? AND citizenid = ? AND status = 'pending'
+            ]], { token, entitlement.id, citizenid }) or 0
+
+            if reserved == 1 then
+                local called, result = pcall(function()
+                    return exports.ob_housing:GrantVipTierProperty(citizenid, tier, durationDays, {
+                        vip = normalize(entitlement.vip),
+                        tier = tier,
+                        membershipId = tonumber(entitlement.membership_id),
+                        entitlementId = tonumber(entitlement.id),
+                        durationDays = durationDays,
+                        renewalRunes = renewalPrice,
+                    })
+                end)
+                local delivered = called and type(result) == 'table' and result.ok == true
+
+                if delivered then
+                    MySQL.update.await([[
+                        UPDATE ob_vip_entitlements
+                        SET status = 'claimed', claimed_at = ?, claim_token = NULL,
+                            selection = ?, error = NULL
+                        WHERE id = ? AND status = 'processing' AND claim_token = ?
+                    ]], { timestamp, result.property and result.property.key or tier, entitlement.id, token })
+                    TriggerEvent('ob_vip:server:propertyGranted', citizenid, entitlement.id, result)
+                else
+                    local reason = called and type(result) == 'table' and result.error or result
+                    MySQL.update.await([[
+                        UPDATE ob_vip_entitlements
+                        SET status = 'pending', claim_token = NULL, error = ?
+                        WHERE id = ? AND status = 'processing' AND claim_token = ?
+                    ]], { tostring(reason or 'mansao vip indisponivel'):sub(1, 160), entitlement.id, token })
+                end
+            end
+        end
     end
 end
 
@@ -389,12 +542,78 @@ local function retryImmediateEntitlements(timestamp)
     end
 end
 
+local function backfillActivePropertyEntitlements(timestamp)
+    local rows = MySQL.query.await([[
+        SELECT membership.id, membership.citizenid, membership.vip, membership.expires_at
+        FROM ob_vip_memberships membership
+        LEFT JOIN ob_vip_entitlements entitlement
+          ON entitlement.membership_id = membership.id
+         AND entitlement.benefit_kind = 'property'
+         AND entitlement.slot_index = 1
+        WHERE membership.active = 1
+          AND membership.starts_at <= ?
+          AND (membership.expires_at IS NULL OR membership.expires_at > ?)
+          AND entitlement.id IS NULL
+        ORDER BY membership.id ASC
+    ]], { timestamp, timestamp }) or {}
+
+    local created = 0
+    for _, membership in ipairs(rows) do
+        local vip = normalize(membership.vip)
+        local cfg = plan(vip)
+        local property = cfg and cfg.property
+        local tier = property and normalize(property.tier or vip) or ''
+
+        if property and property.enabled ~= false and tier ~= '' then
+            createEntitlement(
+                tonumber(membership.id),
+                tostring(membership.citizenid),
+                vip,
+                'property',
+                1,
+                nil,
+                1,
+                {
+                    membershipExpiresAt = tonumber(membership.expires_at),
+                    tier = tier,
+                    durationDays = rentalDays(property.durationDays),
+                    renewalRunes = rentalRunes(property.renewalRunes),
+                }
+            )
+            created = created + 1
+        end
+    end
+
+    if created > 0 then
+        print(('^3[%s]^7 %d beneficio(s) de mansao VIP antigo(s) foram preparados.'):format(RESOURCE, created))
+    end
+    return created
+end
+
+local function retryPropertyEntitlements(timestamp)
+    if GetResourceState('ob_housing') ~= 'started' then return end
+    local rows = MySQL.query.await([[
+        SELECT DISTINCT entitlement.citizenid
+        FROM ob_vip_entitlements entitlement
+        INNER JOIN ob_vip_memberships membership ON membership.id = entitlement.membership_id
+        WHERE entitlement.status = 'pending'
+          AND entitlement.benefit_kind = 'property'
+          AND membership.active = 1
+          AND membership.starts_at <= ?
+          AND (membership.expires_at IS NULL OR membership.expires_at > ?)
+        LIMIT 250
+    ]], { timestamp, timestamp }) or {}
+
+    for _, row in ipairs(rows) do processPropertyEntitlements(tostring(row.citizenid)) end
+end
+
 syncCitizen = function(citizenid)
     if not databaseReady then return nil end
 
     local timestamp = now()
     local rows = activeRows(citizenid, timestamp)
     for _, row in ipairs(rows) do ensureMembershipEntitlements(row) end
+    processPropertyEntitlements(citizenid)
 
     local player = onlinePlayerByCitizenId(citizenid)
     if player then processImmediateEntitlements(citizenid, player) end
@@ -437,6 +656,33 @@ local function addVip(identifier, vip, days, options)
     local expiresAt = days == 0 and nil or timestamp + math.floor(days * DAY_SECONDS)
     local nextSalaryAt = salaryAmount > 0 and (Config.Salary.payImmediately and timestamp or timestamp + interval) or nil
     options = type(options) == 'table' and options or {}
+    local grantedBy = options.grantedBy and tostring(options.grantedBy) or nil
+    local grantReason = options.reason and tostring(options.reason):sub(1, 120) or nil
+
+    -- Store purchases may be retried after a database or resource interruption.
+    -- Reuse the membership tied to the same order instead of stacking it twice.
+    if grantedBy and grantReason then
+        local existing = MySQL.single.await([[
+            SELECT id, starts_at, expires_at
+            FROM ob_vip_memberships
+            WHERE citizenid = ? AND vip = ? AND granted_by = ? AND grant_reason = ?
+            ORDER BY id DESC
+            LIMIT 1
+        ]], { citizenid, vip, grantedBy, grantReason })
+
+        if existing then
+            local payload = syncCitizen(citizenid)
+            return true, {
+                id = tonumber(existing.id),
+                citizenid = citizenid,
+                vip = vip,
+                startsAt = tonumber(existing.starts_at),
+                expiresAt = tonumber(existing.expires_at),
+                payload = payload,
+                reused = true,
+            }
+        end
+    end
 
     local id = MySQL.insert.await([[
         INSERT INTO ob_vip_memberships
@@ -448,8 +694,8 @@ local function addVip(identifier, vip, days, options)
         timestamp,
         expiresAt,
         nextSalaryAt,
-        options.grantedBy and tostring(options.grantedBy) or nil,
-        options.reason and tostring(options.reason):sub(1, 120) or nil,
+        grantedBy,
+        grantReason,
         options.metadata and json.encode(options.metadata) or nil,
     })
 
@@ -619,6 +865,7 @@ local function storeState(identifier)
     for _, row in ipairs(rows) do
         local cfg = plan(row.vip)
         if cfg then
+            local vehicleCfg = cfg.vehicles or {}
             choices[#choices + 1] = {
                 entitlementId = tonumber(row.id),
                 membershipId = tonumber(row.membership_id),
@@ -626,6 +873,8 @@ local function storeState(identifier)
                 label = cfg.label or row.vip,
                 slot = tonumber(row.slot_index),
                 expiresAt = tonumber(row.expires_at),
+                durationDays = rentalDays(vehicleCfg.durationDays),
+                renewalRunes = rentalRunes(vehicleCfg.renewalRunes),
                 vehicles = vehicleCatalog(row.vip),
             }
         end
@@ -639,8 +888,11 @@ local function storeState(identifier)
     }
 end
 
-local function configuredGarage()
-    local garage = tostring(Config.VehicleGarage or '')
+local function configuredGarage(requestedGarage)
+    local garage = tostring(requestedGarage or ''):gsub('^%s+', ''):gsub('%s+$', '')
+    if garage == '' then
+        garage = tostring(Config.VehicleGarage or ''):gsub('^%s+', ''):gsub('%s+$', '')
+    end
     if garage == '' then return nil, 'Configure Config.VehicleGarage no ob_vip.' end
     if GetResourceState('qbx_garages') == 'started' then
         local ok, garages = pcall(function() return exports.qbx_garages:GetGarages() end)
@@ -699,6 +951,328 @@ local function deleteVipVehicle(vehicleId, provider)
     MySQL.update.await('DELETE FROM player_vehicles WHERE id = ?', { vehicleId })
 end
 
+local function formatVehicleRental(row, timestamp)
+    if not row then return nil end
+    timestamp = timestamp or now()
+    local expiresAt = tonumber(row.expires_at)
+    local active = expiresAt and expiresAt > timestamp or false
+    local sourceKind = normalize(row.source_kind or 'vip')
+    return {
+        managed = true,
+        active = active,
+        expired = not active,
+        vehicleId = tonumber(row.vehicle_id),
+        membershipId = tonumber(row.membership_id),
+        entitlementId = tonumber(row.entitlement_id),
+        vip = normalize(row.vip),
+        model = normalize(row.model),
+        startsAt = tonumber(row.starts_at),
+        expiresAt = expiresAt,
+        durationDays = rentalDays(row.duration_days),
+        renewalRunes = rentalRunes(row.renewal_runes),
+        renewalCount = math.max(0, math.floor(tonumber(row.renewal_count) or 0)),
+        sourceKind = sourceKind,
+        sourceId = tostring(row.source_id or ''),
+        label = sourceKind == 'battlepass' and 'Veiculo do Passe' or 'Mensalidade VIP',
+    }
+end
+
+local function vehicleRentalStates(identifier, vehicleIds)
+    local citizenid = citizenIdFrom(identifier)
+    if not citizenid or not databaseReady then return {} end
+
+    local ids = {}
+    local seen = {}
+    for _, value in pairs(type(vehicleIds) == 'table' and vehicleIds or {}) do
+        local vehicleId = tonumber(value)
+        if vehicleId and not seen[vehicleId] then
+            seen[vehicleId] = true
+            ids[#ids + 1] = vehicleId
+        end
+    end
+    if #ids == 0 then return {} end
+
+    local placeholders = {}
+    local parameters = { citizenid }
+    for index, vehicleId in ipairs(ids) do
+        placeholders[index] = '?'
+        parameters[#parameters + 1] = vehicleId
+    end
+    local rows = MySQL.query.await(([=[
+        SELECT vehicle_id, membership_id, entitlement_id, vip, model, starts_at, expires_at,
+               duration_days, renewal_runes, renewal_count, source_kind, source_id
+        FROM ob_vip_vehicle_rentals
+        WHERE citizenid = ? AND vehicle_id IN (%s)
+    ]=]):format(table.concat(placeholders, ',')), parameters) or {}
+
+    local result = {}
+    local timestamp = now()
+    for _, row in ipairs(rows) do
+        result[tostring(row.vehicle_id)] = formatVehicleRental(row, timestamp)
+    end
+    return result
+end
+
+local function getVehicleRental(identifier, vehicleId)
+    local citizenid = citizenIdFrom(identifier)
+    vehicleId = tonumber(vehicleId)
+    if not citizenid or not vehicleId or not databaseReady then return nil end
+    local row = MySQL.single.await([[
+        SELECT vehicle_id, membership_id, entitlement_id, vip, model, starts_at, expires_at,
+               duration_days, renewal_runes, renewal_count, source_kind, source_id
+        FROM ob_vip_vehicle_rentals
+        WHERE citizenid = ? AND vehicle_id = ?
+        LIMIT 1
+    ]], { citizenid, vehicleId })
+    return formatVehicleRental(row)
+end
+
+local function canUseVehicle(identifier, vehicleId)
+    if not databaseReady then return false, { validationUnavailable = true } end
+    local rental = getVehicleRental(identifier, vehicleId)
+    if not rental then return true, nil end
+    return rental.active == true, rental
+end
+
+local function withRentalLock(key, callback)
+    if rentalLocks[key] then return false, { ok = false, error = 'rental_busy' } end
+    rentalLocks[key] = true
+    local ok, result = pcall(callback)
+    rentalLocks[key] = nil
+    if not ok then
+        print(('^1[%s] Falha na renovacao %s: %s^7'):format(RESOURCE, key, result))
+        return false, { ok = false, error = 'renewal_failed' }
+    end
+    return result and result.ok == true, result
+end
+
+local function sourceVehicleRental(citizenid, sourceKind, sourceId)
+    return MySQL.single.await([[
+        SELECT rental.vehicle_id, rental.membership_id, rental.entitlement_id, rental.vip, rental.model,
+               rental.starts_at, rental.expires_at, rental.duration_days, rental.renewal_runes,
+               rental.renewal_count, rental.source_kind, rental.source_id,
+               vehicle.plate, vehicle.garage, vehicle.id AS owned_vehicle_id
+        FROM ob_vip_vehicle_rentals rental
+        LEFT JOIN player_vehicles vehicle ON vehicle.id = rental.vehicle_id
+        WHERE rental.citizenid = ? AND rental.source_kind = ? AND rental.source_id = ?
+        LIMIT 1
+    ]], { citizenid, sourceKind, sourceId })
+end
+
+local function grantRentalVehicle(identifier, options)
+    if not databaseReady then return false, { ok = false, error = 'database_initializing' } end
+    local citizenid = citizenIdFrom(identifier)
+    if not citizenid or not citizenExists(citizenid) then
+        return false, { ok = false, error = 'player_not_found' }
+    end
+
+    options = type(options) == 'table' and options or {}
+    local model = normalize(options.model)
+    local sourceKind = normalize(options.sourceKind or 'external'):gsub('[^%w_-]', ''):sub(1, 24)
+    local sourceId = tostring(options.sourceId or ''):gsub('^%s+', ''):gsub('%s+$', ''):sub(1, 120)
+    if model == '' then return false, { ok = false, error = 'invalid_vehicle_model' } end
+    if sourceKind == '' then sourceKind = 'external' end
+    if sourceId == '' then return false, { ok = false, error = 'missing_source_id' } end
+
+    return withRentalLock(('grant:%s:%s:%s'):format(citizenid, sourceKind, sourceId), function()
+        local existing = sourceVehicleRental(citizenid, sourceKind, sourceId)
+        if existing and tonumber(existing.owned_vehicle_id) then
+            local rental = formatVehicleRental(existing)
+            return {
+                ok = true,
+                reused = true,
+                vehicleId = tonumber(existing.vehicle_id),
+                model = normalize(existing.model),
+                plate = existing.plate,
+                garage = existing.garage,
+                rental = rental,
+            }
+        elseif existing then
+            MySQL.update.await('DELETE FROM ob_vip_vehicle_rentals WHERE vehicle_id = ?', { existing.vehicle_id })
+        end
+
+        local okVehicles, registeredVehicles = pcall(function() return exports.qbx_core:GetVehiclesByName() end)
+        local vehicleData = okVehicles and registeredVehicles and registeredVehicles[model]
+        if type(vehicleData) ~= 'table' then
+            return { ok = false, error = 'vehicle_not_registered' }
+        end
+
+        local garage, garageError = configuredGarage(options.garage)
+        if not garage then return { ok = false, error = 'garage_not_found', detail = garageError } end
+
+        local durationDays = math.min(3650, rentalDays(options.durationDays))
+        local renewalPrice = rentalRunes(options.renewalRunes)
+        local timestamp = now()
+        local expiresAt = timestamp + durationDays * DAY_SECONDS
+        local vehicleId, vehicleError, vehicleProvider = createVipVehicle(citizenid, model, garage, vehicleData)
+        if not vehicleId then
+            return { ok = false, error = 'vehicle_create_failed', detail = vehicleError }
+        end
+
+        local inserted, affected = pcall(MySQL.update.await, [[
+            INSERT INTO ob_vip_vehicle_rentals
+                (vehicle_id, citizenid, membership_id, entitlement_id, vip, model, starts_at,
+                 expires_at, duration_days, renewal_runes, source_kind, source_id)
+            VALUES (?, ?, NULL, NULL, ?, ?, ?, ?, ?, ?, ?, ?)
+        ]], {
+            vehicleId,
+            citizenid,
+            normalize(options.vip or sourceKind),
+            model,
+            timestamp,
+            expiresAt,
+            durationDays,
+            renewalPrice,
+            sourceKind,
+            sourceId,
+        })
+
+        if not inserted or tonumber(affected) ~= 1 then
+            deleteVipVehicle(vehicleId, vehicleProvider)
+            local raced = sourceVehicleRental(citizenid, sourceKind, sourceId)
+            if raced and tonumber(raced.owned_vehicle_id) then
+                return {
+                    ok = true,
+                    reused = true,
+                    vehicleId = tonumber(raced.vehicle_id),
+                    model = normalize(raced.model),
+                    plate = raced.plate,
+                    garage = raced.garage,
+                    rental = formatVehicleRental(raced),
+                }
+            end
+            return { ok = false, error = 'rental_create_failed' }
+        end
+
+        local plate = MySQL.scalar.await('SELECT plate FROM player_vehicles WHERE id = ? LIMIT 1', { vehicleId })
+        local rental = getVehicleRental(citizenid, vehicleId)
+        TriggerEvent('ob_vip:server:rentalVehicleGranted', citizenid, vehicleId, model, sourceKind, sourceId)
+        return {
+            ok = true,
+            vehicleId = tonumber(vehicleId),
+            model = model,
+            plate = plate,
+            garage = garage,
+            expiresAt = expiresAt,
+            durationDays = durationDays,
+            renewalRunes = renewalPrice,
+            rental = rental,
+        }
+    end)
+end
+
+local function chargeRunes(player, amount, reason)
+    amount = rentalRunes(amount)
+    if amount == 0 then return true end
+    local account = tostring(Config.Rentals and Config.Rentals.runesAccount or 'crypto')
+    if (tonumber(player.Functions.GetMoney(account)) or 0) < amount then return false end
+    return player.Functions.RemoveMoney(account, amount, reason) == true
+end
+
+local function refundRunes(player, amount, reason)
+    amount = rentalRunes(amount)
+    if amount == 0 then return end
+    local account = tostring(Config.Rentals and Config.Rentals.runesAccount or 'crypto')
+    player.Functions.AddMoney(account, amount, reason)
+end
+
+local function passRentalCooldown(source)
+    source = tonumber(source)
+    if not source then return true end
+    local timestamp = GetGameTimer()
+    local cooldown = math.max(250, math.floor(tonumber(Config.Rentals and Config.Rentals.renewalCooldownMs) or 1500))
+    if rentalCooldowns[source] and timestamp - rentalCooldowns[source] < cooldown then return false end
+    rentalCooldowns[source] = timestamp
+    return true
+end
+
+local function recordRentalPayment(citizenid, kind, referenceId, vip, price, previousExpiry, expiresAt)
+    local ok, errorMessage = pcall(MySQL.insert.await, [[
+            INSERT INTO ob_vip_rental_payments
+                (citizenid, rental_kind, reference_id, vip, runes, previous_expires_at, expires_at, paid_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        ]], { citizenid, kind, tostring(referenceId), normalize(vip), rentalRunes(price), previousExpiry, expiresAt, now() })
+    if not ok then debugLog(('Falha ao gravar historico da renovacao %s:%s: %s'):format(kind, referenceId, errorMessage)) end
+end
+
+local function renewVehicle(identifier, vehicleId)
+    if not databaseReady then return false, { ok = false, error = 'database_initializing' } end
+    local citizenid, player = citizenIdFrom(identifier)
+    vehicleId = tonumber(vehicleId)
+    if not citizenid or not player or not vehicleId then return false, { ok = false, error = 'player_not_loaded' } end
+    if not passRentalCooldown(player.PlayerData.source) then return false, { ok = false, error = 'slow_down' } end
+
+    return withRentalLock(('vehicle:%s'):format(vehicleId), function()
+        local rental = getVehicleRental(citizenid, vehicleId)
+        if not rental then return { ok = false, error = 'rental_not_found' } end
+        if rental.active then return { ok = false, error = 'rental_active', rental = rental } end
+
+        local price = rental.renewalRunes
+        if not chargeRunes(player, price, ('vip_vehicle_renewal:%s'):format(vehicleId)) then
+            return { ok = false, error = 'insufficient_runes', price = price }
+        end
+
+        local previousExpiry = rental.expiresAt
+        local expiresAt = math.max(now(), previousExpiry or 0) + rental.durationDays * DAY_SECONDS
+        local affected = MySQL.update.await([[
+            UPDATE ob_vip_vehicle_rentals
+            SET expires_at = ?, renewal_count = renewal_count + 1, last_renewed_at = ?
+            WHERE vehicle_id = ? AND citizenid = ? AND expires_at = ?
+        ]], { expiresAt, now(), vehicleId, citizenid, previousExpiry }) or 0
+        if affected ~= 1 then
+            refundRunes(player, price, ('vip_vehicle_renewal_refund:%s'):format(vehicleId))
+            return { ok = false, error = 'renewal_failed' }
+        end
+
+        recordRentalPayment(citizenid, 'vehicle', vehicleId, rental.vip, price, previousExpiry, expiresAt)
+        local updated = getVehicleRental(citizenid, vehicleId)
+        TriggerEvent('ob_vip:server:vehicleRenewed', citizenid, vehicleId, updated)
+        return { ok = true, rental = updated, price = price }
+    end)
+end
+
+local function renewProperty(identifier, ownershipId)
+    if not databaseReady then return false, { ok = false, error = 'database_initializing' } end
+    local citizenid, player = citizenIdFrom(identifier)
+    ownershipId = tonumber(ownershipId)
+    if not citizenid or not player or not ownershipId then return false, { ok = false, error = 'player_not_loaded' } end
+    if not passRentalCooldown(player.PlayerData.source) then return false, { ok = false, error = 'slow_down' } end
+    if GetResourceState('ob_housing') ~= 'started' then return false, { ok = false, error = 'housing_unavailable' } end
+
+    return withRentalLock(('property:%s'):format(ownershipId), function()
+        local called, rental = pcall(function()
+            return exports.ob_housing:GetVipRental(citizenid, ownershipId)
+        end)
+        if not called or type(rental) ~= 'table' or rental.managed ~= true then
+            return { ok = false, error = 'rental_not_found' }
+        end
+        if rental.active then return { ok = false, error = 'rental_active', rental = rental } end
+
+        local cfg = plan(rental.vip)
+        local propertyCfg = cfg and cfg.property or {}
+        local price = rentalRunes(rental.renewalRunes or propertyCfg.renewalRunes)
+        local durationDays = rentalDays(rental.durationDays or propertyCfg.durationDays)
+        if not chargeRunes(player, price, ('vip_property_renewal:%s'):format(ownershipId)) then
+            return { ok = false, error = 'insufficient_runes', price = price }
+        end
+
+        local previousExpiry = tonumber(rental.expiresAt)
+        local extended, result = pcall(function()
+            return exports.ob_housing:ExtendVipProperty(citizenid, ownershipId, durationDays)
+        end)
+        if not extended or type(result) ~= 'table' or result.ok ~= true then
+            refundRunes(player, price, ('vip_property_renewal_refund:%s'):format(ownershipId))
+            return { ok = false, error = extended and result and result.error or 'renewal_failed' }
+        end
+
+        recordRentalPayment(citizenid, 'property', ownershipId, rental.vip, price, previousExpiry, result.expiresAt)
+        result.renewalRunes = price
+        result.durationDays = durationDays
+        TriggerEvent('ob_vip:server:propertyRenewed', citizenid, ownershipId, result)
+        return { ok = true, rental = result, price = price }
+    end)
+end
+
 local function redeemVehicle(identifier, entitlementId, selectedModel)
     local citizenid, player = citizenIdFrom(identifier)
     if not citizenid or not player then return false, 'Entre com o personagem para resgatar o veiculo.' end
@@ -751,12 +1325,44 @@ local function redeemVehicle(identifier, entitlementId, selectedModel)
         return false, 'Nao foi possivel registrar o veiculo na garagem.'
     end
 
+    local vehicleCfg = plan(entitlement.vip).vehicles or {}
+    local durationDays = rentalDays(vehicleCfg.durationDays)
+    local renewalPrice = rentalRunes(vehicleCfg.renewalRunes)
+    local rentalExpiresAt = timestamp + durationDays * DAY_SECONDS
+    local rentalId = MySQL.insert.await([[
+        INSERT INTO ob_vip_vehicle_rentals
+            (vehicle_id, citizenid, membership_id, entitlement_id, vip, model, starts_at,
+             expires_at, duration_days, renewal_runes)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ]], {
+        vehicleId,
+        citizenid,
+        entitlement.membership_id,
+        entitlement.id,
+        normalize(entitlement.vip),
+        selectedModel,
+        timestamp,
+        rentalExpiresAt,
+        durationDays,
+        renewalPrice,
+    })
+    if not rentalId then
+        deleteVipVehicle(vehicleId, vehicleProvider)
+        MySQL.update.await([[
+            UPDATE ob_vip_entitlements SET status = 'pending', claim_token = NULL, selection = NULL,
+                error = 'falha ao registrar validade do veiculo'
+            WHERE id = ? AND status = 'processing' AND claim_token = ?
+        ]], { entitlementId, token })
+        return false, 'Nao foi possivel registrar a validade do veiculo; o resgate foi preservado.'
+    end
+
     local finished = MySQL.update.await([[
         UPDATE ob_vip_entitlements
         SET status = 'claimed', claimed_at = ?, claim_token = NULL, error = NULL
         WHERE id = ? AND status = 'processing' AND claim_token = ?
     ]], { timestamp, entitlementId, token }) or 0
     if finished ~= 1 then
+        MySQL.update.await('DELETE FROM ob_vip_vehicle_rentals WHERE vehicle_id = ?', { vehicleId })
         deleteVipVehicle(vehicleId, vehicleProvider)
         MySQL.update.await([[
             UPDATE ob_vip_entitlements SET status = 'pending', claim_token = NULL, selection = NULL,
@@ -782,8 +1388,22 @@ local function redeemVehicle(identifier, entitlementId, selectedModel)
         label = selected.label,
         plate = plate,
         garage = garage,
+        expiresAt = rentalExpiresAt,
+        durationDays = durationDays,
+        renewalRunes = renewalPrice,
     }
 end
+
+
+lib.callback.register('ob_vip:server:renewVehicle', function(source, vehicleId)
+    local success, result = renewVehicle(source, vehicleId)
+    return result or { ok = success == true }
+end)
+
+lib.callback.register('ob_vip:server:renewProperty', function(source, ownershipId)
+    local success, result = renewProperty(source, ownershipId)
+    return result or { ok = success == true }
+end)
 
 lib.callback.register('ob_vip:server:changeName', function(source, data)
     local player = playerFromSource(source)
@@ -839,6 +1459,19 @@ local function processSalary(row, timestamp)
     local citizenid = tostring(row.citizenid)
     local dueAt = tonumber(row.next_salary_at) or timestamp
     local nextSalaryAt = timestamp + interval
+    local identifier = citizenid
+    local player = onlinePlayerByCitizenId(citizenid)
+
+    if Config.Salary.onlineOnly then
+        local session = salarySessions[citizenid]
+        if not player or not session
+            or tonumber(session.source) ~= tonumber(player.PlayerData.source)
+        then
+            return
+        end
+        identifier = player.PlayerData.source
+    end
+
     local claimed = MySQL.update.await([[
         UPDATE ob_vip_memberships
         SET next_salary_at = ?
@@ -847,19 +1480,6 @@ local function processSalary(row, timestamp)
     ]], { nextSalaryAt, row.id, dueAt, timestamp, timestamp }) or 0
 
     if claimed ~= 1 then return end
-
-    local identifier = citizenid
-    local player = onlinePlayerByCitizenId(citizenid)
-    if Config.Salary.onlineOnly then
-        if not player then
-            MySQL.update.await(
-                'UPDATE ob_vip_memberships SET next_salary_at = ? WHERE id = ? AND next_salary_at = ?',
-                { dueAt, row.id, nextSalaryAt }
-            )
-            return
-        end
-        identifier = player.PlayerData.source
-    end
 
     local paid = exports.qbx_core:AddMoney(identifier, account, amount, ('vip_salary:%s:%s'):format(vip, row.id)) == true
     MySQL.insert.await([[
@@ -952,6 +1572,7 @@ local function runScheduler()
             local timestamp = now()
             processExpirations(timestamp)
             retryImmediateEntitlements(timestamp)
+            retryPropertyEntitlements(timestamp)
             local refreshed = {}
             for _, row in ipairs(dueSalaryRows(timestamp)) do
                 local citizenid = processSalary(row, timestamp)
@@ -959,6 +1580,40 @@ local function runScheduler()
             end
             for citizenid in pairs(refreshed) do syncCitizen(citizenid) end
         end
+    end
+end
+
+local function ensureVehicleRentalSchema()
+    local columns = MySQL.query.await('SHOW COLUMNS FROM ob_vip_vehicle_rentals') or {}
+    local byName = {}
+    for _, column in ipairs(columns) do byName[tostring(column.Field)] = column end
+
+    if byName.membership_id and tostring(byName.membership_id.Null):upper() ~= 'YES' then
+        MySQL.query.await('ALTER TABLE ob_vip_vehicle_rentals MODIFY COLUMN membership_id BIGINT UNSIGNED NULL')
+    end
+    if byName.entitlement_id and tostring(byName.entitlement_id.Null):upper() ~= 'YES' then
+        MySQL.query.await('ALTER TABLE ob_vip_vehicle_rentals MODIFY COLUMN entitlement_id BIGINT UNSIGNED NULL')
+    end
+    if not byName.source_kind then
+        MySQL.query.await("ALTER TABLE ob_vip_vehicle_rentals ADD COLUMN source_kind VARCHAR(24) NOT NULL DEFAULT 'vip' AFTER last_renewed_at")
+    end
+    if not byName.source_id then
+        MySQL.query.await('ALTER TABLE ob_vip_vehicle_rentals ADD COLUMN source_id VARCHAR(120) NULL AFTER source_kind')
+    end
+
+    local indexes = MySQL.query.await('SHOW INDEX FROM ob_vip_vehicle_rentals') or {}
+    local hasSourceIndex = false
+    for _, index in ipairs(indexes) do
+        if tostring(index.Key_name) == 'uq_ob_vip_vehicle_source' then
+            hasSourceIndex = true
+            break
+        end
+    end
+    if not hasSourceIndex then
+        MySQL.query.await([[
+            ALTER TABLE ob_vip_vehicle_rentals
+            ADD UNIQUE KEY uq_ob_vip_vehicle_source (citizenid, source_kind, source_id)
+        ]])
     end
 end
 
@@ -1037,6 +1692,52 @@ local function createTables()
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     ]])
 
+    MySQL.query.await([[
+        CREATE TABLE IF NOT EXISTS ob_vip_vehicle_rentals (
+            vehicle_id INT UNSIGNED NOT NULL,
+            citizenid VARCHAR(64) NOT NULL,
+            membership_id BIGINT UNSIGNED NULL,
+            entitlement_id BIGINT UNSIGNED NULL,
+            vip VARCHAR(50) NOT NULL,
+            model VARCHAR(80) NOT NULL,
+            starts_at BIGINT UNSIGNED NOT NULL,
+            expires_at BIGINT UNSIGNED NOT NULL,
+            duration_days SMALLINT UNSIGNED NOT NULL DEFAULT 30,
+            renewal_runes BIGINT UNSIGNED NOT NULL DEFAULT 0,
+            renewal_count INT UNSIGNED NOT NULL DEFAULT 0,
+            last_renewed_at BIGINT UNSIGNED DEFAULT NULL,
+            source_kind VARCHAR(24) NOT NULL DEFAULT 'vip',
+            source_id VARCHAR(120) DEFAULT NULL,
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            PRIMARY KEY (vehicle_id),
+            UNIQUE KEY uq_ob_vip_vehicle_entitlement (entitlement_id),
+            UNIQUE KEY uq_ob_vip_vehicle_source (citizenid, source_kind, source_id),
+            KEY idx_ob_vip_vehicle_citizen (citizenid, expires_at),
+            KEY idx_ob_vip_vehicle_membership (membership_id)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    ]])
+
+    ensureVehicleRentalSchema()
+
+    MySQL.query.await([[
+        CREATE TABLE IF NOT EXISTS ob_vip_rental_payments (
+            id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+            citizenid VARCHAR(64) NOT NULL,
+            rental_kind VARCHAR(20) NOT NULL,
+            reference_id VARCHAR(64) NOT NULL,
+            vip VARCHAR(50) NOT NULL,
+            runes BIGINT UNSIGNED NOT NULL,
+            previous_expires_at BIGINT UNSIGNED DEFAULT NULL,
+            expires_at BIGINT UNSIGNED NOT NULL,
+            paid_at BIGINT UNSIGNED NOT NULL,
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (id),
+            KEY idx_ob_vip_rental_citizen (citizenid, created_at),
+            KEY idx_ob_vip_rental_reference (rental_kind, reference_id, created_at)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    ]])
+
     MySQL.update.await([[
         UPDATE ob_vip_entitlements
         SET status = 'pending', claim_token = NULL, error = 'reserva recuperada apos reinicio'
@@ -1050,6 +1751,117 @@ local function createTables()
           AND item_name IN ('mochila_pequena', 'mochila_media', 'mochila_grande')
           AND status IN ('pending', 'processing')
     ]])
+end
+
+local function migrateClaimedVehicleRentals()
+    local rows = MySQL.query.await([[
+        SELECT entitlement.id, entitlement.membership_id, entitlement.citizenid,
+               entitlement.vip, entitlement.selection, entitlement.claimed_at,
+               membership.starts_at
+        FROM ob_vip_entitlements entitlement
+        INNER JOIN ob_vip_memberships membership ON membership.id = entitlement.membership_id
+        LEFT JOIN ob_vip_vehicle_rentals rental ON rental.entitlement_id = entitlement.id
+        WHERE entitlement.benefit_kind = 'vehicle'
+          AND entitlement.status = 'claimed'
+          AND entitlement.selection IS NOT NULL
+          AND entitlement.selection <> ''
+          AND rental.entitlement_id IS NULL
+        ORDER BY entitlement.claimed_at DESC, entitlement.id DESC
+    ]]) or {}
+
+    local migrated = 0
+    local migrationTimestamp = now()
+    for _, entitlement in ipairs(rows) do
+        local vehicleId = MySQL.scalar.await([[
+            SELECT vehicle.id
+            FROM player_vehicles vehicle
+            LEFT JOIN ob_vip_vehicle_rentals rental ON rental.vehicle_id = vehicle.id
+            WHERE vehicle.citizenid = ? AND LOWER(vehicle.vehicle) = ? AND rental.vehicle_id IS NULL
+            ORDER BY vehicle.id DESC
+            LIMIT 1
+        ]], { tostring(entitlement.citizenid), normalize(entitlement.selection) })
+        local cfg = plan(entitlement.vip)
+        if vehicleId and cfg and cfg.vehicles then
+            local durationDays = rentalDays(cfg.vehicles.durationDays)
+            -- Existing claims only become rentals when this migration runs, so their
+            -- first 30-day period must start now instead of being backdated.
+            local startsAt = migrationTimestamp
+            local inserted = MySQL.insert.await([[
+                INSERT IGNORE INTO ob_vip_vehicle_rentals
+                    (vehicle_id, citizenid, membership_id, entitlement_id, vip, model, starts_at,
+                     expires_at, duration_days, renewal_runes)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ]], {
+                vehicleId,
+                tostring(entitlement.citizenid),
+                entitlement.membership_id,
+                entitlement.id,
+                normalize(entitlement.vip),
+                normalize(entitlement.selection),
+                startsAt,
+                startsAt + durationDays * DAY_SECONDS,
+                durationDays,
+                rentalRunes(cfg.vehicles.renewalRunes),
+            })
+            if inserted then migrated = migrated + 1 end
+        end
+    end
+
+    if migrated > 0 then
+        print(('^3[%s]^7 %d veiculo(s) VIP antigo(s) receberam validade mensal.'):format(RESOURCE, migrated))
+    end
+end
+
+local function repairBackdatedVehicleRentals()
+    local timestamp = now()
+    local repaired = MySQL.update.await([[
+        UPDATE ob_vip_vehicle_rentals
+        SET starts_at = ?, expires_at = ? + (duration_days * ?)
+        WHERE renewal_count = 0
+          AND last_renewed_at IS NULL
+          AND starts_at < UNIX_TIMESTAMP(created_at) - 300
+    ]], { timestamp, timestamp, DAY_SECONDS }) or 0
+
+    if repaired > 0 then
+        print(('^3[%s]^7 %d mensalidade(s) VIP migrada(s) foram corrigidas.'):format(RESOURCE, repaired))
+    end
+end
+
+local function migrateVipPropertyRentals()
+    local queried, rows = pcall(MySQL.query.await, [[
+        SELECT ownership.id, ownership.metadata, property.vip_tier
+        FROM ob_property_ownerships ownership
+        INNER JOIN ob_properties property ON property.id = ownership.property_id
+        WHERE ownership.acquisition = 'vip' AND ownership.expires_at IS NOT NULL
+    ]])
+    if not queried or type(rows) ~= 'table' then return end
+
+    for _, row in ipairs(rows) do
+        local metadata = decode(row.metadata, {})
+        local vip = normalize(metadata.vip)
+        if vip == '' then vip = normalize(tostring(row.vip_tier or ''):match('^[^,]+')) end
+        local cfg = plan(vip)
+        if cfg and cfg.property then
+            local changed = false
+            if not tonumber(metadata.durationDays) then
+                metadata.durationDays = rentalDays(cfg.property.durationDays)
+                changed = true
+            end
+            if not tonumber(metadata.renewalRunes) then
+                metadata.renewalRunes = rentalRunes(cfg.property.renewalRunes)
+                changed = true
+            end
+            if normalize(metadata.vip) == '' then
+                metadata.vip = vip
+                changed = true
+            end
+            if changed then
+                MySQL.update.await('UPDATE ob_property_ownerships SET metadata = ? WHERE id = ?', {
+                    json.encode(metadata), row.id
+                })
+            end
+        end
+    end
 end
 
 local function commandIdentifier(value)
@@ -1137,11 +1949,21 @@ AddEventHandler('QBCore:Server:PlayerLoaded', function(player)
     local source = player.PlayerData.source
     local citizenid = tostring(player.PlayerData.citizenid)
     SetTimeout(750, function()
-        if GetPlayerPing(source) > 0 then syncCitizen(citizenid) end
+        if GetPlayerPing(source) <= 0 then return end
+
+        if Config.Salary.onlineOnly and databaseReady then
+            local ok, err = pcall(startOnlineSalarySession, citizenid, source)
+            if not ok then
+                print(('^1[%s] Falha ao iniciar salario online de %s: %s^7'):format(RESOURCE, citizenid, tostring(err)))
+            end
+        end
+
+        syncCitizen(citizenid)
     end)
 end)
 
 AddEventHandler('QBCore:Server:OnPlayerUnload', function(source)
+    stopOnlineSalarySession(source)
     local state = inventoryState[source]
     if state and GetResourceState('ox_inventory') == 'started' and GetPlayerPing(source) > 0 then
         local inventory = exports.ox_inventory:GetInventory(source)
@@ -1153,12 +1975,15 @@ AddEventHandler('QBCore:Server:OnPlayerUnload', function(source)
     end
     refreshCooldown[source] = nil
     nameChangeCooldown[source] = nil
+    rentalCooldowns[source] = nil
     inventoryState[source] = nil
 end)
 
 AddEventHandler('playerDropped', function()
+    stopOnlineSalarySession(source)
     refreshCooldown[source] = nil
     nameChangeCooldown[source] = nil
+    rentalCooldowns[source] = nil
     inventoryState[source] = nil
 end)
 
@@ -1173,6 +1998,11 @@ AddEventHandler('onResourceStop', function(resource)
     end
 end)
 
+AddEventHandler('onResourceStart', function(resource)
+    if resource ~= 'ob_housing' or not databaseReady then return end
+    SetTimeout(750, function() retryPropertyEntitlements(now()) end)
+end)
+
 exports('AddVip', addVip)
 exports('SetVip', addVip)
 exports('RemoveVip', removeVip)
@@ -1180,6 +2010,12 @@ exports('ClearVips', clearVips)
 exports('RefreshPlayer', syncCitizen)
 exports('GetStoreState', storeState)
 exports('RedeemVehicle', redeemVehicle)
+exports('GrantRentalVehicle', grantRentalVehicle)
+exports('GetVehicleRentalStates', vehicleRentalStates)
+exports('GetVehicleRental', getVehicleRental)
+exports('CanUseVehicle', canUseVehicle)
+exports('RenewVehicle', renewVehicle)
+exports('RenewProperty', renewProperty)
 exports('HandleRespawn', handleRespawn)
 exports('GetBackpackKeepItems', backpackKeepItems)
 
@@ -1272,14 +2108,52 @@ exports('GetDiscordRoleIds', function(identifier)
 end)
 
 MySQL.ready(function()
-    createTables()
+    local tablesReady, tablesError = pcall(createTables)
+    if not tablesReady then
+        print(('^1[%s] Falha ao preparar o banco; sistema VIP indisponivel: %s^7'):format(RESOURCE, tostring(tablesError)))
+        return
+    end
+
+    local startupSteps = {
+        { name = 'correcao das mensalidades migradas', callback = repairBackdatedVehicleRentals },
+        { name = 'migracao dos veiculos antigos', callback = migrateClaimedVehicleRentals },
+        { name = 'migracao das propriedades VIP', callback = migrateVipPropertyRentals },
+        { name = 'preparo das propriedades ativas', callback = function() backfillActivePropertyEntitlements(now()) end },
+    }
+
+    for _, step in ipairs(startupSteps) do
+        local ok, err = pcall(step.callback)
+        if not ok then
+            print(('^1[%s] Falha opcional em %s: %s^7'):format(RESOURCE, step.name, tostring(err)))
+        end
+    end
+
     databaseReady = true
 
     CreateThread(runScheduler)
     SetTimeout(1000, function()
         for _, player in pairs(exports.qbx_core:GetQBPlayers()) do
-            syncCitizen(tostring(player.PlayerData.citizenid))
+            local citizenid = tostring(player.PlayerData.citizenid)
+            local salaryOk, salaryError = pcall(startOnlineSalarySession, citizenid, player.PlayerData.source)
+            if not salaryOk then
+                print(('^1[%s] Falha ao iniciar salario online de %s: %s^7'):format(
+                    RESOURCE,
+                    citizenid,
+                    tostring(salaryError)
+                ))
+            end
+
+            local ok, err = pcall(syncCitizen, citizenid)
+            if not ok then
+                print(('^1[%s] Falha ao sincronizar %s: %s^7'):format(
+                    RESOURCE,
+                    citizenid,
+                    tostring(err)
+                ))
+            end
         end
+        local ok, err = pcall(retryPropertyEntitlements, now())
+        if not ok then print(('^1[%s] Falha ao entregar propriedades pendentes: %s^7'):format(RESOURCE, tostring(err))) end
     end)
 
     print(('^2[%s]^7 Banco pronto e sistema iniciado.'):format(RESOURCE))

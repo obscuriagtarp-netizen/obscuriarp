@@ -34,6 +34,14 @@ local function payDepotPrice(player, depotPrice)
         player.Functions.RemoveMoney('bank', depotPrice, 'paid-depot')
         return true
     end
+    if GetResourceState('ob_bank') == 'started' then
+        local source = tonumber(player.PlayerData.source)
+        local transactionId = ('GARAGE-%s-%s-%06d'):format(os.time(), source or 'offline', math.random(0, 999999))
+        local ok, charged = pcall(function()
+            return exports.ob_bank:ChargeCredit(source, depotPrice, 'Garagem', 'Taxa de liberação do veículo', transactionId)
+        end)
+        if ok and charged == true then return true end
+    end
     return false
 end
 
@@ -129,7 +137,7 @@ lib.callback.register('qbx_garages:server:spawnVehicle', function (source, vehic
             return exports.ob_vip:CanUseVehicle(source, vehicleId)
         end)
         if not called then
-            exports.qbx_core:Notify(source, 'Não foi possível validar a mensalidade VIP agora.', 'error')
+            exports.qbx_core:Notify(source, 'Não foi possível validar a locação deste veículo agora.', 'error')
             return
         end
         if allowed == false then
@@ -138,7 +146,9 @@ lib.callback.register('qbx_garages:server:spawnVehicle', function (source, vehic
                 return
             end
             local price = rental and tonumber(rental.renewalRunes) or 0
-            exports.qbx_core:Notify(source, ('Mensalidade VIP vencida. Renove este veículo por %d Runas.'):format(price), 'error')
+            local label = rental and tostring(rental.label or '') or ''
+            if label == '' then label = 'Locação do veículo' end
+            exports.qbx_core:Notify(source, ('%s vencida. Renove este veículo por %d Runas.'):format(label, price), 'error')
             return
         end
     else
@@ -149,7 +159,7 @@ lib.callback.register('qbx_garages:server:spawnVehicle', function (source, vehic
             LIMIT 1
         ]], { vehicleId, playerVehicle.citizenid })
         if queried and rental and tonumber(rental.expires_at) <= os.time() then
-            exports.qbx_core:Notify(source, ('Mensalidade VIP vencida. Inicie o ob_vip para renovar por %d Runas.'):format(
+            exports.qbx_core:Notify(source, ('Locação do veículo vencida. Inicie o ob_vip para renovar por %d Runas.'):format(
                 tonumber(rental.renewal_runes) or 0
             ), 'error')
             return

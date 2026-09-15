@@ -12,12 +12,14 @@ ativas, os dois salarios serao pagos.
 - `salary.everyMinutes`: intervalo normal entre pagamentos.
 - `salary.everySeconds`: intervalo opcional para testes.
 - `salary.account`: conta Qbox que recebe o valor.
+- `Config.Salary.onlineOnly`: quando ativo, cada conexão inicia um novo intervalo completo; tempo offline não acumula salário.
 - `initialMoney`: valor e conta entregues uma unica vez por concessao.
 - `vehicleDiscount`: percentual de desconto na concessionaria.
 - `fuelDiscount`: percentual aplicado pelo `ox_fuel`.
 - `medicalDiscount`: percentual aplicado aos pagamentos hospitalares.
 - `inventoryWeight`: peso extra automatico enquanto o VIP estiver ativo.
-- `vehicles`: quantidade de escolhas e catalogo de modelos.
+- `vehicles`: quantidade de escolhas, catálogo, validade e mensalidade em Runas.
+- `property`: mansão vinculada ao plano, validade e mensalidade em Runas.
 - `nameChanges`: quantidade de itens `troca_nome` entregues.
 - `discordRoleId`: cargo sincronizado pelo bot.
 
@@ -60,6 +62,10 @@ local medicalFinal = exports.ob_vip:CalculateMedicalDiscount(citizenid, 5000)
 local extraWeight = exports.ob_vip:GetInventoryBonus(citizenid)
 local roles = exports.ob_vip:GetDiscordRoleIds(citizenid)
 local store = exports.ob_vip:GetStoreState(citizenid)
+local rentals = exports.ob_vip:GetVehicleRentalStates(citizenid, { 10, 11 })
+local allowed, rental = exports.ob_vip:CanUseVehicle(citizenid, 10)
+local renewed, result = exports.ob_vip:RenewVehicle(source, 10)
+local houseRenewed, houseResult = exports.ob_vip:RenewProperty(source, ownershipId)
 ```
 
 `AddVip`, `SetVip`, `RemoveVip` e `ClearVips` retornam sucesso como primeiro
@@ -87,3 +93,16 @@ Mudancas sincronizadas disparam `ob_vip:client:onUpdated` no cliente e
 
 As mochilas pequena, media e grande sao itens independentes do VIP. Ao usar,
 o item e consumido e o peso adicional permanece ate a proxima morte.
+
+## Veículos e mansões mensais
+
+Os veículos resgatados ficam registrados em `player_vehicles`. Quando a
+validade termina, eles continuam aparecendo na garagem, mas a retirada fica
+bloqueada até o pagamento da mensalidade em Runas. A renovação soma mais 30
+dias a partir do vencimento atual ou do momento do pagamento.
+
+As mansões seguem a mesma regra em `ob_housing`: continuam em Meus Imóveis,
+mas entrada, baú e chaves ficam bloqueados enquanto a mensalidade estiver
+vencida. Cadastre pelo painel uma casa com `ownershipMode = instanced` e
+`vipTier = eclipse` ou `vipTier = arcano`. Um mesmo imóvel pode aceitar os
+dois planos usando `eclipse,arcano`.

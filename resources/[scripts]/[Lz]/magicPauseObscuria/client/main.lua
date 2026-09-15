@@ -398,6 +398,14 @@ RegisterNUICallback("buyBattlePassPremium", function(data, cb)
     requestServer("MagicPause:server:buyBattlePassPremium", data or {}, cb)
 end)
 
+RegisterNUICallback("buyBattlePassLevels", function(data, cb)
+    requestServer("MagicPause:server:buyBattlePassLevels", data or {}, cb)
+end)
+
+RegisterNUICallback("claimBattlePassMission", function(data, cb)
+    requestServer("MagicPause:server:claimBattlePassMission", data or {}, cb)
+end)
+
 RegisterNUICallback("claimBattlePassReward", function(data, cb)
     requestServer("MagicPause:server:claimBattlePassReward", data or {}, cb)
 end)

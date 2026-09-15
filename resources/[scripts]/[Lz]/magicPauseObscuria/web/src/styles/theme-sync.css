@@ -1531,8 +1531,9 @@
 .tickets-screen input,
 .tickets-screen textarea {
   font-family: var(--ob-display) !important;
+  font-synthesis: none;
   -webkit-font-smoothing: auto;
-  text-rendering: auto;
+  text-rendering: optimizeLegibility;
 }
 
 .bp-title-block > small,
@@ -1551,7 +1552,7 @@
 .bp-slot-editor label > span,
 .bp-reward-card label > span {
   color: rgba(246, 239, 248, .76) !important;
-  font-size: 9.5px !important;
+  font-size: 11px !important;
 }
 
 .bp-season-facts em,
@@ -1564,7 +1565,7 @@
 .bp-admin-slot-list small,
 .bp-slot-editor-head p {
   color: rgba(241, 234, 244, .7) !important;
-  font-size: 9.5px !important;
+  font-size: 11px !important;
 }
 
 .bp-season-facts b,
@@ -1578,7 +1579,7 @@
 .bp-type-picker button,
 .bp-toggle-button,
 .bp-last-claimed b {
-  font-size: 11px !important;
+  font-size: 12px !important;
 }
 
 .bp-admin-modal-head p,
@@ -1687,5 +1688,5 @@
 .bp-type-picker button,
 .bp-toggle-button,
 .bp-last-claimed b {
-  font-weight: 650 !important;
+  font-weight: 700 !important;
 }

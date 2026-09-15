@@ -122,6 +122,7 @@ Config.Stretcher = {
     pushOffset = vec3(0.0, 1.25, 0.0),
     pushRotation = vec3(0.0, 0.0, 90.0),
     pushGroundOffset = 0.0,
+    pushVerticalStep = 0.04,
     vehicleCollisionDistance = 15.0,
     releaseKey = 'X',
     pushAnimation = {
@@ -129,8 +130,8 @@ Config.Stretcher = {
         clip = 'idle',
         flag = 49
     },
-    patientOffset = vec3(0.0, 0.0, 1.05),
-    patientRotation = vec3(0.0, 0.0, 180.0),
+    patientOffset = vec3(0.0, 0.0, 2.10),
+    patientRotation = vec3(0.0, 0.0, 90.0),
     maxPatientDistance = 3.0
 }
 

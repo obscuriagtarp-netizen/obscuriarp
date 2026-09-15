@@ -127,6 +127,15 @@ exports('GetEssenciaSnapshot', function()
     }
 end)
 
+exports('GetModifiedCost', function(amount)
+    amount = math.max(0, math.floor(math.abs(tonumber(amount) or 0) + 0.5))
+    if amount <= 1 or LocalPlayer.state.obArtifactCorrupted == true then return amount end
+
+    local multiplier = math.max(0.01, tonumber(LocalPlayer.state.obEssenceCostMultiplier) or 1.0)
+    if multiplier >= 1.0 then return amount end
+    return math.max(1, math.ceil(amount * multiplier))
+end)
+
 exports('AddEssencia', function(amount)
     return changeEssence(math.abs(tonumber(amount) or 0))
 end)

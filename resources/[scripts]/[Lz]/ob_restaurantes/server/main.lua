@@ -64,6 +64,60 @@ local function normalizeProductWeight(value)
     return math.min(maximum, math.max(minimum, math.floor(tonumber(value) or fallback)))
 end
 
+local function restaurantPresentationMap(restaurantId)
+    local configured = Config.RestaurantProps or {}
+    local merged = {}
+
+    local function mergeScope(scope)
+        for mapKey, entry in pairs(type(scope) == 'table' and scope or {}) do
+            if type(entry) == 'table' then
+                local key = validKey(entry.key or (type(mapKey) == 'string' and mapKey or nil), 64)
+                if key then
+                    if entry.enabled == false then
+                        merged[key] = nil
+                    else
+                        local animation = type(entry.animation) == 'string' and (Config.RestaurantAnimations or {})[entry.animation] or entry.animation
+                        merged[key] = {
+                            key = key,
+                            label = cleanText(entry.label, 80) or key,
+                            image = cleanText(entry.image or entry.photo, 255) or '',
+                            type = normalizeProductType(entry.type),
+                            animation = cleanText(type(entry.animation) == 'string' and entry.animation or nil, 32) or '',
+                            animationLabel = cleanText(type(animation) == 'table' and animation.label or nil, 40) or '',
+                            default = entry.default == true
+                        }
+                    end
+                end
+            end
+        end
+    end
+
+    mergeScope(configured['*'])
+    mergeScope(configured[tostring(restaurantId or '')])
+    return merged
+end
+
+local function restaurantPresentationOptions(restaurantId)
+    local options = {}
+    for _, presentation in pairs(restaurantPresentationMap(restaurantId)) do
+        options[#options + 1] = presentation
+    end
+    table.sort(options, function(left, right)
+        if left.type ~= right.type then return left.type < right.type end
+        return left.label:lower() < right.label:lower()
+    end)
+    return options
+end
+
+local function normalizePresentationKey(value, restaurantId, productType)
+    local raw = cleanText(value, 64)
+    if not raw then return '' end
+    local key = validKey(raw, 64)
+    local presentation = key and restaurantPresentationMap(restaurantId)[key]
+    if not presentation or presentation.type ~= normalizeProductType(productType) then return nil end
+    return key
+end
+
 local function isRateLimited(src, action)
     if src <= 0 then return false end
     local now = GetGameTimer()
@@ -152,6 +206,9 @@ local function buildRecipeMetadata(recipe, restaurantId)
         restaurantProduct = true,
         restaurantProductType = productType
     }
+
+    local presentationKey = validKey(recipe.presentation_key or recipe.presentationKey, 64)
+    if presentationKey then metadata.restaurantPresentation = presentationKey end
 
     local image = validImage(recipe.image)
     if image and image ~= '' then
@@ -249,6 +306,7 @@ local function migrate()
     ensureColumn('ob_restaurant_recipes', 'featured', 'TINYINT(1) NOT NULL DEFAULT 0 AFTER `menu_badge`')
     ensureColumn('ob_restaurant_recipes', 'product_type', "VARCHAR(16) NOT NULL DEFAULT 'food' AFTER `output_amount`")
     ensureColumn('ob_restaurant_recipes', 'item_weight', 'INT UNSIGNED NOT NULL DEFAULT 250 AFTER `product_type`')
+    ensureColumn('ob_restaurant_recipes', 'presentation_key', "VARCHAR(64) NOT NULL DEFAULT '' AFTER `item_weight`")
     ensureColumn('ob_restaurant_recipes', 'craft_steps', 'LONGTEXT NULL AFTER `contents`')
     ensureColumn('ob_restaurant_recipes', 'effects', 'LONGTEXT NULL AFTER `craft_steps`')
     ensureColumn('ob_restaurants', 'is_open', 'TINYINT(1) NOT NULL DEFAULT 1 AFTER `enabled`')
@@ -299,14 +357,16 @@ local function seed()
             MySQL.update.await([[
                 INSERT IGNORE INTO ob_restaurant_recipes
                     (restaurant_id, recipe_key, category_key, name, description, image, icon, price,
-                     prep_time, output_item, output_amount, product_type, item_weight, is_combo, ingredients, contents, craft_steps, effects, enabled)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
+                     prep_time, output_item, output_amount, product_type, item_weight, presentation_key, is_combo, ingredients, contents, craft_steps, effects, enabled)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
             ]], {
                 restaurant.id, recipe.key, recipe.category, recipe.name, recipe.description or '', recipe.image or '',
                 recipe.icon or 'utensils', math.max(0, math.floor(recipe.price or 0)),
                 math.max(1, math.floor(recipe.prepTime or 5)), recipe.outputItem,
                 math.max(1, math.floor(recipe.outputAmount or 1)), normalizeProductType(recipe.productType),
-                normalizeProductWeight(recipe.itemWeight), recipe.isCombo and 1 or 0,
+                normalizeProductWeight(recipe.itemWeight),
+                normalizePresentationKey(recipe.presentationKey, restaurant.id, recipe.productType) or '',
+                recipe.isCombo and 1 or 0,
                 Restaurant.jsonEncode(recipe.ingredients), Restaurant.jsonEncode(recipe.contents or {}),
                 Restaurant.jsonEncode(normalizeCraftSteps(recipe.craftSteps or {})),
                 Restaurant.jsonEncode(normalizeRecipeEffects(recipe.effects, false) or {})
@@ -581,6 +641,7 @@ local function restaurantPayload(src, restaurant, mode)
         payload.dashboard = dashboard(restaurant.id)
         payload.members, payload.jobGrades = loadMembers(restaurant)
         payload.inventoryItems = loadInventoryItemOptions()
+        payload.presentations = restaurantPresentationOptions(restaurant.id)
     end
     return payload
 end
@@ -977,7 +1038,7 @@ handlers.collectProduction = function(src, data)
     local productionId = tonumber(data.productionId)
     local production = MySQL.single.await([[
         SELECT p.*, r.name, r.description, r.image, r.output_item, r.output_amount,
-               r.product_type, r.item_weight, r.is_combo, r.contents, r.effects
+               r.product_type, r.item_weight, r.presentation_key, r.is_combo, r.contents, r.effects
         FROM ob_restaurant_productions p
         INNER JOIN ob_restaurant_recipes r ON r.id = p.recipe_id
         WHERE p.id = ? AND p.employee_identifier = ? AND p.status = 'preparing'
@@ -1071,11 +1132,13 @@ handlers.saveRecipe = function(src, data)
     local featured = (recipe.featured == true or recipe.featured == 1) and 1 or 0
     local productType = normalizeProductType(recipe.productType or recipe.product_type)
     local itemWeight = normalizeProductWeight(recipe.itemWeight or recipe.item_weight)
+    local presentationKey = normalizePresentationKey(recipe.presentationKey or recipe.presentation_key, restaurant.id, productType)
+    if presentationKey == nil then return { ok = false, error = 'invalid_presentation' } end
     if recipeId then
         local changed = MySQL.update.await([[
             UPDATE ob_restaurant_recipes SET category_key = ?, name = ?, description = ?, image = ?, icon = ?,
                 price = ?, old_price = ?, menu_badge = ?, featured = ?, prep_time = ?, output_item = ?,
-                output_amount = ?, product_type = ?, item_weight = ?, is_combo = ?, ingredients = ?, contents = ?,
+                output_amount = ?, product_type = ?, item_weight = ?, presentation_key = ?, is_combo = ?, ingredients = ?, contents = ?,
                 craft_steps = ?, effects = ?, enabled = ?
             WHERE id = ? AND restaurant_id = ?
         ]], {
@@ -1083,7 +1146,7 @@ handlers.saveRecipe = function(src, data)
             cleanText(recipe.icon, 48) or 'utensils', price, oldPrice, menuBadge, featured,
             math.min(math.floor(tonumber(limits.maxPrepSeconds) or 1800), math.max(1, math.floor(tonumber(recipe.prepTime or recipe.prep_time) or 5))), outputItem,
             math.min(math.floor(tonumber(limits.maxOutputAmount) or 100), math.max(1, math.floor(tonumber(recipe.outputAmount or recipe.output_amount) or 1))),
-            productType, itemWeight,
+            productType, itemWeight, presentationKey,
             (recipe.isCombo == true or recipe.is_combo == true or recipe.is_combo == 1) and 1 or 0,
             Restaurant.jsonEncode(ingredients), Restaurant.jsonEncode(contents), Restaurant.jsonEncode(craftSteps), Restaurant.jsonEncode(effects),
             recipe.enabled == false and 0 or 1,
@@ -1095,16 +1158,16 @@ handlers.saveRecipe = function(src, data)
         recipeId = MySQL.insert.await([[
             INSERT INTO ob_restaurant_recipes
                 (restaurant_id, recipe_key, category_key, name, description, image, icon, price, old_price,
-                 menu_badge, featured, prep_time, output_item, output_amount, product_type, item_weight, is_combo,
+                 menu_badge, featured, prep_time, output_item, output_amount, product_type, item_weight, presentation_key, is_combo,
                  ingredients, contents, craft_steps, effects, enabled)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ]], {
             restaurant.id, recipeKey, categoryKey, name, cleanText(recipe.description, 255) or '',
             image, cleanText(recipe.icon, 48) or 'utensils',
             price, oldPrice, menuBadge, featured,
             math.min(math.floor(tonumber(limits.maxPrepSeconds) or 1800), math.max(1, math.floor(tonumber(recipe.prepTime) or 5))),
             outputItem, math.min(math.floor(tonumber(limits.maxOutputAmount) or 100), math.max(1, math.floor(tonumber(recipe.outputAmount) or 1))),
-            productType, itemWeight, recipe.isCombo and 1 or 0,
+            productType, itemWeight, presentationKey, recipe.isCombo and 1 or 0,
             Restaurant.jsonEncode(ingredients), Restaurant.jsonEncode(contents), Restaurant.jsonEncode(craftSteps), Restaurant.jsonEncode(effects),
             recipe.enabled == false and 0 or 1
         })
@@ -1659,7 +1722,7 @@ exports('SetEstablishmentAvailability', function(src, restaurantId, isOpen)
     src = tonumber(src)
     local restaurant = Restaurant.getRestaurant(restaurantId)
     if not restaurant then return { ok = false, error = 'restaurant_not_found' } end
-    if not Restaurant.canAdminister(src, restaurant) then return { ok = false, error = 'not_owner' } end
+    if not Restaurant.canManage(src, restaurant) then return { ok = false, error = 'not_manager' } end
 
     MySQL.update.await('UPDATE ob_restaurants SET is_open = ? WHERE id = ?', {
         isOpen == true and 1 or 0,

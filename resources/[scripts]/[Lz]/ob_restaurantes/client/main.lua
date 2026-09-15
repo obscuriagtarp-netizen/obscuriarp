@@ -24,15 +24,70 @@ local restaurantProductAnimations = {
     }
 }
 
+local function configuredPresentation(restaurantId, presentationKey, productType)
+    local scopes = Config.RestaurantProps or {}
+    local restaurantProps = scopes[tostring(restaurantId or '')] or {}
+    local globalProps = scopes['*'] or {}
+    local selected = tostring(presentationKey or '')
+
+    if selected ~= '' then
+        local exact = restaurantProps[selected] or globalProps[selected]
+        if type(exact) == 'table' and exact.enabled ~= false
+            and (exact.type == nil or exact.type == productType) then
+            return exact
+        end
+    end
+
+    for _, scope in ipairs({ restaurantProps, globalProps }) do
+        for _, entry in pairs(scope) do
+            if type(entry) == 'table' and entry.enabled ~= false and entry.default == true
+                and (entry.type == nil or entry.type == productType) then
+                return entry
+            end
+        end
+    end
+end
+
+local function consumptionPresentation(metadata, productType)
+    local configured = configuredPresentation(metadata.restaurant, metadata.restaurantPresentation, productType)
+    if not configured then return restaurantProductAnimations[productType] end
+
+    local animation = configured.animation
+    if type(animation) == 'string' then
+        animation = (Config.RestaurantAnimations or {})[animation]
+    end
+    animation = type(animation) == 'table' and animation or {}
+
+    local propConfig = type(configured.prop) == 'table' and configured.prop or configured
+    local prop
+    if propConfig.model then
+        prop = {
+            model = propConfig.model,
+            bone = propConfig.bone,
+            pos = propConfig.position or propConfig.pos or vec3(0.0, 0.0, 0.0),
+            rot = propConfig.rotation or propConfig.rot or vec3(0.0, 0.0, 0.0),
+            rotOrder = propConfig.rotOrder
+        }
+    end
+
+    local fallback = restaurantProductAnimations[productType]
+    return {
+        anim = animation.anim or (animation.dict and animation) or fallback.anim,
+        prop = prop or fallback.prop,
+        duration = configured.duration or animation.duration,
+        progressLabel = configured.progressLabel or animation.progressLabel
+    }
+end
+
 exports('useRestaurantProduct', function(data, slot)
     local metadata = type(slot) == 'table' and slot.metadata or nil
     if type(metadata) ~= 'table' or metadata.restaurantProduct ~= true then return end
 
     local productType = metadata.restaurantProductType == 'drink' and 'drink' or 'food'
-    local presentation = restaurantProductAnimations[productType]
+    local presentation = consumptionPresentation(metadata, productType)
     local completed = exports.ox_lib:progressBar({
-        duration = math.max(750, math.floor(tonumber((Config.RestaurantProduct or {}).useTime) or 2500)),
-        label = ('%s %s'):format(productType == 'drink' and 'Bebendo' or 'Comendo', metadata.label or 'produto'),
+        duration = math.max(750, math.floor(tonumber(presentation.duration) or tonumber((Config.RestaurantProduct or {}).useTime) or 2500)),
+        label = ('%s %s'):format(presentation.progressLabel or (productType == 'drink' and 'Bebendo' or 'Comendo'), metadata.label or 'produto'),
         canCancel = true,
         disable = { car = true, combat = true },
         anim = presentation.anim,
