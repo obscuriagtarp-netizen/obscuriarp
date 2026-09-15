@@ -27,14 +27,6 @@ Config.Inventory = {
 Config.VehicleGarage = 'pillboxgarage'
 Config.VehicleImageDirectory = 'web/imgs/vipstore'
 
--- Veiculos e imoveis VIP permanecem no patrimonio quando vencem. O jogador
--- paga a mensalidade em Runas para liberar o bem por mais durationDays.
-Config.Rentals = {
-    durationDays = 30,
-    runesAccount = 'crypto',
-    renewalCooldownMs = 1500,
-}
-
 -- Mochilas sao consumiveis independentes de VIP. O bonus permanece ate a morte.
 -- bonusWeight e informado em gramas: 10000 = 10 kg.
 Config.Backpacks = {
@@ -66,8 +58,6 @@ Config.Vips = {
         inventoryWeight = 10000,
         vehicles = {
             count = 1,
-            durationDays = 30,
-            renewalRunes = 100,
             catalog = {
                 { model = '16charger', label = 'Lodge Charger' },
                 { model = '2f2fgtr34', label = 'R34' },
@@ -75,7 +65,6 @@ Config.Vips = {
                 { model = '19gv80', label = 'Tundra PRO' },
             },
         },
-        property = { enabled = false },
         nameChanges = 0,
         discordRoleId = '1547991547616952440',
     },
@@ -91,8 +80,6 @@ Config.Vips = {
         inventoryWeight = 20000,
         vehicles = {
             count = 2,
-            durationDays = 30,
-            renewalRunes = 150,
             catalog = {
                 { model = '16charger', label = 'Lodge Charger' },
                 { model = '2f2fgtr34', label = 'R34' },
@@ -102,12 +89,6 @@ Config.Vips = {
                 { model = '18Velar', label = 'Velar' },
                 { model = '21rsq8', label = 'RS Q8' },
             },
-        },
-        property = {
-            enabled = true,
-            tier = 'eclipse',
-            durationDays = 30,
-            renewalRunes = 300,
         },
         nameChanges = 1,
         discordRoleId = '1547991741360111759',
@@ -124,8 +105,6 @@ Config.Vips = {
         inventoryWeight = 30000,
         vehicles = {
             count = 3,
-            durationDays = 30,
-            renewalRunes = 200,
             catalog = {
                 { model = '16charger', label = 'Lodge Charger' },
                 { model = '2f2fgtr34', label = 'R34' },
@@ -138,12 +117,6 @@ Config.Vips = {
                 { model = '2ncsbmwm8', label = 'M8 Kit' },
                 { model = '2ncsx7', label = 'Cherooke' },
             },
-        },
-        property = {
-            enabled = true,
-            tier = 'arcano',
-            durationDays = 30,
-            renewalRunes = 500,
         },
         nameChanges = 2,
         discordRoleId = '1547991774289727649',

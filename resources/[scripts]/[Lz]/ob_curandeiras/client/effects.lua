@@ -294,14 +294,6 @@ function ObCurandeiras.ApplyNpcAbility(abilityId, targetPed)
         return false
     end
 
-    local powerMultiplier = 1.0
-    if GetResourceState('ob_boxes') == 'started' then
-        local ok, multiplier = pcall(function()
-            return exports.ob_boxes:GetHealerPowerMultiplier(abilityId)
-        end)
-        if ok then powerMultiplier = math.max(1.0, tonumber(multiplier) or 1.0) end
-    end
-
     local config, auraKind, auraDuration
     if abilityId == 'cura_vital' then
         config = Config.VitalHeal
@@ -324,17 +316,12 @@ function ObCurandeiras.ApplyNpcAbility(abilityId, targetPed)
     if not DoesEntityExist(targetPed) or IsPedDeadOrDying(targetPed, true) then return false end
 
     if abilityId == 'cura_vital' then
-        healNpcGradually(
-            targetPed,
-            math.max(1000, math.floor(config.healDuration / powerMultiplier)),
-            math.min(1.0, config.healFraction * powerMultiplier)
-        )
+        healNpcGradually(targetPed, config.healDuration, config.healFraction)
     elseif abilityId == 'serenidade' then
-        local serenityDuration = math.floor(config.effectDuration * powerMultiplier)
         ClearPedTasks(targetPed)
         SetBlockingOfNonTemporaryEvents(targetPed, true)
-        TaskStandStill(targetPed, math.min(serenityDuration, 10000))
-        SetTimeout(serenityDuration, function()
+        TaskStandStill(targetPed, math.min(config.effectDuration, 10000))
+        SetTimeout(config.effectDuration, function()
             if DoesEntityExist(targetPed) then
                 SetBlockingOfNonTemporaryEvents(targetPed, false)
             end
@@ -342,11 +329,7 @@ function ObCurandeiras.ApplyNpcAbility(abilityId, targetPed)
     else
         ClearPedBloodDamage(targetPed)
         ClearPedLastDamageBone(targetPed)
-        healNpcGradually(
-            targetPed,
-            math.max(1000, math.floor(config.healDuration / powerMultiplier)),
-            math.min(1.0, config.healFraction * powerMultiplier)
-        )
+        healNpcGradually(targetPed, config.healDuration, config.healFraction)
     end
     return true
 end

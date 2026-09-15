@@ -65,9 +65,9 @@ Config.Dealerships = {
 
     vip = {
         label = 'Concessionaria VIP',
-        subtitle = 'Veiculos premium',
+        subtitle = 'Veiculos premium por Cripto Qbox',
         currency = 'crypto',
-        coords = vec3(-924.0, -2031.32, 8.42),
+        coords = vec3(-68.77, -1112.31, 26.44),
         blip = { enabled = true, sprite = 596, color = 27, scale = 0.72, name = 'Concessionaria VIP' },
         categories = {
             { id = 'carro', label = 'Carros', icon = 'car' },

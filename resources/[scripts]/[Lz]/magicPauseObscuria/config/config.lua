@@ -86,7 +86,7 @@ Config.VipStore = {
             category = "featured",
             title = "VIP VEU",
             subtitle = "30 dias de beneficios",
-            description = "30 dias de VIP, com renda extra, veículo exclusivo por 30 dias e mais capacidade.",
+            description = "O primeiro nivel VIP da Obscuria, com renda extra, veiculo exclusivo e mais capacidade.",
             image = "web/imgs/vipstore/veu.png",
             icon = "fa-solid fa-moon",
             badge = "VEU",
@@ -96,8 +96,7 @@ Config.VipStore = {
             features = {
                 "$ 50.000 de dinheiro inicial",
                 "$ 2.000 de salario extra por hora",
-                "1 veículo do catálogo VÉU por 30 dias",
-                "Renovação mensal do veículo disponível por Runas",
+                "1 veiculo do catalogo VEU",
                 "+10 kg de capacidade enquanto o VIP estiver ativo",
                 "5% de desconto em veiculos",
                 "Tag VEU no Discord"
@@ -111,7 +110,7 @@ Config.VipStore = {
             category = "featured",
             title = "VIP ECLIPSE",
             subtitle = "30 dias de beneficios",
-            description = "30 dias de VIP ECLIPSE, dois veículos e uma mansão, todos liberados por 30 dias.",
+            description = "Beneficios Eclipse com dois veiculos, mais capacidade e descontos em servicos.",
             image = "web/imgs/vipstore/eclipse.png",
             icon = "fa-solid fa-circle-half-stroke",
             badge = "ECLIPSE",
@@ -121,9 +120,7 @@ Config.VipStore = {
             features = {
                 "$ 120.000 de dinheiro inicial",
                 "$ 4.000 de salario extra por hora",
-                "2 veículos do catálogo ECLIPSE por 30 dias",
-                "1 mansão VIP por 30 dias",
-                "Renovação mensal dos veículos e da mansão por Runas",
+                "2 veiculos do catalogo ECLIPSE",
                 "+20 kg de capacidade enquanto o VIP estiver ativo",
                 "10% em veiculos, combustivel e hospital",
                 "1 Troca de Nome",
@@ -138,7 +135,7 @@ Config.VipStore = {
             category = "featured",
             title = "VIP ARCANO",
             subtitle = "30 dias de beneficios",
-            description = "30 dias de VIP ARCANO, três veículos e uma mansão, todos liberados por 30 dias.",
+            description = "O nivel maximo, com tres veiculos, capacidade maxima e os maiores descontos.",
             image = "web/imgs/vipstore/arcano.png",
             icon = "fa-solid fa-wand-sparkles",
             badge = "ARCANO",
@@ -148,9 +145,7 @@ Config.VipStore = {
             features = {
                 "$ 250.000 de dinheiro inicial",
                 "$ 7.500 de salario extra por hora",
-                "3 veículos do catálogo ARCANO por 30 dias",
-                "1 mansão VIP por 30 dias",
-                "Renovação mensal dos veículos e da mansão por Runas",
+                "3 veiculos do catalogo ARCANO",
                 "+30 kg de capacidade enquanto o VIP estiver ativo",
                 "15% em veiculos, combustivel e hospital",
                 "2 Trocas de Nome",
@@ -279,35 +274,6 @@ Config.BattlePass = {
     defaultDurationDays = 30,
     defaultPremiumPrice = 1000,
     defaultXpPerLevel = 1000,
-    levelPurchase = {
-        enabled = true,
-        pricePerLevel = 100,
-        maxPerPurchase = 25
-    },
-    missions = {
-        login = {
-            enabled = true,
-            dailyXp = 1000,
-            streakDays = 30,
-            streakBonusXp = 5000
-        },
-        jobs = {
-            enabled = true,
-            dailyXpCap = 5000
-        },
-        money = {
-            enabled = true,
-            accounts = { "cash", "bank" },
-            target = 20000,
-            rewardXp = 3500
-        },
-        runes = {
-            enabled = true,
-            account = "crypto",
-            target = 200,
-            rewardXp = 5000
-        }
-    },
     maxSlots = 200,
     maxSlotsLoaded = 250,
     initialSlots = {

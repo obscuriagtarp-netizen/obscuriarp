@@ -34,15 +34,6 @@ local function getClass(source)
     return tostring(metadata[Config.ClassMetadataKey] or ''):lower(), player
 end
 
-local function getPowerMultiplier(source, abilityId)
-    if abilityId == 'voo' or GetResourceState('ob_boxes') ~= 'started' then return 1.0 end
-
-    local ok, multiplier = pcall(function()
-        return exports.ob_boxes:GetHealerPowerMultiplier(source, abilityId)
-    end)
-    return ok and math.max(1.0, tonumber(multiplier) or 1.0) or 1.0
-end
-
 local function isHealer(source)
     return getClass(source) == tostring(Config.ClassId):lower()
 end
@@ -1148,8 +1139,7 @@ local function applyGradualHeal(targetSource, duration, fraction)
     )
 end
 
-local function applySerenity(targetSource, restoredMana, durationMs)
-    durationMs = math.max(1000, math.floor(tonumber(durationMs) or Config.Serenity.effectDuration))
+local function applySerenity(targetSource, restoredMana)
     local state = Player(targetSource).state
     state:set(Config.Compatibility.stressStateKey or 'stress', 0, true)
     setMetadata(targetSource, Config.Compatibility.stressMetadataKey, 0)
@@ -1162,10 +1152,10 @@ local function applySerenity(targetSource, restoredMana, durationMs)
     TriggerClientEvent(
         'ob_curandeiras:client:serenityApplied',
         targetSource,
-        durationMs,
+        Config.Serenity.effectDuration,
         math.max(0, math.floor(tonumber(restoredMana) or 0))
     )
-    SetTimeout(durationMs, function()
+    SetTimeout(Config.Serenity.effectDuration, function()
         if serenityTokens[targetSource] == token and GetPlayerName(targetSource) then
             Player(targetSource).state:set('obSerene', false, true)
         end
@@ -1210,7 +1200,6 @@ lib.callback.register('ob_curandeiras:server:useTargetAbility', function(source,
     end
 
     local config = abilityConfig[abilityId]()
-    local powerMultiplier = getPowerMultiplier(source, abilityId)
     if channelParticipants[source] or channelParticipants[targetSource] then
         return denied('Uma canalizacao ja esta em andamento.')
     end
@@ -1228,11 +1217,11 @@ lib.callback.register('ob_curandeiras:server:useTargetAbility', function(source,
     local fxDuration = channelDuration
     local fxKind = 'heal'
     if abilityId == 'cura_vital' then
-        fxDuration = fxDuration + math.max(1000, math.floor(Config.VitalHeal.healDuration / powerMultiplier))
+        fxDuration = fxDuration + Config.VitalHeal.healDuration
     elseif abilityId == 'serenidade' then
         fxKind = 'serenity'
         fxDuration = fxDuration + math.min(
-            math.max(0, (tonumber(Config.Serenity.effectDuration) or 30000) * powerMultiplier),
+            math.max(0, tonumber(Config.Serenity.effectDuration) or 30000),
             10000
         )
     else
@@ -1294,28 +1283,24 @@ lib.callback.register('ob_curandeiras:server:useTargetAbility', function(source,
         end
 
         if abilityId == 'cura_vital' then
-            applyGradualHeal(
-                targetSource,
-                math.max(1000, math.floor(Config.VitalHeal.healDuration / powerMultiplier)),
-                math.min(1.0, Config.VitalHeal.healFraction * powerMultiplier)
-            )
+            applyGradualHeal(targetSource, Config.VitalHeal.healDuration, Config.VitalHeal.healFraction)
         elseif abilityId == 'serenidade' then
             local restoredMana = 0
             if targetSource == source and GetResourceState('ob_essencias') == 'started' then
-                local restoreAmount = math.max(0, math.floor((tonumber(Config.Serenity.selfManaRestore) or 20) * powerMultiplier + 0.5))
+                local restoreAmount = math.max(0, math.floor(tonumber(Config.Serenity.selfManaRestore) or 20))
                 local before, maximum = exports.ob_essencias:GetEssencia(source)
                 if restoreAmount > 0 and exports.ob_essencias:AddEssencia(source, restoreAmount) == true then
                     local after = exports.ob_essencias:GetEssencia(source)
                     restoredMana = math.max(0, math.min(tonumber(maximum) or 0, tonumber(after) or 0) - (tonumber(before) or 0))
                 end
             end
-            applySerenity(targetSource, restoredMana, Config.Serenity.effectDuration * powerMultiplier)
+            applySerenity(targetSource, restoredMana)
         else
             stopBleeding(targetSource)
             applyGradualHeal(
                 targetSource,
-                math.max(1000, math.floor(Config.StopBleeding.healDuration / powerMultiplier)),
-                math.min(1.0, Config.StopBleeding.healFraction * powerMultiplier)
+                Config.StopBleeding.healDuration,
+                Config.StopBleeding.healFraction
             )
         end
     end)

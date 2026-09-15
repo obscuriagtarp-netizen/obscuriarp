@@ -209,22 +209,8 @@ local function blockConsumption(source, amount, current, decision)
     return payload
 end
 
-local function modifyEssenceCost(source, amount, context)
-    amount = math.abs(tonumber(amount) or 0)
-    if amount <= 1 or (type(context) == 'table' and context.costAdjusted == true) then
-        return amount
-    end
-    if GetResourceState('ob_boxes') ~= 'started' then return amount end
-
-    local ok, modified = pcall(function()
-        return exports.ob_boxes:ModifyEssenceCost(source, amount, context)
-    end)
-    if not ok then return amount end
-    return math.max(1, math.floor(tonumber(modified) or amount))
-end
-
 local function preflightEssence(source, amount, context)
-    amount = modifyEssenceCost(source, amount, context)
+    amount = math.abs(tonumber(amount) or 0)
     local current = buildPayload(source, true)
     if not current.success or amount <= 0 then return current end
     if current.value < amount then
@@ -244,7 +230,7 @@ local function preflightEssence(source, amount, context)
 end
 
 local function consumeEssence(source, amount, context)
-    amount = modifyEssenceCost(source, amount, context)
+    amount = math.abs(tonumber(amount) or 0)
     if amount <= 0 then
         local payload = buildPayload(source, true)
         payload.success = payload.success == true
@@ -330,7 +316,7 @@ exports('AddEssencia', function(source, amount)
 end)
 
 exports('RemoveEssencia', function(source, amount)
-    return consumeEssence(source, amount, { origin = 'server_export' }).success
+    return changeEssence(source, -math.abs(tonumber(amount) or 0)).success
 end)
 
 exports('SetEssencia', function(source, value)

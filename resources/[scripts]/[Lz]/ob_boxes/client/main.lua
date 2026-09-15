@@ -1,18 +1,12 @@
-local artifactStatus = {
+local necklaceStatus = {
     active = false,
     class = nil,
     item = nil,
     maxHealthBonus = 0,
-    corrupted = false,
-    staminaRechargeMultiplier = 1.0,
-    underwaterTimeMultiplier = 1.0,
 }
 
 local wisdomExpiresAt = 0
 local wisdomThreadRunning = false
-local wisdomSpeedMultiplier = 1.25
-local dizzinessExpiresAt = 0
-local dizzinessToken = 0
 local refreshSequence = 0
 
 local function notify(description, notificationType)
@@ -23,50 +17,31 @@ local function notify(description, notificationType)
     })
 end
 
-local function applyHumanHealthBonus(status)
+local function applyNecklaceStatus(status)
+    if type(status) ~= 'table' then return end
+
+    local wasHumanActive = necklaceStatus.active
+        and necklaceStatus.class == 'humano'
+        and (tonumber(necklaceStatus.maxHealthBonus) or 0) > 0
+
+    necklaceStatus = status
+
+    local isHumanActive = status.active == true
+        and status.class == 'humano'
+        and (tonumber(status.maxHealthBonus) or 0) > 0
+
+    if not wasHumanActive and not isHumanActive then return end
+
     local ped = PlayerPedId()
     if ped == 0 or not DoesEntityExist(ped) then return end
 
-    local active = status.active == true
-        and status.class == 'humano'
-        and (tonumber(status.maxHealthBonus) or 0) > 0
     local baseHealth = math.max(100, tonumber(Config.HumanBaseMaxHealth) or 200)
-    local targetMax = baseHealth + (active and math.floor(tonumber(status.maxHealthBonus) or 0) or 0)
-
+    local targetMax = baseHealth + (isHumanActive and math.floor(tonumber(status.maxHealthBonus) or 0) or 0)
     SetEntityMaxHealth(ped, targetMax)
-    if GetEntityHealth(ped) > targetMax then SetEntityHealth(ped, targetMax) end
-end
 
-local function applyMovementEffects(status)
-    local ped = PlayerPedId()
-    local underwaterMultiplier = math.max(1.0, tonumber(status.underwaterTimeMultiplier) or 1.0)
-    local baseUnderwater = math.max(1.0, tonumber(Config.Effects.baseUnderwaterSeconds) or 10.0)
-
-    if ped ~= 0 and DoesEntityExist(ped) then
-        SetPedMaxTimeUnderwater(ped, baseUnderwater * underwaterMultiplier)
+    if GetEntityHealth(ped) > targetMax then
+        SetEntityHealth(ped, targetMax)
     end
-end
-
-local function applyCorruption(active)
-    active = active == true
-    if artifactStatus.corrupted == active then return end
-
-    if active then
-        AnimpostfxPlay('Rampage', 0, true)
-        ShakeGameplayCam('DRUNK_SHAKE', 0.18)
-    else
-        AnimpostfxStop('Rampage')
-        if GetGameTimer() >= dizzinessExpiresAt then StopGameplayCamShaking(true) end
-    end
-end
-
-local function applyArtifactStatus(status)
-    if type(status) ~= 'table' then return end
-
-    applyCorruption(status.corrupted)
-    artifactStatus = status
-    applyHumanHealthBonus(status)
-    applyMovementEffects(status)
 end
 
 local function refreshEffects(delay)
@@ -78,7 +53,7 @@ local function refreshEffects(delay)
         if sequence ~= refreshSequence then return end
 
         local status = lib.callback.await('ob_boxes:server:getEffects', false)
-        applyArtifactStatus(status)
+        applyNecklaceStatus(status)
 
         if GetResourceState('ob_essencias') == 'started' then
             pcall(function()
@@ -97,44 +72,14 @@ local function startWisdomThread()
 
         while GetGameTimer() < wisdomExpiresAt do
             Wait(0)
-            SetRunSprintMultiplierForPlayer(player, wisdomSpeedMultiplier)
-            SetPedMoveRateOverride(PlayerPedId(), wisdomSpeedMultiplier)
+            local multiplier = tonumber(Config.Potions.elixir_sabedoria.speedMultiplier) or 1.25
+            SetRunSprintMultiplierForPlayer(player, multiplier)
+            SetPedMoveRateOverride(PlayerPedId(), multiplier)
         end
 
         SetRunSprintMultiplierForPlayer(player, 1.0)
         SetPedMoveRateOverride(PlayerPedId(), 1.0)
         wisdomThreadRunning = false
-    end)
-end
-
-local function startDizziness(durationMs)
-    durationMs = math.max(1000, math.floor(tonumber(durationMs) or 60000))
-    dizzinessExpiresAt = math.max(GetGameTimer(), dizzinessExpiresAt) + durationMs
-    dizzinessToken = dizzinessToken + 1
-    local token = dizzinessToken
-
-    CreateThread(function()
-        local animSet = 'move_m@drunk@verydrunk'
-        lib.requestAnimSet(animSet)
-        SetPedMovementClipset(PlayerPedId(), animSet, 1.0)
-        SetPedMotionBlur(PlayerPedId(), true)
-        AnimpostfxPlay('DrugsTrevorClownsFight', 0, true)
-        ShakeGameplayCam('DRUNK_SHAKE', 0.55)
-
-        while token == dizzinessToken and GetGameTimer() < dizzinessExpiresAt do
-            Wait(500)
-        end
-        if token ~= dizzinessToken then return end
-
-        local ped = PlayerPedId()
-        ResetPedMovementClipset(ped, 1.0)
-        SetPedMotionBlur(ped, false)
-        AnimpostfxStop('DrugsTrevorClownsFight')
-        if artifactStatus.corrupted then
-            ShakeGameplayCam('DRUNK_SHAKE', 0.18)
-        else
-            StopGameplayCamShaking(true)
-        end
     end)
 end
 
@@ -191,7 +136,7 @@ RegisterNetEvent('ob_boxes:client:openBox', function(boxName, slot)
 end)
 
 RegisterNetEvent('ob_boxes:client:updateEffects', function(status)
-    applyArtifactStatus(status)
+    applyNecklaceStatus(status)
 
     if GetResourceState('ob_essencias') == 'started' then
         pcall(function()
@@ -209,45 +154,10 @@ RegisterNetEvent('ob_boxes:client:applyWisdom', function(health, speedMultiplier
         SetEntityHealth(ped, math.min(GetEntityMaxHealth(ped), GetEntityHealth(ped) + health))
     end
 
-    wisdomSpeedMultiplier = math.max(1.0, math.min(1.49, tonumber(speedMultiplier) or 1.25))
+    Config.Potions.elixir_sabedoria.speedMultiplier = math.max(1.0, math.min(1.49, tonumber(speedMultiplier) or 1.25))
     durationMs = math.max(1000, math.floor(tonumber(durationMs) or 600000))
     wisdomExpiresAt = math.max(GetGameTimer(), wisdomExpiresAt) + durationMs
     startWisdomThread()
-end)
-
-RegisterNetEvent('ob_boxes:client:applyDizziness', function(durationMs)
-    startDizziness(durationMs)
-end)
-
-RegisterNetEvent('ob_boxes:client:applyHealthRegen', function(amount)
-    local deathState = tonumber(LocalPlayer.state['qbx_medical:deathState']) or 1
-    if deathState ~= 1 or LocalPlayer.state.isDead == true then return end
-
-    local ped = PlayerPedId()
-    if ped == 0 or not DoesEntityExist(ped) or IsEntityDead(ped) then return end
-    amount = math.max(0, math.floor(tonumber(amount) or 0))
-    if amount > 0 then
-        SetEntityHealth(ped, math.min(GetEntityMaxHealth(ped), GetEntityHealth(ped) + amount))
-    end
-end)
-
-RegisterNetEvent('ob_boxes:client:applyFullRestore', function()
-    CreateThread(function()
-        Wait(150)
-        local ped = PlayerPedId()
-        if ped == 0 or not DoesEntityExist(ped) then return end
-
-        applyHumanHealthBonus(artifactStatus)
-        SetEntityHealth(ped, GetEntityMaxHealth(ped))
-        ClearPedBloodDamage(ped)
-        ClearPedLastDamageBone(ped)
-
-        if GetResourceState('qbx_medical') == 'started' then
-            pcall(function()
-                exports.qbx_medical:RemoveBleed(4)
-            end)
-        end
-    end)
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
@@ -255,7 +165,9 @@ RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
 end)
 
 RegisterNetEvent('qbx_core:client:onSetMetaData', function(key)
-    if key == Config.ClassMetadataKey then refreshEffects(100) end
+    if key == Config.ClassMetadataKey then
+        refreshEffects(100)
+    end
 end)
 
 AddEventHandler('ox_inventory:equipmentChanged', function()
@@ -278,28 +190,16 @@ end)
 CreateThread(function()
     while true do
         Wait(2000)
-        applyHumanHealthBonus(artifactStatus)
-        applyMovementEffects(artifactStatus)
-    end
-end)
 
-CreateThread(function()
-    while true do
-        Wait(250)
-
-        local multiplier = math.max(1.0, tonumber(artifactStatus.staminaRechargeMultiplier) or 1.0)
-        if multiplier > 1.0 then
+        if necklaceStatus.active
+            and necklaceStatus.class == 'humano'
+            and (tonumber(necklaceStatus.maxHealthBonus) or 0) > 0 then
             local ped = PlayerPedId()
-            if ped ~= 0
-                and DoesEntityExist(ped)
-                and not IsEntityDead(ped)
-                and not IsPedRunning(ped)
-                and not IsPedSprinting(ped)
-                and not IsPedJumping(ped)
-                and not IsPedClimbing(ped)
-            then
-                local extraRecharge = math.min(0.02, 0.004 * ((multiplier - 1.0) / 0.10))
-                RestorePlayerStamina(PlayerId(), extraRecharge)
+            local targetMax = math.max(100, tonumber(Config.HumanBaseMaxHealth) or 200)
+                + math.floor(tonumber(necklaceStatus.maxHealthBonus) or 0)
+
+            if GetEntityMaxHealth(ped) ~= targetMax then
+                SetEntityMaxHealth(ped, targetMax)
             end
         end
     end
@@ -308,18 +208,11 @@ end)
 AddEventHandler('onResourceStop', function(resourceName)
     if resourceName ~= GetCurrentResourceName() then return end
 
-    local player = PlayerId()
-    local ped = PlayerPedId()
-    SetRunSprintMultiplierForPlayer(player, 1.0)
-    SetPedMoveRateOverride(ped, 1.0)
-    SetPedMaxTimeUnderwater(ped, math.max(1.0, tonumber(Config.Effects.baseUnderwaterSeconds) or 10.0))
-    SetPedMotionBlur(ped, false)
-    ResetPedMovementClipset(ped, 1.0)
-    AnimpostfxStop('Rampage')
-    AnimpostfxStop('DrugsTrevorClownsFight')
-    StopGameplayCamShaking(true)
+    SetRunSprintMultiplierForPlayer(PlayerId(), 1.0)
+    SetPedMoveRateOverride(PlayerPedId(), 1.0)
 
-    if artifactStatus.active and artifactStatus.class == 'humano' then
+    if necklaceStatus.active and necklaceStatus.class == 'humano' then
+        local ped = PlayerPedId()
         local baseHealth = math.max(100, tonumber(Config.HumanBaseMaxHealth) or 200)
         SetEntityMaxHealth(ped, baseHealth)
         if GetEntityHealth(ped) > baseHealth then SetEntityHealth(ped, baseHealth) end
@@ -327,16 +220,7 @@ AddEventHandler('onResourceStop', function(resourceName)
 end)
 
 exports('GetNecklaceEffect', function()
-    return artifactStatus
-end)
-
-exports('GetArtifactEffects', function()
-    return artifactStatus
-end)
-
-exports('GetHealerPowerMultiplier', function(abilityId)
-    if tostring(abilityId or ''):lower() == 'voo' or artifactStatus.corrupted then return 1.0 end
-    return math.max(1.0, tonumber(artifactStatus.healerPowerMultiplier) or 1.0)
+    return necklaceStatus
 end)
 
 exports('IsWisdomActive', function()

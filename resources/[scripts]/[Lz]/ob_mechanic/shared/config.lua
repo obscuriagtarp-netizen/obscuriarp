@@ -25,12 +25,12 @@ MechanicConfig.Locations = {
         label = 'Automotiva Akuma',
         radius = 3.0,
         points = {
-            { coords = vec3(-336.36, -138.79, 39.06) },
-            { coords = vec3(-332.92, -129.89, 39.06) },
-            { coords = vec3(-329.99, -121.92, 39.06) },
-            { coords = vec3(-327.19, -114.52, 39.06) },
-            { coords = vec3(-347.66, -122.56, 39.06) },
-            { coords = vec3(-345.14, -114.51, 39.06) },
+            { coords = vec3(-336.36, -138.79, 38.06) },
+            { coords = vec3(-332.92, -129.89, 38.06) },
+            { coords = vec3(-329.99, -121.92, 38.06) },
+            { coords = vec3(-327.19, -114.52, 38.06) },
+            { coords = vec3(-347.66, -122.56, 38.06) },
+            { coords = vec3(-345.14, -114.51, 38.06) },
         },
         jobs = { 'mechanic' },
         marker = {
@@ -75,16 +75,6 @@ MechanicConfig.Shop = {
         colors = 3500,
         lights = 4500,
         extras = 3000
-    },
-    levelPricing = {
-        step = 0.5,
-        options = {
-            engine = true,
-            brakes = true,
-            transmission = true,
-            suspension = true,
-            armor = true
-        }
     },
     billableOptions = {
         performance = { 'engine', 'brakes', 'transmission', 'suspension', 'armor', 'turbo' },
@@ -153,7 +143,6 @@ MechanicConfig.Messages = {
     offDuty = 'Entre em serviço antes de acessar a oficina.',
     needVehicle = 'Entre no veículo para iniciar a personalização.',
     driverOnly = 'Assuma o banco do motorista para personalizar este veículo.',
-    npcVehicle = 'Este veículo é de NPC. Você pode repará-lo, mas não pode tuná-lo.',
     noVehicleNearby = 'Nenhum veículo próximo.',
     repairCancelled = 'Reparo cancelado.',
     repairDone = 'Veículo reparado.',

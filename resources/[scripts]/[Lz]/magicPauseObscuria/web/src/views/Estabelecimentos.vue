@@ -176,7 +176,7 @@ const isLeaderOfSelected = computed(() => {
 /**
  * Permissões:
  * - Estabelecimentos: visualizar apenas (nota aparece, mas só leitura)
- * - Grupo: gerência, liderança ou staff pode controlar atendimento e gestão
+ * - Grupo: líder OU staff pode editar menu, imagem, notas e membros
  * - Staff: staff configura tudo global
  */
 const canEditInGroupTab = computed(() => tab.value === "grupo" && (isStaff.value || selected.value?.canManage));
@@ -187,7 +187,7 @@ const canEditCover = computed(() => canEditInGroupTab.value || canEditInStaffTab
 const canEditNotes = computed(() => canEditInGroupTab.value || canEditInStaffTab.value);
 
 const canEditFeatures = computed(() => canEditInStaffTab.value);
-const canEditAvailability = computed(() => canEditInGroupTab.value || canEditInStaffTab.value);
+const canEditAvailability = computed(() => canEditInStaffTab.value);
 
 /**
  * allowedList:
@@ -263,7 +263,6 @@ function openToast(text) {
 function errorText(result) {
   const messages = {
     not_owner: "Somente a liderança ou a staff pode realizar esta ação.",
-    not_manager: "Somente a gerência, liderança ou staff pode realizar esta ação.",
     staff_required: "Esta configuração é exclusiva da staff.",
     invalid_image: "Use uma imagem HTTPS ou deixe o campo vazio.",
     restaurant_closed: "O estabelecimento está indisponível no momento.",
@@ -870,29 +869,11 @@ async function reloadManagement() {
                   <div class="groupCardHead">
                     <div class="groupCardTitle">Configurações</div>
                     <div class="groupCardSub">
-                      {{ canEditInGroupTab ? "Você pode controlar o atendimento e editar as configurações." : "Somente a gerência, liderança ou staff pode editar." }}
+                      {{ canEditInGroupTab ? "Você pode editar cardápio, imagem e notas." : "Somente líder ou staff podem editar." }}
                     </div>
                   </div>
 
                   <div class="groupCardBody">
-                    <div class="rowLine">
-                      <div class="rowInfo">
-                        <b>Atendimento</b>
-                        <small>{{ selected.availability.open ? "Estabelecimento aberto ao público" : "Estabelecimento fechado ao público" }}</small>
-                      </div>
-
-                      <div class="rowBtns">
-                        <button
-                          class="adminToggle"
-                          :class="selected.availability.open ? 'on' : 'off'"
-                          :disabled="!canEditAvailability"
-                          @click="toggleAvailability(selected.id)"
-                        >
-                          {{ selected.availability.open ? "ABERTO" : "FECHADO" }}
-                        </button>
-                      </div>
-                    </div>
-
                     <div class="rowLine">
                       <div class="rowInfo">
                         <b>Cardápio</b>

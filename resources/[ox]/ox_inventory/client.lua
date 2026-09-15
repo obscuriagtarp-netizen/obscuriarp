@@ -43,12 +43,6 @@ plyState:set('invBusy', true, true)
 plyState:set('invHotkeys', false, false)
 plyState:set('canUseWeapons', false, false)
 
-local function isInLastStand()
-	local metadata = PlayerData and PlayerData.metadata
-	return tonumber(plyState['qbx_medical:deathState']) == 2
-		or (metadata and metadata.inlaststand == true)
-end
-
 local function canOpenInventory()
     if not PlayerData.loaded then
         return shared.info('cannot open inventory', '(player inventory has not loaded)')
@@ -63,10 +57,6 @@ local function canOpenInventory()
     if PlayerData.dead or IsPedFatallyInjured(playerPed) then
         return shared.info('cannot open inventory', '(fatal injury)')
     end
-
-	if isInLastStand() then
-		return shared.info('cannot open inventory', '(last stand)')
-	end
 
     if PlayerData.cuffed or IsPedCuffed(playerPed) then
         return shared.info('cannot open inventory', '(cuffed)')
@@ -379,7 +369,6 @@ exports('openInventory', client.openInventory)
 
 RegisterNetEvent('ox_inventory:forceOpenInventory', function(left, right)
 	if source == '' then return end
-	if isInLastStand() then return end
 
 	plyState.invOpen = true
 
@@ -1254,10 +1243,6 @@ local function setStateBagHandler(stateId)
 		PlayerData.dead = value
 	end)
 
-	AddStateBagChangeHandler('qbx_medical:deathState', stateId, function(_, _, value)
-		if tonumber(value) == 2 and invOpen then client.closeInventory() end
-	end)
-
 	AddStateBagChangeHandler('invHotkeys', stateId, function(_, _, value)
 		invHotkeys = value
 	end)
@@ -1678,7 +1663,6 @@ end)
 
 RegisterNetEvent('ox_inventory:viewInventory', function(left, right)
 	if source == '' then return end
-	if isInLastStand() then return end
 
 	plyState.invOpen = true
 

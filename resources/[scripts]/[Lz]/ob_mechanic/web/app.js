@@ -51,7 +51,6 @@ const state = {
   totalLabel: '$ 0',
   damaged: false,
   locked: false,
-  npcVehicle: false,
   busy: false,
   cameraIndex: 0,
   view: 'categories'
@@ -184,7 +183,6 @@ function setPayload(payload, keepView = false, preserveScroll = false) {
   state.totalLabel = payload.totalLabel || '$ 0';
   state.damaged = payload.damaged === true;
   state.locked = payload.locked === true;
-  state.npcVehicle = payload.npcVehicle === true;
   actionMenu.style.setProperty('--mechanic-banner-image', state.ui.bannerImage ? `url("${state.ui.bannerImage}")` : 'none');
 
   if (!keepView) {
@@ -634,7 +632,7 @@ function renderValues(preserveScroll = false) {
 
   option.values.forEach((entry) => {
     const isActive = String(option.current) === String(entry.value);
-    const meta = isActive ? `Selecionado · ${entry.priceLabel || ''}` : (entry.priceLabel || 'Aplicar');
+    const meta = isActive ? 'Selecionado' : 'Aplicar';
     menu.appendChild(card('option2 value-card', imageFor('category', category), fallbackKind(category), entry.label, meta, () => {
       option.current = entry.value;
       post('apply', {
@@ -653,7 +651,6 @@ function render(preserveScroll = false) {
   price.textContent = state.totalLabel;
   actionMenu.classList.toggle('locked', state.locked);
   modifyButton.style.display = state.open && state.locked ? 'block' : 'none';
-  modifyButton.textContent = state.npcVehicle ? 'Reparar veículo de NPC' : 'Reparar antes de modificar';
   setBusy(state.busy);
 
   if (state.view === 'values') return renderValues(preserveScroll);

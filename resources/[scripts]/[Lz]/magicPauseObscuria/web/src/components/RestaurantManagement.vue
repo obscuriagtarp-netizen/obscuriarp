@@ -47,9 +47,6 @@ const recipeForm = reactive({
   prepTime: 5,
   outputItem: "",
   outputAmount: 1,
-  productType: "food",
-  itemWeight: 250,
-  presentationKey: "",
   isCombo: false,
   enabled: true,
   ingredientsText: "",
@@ -61,7 +58,6 @@ const dashboard = computed(() => props.payload.dashboard || { totals: {}, produc
 const categories = computed(() => (props.payload.categories || []).filter((entry) => entry.enabled !== false));
 const recipes = computed(() => props.payload.recipes || []);
 const points = computed(() => props.payload.points || []);
-const presentationOptions = computed(() => (props.payload.presentations || []).filter((entry) => entry.type === recipeForm.productType));
 const companyShare = computed(() => Math.round((1 - Math.max(0, Math.min(0.9, Number(restaurantForm.commissionRate) || 0))) * 100));
 
 const categoryIcons = [
@@ -147,7 +143,6 @@ function errorText(result) {
     recipe_not_found: "Esta receita não existe mais.",
     invalid_restaurant: "Informe um nome válido para o estabelecimento.",
     invalid_image: "Use uma imagem HTTPS ou um caminho NUI válido.",
-    invalid_presentation: "Escolha uma apresentação cadastrada para este estabelecimento.",
     unknown_inventory_item: `O item ${result?.item || "informado"} não existe no ox_inventory.`,
     invalid_total: "Informe um valor válido.",
     insufficient_company_balance: "O caixa empresarial não possui esse valor.",
@@ -218,9 +213,6 @@ function resetRecipe() {
     prepTime: 5,
     outputItem: "",
     outputAmount: 1,
-    productType: "food",
-    itemWeight: 250,
-    presentationKey: "",
     isCombo: false,
     enabled: true,
     ingredientsText: "",
@@ -244,9 +236,6 @@ function editRecipe(recipe) {
     prepTime: Number(recipe.prep_time) || 5,
     outputItem: recipe.output_item || "",
     outputAmount: Number(recipe.output_amount) || 1,
-    productType: recipe.product_type === "drink" ? "drink" : "food",
-    itemWeight: Number(recipe.item_weight) || 250,
-    presentationKey: recipe.presentation_key || "",
     isCombo: recipe.is_combo === true,
     enabled: recipe.enabled !== false,
     ingredientsText: itemsToLines(recipe.ingredients),
@@ -411,16 +400,8 @@ async function confirmDelete() {
         <div class="restaurant-form-row"><label><span>Nome</span><input v-model="recipeForm.name" /></label><label><span>Categoria</span><select v-model="recipeForm.categoryKey"><option v-for="category in categories" :key="category.category_key" :value="category.category_key">{{ category.label }}</option></select></label></div>
         <label><span>Descrição</span><input v-model="recipeForm.description" /></label>
         <div class="restaurant-form-row restaurant-form-row--triple"><label><span>Preço</span><input v-model="recipeForm.price" type="number" min="0" /></label><label><span>Preço anterior</span><input v-model="recipeForm.oldPrice" type="number" min="0" /></label><label><span>Preparo (seg.)</span><input v-model="recipeForm.prepTime" type="number" min="1" /></label></div>
-        <div class="restaurant-form-row restaurant-form-row--triple"><label><span>Item de saída</span><input v-model="recipeForm.outputItem" /></label><label><span>Quantidade</span><input v-model="recipeForm.outputAmount" type="number" min="1" /></label><label><span>Peso (g)</span><input v-model="recipeForm.itemWeight" type="number" min="10" max="5000" /></label></div>
-        <label><span>Tipo do produto</span><select v-model="recipeForm.productType"><option value="food">Comida</option><option value="drink">Bebida</option></select></label>
+        <div class="restaurant-form-row"><label><span>Item de saída</span><input v-model="recipeForm.outputItem" /></label><label><span>Quantidade</span><input v-model="recipeForm.outputAmount" type="number" min="1" /></label></div>
         <label><span>Imagem do produto</span><input v-model="recipeForm.image" placeholder="URL ou caminho NUI" /></label>
-        <section v-if="presentationOptions.length" class="restaurant-presentation-editor">
-          <header><div><small>Apresentação ao consumir</small><strong>Prop da refeição</strong></div></header>
-          <div class="restaurant-presentation-options">
-            <button type="button" :class="{ active: !recipeForm.presentationKey }" @click="recipeForm.presentationKey = ''"><span><Utensils :size="18" /></span><div><b>Automático</b><small>Padrão do tipo</small></div></button>
-            <button v-for="presentation in presentationOptions" :key="presentation.key" type="button" :class="{ active: recipeForm.presentationKey === presentation.key }" @click="recipeForm.presentationKey = presentation.key"><span><img v-if="presentation.image" :src="presentation.image" alt="" /><Utensils v-else :size="18" /></span><div><b>{{ presentation.label }}</b><small>{{ presentation.animationLabel || (presentation.type === 'drink' ? 'Beber' : 'Comer') }}</small></div></button>
-          </div>
-        </section>
         <label><span>Ingredientes: item|nome|quantidade</span><textarea v-model="recipeForm.ingredientsText"></textarea></label>
         <section class="restaurant-craft-flow">
           <header><div><small>Roteiro de preparo</small><strong>Interações da receita</strong></div><span>{{ recipeForm.craftSteps.length }}/8</span></header>

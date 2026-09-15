@@ -186,20 +186,6 @@ function resourceName() {
 async function nui(eventName, data = {}) {
   if (previewMode) {
     const timestamp = Math.floor(Date.now() / 1000);
-    if (eventName === "createRuneDepositOrder") {
-      return {
-        ok: true,
-        message: "Pix de demonstração gerado.",
-        status: "pending",
-        order: {
-          id: "preview-pix",
-          copyPaste: "00020126580014BR.GOV.BCB.PIX0136preview-obscuria-runas-5204000053039865802BR5920OBSCURIA ROLEPLAY6009SAO PAULO62070503***6304ABCD"
-        }
-      };
-    }
-    if (eventName === "checkVipPixOrder") {
-      return { ok: true, status: "pending", message: "Aguardando pagamento de demonstração." };
-    }
     if (eventName === "getVipDashboard") {
       return {
         ok: true,
@@ -580,7 +566,7 @@ onBeforeUnmount(() => {
       <div>
         <small>Obscuria</small>
         <h1>{{ view === "catalog" ? "Loja VIP" : "Doação" }}</h1>
-        <p v-if="view === 'catalog'">Produtos selecionados para quem busca praticidade, estilo e benefícios exclusivos.</p>
+        <p v-if="view === 'catalog'">Produtos selecionados para quem busca praticidade, estilo e vantagens permanentes.</p>
         <p v-else>Contribua com Runas e use na loja in-game. A cada 10 Runas, R$ 1,00.</p>
       </div>
       <div class="vip-header-actions">
@@ -794,17 +780,14 @@ onBeforeUnmount(() => {
         <div class="vip-confirm vip-vehicle-modal">
           <header class="vip-workspace-header">
             <span class="vip-workspace-icon"><i class="fa-solid fa-car-side"></i></span>
-            <div><small>Benefícios disponíveis</small><h3>Escolha seu veículo</h3><p>Cada escolha é definitiva, vale por 30 dias e será enviada para a garagem.</p></div>
+            <div><small>Benefícios disponíveis</small><h3>Escolha seu veículo</h3><p>Cada escolha é definitiva e será enviada para a garagem.</p></div>
             <button type="button" title="Fechar" @click="vehicleRewardsOpen = false"><i class="fa-solid fa-xmark"></i></button>
           </header>
           <div class="vip-vehicle-entitlements">
             <section v-for="entitlement in vehicleChoices" :key="entitlement.entitlementId" class="vip-vehicle-entitlement">
               <div class="vip-section-title">
                 <span>{{ entitlement.label }} · escolha {{ entitlement.slot }}</span>
-                <small>
-                  Veículo por {{ entitlement.durationDays || 30 }} dias · renovação por {{ money(entitlement.renewalRunes || 0) }} Runas
-                  <template v-if="entitlement.expiresAt"> · escolha disponível até {{ formatDate(entitlement.expiresAt) }}</template>
-                </small>
+                <small v-if="entitlement.expiresAt">Disponível até {{ formatDate(entitlement.expiresAt) }}</small>
               </div>
               <div class="vip-vehicle-grid">
                 <article v-for="vehicle in entitlement.vehicles || []" :key="vehicle.model" class="vip-vehicle-choice">

@@ -573,7 +573,7 @@ local function getVehicleCard(vehicle, garage)
         plate = tostring(props.plate or 'SEM PLACA'):sub(1, 8),
         displayClass = getVehicleDisplayClass(vehicle, garage),
         state = vehicle.state,
-        stateLabel = rentalExpired and ((vipRental.label or 'Locação do veículo') .. ' vencida')
+        stateLabel = rentalExpired and 'Mensalidade VIP vencida'
             or (vehicle.fixed and 'Serviço disponível' or (vehicle.state == VehicleState.IMPOUNDED and 'No pátio' or 'Pronto para retirar')),
         depotPrice = formatGarageMoney(vehicle.depotPrice),
         vipRental = vipRental,

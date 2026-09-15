@@ -59,7 +59,7 @@ Config.Shops = {
 			{ name = 'tirerepairkit', price = 10 },
         },
     },
-    mechanicfood = {
+    mechanicFood = {
         enabled = true,
         label = 'Loja de comida',
         -- access = {
@@ -75,17 +75,6 @@ Config.Shops = {
 			{ name = 'taco', price = 18 },
 			{ name = 'chocolate', price = 10 },
 			{ name = 'mochila_pequena', price = 1200 },
-        },
-    },
-    mechanicbuy = {
-        enabled = true,
-        label = 'Loja Mecânico',
-        locations = {
-            vec3(-358.33, -126.64, 37.72),
-        },
-        inventory = {
-			{ name = 'repairkit', price = 600 },
-			{ name = 'tirerepairkit', price = 300 },
         },
     },
 

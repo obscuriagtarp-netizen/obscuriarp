@@ -232,32 +232,32 @@ return {
         },
     },
     ['mechanic'] = {
-        label = 'Automativa Akuma',
+        label = 'Mechanic',
         type = 'mechanic',
         defaultDuty = true,
         offDutyPay = false,
         grades = {
             [0] = {
-                name = 'Recruta',
-                payment = 550
+                name = 'Recruit',
+                payment = 50
             },
             [1] = {
-                name = 'Novato',
-                payment = 775
+                name = 'Novice',
+                payment = 75
             },
             [2] = {
-                name = 'Experiente',
-                payment = 1100
+                name = 'Experienced',
+                payment = 100
             },
             [3] = {
-                name = 'Supervisor',
-                payment = 1125
+                name = 'Advanced',
+                payment = 125
             },
             [4] = {
-                name = 'Dono',
+                name = 'Manager',
                 isboss = true,
                 bankAuth = true,
-                payment = 1550
+                payment = 150
             },
         },
     },
@@ -359,18 +359,6 @@ return {
             [2] = { name = 'Artista', payment = 100 },
             [3] = { name = 'Gerente', isboss = true, payment = 125 },
             [4] = { name = 'Proprietário', isboss = true, bankAuth = true, payment = 150 },
-        },
-    },
-    ['cafebens'] = {
-        label = 'Dreamy Coffee',
-        defaultDuty = true,
-        offDutyPay = false,
-        grades = {
-            [0] = { name = 'Aprendiz', payment = 750 },
-            [1] = { name = 'Atendente', payment = 875 },
-            [2] = { name = 'Barista', payment = 900 },
-            [3] = { name = 'Gerente', isboss = true, payment = 1125 },
-            [4] = { name = 'Proprietário', isboss = true, bankAuth = true, payment = 1150 },
         },
     },
     ['bahama'] = {

@@ -10,10 +10,7 @@ files {
     'web/dist/assets/**/*'
 }
 
-shared_scripts {
-    'config/config.lua',
-    'config/props.lua'
-}
+shared_script 'config/config.lua'
 
 client_script 'client/main.lua'
 

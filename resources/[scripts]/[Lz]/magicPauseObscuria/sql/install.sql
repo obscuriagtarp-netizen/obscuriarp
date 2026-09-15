@@ -140,24 +140,6 @@ CREATE TABLE IF NOT EXISTS `magic_pause_battlepass_progress` (
   KEY `season_xp` (`season_id`, `xp`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `magic_pause_battlepass_daily` (
-  `id` BIGINT NOT NULL AUTO_INCREMENT,
-  `passport` VARCHAR(80) NOT NULL,
-  `season_id` INT NOT NULL,
-  `day_key` CHAR(10) NOT NULL,
-  `login_claimed` TINYINT(1) NOT NULL DEFAULT 0,
-  `login_streak` INT NOT NULL DEFAULT 0,
-  `jobs_xp` INT NOT NULL DEFAULT 0,
-  `money_spent` INT NOT NULL DEFAULT 0,
-  `money_claimed` TINYINT(1) NOT NULL DEFAULT 0,
-  `runes_spent` INT NOT NULL DEFAULT 0,
-  `runes_claimed` TINYINT(1) NOT NULL DEFAULT 0,
-  `updated_at` BIGINT NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `passport_season_day` (`passport`, `season_id`, `day_key`),
-  KEY `season_day` (`season_id`, `day_key`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 CREATE TABLE IF NOT EXISTS `magic_pause_vip_orders` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `passport` VARCHAR(80) NOT NULL,

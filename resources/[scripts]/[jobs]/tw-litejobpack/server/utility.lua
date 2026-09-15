@@ -709,7 +709,7 @@ function LogPaymentSummary(src, jobId, baseAmount, breakdown, finalAmount, accou
     print("[PAY-SUMMARY] ═══════════════════════════════════════════════════════════")
 end
 
-function AddMoney(source, accountType, value, jobId)
+function AddMoney(source, type, value, jobId)
     if jobId and Config.RewardMultiplierResolver and source and source > 0 then
         local identifier = GetIdentifier(source)
         local ok, mult = pcall(Config.RewardMultiplierResolver, source, identifier, jobId, value)
@@ -720,8 +720,8 @@ function AddMoney(source, accountType, value, jobId)
 
     if Config.Framework == 'standalone' then
         local player = StandalonePlayers[source]
-        if player and player.money[accountType] then
-            player.money[accountType] = player.money[accountType] + tonumber(value)
+        if player and player.money[type] then
+            player.money[type] = player.money[type] + tonumber(value)
         end
         return
     end
@@ -729,25 +729,25 @@ function AddMoney(source, accountType, value, jobId)
     local Player = GetPlayer(source)
     if Player then
         if Config.Framework == 'esx' or Config.Framework == 'oldesx' then
-            if accountType == 'bank' then
+            if type == 'bank' then
                 Player.addAccountMoney('bank', tonumber(value))
             end
-            if accountType == 'cash' then
+            if type == 'cash' then
                 Player.addMoney(value)
             end
         elseif Config.Framework == 'qb' or Config.Framework == 'oldqb' or Config.Framework == 'tmc' then
-            if accountType == 'bank' then
+            if type == 'bank' then
                 Player.Functions.AddMoney('bank', value, 'tw-litejobpack')
             end
-            if accountType == 'cash' then
+            if type == 'cash' then
                 Player.Functions.AddMoney('cash', value, 'tw-litejobpack')
             end
         elseif Config.Framework == 'vrp' then
-            if accountType == 'bank' then
+            if type == 'bank' then
                 local user_id = vRP.getUserId(source)
                 vRP.giveBankMoney(user_id, value)
             end
-            if accountType == 'cash' then
+            if type == 'cash' then
                 local user_id = vRP.getUserId(source)
                 vRP.giveMoney(user_id, value)
             end
@@ -755,14 +755,13 @@ function AddMoney(source, accountType, value, jobId)
             while vRP == nil do
                 Wait(100)
             end
-            if accountType == 'bank' then
+            if type == 'bank' then
                 vRP.GenerateItem(Player, "dollar", value, true)
             end
-            if accountType == 'cash' then
+            if type == 'cash' then
                 vRP.GenerateItem(Player, "dollar", value, true)
             end
         end
-
     end
 end
 
@@ -813,217 +812,15 @@ function RemoveMoney(source, type, value)
     end
 end
 
-local battlePassXpRemainders = {}
-local battlePassRecentXp = {}
-
-local function battlePassClock()
-    return GetGameTimer and GetGameTimer() or math.floor(os.clock() * 1000)
-end
-
-function TW_AddBattlePassJobXP(source, jobXp)
-    local settings = Config.BattlePassIntegration
-    if type(settings) ~= 'table' or settings.enabled ~= true then return 0 end
-
-    source = tonumber(source)
-    jobXp = math.max(0, tonumber(jobXp) or 0)
-    if not source or source <= 0 or jobXp <= 0 then return 0 end
-
-    local resource = tostring(settings.resource or 'magicPauseObscuria')
-    if GetResourceState(resource) ~= 'started' then
-        print(('^1[tw-litejobpack] Battle Pass resource is not started: %s^7'):format(resource))
-
-        return 0
-    end
-
-    local multiplier = math.max(0, tonumber(settings.xpMultiplier) or 0.15)
-    local accumulated = jobXp * multiplier + (battlePassXpRemainders[source] or 0)
-    local amount = math.floor(accumulated)
-    battlePassXpRemainders[source] = accumulated - amount
-    if amount <= 0 then return 0 end
-
-    local ok, granted = pcall(function()
-        return exports[resource]:AddBattlePassJobXp(source, amount)
-    end)
-
-    if not ok then
-        print(('^1[tw-litejobpack] Battle Pass XP bridge failed: %s^7'):format(tostring(granted)))
-
-        return 0
-    end
-
-    granted = math.max(0, tonumber(granted) or 0)
-    if granted > 0 then
-        battlePassRecentXp[source] = {
-            amount = jobXp,
-            at = battlePassClock(),
-        }
-    end
-
-    if Config.Debug then
-        print(('[tw-litejobpack] Battle Pass job XP: job=%s, requested=%s, granted=%s')
-            :format(jobXp, amount, granted))
-    end
-
-    return granted
-end
-
-function TW_AddBattlePassJobXPFromReward(source, jobXp)
-    source = tonumber(source)
-    jobXp = math.max(0, tonumber(jobXp) or 0)
-    if not source or source <= 0 or jobXp <= 0 then return 0 end
-
-    local recent = battlePassRecentXp[source]
-    if recent and recent.amount == jobXp and battlePassClock() - recent.at <= 500 then
-        return 0
-    end
-
-    return TW_AddBattlePassJobXP(source, jobXp)
-end
-
-local function installBattlePassXpBridge()
-    if _G.TW_BattlePassXpBridgeInstalled then return end
-
-    local function parameterIndexes(fn)
-        local sourceIndex
-        local xpIndex
-        local infoOk, info = pcall(debug.getinfo, fn, 'u')
-        info = infoOk and info or {}
-
-        for index = 1, tonumber(info.nparams) or 0 do
-            local nameOk, name = pcall(debug.getlocal, fn, index)
-            name = nameOk and tostring(name or ''):lower() or ''
-
-            if not sourceIndex and (name == 'source' or name == 'src' or name == 'playerid' or name == 'serverid') then
-                sourceIndex = index
-            elseif not xpIndex and (name == 'xp' or name == 'experience' or name == 'amount') then
-                xpIndex = index
-            end
-        end
-
-        return sourceIndex, xpIndex
-    end
-
-    local function onlineSource(value)
-        local candidate = tonumber(value)
-        if candidate and candidate > 0 and GetPlayerName(candidate) then
-            return candidate
-        end
-    end
-
-    local function sourceFromIdentifier(identifier)
-        if type(identifier) ~= 'string' or identifier == '' then return end
-
-        for _, playerId in ipairs(GetPlayers()) do
-            local src = tonumber(playerId)
-            if src and tostring(GetIdentifier(src) or '') == identifier then
-                return src
-            end
-        end
-    end
-
-    local function resolveRewardArguments(args, sourceIndex, xpIndex)
-        local src
-        local srcArgumentIndex
-        local xp
-
-        if sourceIndex then
-            src = onlineSource(args[sourceIndex]) or sourceFromIdentifier(args[sourceIndex])
-            if src then srcArgumentIndex = sourceIndex end
-        end
-
-        if xpIndex then
-            xp = tonumber(args[xpIndex])
-        end
-
-        for index = 1, args.n do
-            local value = args[index]
-
-            if type(value) == 'table' then
-                if not src then
-                    src = onlineSource(value.source or value.src or value.playerId or value.serverId)
-                end
-                if not xp then
-                    xp = tonumber(value.xp or value.experience or value.amount)
-                end
-            elseif not src then
-                src = onlineSource(value) or sourceFromIdentifier(value)
-                if src then srcArgumentIndex = index end
-            end
-        end
-
-        if not xp then
-            for index = args.n, 1, -1 do
-                if index ~= srcArgumentIndex then
-                    local value = tonumber(args[index])
-                    if value and value > 0 then
-                        xp = value
-                        break
-                    end
-                end
-            end
-        end
-
-        return src, xp
-    end
-
-    local function wrapXpFunction(name, original)
-        if type(original) ~= 'function' then return nil end
-        local sourceIndex, xpIndex = parameterIndexes(original)
-
-        return function(...)
-            local args = table.pack(...)
-            local results = table.pack(original(table.unpack(args, 1, args.n)))
-
-            if results.n == 0 or results[1] ~= false then
-                local src, jobXp = resolveRewardArguments(args, sourceIndex, xpIndex)
-                if src and jobXp then
-                    TW_AddBattlePassJobXPFromReward(src, jobXp)
-                elseif Config.Debug then
-                    print(('[tw-litejobpack] Could not resolve %s arguments (source=%s, xp=%s).')
-                        :format(name, tostring(src), tostring(jobXp)))
-                end
-            end
-
-            return table.unpack(results, 1, results.n)
-        end
-    end
-
-    local wrappedAddXP = wrapXpFunction('AddXP', AddXP)
-    if wrappedAddXP then AddXP = wrappedAddXP end
-
-    local wrappedRewardJobXP = wrapXpFunction('RewardJobXP', RewardJobXP)
-    if wrappedRewardJobXP then RewardJobXP = wrappedRewardJobXP end
-
-    if wrappedAddXP or wrappedRewardJobXP then
-        _G.TW_BattlePassXpBridgeInstalled = true
-        print('^2[tw-litejobpack] Battle Pass action XP bridge enabled (15%).^7')
-    else
-        print('^1[tw-litejobpack] Battle Pass action XP bridge could not find an XP function.^7')
-    end
-end
-
-CreateThread(function()
-    Wait(500)
-    installBattlePassXpBridge()
-end)
-
-AddEventHandler('playerDropped', function()
-    battlePassXpRemainders[source] = nil
-    battlePassRecentXp[source] = nil
-end)
-
 function AddXP(source, xp)
-    xp = tonumber(xp) or 0
-    if xp <= 0 then return end
-
-    TW_AddBattlePassJobXP(source, xp)
+    if not xp or xp <= 0 then return end
 
     local identifier = GetIdentifier(source)
     local data = playerJobData[identifier]
     if not data then return end
 
     local profiledata = data.profiledata
-    profiledata.xp = profiledata.xp + xp
+    profiledata.xp = profiledata.xp + tonumber(xp)
 
     if profiledata.level > #Config.RequiredXP then
         TriggerClientEvent(_event('client:sendNotification'), source, _('xp.maxLevel'), "info")
