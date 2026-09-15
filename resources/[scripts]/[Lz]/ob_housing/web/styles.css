@@ -386,6 +386,10 @@ textarea::placeholder {
     background: #14131a;
 }
 
+.property-card.is-expired {
+    border-color: rgba(212, 125, 133, 0.42);
+}
+
 .property-image {
     position: relative;
     width: 100%;
@@ -469,6 +473,12 @@ textarea::placeholder {
     color: #e49aa2;
 }
 
+.status-badge.expired {
+    border-color: #75454c;
+    background: #321b20;
+    color: #f0a6ad;
+}
+
 .property-card-body {
     padding: 14px;
 }
@@ -525,6 +535,10 @@ textarea::placeholder {
 .card-actions {
     display: flex;
     gap: 7px;
+}
+
+.card-actions .primary-button {
+    white-space: nowrap;
 }
 
 .primary-button,

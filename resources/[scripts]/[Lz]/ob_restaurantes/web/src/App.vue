@@ -75,6 +75,7 @@ const errorMessages = {
   unknown_inventory_item: "Um dos ingredientes não está cadastrado no inventário.",
   restaurant_product_item_missing: "O item produto_restaurante não está cadastrado no ox_inventory.",
   invalid_image: "Use uma URL HTTPS ou um caminho de imagem válido.",
+  invalid_presentation: "Escolha uma apresentação compatível com o tipo desta receita.",
   invalid_recipe_effect: "Defina cada efeito entre 1% e o limite permitido.",
   too_many_recipe_effects: "Cada receita pode alterar no máximo dois status.",
   recipe_effect_item_not_supported: "Este item de saída não está configurado como consumível do restaurante.",

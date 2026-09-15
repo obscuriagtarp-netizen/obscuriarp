@@ -374,6 +374,20 @@ label > span { display: flex; align-items: center; gap: 5px; margin-bottom: 4px;
 .product-type-options button { display: flex; height: 34px; align-items: center; justify-content: center; gap: 5px; border: 1px solid #3b3540; color: #958d99; background: #121015; font-size: 9px; }
 .product-type-options button:hover { border-color: #64536e; color: #d4c7da; }
 .product-type-options button.active { border-color: #806093; color: #eee5f2; background: #2d2434; box-shadow: inset 0 -2px #806093; }
+.presentation-editor { margin: 9px 0; padding: 9px; border: 1px solid #403747; background: #111014; }
+.presentation-editor > header { margin-bottom: 8px; }
+.presentation-editor > header small, .presentation-editor > header strong { display: block; }
+.presentation-editor > header small { color: #9d73bd; font-size: 7px; text-transform: uppercase; }
+.presentation-editor > header strong { margin-top: 2px; font-size: 10px; }
+.presentation-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; }
+.presentation-options > button { display: grid; min-width: 0; min-height: 53px; grid-template-columns: 42px minmax(0, 1fr); align-items: center; gap: 7px; padding: 5px; border: 1px solid #39333d; color: #aaa1af; text-align: left; background: #17141b; }
+.presentation-options > button:hover { border-color: #65516f; color: #e4d9e9; }
+.presentation-options > button.active { border-color: #806093; color: #f1e8f5; background: #292130; box-shadow: inset 0 -2px #76568a; }
+.presentation-image { display: grid; width: 40px; height: 40px; place-items: center; overflow: hidden; color: #aa8db9; background: #0e0c10; }
+.presentation-image img { width: 100%; height: 100%; object-fit: contain; }
+.presentation-options b, .presentation-options small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.presentation-options b { font-size: 8px; }
+.presentation-options small { margin-top: 3px; color: #7f7783; font-size: 7px; }
 .item-rows-editor { margin: 9px 0; border-top: 1px solid #403747; border-bottom: 1px solid #403747; background: #111014; }
 .item-rows-editor > header { display: flex; min-height: 45px; align-items: center; justify-content: space-between; gap: 10px; padding: 7px 9px; border-bottom: 1px solid #332d37; }
 .item-rows-editor > header small, .item-rows-editor > header strong { display: block; }
@@ -746,6 +760,7 @@ label > span { display: flex; align-items: center; gap: 5px; margin-bottom: 4px;
   .payment-row { grid-template-columns: 36px minmax(110px, .8fr) minmax(140px, 1.2fr) 75px; }
   .metric-row { grid-template-columns: repeat(2, 1fr); }
   .recipe-effects-grid { grid-template-columns: 1fr; }
+  .presentation-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .product-settings-editor { grid-template-columns: 1fr 1fr; }
   .product-type-field { grid-column: 1 / -1; }
   .item-rows-list article { grid-template-columns: minmax(115px, 1fr) minmax(95px, .9fr) 62px 28px; }

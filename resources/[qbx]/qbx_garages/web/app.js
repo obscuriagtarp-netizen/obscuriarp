@@ -121,7 +121,7 @@ function renderDetails(item) {
       <strong class="metric-value">${Math.round(Number(value) || 0)}%</strong>
     </div>
   `).join('') + `<div class="detail-line"><span>Cor registrada</span><strong>${escapeHtml(item.metrics?.color || 'Original')}</strong></div>`
-    + (item.vipRental?.managed ? `<div class="detail-line rental-line"><span>Mensalidade VIP</span><strong>${item.vipRental.active ? `Ativa até ${rentalDate(item.vipRental.expiresAt)}` : `${Number(item.vipRental.renewalRunes) || 0} Runas / ${Number(item.vipRental.durationDays) || 30} dias`}</strong></div>` : '');
+    + (item.vipRental?.managed ? `<div class="detail-line rental-line"><span>${escapeHtml(item.vipRental.label || 'Locação do veículo')}</span><strong>${item.vipRental.active ? `Ativa até ${rentalDate(item.vipRental.expiresAt)}` : `${Number(item.vipRental.renewalRunes) || 0} Runas / ${Number(item.vipRental.durationDays) || 30} dias`}</strong></div>` : '');
 }
 
 function renderSelected() {

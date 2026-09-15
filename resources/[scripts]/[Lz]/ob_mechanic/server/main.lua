@@ -116,12 +116,15 @@ local function canUseLocation(source, location)
     return isNear(source, location.coords, (tonumber(location.radius) or 3.0) + 8.0)
 end
 
-local function createShopSession(source, locationId)
+local function createShopSession(source, locationId, plate, vehicleId)
     local duration = tonumber(MechanicConfig.Shop.sessionDurationMs) or 1800000
     local token = ('%s:%s:%s'):format(source, GetGameTimer(), math.random(100000, 999999))
     shopSessions[source] = {
         token = token,
         locationId = locationId,
+        vehiclePlate = plate,
+        vehicleId = vehicleId,
+        vehicleOwned = vehicleId ~= nil,
         expiresAt = GetGameTimer() + duration
     }
     return token
@@ -164,7 +167,8 @@ local function getAllowedLocations(source)
 end
 
 local function normalizePlate(plate)
-    return tostring(plate or ''):upper():gsub('%s+', '')
+    local normalized = tostring(plate or ''):upper():gsub('%s+', '')
+    return normalized
 end
 
 local function paymentAccounts()
@@ -186,12 +190,41 @@ end
 
 local billableOptions = getBillableOptions()
 
-local function calculateCheckoutTotal(changes)
+local levelPropertyNames = {
+    engine = 'modEngine',
+    brakes = 'modBrakes',
+    transmission = 'modTransmission',
+    suspension = 'modSuspension',
+    armor = 'modArmor'
+}
+
+local function checkoutOptionPrice(categoryId, optionId, value, properties)
+    local prices = MechanicConfig.Shop.prices or {}
+    local price = tonumber(prices[categoryId]) or tonumber(MechanicConfig.Shop.defaultPrice) or 0
+    local levelPricing = MechanicConfig.Shop.levelPricing or {}
+
+    if type(levelPricing.options) == 'table' and levelPricing.options[optionId] == true then
+        local level = tonumber(value)
+        local propertyName = levelPropertyNames[optionId]
+        if not level or level ~= math.floor(level) or level < -1 or level > 20
+            or not propertyName or tonumber(properties and properties[propertyName]) ~= level
+        then
+            return nil
+        end
+
+        if level >= 0 then
+            price = price * (1.0 + level * math.max(0, tonumber(levelPricing.step) or 0.5))
+        end
+    end
+
+    return math.floor(price)
+end
+
+local function calculateCheckoutTotal(changes, properties)
     if type(changes) ~= 'table' or #changes > 100 then return nil end
 
     local total = 0
     local seen = {}
-    local prices = MechanicConfig.Shop.prices or {}
 
     for _, change in ipairs(changes) do
         if type(change) ~= 'table' then return nil end
@@ -202,7 +235,9 @@ local function calculateCheckoutTotal(changes)
 
         if not seen[optionId] then
             seen[optionId] = true
-            total = total + (tonumber(prices[categoryId]) or tonumber(MechanicConfig.Shop.defaultPrice) or 0)
+            local price = checkoutOptionPrice(categoryId, optionId, change.value, properties)
+            if price == nil then return nil end
+            total = total + price
         end
     end
 
@@ -254,6 +289,27 @@ local function awaitDatabase()
     local timeout = GetGameTimer() + 10000
     while not databaseReady and GetGameTimer() < timeout do Wait(50) end
     return databaseReady
+end
+
+local function getRegisteredVehicleId(vehicle, plate)
+    plate = normalizePlate(plate)
+    if plate == '' or not awaitDatabase() then return nil end
+
+    local ok, vehicleId = pcall(function()
+        return MySQL.scalar.await([[SELECT id FROM player_vehicles
+            WHERE REPLACE(UPPER(plate), ' ', '') = ? LIMIT 1]], { plate })
+    end)
+
+    if not ok then
+        debugPrint(('falha ao validar a placa %s: %s'):format(plate, tostring(vehicleId)))
+        return nil
+    end
+
+    vehicleId = tonumber(vehicleId)
+    if vehicleId and vehicleId > 0 and vehicle and DoesEntityExist(vehicle) then
+        Entity(vehicle).state:set('vehicleid', vehicleId, true)
+    end
+    return vehicleId
 end
 
 local function getPendingMods(citizenid, plate)
@@ -309,14 +365,15 @@ local function saveVehicleProperties(vehicle, plate, props)
     props.model = GetEntityModel(vehicle)
 
     if GetResourceState('qbx_vehicles') == 'started' then
-        local ok, result = pcall(function()
+        local ok, result, reason = pcall(function()
             local vehicleId = Entity(vehicle).state.vehicleid or exports.qbx_vehicles:GetVehicleIdByPlate(props.plate)
-            if not vehicleId then return 'unowned' end
-            exports.qbx_vehicles:SaveVehicle(vehicle, { props = props })
-            return 'saved'
+            if not vehicleId then return false, 'unowned' end
+            local saved, saveError = exports.qbx_vehicles:SaveVehicle(vehicle, { props = props })
+            if saved ~= true then return false, saveError or 'save_failed' end
+            return true, 'saved'
         end)
-        if ok then return true, result end
-        debugPrint('qbx_vehicles recusou a persistência:', result)
+        if ok and result == true then return true, reason end
+        debugPrint('qbx_vehicles recusou a persistência:', ok and reason or result)
     end
 
     local ok, affected = pcall(function()
@@ -325,7 +382,7 @@ local function saveVehicleProperties(vehicle, plate, props)
     end)
     if ok and tonumber(affected) and affected > 0 then return true, 'database' end
     if not ok then debugPrint('fallback player_vehicles indisponível:', affected) end
-    return true, 'unowned'
+    return false, 'unowned'
 end
 
 local function rejectCheckout(source, message)
@@ -337,8 +394,10 @@ RegisterNetEvent('VanguardMechanic:server:requestLocations', function()
     TriggerClientEvent('VanguardMechanic:client:setLocations', source, getAllowedLocations(source))
 end)
 
-RegisterNetEvent('VanguardMechanic:server:requestOpen', function(locationId)
+RegisterNetEvent('VanguardMechanic:server:requestOpen', function(request)
     local source = source
+    request = type(request) == 'table' and request or { locationId = request }
+    local locationId = tostring(request.locationId or '')
     local location = getLocation(tostring(locationId or ''))
     local player = getPlayer(source)
 
@@ -354,8 +413,20 @@ RegisterNetEvent('VanguardMechanic:server:requestOpen', function(locationId)
         return
     end
 
-    local sessionToken = createShopSession(source, location.id)
-    TriggerClientEvent('VanguardMechanic:client:openShop', source, location.id, location.label, sessionToken)
+    local vehicle, plate = validatedVehicle(source, request.vehicleNetId, request.plate)
+    if not vehicle then
+        notify(source, 'warning', MechanicConfig.Messages.needVehicle)
+        return
+    end
+
+    local vehicleId = getRegisteredVehicleId(vehicle, plate)
+    local vehicleOwned = vehicleId ~= nil
+    local sessionToken = createShopSession(source, location.id, plate, vehicleId)
+    TriggerClientEvent('VanguardMechanic:client:openShop', source, location.id, location.label, sessionToken, vehicleOwned)
+
+    if not vehicleOwned then
+        notify(source, 'warning', MechanicConfig.Messages.npcVehicle)
+    end
 end)
 
 RegisterNetEvent('VanguardMechanic:server:closeSession', function(token)
@@ -415,13 +486,18 @@ RegisterNetEvent('VanguardMechanic:server:checkout', function(data)
     end
 
     local vehicle, plate = validatedVehicle(source, data.vehicleNetId, data.plate)
-    local total = calculateCheckoutTotal(data.changes)
+    local total = calculateCheckoutTotal(data.changes, data.properties)
     local displayedTotal = math.floor(tonumber(data.total) or -1)
     local maxCheckout = tonumber(MechanicConfig.Shop.maxCheckout) or 1000000
     if not vehicle or not total or total ~= displayedTotal or total > maxCheckout
         or not validProperties(data.properties) or type(data.mods) ~= 'table'
     then
         return rejectCheckout(source)
+    end
+
+    local session = shopSessions[source]
+    if not session or session.vehicleOwned ~= true or session.vehiclePlate ~= plate then
+        return rejectCheckout(source, MechanicConfig.Messages.npcVehicle)
     end
 
     local paid, account = true, nil
@@ -447,10 +523,13 @@ RegisterNetEvent('VanguardMechanic:server:checkout', function(data)
         return rejectCheckout(source, 'O pagamento foi estornado porque não foi possível registrar o veículo.')
     end
 
-    depositSociety(total)
-    clearPendingMods(getCitizenId(player), plate)
     notify(source, 'success', MechanicConfig.Messages.checkoutDone)
     TriggerClientEvent('VanguardMechanic:client:checkoutResult', source, true)
+
+    CreateThread(function()
+        depositSociety(total)
+        clearPendingMods(getCitizenId(player), plate)
+    end)
 end)
 
 RegisterNetEvent('VanguardMechanic:server:savePending', function()

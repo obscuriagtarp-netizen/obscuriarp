@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import "../styles/battlepass.css";
 import battlePassIcon from "../assets/battlepass/icone-passe.png";
 
@@ -11,7 +11,10 @@ const props = defineProps({
 const emit = defineEmits(["refresh"]);
 
 const selectedIndex = ref(1);
+const activeTab = ref("rewards");
 const adminOpen = ref(false);
+const levelPurchaseOpen = ref(false);
+const levelAmount = ref(1);
 const busy = ref(false);
 const feedback = ref(null);
 const trackRef = ref(null);
@@ -28,13 +31,14 @@ const seasonForm = ref({
   active: true
 });
 const slotForm = ref(null);
-const rewardTypes = ["item", "coins", "money", "command", "none"];
+const rewardTypes = ["item", "coins", "money", "vehicle", "command", "none"];
 
 const data = computed(() => props.payload || {});
 const locale = computed(() => props.i18n?.messages || data.value.locale?.messages || {});
 const season = computed(() => data.value.season || null);
 const slots = computed(() => [...(data.value.slots || [])].sort((a, b) => Number(a.index) - Number(b.index)));
 const progress = computed(() => data.value.progress || {});
+const missions = computed(() => data.value.missions || {});
 const isAdmin = computed(() => data.value.isAdmin === true);
 const selectedSlot = computed(() => slots.value.find((slot) => Number(slot.index) === Number(selectedIndex.value)) || slots.value[0] || null);
 const claimedFree = computed(() => new Set((progress.value.claimedFree || []).map((value) => String(value))));
@@ -42,9 +46,24 @@ const claimedPremium = computed(() => new Set((progress.value.claimedPremium || 
 const currentXp = computed(() => Number(progress.value.xp) || 0);
 const xpPerLevel = computed(() => Math.max(1, Number(season.value?.xpPerLevel) || 1000));
 const level = computed(() => Math.max(1, Number(progress.value.level) || 1));
-const nextLevelXp = computed(() => level.value * xpPerLevel.value);
+const passCompleted = computed(() => progress.value.completed === true || missions.value.locked === true);
+const maxPassXp = computed(() => Math.max(0, Number(missions.value.maxXp) || 0));
+const nextLevelXp = computed(() => passCompleted.value ? maxPassXp.value : level.value * xpPerLevel.value);
 const progressPercent = computed(() => Math.min(100, Math.max(0, (currentXp.value / Math.max(1, nextLevelXp.value)) * 100)));
 const hasPremium = computed(() => progress.value.premium === true);
+const levelPurchase = computed(() => data.value.config?.levelPurchase || {});
+const pricePerLevel = computed(() => Math.max(0, Number(levelPurchase.value.pricePerLevel) || 100));
+const maxBuyableLevels = computed(() => {
+  if (passCompleted.value) return 0;
+  const remaining = Math.max(0, maxPassXp.value - currentXp.value);
+  const available = Math.max(1, Math.ceil(remaining / xpPerLevel.value));
+  return Math.min(available, Math.max(1, Number(levelPurchase.value.maxPerPurchase) || 25));
+});
+const levelPurchaseTotal = computed(() => Math.max(1, Number(levelAmount.value) || 1) * pricePerLevel.value);
+const levelPurchaseXp = computed(() => Math.min(
+  Math.max(0, maxPassXp.value - currentXp.value),
+  Math.max(1, Number(levelAmount.value) || 1) * xpPerLevel.value
+));
 const unlockedSlots = computed(() => slots.value.filter((slot) => currentXp.value >= Number(slot.xpRequired || 0)).length);
 const nextSlot = computed(() => slots.value.find((slot) => currentXp.value < Number(slot.xpRequired || 0)) || null);
 const xpRemaining = computed(() => Math.max(0, nextLevelXp.value - currentXp.value));
@@ -149,6 +168,7 @@ function rewardIcon(reward) {
   if (!reward) return "fa-solid fa-plus";
   if (reward.type === "coins") return "fa-solid fa-gem";
   if (reward.type === "money") return "fa-solid fa-money-bill-wave";
+  if (reward.type === "vehicle") return "fa-solid fa-car-side";
   if (reward.type === "command") return "fa-solid fa-terminal";
   if (reward.type === "none") return "fa-solid fa-ban";
   return "fa-solid fa-box";
@@ -156,12 +176,13 @@ function rewardIcon(reward) {
 
 function rewardAmount(reward) {
   if (!reward) return "";
+  if (reward.type === "vehicle") return `${Number(reward.durationDays) || 30} dias`;
   const amount = Number(reward.amount) || 0;
   return amount > 1 ? `x${money(amount)}` : "";
 }
 
 function rewardTypeLabel(type) {
-  const fallback = { item: "Item", coins: "Runas", money: "Dinheiro", command: "Comando", none: "Nenhuma" };
+  const fallback = { item: "Item", coins: "Runas", money: "Dinheiro", vehicle: "Veículo", command: "Comando", none: "Nenhuma" };
   return t(`battlepass.type_${type}`, fallback[type] || type);
 }
 
@@ -206,9 +227,13 @@ function makeReward(reward = {}) {
     label: reward.label || "",
     item: reward.item || "",
     command: reward.command || "",
+    model: reward.model || "",
     amount: Number(reward.amount) || 1,
     image: reward.image || "",
-    description: reward.description || ""
+    description: reward.description || "",
+    durationDays: Number(reward.durationDays) || 30,
+    renewalRunes: Number.isFinite(Number(reward.renewalRunes)) ? Number(reward.renewalRunes) : 150,
+    garage: reward.garage || ""
   };
 }
 
@@ -251,6 +276,35 @@ async function buyPremium() {
   await run("buyBattlePassPremium");
 }
 
+function openLevelPurchase() {
+  levelAmount.value = Math.min(Math.max(1, Number(levelAmount.value) || 1), maxBuyableLevels.value || 1);
+  levelPurchaseOpen.value = true;
+}
+
+function changeLevelAmount(delta) {
+  levelAmount.value = Math.min(maxBuyableLevels.value || 1, Math.max(1, Number(levelAmount.value || 1) + delta));
+}
+
+async function buyLevels() {
+  const result = await run("buyBattlePassLevels", { amount: levelAmount.value });
+  if (result.ok) levelPurchaseOpen.value = false;
+}
+
+async function claimMission(mission) {
+  await run("claimBattlePassMission", { mission });
+}
+
+function missionPercent(progressValue, targetValue) {
+  return Math.min(100, Math.max(0, (Number(progressValue || 0) / Math.max(1, Number(targetValue || 1))) * 100));
+}
+
+function missionState(mission) {
+  if (missions.value.locked) return "Bloqueada";
+  if (mission?.claimed) return "Resgatada";
+  if (mission?.canClaim) return "Pronta para resgatar";
+  return "Em andamento";
+}
+
 async function saveSeason() {
   await run("saveBattlePassSeason", seasonForm.value);
 }
@@ -270,6 +324,18 @@ watch(slots, () => {
   if (!slots.value.some((slot) => Number(slot.index) === Number(selectedIndex.value))) selectedIndex.value = slots.value[0]?.index || 1;
   syncSlotForm();
 }, { immediate: true });
+watch(maxBuyableLevels, (maximum) => {
+  levelAmount.value = Math.min(Math.max(1, Number(levelAmount.value) || 1), maximum || 1);
+});
+watch(activeTab, async (tab) => {
+  if (tab !== "rewards") return;
+  await nextTick();
+  const el = trackRef.value;
+  if (!el) return;
+  el.addEventListener("wheel", onTrackWheel, { passive: false });
+  el.addEventListener("mousewheel", onTrackWheel, { passive: false });
+  el.addEventListener("DOMMouseScroll", onTrackWheel, { passive: false });
+});
 
 function onTrackWheel(event) {
   const el = trackRef.value;
@@ -384,6 +450,17 @@ onBeforeUnmount(() => {
           <span><small>Passe</small><b>{{ t("battlepass.premiumOwned", "Premium ativo") }}</b></span>
         </span>
 
+        <button
+          v-if="hasPremium && levelPurchase.enabled !== false"
+          class="bp-level-buy-btn"
+          type="button"
+          :disabled="busy || passCompleted"
+          @click="openLevelPurchase"
+        >
+          <i class="fa-solid fa-arrow-up-right-dots"></i>
+          <span><small>A partir de</small><b>{{ money(pricePerLevel) }} Runas</b></span>
+        </button>
+
         <button v-if="isAdmin" class="bp-admin-gear" type="button" @click="adminOpen = true" :title="t('battlepass.admin', 'Administrar temporada')">
           <i class="fa-solid fa-sliders"></i>
         </button>
@@ -392,7 +469,19 @@ onBeforeUnmount(() => {
 
     <main class="bp-layout">
       <section class="bp-board">
-        <div class="bp-overview">
+        <nav class="bp-section-tabs" aria-label="Seções do Passe de Batalha">
+          <button type="button" :class="{ active: activeTab === 'rewards' }" @click="activeTab = 'rewards'">
+            <i class="fa-solid fa-gift"></i>
+            {{ t("battlepass.rewardsTab", "Recompensas") }}
+          </button>
+          <button type="button" :class="{ active: activeTab === 'missions' }" @click="activeTab = 'missions'">
+            <i class="fa-solid fa-list-check"></i>
+            {{ t("battlepass.missionsTab", "Missões") }}
+          </button>
+        </nav>
+
+        <div v-if="activeTab === 'rewards'" class="bp-rewards-view">
+          <div class="bp-overview">
           <div class="bp-level-overview">
             <div class="bp-level-card">
               <small>{{ t("battlepass.level", "Nível") }}</small>
@@ -427,7 +516,7 @@ onBeforeUnmount(() => {
           </div>
         </div>
 
-        <div class="bp-track-toolbar">
+          <div class="bp-track-toolbar">
           <div>
             <small>Trilha da temporada</small>
             <strong>Recompensas e marcos</strong>
@@ -447,7 +536,7 @@ onBeforeUnmount(() => {
           </div>
         </div>
 
-        <div class="bp-reward-stage">
+          <div class="bp-reward-stage">
           <aside class="bp-lane-labels" aria-hidden="true">
             <span class="bp-lane-step"><small>Marco</small><b>Nível</b></span>
             <span class="bp-lane-free"><i class="fa-solid fa-gift"></i><small>Trilha</small><b>Gratuita</b></span>
@@ -500,9 +589,101 @@ onBeforeUnmount(() => {
               </button>
             </article>
           </div>
+          </div>
         </div>
+
+        <section v-else class="bp-missions-view" :class="{ locked: missions.locked }">
+          <header class="bp-missions-head">
+            <div>
+              <small>JORNADAS DIÁRIAS</small>
+              <h2>Missões da temporada</h2>
+              <p>O progresso é renovado diariamente. Volte, trabalhe e movimente a economia da cidade.</p>
+            </div>
+            <span><i class="fa-regular fa-clock"></i> Reinicia diariamente</span>
+          </header>
+
+          <div v-if="missions.locked" class="bp-missions-locked">
+            <i class="fa-solid fa-lock"></i>
+            <div>
+              <b>Passe concluído</b>
+              <span>{{ t("battlepass.missionsLocked", "Missões bloqueadas até o próximo passe.") }}</span>
+            </div>
+          </div>
+
+          <div class="bp-mission-grid">
+            <article v-if="missions.login?.enabled !== false" class="bp-mission-card login">
+              <header><i class="fa-solid fa-calendar-check"></i><span><small>DIÁRIA</small><b>Entrada na cidade</b></span></header>
+              <p>Resgate a presença de hoje. No {{ Number(missions.login?.streakDays || 30) }}º dia consecutivo, receba mais {{ money(missions.login?.streakBonusXp) }} XP.</p>
+              <div class="bp-streak" aria-label="Sequência de entradas">
+                <i v-for="day in Number(missions.login?.streakDays || 30)" :key="day" :class="{ active: day <= Number(missions.login?.streak || 0) }">{{ day }}</i>
+              </div>
+              <footer>
+                <span><small>RECOMPENSA</small><b>+{{ money(missions.login?.dailyXp) }} XP</b></span>
+                <button v-if="missions.login?.canClaim" type="button" :disabled="busy" @click="claimMission('login')">Resgatar</button>
+                <em v-else>{{ missionState(missions.login) }}</em>
+              </footer>
+            </article>
+
+            <article v-if="missions.jobs?.enabled !== false" class="bp-mission-card jobs">
+              <header><i class="fa-solid fa-briefcase"></i><span><small>EMPREGOS</small><b>Trabalhe na cidade</b></span></header>
+              <p>O XP recebido nos empregos também avança o passe até o limite diário.</p>
+              <div class="bp-mission-progress"><i :style="{ width: missionPercent(missions.jobs?.progress, missions.jobs?.cap) + '%' }"></i></div>
+              <div class="bp-mission-numbers"><b>{{ money(missions.jobs?.progress) }} XP</b><span>de {{ money(missions.jobs?.cap) }} XP</span></div>
+              <footer><span><small>ENTREGA</small><b>Automática</b></span><em>{{ Number(missions.jobs?.progress || 0) >= Number(missions.jobs?.cap || 1) ? "Limite atingido" : "Em andamento" }}</em></footer>
+            </article>
+
+            <article v-if="missions.money?.enabled !== false" class="bp-mission-card money">
+              <header><i class="fa-solid fa-money-bill-wave"></i><span><small>ECONOMIA</small><b>Movimente seu dinheiro</b></span></header>
+              <p>Gaste R$ {{ money(missions.money?.target) }} usando dinheiro ou banco durante o dia.</p>
+              <div class="bp-mission-progress"><i :style="{ width: missionPercent(missions.money?.progress, missions.money?.target) + '%' }"></i></div>
+              <div class="bp-mission-numbers"><b>R$ {{ money(missions.money?.progress) }}</b><span>de R$ {{ money(missions.money?.target) }}</span></div>
+              <footer>
+                <span><small>RECOMPENSA</small><b>+{{ money(missions.money?.rewardXp) }} XP</b></span>
+                <button v-if="missions.money?.canClaim" type="button" :disabled="busy" @click="claimMission('money')">Resgatar</button>
+                <em v-else>{{ missionState(missions.money) }}</em>
+              </footer>
+            </article>
+
+            <article v-if="missions.runes?.enabled !== false" class="bp-mission-card runes">
+              <header><i class="fa-solid fa-gem"></i><span><small>RUNAS</small><b>Fortaleça a temporada</b></span></header>
+              <p>Use {{ money(missions.runes?.target) }} Runas na cidade para liberar a recompensa diária.</p>
+              <div class="bp-mission-progress"><i :style="{ width: missionPercent(missions.runes?.progress, missions.runes?.target) + '%' }"></i></div>
+              <div class="bp-mission-numbers"><b>{{ money(missions.runes?.progress) }} Runas</b><span>de {{ money(missions.runes?.target) }}</span></div>
+              <footer>
+                <span><small>RECOMPENSA</small><b>+{{ money(missions.runes?.rewardXp) }} XP</b></span>
+                <button v-if="missions.runes?.canClaim" type="button" :disabled="busy" @click="claimMission('runes')">Resgatar</button>
+                <em v-else>{{ missionState(missions.runes) }}</em>
+              </footer>
+            </article>
+          </div>
+        </section>
       </section>
     </main>
+
+    <Transition name="bp-modal">
+      <section v-if="levelPurchaseOpen" class="bp-admin-backdrop">
+        <div class="bp-level-purchase-modal" role="dialog" aria-modal="true">
+          <header>
+            <i class="fa-solid fa-arrow-up-right-dots"></i>
+            <div><small>PASSE PREMIUM</small><h2>{{ t("battlepass.buyLevels", "Comprar níveis") }}</h2></div>
+            <button type="button" @click="levelPurchaseOpen = false" aria-label="Fechar"><i class="fa-solid fa-xmark"></i></button>
+          </header>
+          <p>Avance imediatamente na trilha. Cada nível adiciona {{ money(xpPerLevel) }} XP ao passe atual.</p>
+          <div class="bp-level-stepper">
+            <button type="button" :disabled="levelAmount <= 1" @click="changeLevelAmount(-1)"><i class="fa-solid fa-minus"></i></button>
+            <span><b>{{ levelAmount }}</b><small>nível(is)</small></span>
+            <button type="button" :disabled="levelAmount >= maxBuyableLevels" @click="changeLevelAmount(1)"><i class="fa-solid fa-plus"></i></button>
+          </div>
+          <div class="bp-level-summary">
+            <span><small>XP RECEBIDO</small><b>+{{ money(levelPurchaseXp) }} XP</b></span>
+            <span><small>VALOR TOTAL</small><b>{{ money(levelPurchaseTotal) }} Runas</b></span>
+          </div>
+          <button class="bp-level-confirm" type="button" :disabled="busy || maxBuyableLevels <= 0" @click="buyLevels">
+            <i class="fa-solid fa-gem"></i> Confirmar compra
+          </button>
+        </div>
+      </section>
+    </Transition>
 
     <Transition name="bp-modal">
       <section v-if="isAdmin && adminOpen" class="bp-admin-backdrop">
@@ -626,13 +807,24 @@ onBeforeUnmount(() => {
                         </button>
                       </div>
                     </label>
-                    <div class="bp-field-grid two">
+                    <div class="bp-field-grid" :class="{ two: slotForm.freeReward.type !== 'vehicle' && slotForm.freeReward.type !== 'none' }">
                       <label><span>{{ t("battlepass.rewardLabel", "Nome da recompensa") }}</span><input v-model="slotForm.freeReward.label" /></label>
-                      <label><span>{{ t("battlepass.rewardAmount", "Quantidade") }}</span><input v-model.number="slotForm.freeReward.amount" type="number" min="1" /></label>
+                      <label v-if="slotForm.freeReward.type !== 'vehicle' && slotForm.freeReward.type !== 'none'"><span>{{ t("battlepass.rewardAmount", "Quantidade") }}</span><input v-model.number="slotForm.freeReward.amount" type="number" min="1" /></label>
                     </div>
-                    <label><span>{{ t("battlepass.rewardItem", "Item ou identificador") }}</span><input v-model="slotForm.freeReward.item" /></label>
-                    <label><span>{{ t("battlepass.rewardCommand", "Comando") }}</span><input v-model="slotForm.freeReward.command" /></label>
+                    <label v-if="slotForm.freeReward.type === 'item'"><span>{{ t("battlepass.rewardItem", "Item ou identificador") }}</span><input v-model="slotForm.freeReward.item" /></label>
+                    <label v-if="slotForm.freeReward.type === 'command'"><span>{{ t("battlepass.rewardCommand", "Comando") }}</span><input v-model="slotForm.freeReward.command" /></label>
+                    <template v-if="slotForm.freeReward.type === 'vehicle'">
+                      <div class="bp-field-grid two">
+                        <label><span>{{ t("battlepass.rewardVehicleModel", "Spawn do veículo") }}</span><input v-model="slotForm.freeReward.model" placeholder="ex.: sultanrs" /></label>
+                        <label><span>{{ t("battlepass.rewardVehicleDays", "Validade em dias") }}</span><input v-model.number="slotForm.freeReward.durationDays" type="number" min="1" max="3650" /></label>
+                      </div>
+                      <div class="bp-field-grid two">
+                        <label><span>{{ t("battlepass.rewardVehicleRenewal", "Renovação em Runas") }}</span><input v-model.number="slotForm.freeReward.renewalRunes" type="number" min="0" /></label>
+                        <label><span>{{ t("battlepass.rewardVehicleGarage", "Garagem inicial") }}</span><input v-model="slotForm.freeReward.garage" :placeholder="t('battlepass.rewardVehicleGarageHint', 'Vazio usa a garagem padrão')" /></label>
+                      </div>
+                    </template>
                     <label><span>{{ t("battlepass.rewardImage", "Caminho da imagem") }}</span><input v-model="slotForm.freeReward.image" placeholder="web/imgs/item.png" /></label>
+                    <label><span>{{ t("battlepass.rewardDescription", "Descrição") }}</span><input v-model="slotForm.freeReward.description" :placeholder="slotForm.freeReward.type === 'vehicle' ? 'Veículo disponível por 30 dias.' : ''" /></label>
                   </section>
 
                   <section class="bp-reward-card premium">
@@ -652,13 +844,24 @@ onBeforeUnmount(() => {
                         </button>
                       </div>
                     </label>
-                    <div class="bp-field-grid two">
+                    <div class="bp-field-grid" :class="{ two: slotForm.premiumReward.type !== 'vehicle' && slotForm.premiumReward.type !== 'none' }">
                       <label><span>{{ t("battlepass.rewardLabel", "Nome da recompensa") }}</span><input v-model="slotForm.premiumReward.label" /></label>
-                      <label><span>{{ t("battlepass.rewardAmount", "Quantidade") }}</span><input v-model.number="slotForm.premiumReward.amount" type="number" min="1" /></label>
+                      <label v-if="slotForm.premiumReward.type !== 'vehicle' && slotForm.premiumReward.type !== 'none'"><span>{{ t("battlepass.rewardAmount", "Quantidade") }}</span><input v-model.number="slotForm.premiumReward.amount" type="number" min="1" /></label>
                     </div>
-                    <label><span>{{ t("battlepass.rewardItem", "Item ou identificador") }}</span><input v-model="slotForm.premiumReward.item" /></label>
-                    <label><span>{{ t("battlepass.rewardCommand", "Comando") }}</span><input v-model="slotForm.premiumReward.command" /></label>
+                    <label v-if="slotForm.premiumReward.type === 'item'"><span>{{ t("battlepass.rewardItem", "Item ou identificador") }}</span><input v-model="slotForm.premiumReward.item" /></label>
+                    <label v-if="slotForm.premiumReward.type === 'command'"><span>{{ t("battlepass.rewardCommand", "Comando") }}</span><input v-model="slotForm.premiumReward.command" /></label>
+                    <template v-if="slotForm.premiumReward.type === 'vehicle'">
+                      <div class="bp-field-grid two">
+                        <label><span>{{ t("battlepass.rewardVehicleModel", "Spawn do veículo") }}</span><input v-model="slotForm.premiumReward.model" placeholder="ex.: sultanrs" /></label>
+                        <label><span>{{ t("battlepass.rewardVehicleDays", "Validade em dias") }}</span><input v-model.number="slotForm.premiumReward.durationDays" type="number" min="1" max="3650" /></label>
+                      </div>
+                      <div class="bp-field-grid two">
+                        <label><span>{{ t("battlepass.rewardVehicleRenewal", "Renovação em Runas") }}</span><input v-model.number="slotForm.premiumReward.renewalRunes" type="number" min="0" /></label>
+                        <label><span>{{ t("battlepass.rewardVehicleGarage", "Garagem inicial") }}</span><input v-model="slotForm.premiumReward.garage" :placeholder="t('battlepass.rewardVehicleGarageHint', 'Vazio usa a garagem padrão')" /></label>
+                      </div>
+                    </template>
                     <label><span>{{ t("battlepass.rewardImage", "Caminho da imagem") }}</span><input v-model="slotForm.premiumReward.image" placeholder="web/imgs/item.png" /></label>
+                    <label><span>{{ t("battlepass.rewardDescription", "Descrição") }}</span><input v-model="slotForm.premiumReward.description" :placeholder="slotForm.premiumReward.type === 'vehicle' ? 'Veículo disponível por 30 dias.' : ''" /></label>
                   </section>
                 </div>
               </form>

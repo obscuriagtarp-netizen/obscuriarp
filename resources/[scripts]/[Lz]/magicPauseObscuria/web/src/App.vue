@@ -182,8 +182,17 @@ function previewResponse(eventName) {
     isAdmin: true,
     balance: 2450,
     season: { id: 1, title: "Crônicas de Obscuria", subtitle: "Complete jornadas e desvende os segredos da temporada.", startsAt: timestamp - 86400, endsAt: timestamp + 2592000, premiumPrice: 1000, xpPerLevel: 1000, active: true },
-    progress: { xp: 2650, level: 3, premium: false, claimedFree: [1, 2], claimedPremium: [] },
-    config: { maxSlots: 200 },
+    progress: { xp: 2650, level: 3, premium: true, completed: false, claimedFree: [1, 2], claimedPremium: [1, 2] },
+    missions: {
+      locked: false,
+      maxXp: 7000,
+      resetsAt: timestamp + 21600,
+      login: { enabled: true, claimed: false, canClaim: true, streak: 4, nextStreak: 5, streakDays: 30, dailyXp: 1000, streakBonusXp: 5000 },
+      jobs: { enabled: true, progress: 2350, cap: 5000 },
+      money: { enabled: true, progress: 14250, target: 20000, rewardXp: 3500, claimed: false, canClaim: false },
+      runes: { enabled: true, progress: 200, target: 200, rewardXp: 5000, claimed: false, canClaim: true }
+    },
+    config: { maxSlots: 200, levelPurchase: { enabled: true, pricePerLevel: 100, maxPerPurchase: 25 } },
     slots: Array.from({ length: 8 }, (_, index) => ({ id: index + 1, index: index + 1, title: ["Primeiro Presságio", "Passos na Névoa", "Segredo Antigo", "Véu de Obscuria", "Marca do Destino", "Ecos da Cidade", "Pacto Noturno", "Crônica Completa"][index], subtitle: `Etapa ${index + 1}`, xpRequired: index * 1000, enabled: true, freeReward: { type: index % 2 ? "money" : "coins", label: index % 2 ? "$ 1.000" : "50 Runas", amount: index % 2 ? 1000 : 50 }, premiumReward: { type: "coins", label: `${100 + index * 50} Runas`, amount: 100 + index * 50 } }))
   };
   if (eventName === "getEstablishments") return {
@@ -238,12 +247,29 @@ function previewResponse(eventName) {
           ok: true,
           restaurant: { id: "moomoo_cafe", label: "MooMoo Cafe", job: "moomoo", manager_grade: 4, commission_rate: 0.3, theme: "moomoo" },
           categories: [{ id: 1, category_key: "drinks", label: "Bebidas", icon: "cup-soda", sort_order: 1, enabled: true }],
-          recipes: [{ id: 3, recipe_key: "moomoo_combo", category_key: "drinks", name: "Combo da Casa", description: "Seleção preparada pela cafeteria.", image: "", price: 460, old_price: 520, menu_badge: "Destaque", featured: true, prep_time: 8, output_item: "ob_combo", output_amount: 1, is_combo: true, ingredients: [{ item: "ob_leite", label: "Leite", amount: 1 }], contents: [], craft_steps: [{ type: "mix" }, { type: "package" }], enabled: true }],
+          recipes: [{ id: 3, recipe_key: "moomoo_combo", category_key: "drinks", name: "Combo da Casa", description: "Seleção preparada pela cafeteria.", image: "", price: 460, old_price: 520, menu_badge: "Destaque", featured: true, prep_time: 8, output_item: "produto_restaurante", output_amount: 1, product_type: "drink", item_weight: 300, presentation_key: "coffee", is_combo: true, ingredients: [{ item: "ob_leite", label: "Leite", amount: 1 }], contents: [], craft_steps: [{ type: "mix" }, { type: "package" }], enabled: true }],
+          presentations: [
+            { key: "coffee", label: "Copo de café", image: "", type: "drink", animationLabel: "Beber", default: true },
+            { key: "soda_can", label: "Lata de refrigerante", image: "", type: "drink", animationLabel: "Beber", default: false },
+            { key: "burger", label: "Hambúrguer", image: "", type: "food", animationLabel: "Comer", default: true }
+          ],
           points: [{ id: 1, restaurant_id: "moomoo_cafe", type: "pos", label: "Caixa", coords: { x: -584.3, y: -1061.1, z: 22.3 }, enabled: true }],
           dashboard: { accountBalance: 18240, totals: { today_gross: 4850, week_gross: 28110, month_gross: 98540, today_commission: 1455, today_sales: 17 }, products: [{ name: "Combo da Casa", amount: 83, revenue: 38180 }], team: [{ employee_identifier: "preview", employee_name: "Morgana Vale", sales: 23, gross: 7380, commission: 2214 }] },
           members: [{ id: "MOO001", citizenId: "MOO001", source: 12, name: "Morgana Vale", role: "Gerente", grade: 4, isBoss: true, online: true }, { id: "MOO002", citizenId: "MOO002", name: "Caio Duarte", role: "Atendente", grade: 1, isBoss: false, online: false }],
           jobGrades: [{ grade: 0, label: "Aprendiz", isBoss: false }, { grade: 1, label: "Atendente", isBoss: false }, { grade: 4, label: "Gerente", isBoss: true }]
         }
+      },
+      {
+        id: "dreamycoffee",
+        label: "Dreamy Coffee",
+        job: "cafebeans",
+        theme: "cafebeans",
+        isOpen: true,
+        canWork: false,
+        canManage: false,
+        isBoss: false,
+        description: "Cafeteria, bebidas e atendimento ao público.",
+        features: { menu: true, location: true, call: true }
       },
       { id: "chinese_seoul", label: "Chinese Seoul", job: "chinese", theme: "chinese", isOpen: true, canWork: false, canManage: false, isBoss: false }
     ]

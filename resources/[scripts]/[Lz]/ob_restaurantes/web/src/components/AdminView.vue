@@ -13,12 +13,13 @@ const withdrawAmount = ref("");
 const restaurantForm = reactive({ label: "", commissionRate: 0.3, managerGrade: 4, theme: "obscuria" });
 const categoryForm = reactive({ key: "", label: "", icon: "utensils", sortOrder: 10 });
 const pointForm = reactive({ id: null, type: "pos", label: "", useCurrent: true, enabled: true });
-const recipeForm = reactive({ id: null, name: "", key: "", categoryKey: "meals", description: "", image: "", price: 0, oldPrice: 0, menuBadge: "", featured: false, prepTime: 5, outputAmount: 1, productType: "food", itemWeight: 250, isCombo: false, enabled: true, ingredients: [{ item: "", label: "", amount: 1 }], contents: [], craftSteps: ["chop", "grill", "assemble"], effects: { hunger: 0, thirst: 0, stress: 0 } });
+const recipeForm = reactive({ id: null, name: "", key: "", categoryKey: "meals", description: "", image: "", price: 0, oldPrice: 0, menuBadge: "", featured: false, prepTime: 5, outputAmount: 1, productType: "food", itemWeight: 250, presentationKey: "", isCombo: false, enabled: true, ingredients: [{ item: "", label: "", amount: 1 }], contents: [], craftSteps: ["chop", "grill", "assemble"], effects: { hunger: 0, thirst: 0, stress: 0 } });
 
 const metrics = computed(() => props.payload.dashboard || { totals: {}, products: [], team: [], accountBalance: 0 });
 const activeCategories = computed(() => (props.payload.categories || []).filter((category) => category.enabled !== false));
 const inventoryItems = computed(() => props.payload.inventoryItems || []);
 const inventoryItemMap = computed(() => new Map(inventoryItems.value.map((item) => [item.name, item])));
+const presentationOptions = computed(() => (props.payload.presentations || []).filter((entry) => entry.type === recipeForm.productType));
 const categoryIcons = [
   { value: "utensils", label: "Pratos" },
   { value: "cup-soda", label: "Bebidas" },
@@ -153,6 +154,7 @@ function editRecipe(recipe) {
     oldPrice: Number(recipe.old_price || 0), menuBadge: recipe.menu_badge || "", featured: recipe.featured === true,
     prepTime: Number(recipe.prep_time), outputAmount: Number(recipe.output_amount),
     productType: recipe.product_type === "drink" ? "drink" : "food", itemWeight: Number(recipe.item_weight || 250),
+    presentationKey: recipe.presentation_key || "",
     isCombo: recipe.is_combo, enabled: recipe.enabled !== false,
     ingredients: copyItemRows(recipe.ingredients, true), contents: copyItemRows(recipe.contents),
     craftSteps: stepKeys(recipe.craft_steps),
@@ -161,7 +163,7 @@ function editRecipe(recipe) {
   tab.value = "recipes";
 }
 function resetRecipe() {
-  Object.assign(recipeForm, { id: null, name: "", key: "", categoryKey: activeCategories.value[0]?.category_key || "meals", description: "", image: "", price: 0, oldPrice: 0, menuBadge: "", featured: false, prepTime: 5, outputAmount: 1, productType: "food", itemWeight: 250, isCombo: false, enabled: true, ingredients: [{ item: "", label: "", amount: 1 }], contents: [], craftSteps: ["chop", "grill", "assemble"], effects: { hunger: 0, thirst: 0, stress: 0 } });
+  Object.assign(recipeForm, { id: null, name: "", key: "", categoryKey: activeCategories.value[0]?.category_key || "meals", description: "", image: "", price: 0, oldPrice: 0, menuBadge: "", featured: false, prepTime: 5, outputAmount: 1, productType: "food", itemWeight: 250, presentationKey: "", isCombo: false, enabled: true, ingredients: [{ item: "", label: "", amount: 1 }], contents: [], craftSteps: ["chop", "grill", "assemble"], effects: { hunger: 0, thirst: 0, stress: 0 } });
 }
 async function saveRecipe() {
   if (selectedEffectCount.value > effectLimits.value.maxSelected) return emit("feedback", `Escolha no máximo ${effectLimits.value.maxSelected} efeitos por receita.`, "error");
@@ -269,6 +271,19 @@ async function deletePoint(point) {
           </div>
           <label><span>Quantidade produzida</span><input v-model="recipeForm.outputAmount" type="number" min="1" /></label>
           <label><span>Peso por unidade (g)</span><input v-model="recipeForm.itemWeight" type="number" min="10" max="5000" /></label>
+        </section>
+        <section v-if="presentationOptions.length" class="presentation-editor">
+          <header><div><small>Apresentação ao consumir</small><strong>Escolha a prop desta refeição</strong></div></header>
+          <div class="presentation-options">
+            <button type="button" :class="{ active: !recipeForm.presentationKey }" @click="recipeForm.presentationKey = ''">
+              <span class="presentation-image"><Utensils :size="20" /></span>
+              <span><b>Automático</b><small>Padrão de {{ recipeForm.productType === 'drink' ? 'bebida' : 'comida' }}</small></span>
+            </button>
+            <button v-for="presentation in presentationOptions" :key="presentation.key" type="button" :class="{ active: recipeForm.presentationKey === presentation.key }" @click="recipeForm.presentationKey = presentation.key">
+              <span class="presentation-image"><img v-if="presentation.image" :src="presentation.image" alt="" /><Utensils v-else :size="20" /></span>
+              <span><b>{{ presentation.label }}</b><small>{{ presentation.animationLabel || (presentation.type === 'drink' ? 'Beber' : 'Comer') }}</small></span>
+            </button>
+          </div>
         </section>
         <section class="recipe-effects-editor">
           <header><div><small>Efeitos ao consumir</small><strong>Status da receita</strong></div><span>{{ selectedEffectCount }}/{{ effectLimits.maxSelected }}</span></header>

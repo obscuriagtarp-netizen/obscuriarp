@@ -218,31 +218,50 @@ return {
         -- },
 
         -- Job Garages
-        -- police = {
-        --     label = 'Police',
-        --     vehicleType = VehicleType.CAR,
-        --     groups = 'police',
-        --     uiClass = 'police',
-        --     blipOnlyForGroups = true,
-        --     fixedVehicles = {
-        --         { model = 'police', label = 'Viatura de serviço', plate = 'POLICIA' },
-        --     },
-        --     accessPoints = {
-        --         {
-        --             blip = {
-        --                 name = 'Garagem policial',
-        --                 sprite = 357,
-        --                 color = 38,
-        --             },
-        --             coords = vec4(454.6, -1017.4, 28.4, 0),
-        --             spawn = vec4(438.4, -1018.3, 27.7, 90.0),
-        --             spawns = {
-        --                 vec4(438.4, -1018.3, 27.7, 90.0),
-        --                 vec4(438.4, -1022.2, 27.7, 90.0),
-        --             },
-        --         }
-        --     },
-        -- },
+        ambulance = {
+            label = 'Hospital',
+            vehicleType = VehicleType.CAR,
+            groups = 'ambulance',
+            uiClass = 'ambulance',
+            blipOnlyForGroups = true,
+            fixedVehicles = {
+                { model = 'dlambulance3', label = 'Ambulancia', plate = 'HOSPITAL' },
+            },
+            accessPoints = {
+                {
+                    blip = {
+                        name = 'Garagem do Hospital',
+                        sprite = 357,
+                        color = 38,
+                    },
+                    coords = vec4(-1018.87, -420.77, 32.27 + 1, 222.51),
+                    spawn = vec4(-1015.03, -418.94, 32.27 + 1, 27.28),
+                    preview = vec4(-1008.19, -419.48, 32.27 + 1, 139.07),
+                }
+            },
+        },
+        mechanic = {
+            label = 'Automotiva Akuma',
+            vehicleType = VehicleType.CAR,
+            groups = 'mechanic',
+            uiClass = 'mechanic',
+            blipOnlyForGroups = true,
+            fixedVehicles = {
+                { model = 'dl450mec', label = 'Carro de serviço', plate = 'AKUMA' },
+            },
+            accessPoints = {
+                {
+                    blip = {
+                        name = 'Garagem da Mecânica',
+                        sprite = 357,
+                        color = 38,
+                    },
+                    coords = vec4(-358.63, -107.85, 37.72 + 1, 168.67),
+                    spawn = vec4(-368.79, -108.24, 37.68 + 1, 69.15),
+                    preview = vec4(-386.78, -107.06, 37.71 + 1, 308.17),
+                }
+            },
+        },
 
         -- Gang Garages
         -- ballas = {

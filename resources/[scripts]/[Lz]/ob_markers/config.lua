@@ -15,7 +15,7 @@ Config.Blips = {
     { category = 5, name = 'Bahama Mamas', coords = vec3(-1390.76, -602.22, 29.21), sprite = 93, color = 27, scale = 0.75, shortRange = true },
     { category = 5, name = 'Vanilla', coords = vec3(129.46, -1296.64, 31.73), sprite = 93, color = 27, scale = 0.75, shortRange = true },
     { category = 5, name = 'Chinese Seoul', coords = vec3(-654.97, -885.34, 23.66), sprite = 93, color = 27, scale = 0.75, shortRange = true },
-    { category = 2, name = 'Automotiva Akuma', coords = vec3(-341.62, -136.24, 43.63), sprite = 446, color = 5, scale = 0.75, shortRange = true },
+    -- { category = 2, name = 'Automotiva Akuma', coords = vec3(-341.62, -136.24, 43.63), sprite = 446, color = 5, scale = 0.75, shortRange = true },
     { category = 2, name = 'Instituto Médico de Obscuria', coords = vec3(-1025.07, -415.06, 41.86), sprite = 61, color = 1, scale = 0.75, shortRange = true },
 }
 

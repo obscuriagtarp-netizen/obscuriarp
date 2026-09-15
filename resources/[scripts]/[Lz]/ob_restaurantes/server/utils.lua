@@ -194,7 +194,13 @@ function Restaurant.removeMoney(src, account, amount, reason)
     amount = math.floor(math.abs(tonumber(amount) or 0))
     if amount < 1 or not Config.AllowedPaymentAccounts[account] then return false end
     local player = Restaurant.getPlayer(src)
-    if not player or Restaurant.getMoney(src, account) < amount then return false end
+    if not player then return false end
+    if Restaurant.getMoney(src, account) < amount then
+        if account ~= 'cash' and account ~= 'bank' then return false end
+        if GetResourceState('ob_bank') ~= 'started' then return false end
+        local ok, allowed = pcall(function() return exports.ob_bank:CanChargeCredit(src, amount) end)
+        if not ok or allowed ~= true then return false end
+    end
     if player.Functions and player.Functions.RemoveMoney then
         return player.Functions.RemoveMoney(account, amount, reason or 'ob_restaurantes') == true
     end

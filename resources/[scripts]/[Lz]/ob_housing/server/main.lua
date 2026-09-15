@@ -147,6 +147,11 @@ local function formatProperty(row)
     if not row then return nil end
     local ownerCount = tonumber(row.owner_count) or tonumber(row.ownerCount) or 0
     local mode = tostring(row.ownership_mode or 'unique')
+    local acquisition = row.acquisition and tostring(row.acquisition) or nil
+    local expiresAt = tonumber(row.expires_at)
+    local ownershipMetadata = decode(row.ownership_metadata, {})
+    local rentalManaged = acquisition == 'vip' and expiresAt ~= nil
+    local rentalActive = not expiresAt or expiresAt > os.time()
     return {
         id = tonumber(row.id),
         key = tostring(row.property_key),
@@ -161,7 +166,7 @@ local function formatProperty(row)
         listed = asBoolean(row.is_listed),
         status = tostring(row.status or 'available'),
         vipTier = row.vip_tier and tostring(row.vip_tier) or nil,
-        presetKey = tostring(row.preset_key),
+        presetKey = tostring(row.preset_key or ''),
         entrance = coordinates(decode(row.entrance, {}), true),
         interior = decode(row.interior, {}),
         gallery = safeGallery(row.gallery),
@@ -173,9 +178,19 @@ local function formatProperty(row)
         updatedAt = row.updated_at,
         ownershipId = tonumber(row.ownership_id),
         ownerCitizenId = row.owner_citizenid and tostring(row.owner_citizenid) or nil,
-        acquisition = row.acquisition and tostring(row.acquisition) or nil,
-        expiresAt = tonumber(row.expires_at),
-        accessRole = row.access_role and tostring(row.access_role) or nil
+        acquisition = acquisition,
+        expiresAt = expiresAt,
+        accessRole = row.access_role and tostring(row.access_role) or nil,
+        active = rentalActive,
+        rental = rentalManaged and {
+            managed = true,
+            active = rentalActive,
+            expired = not rentalActive,
+            vip = trim(ownershipMetadata.vip or row.vip_tier):lower(),
+            durationDays = boundedInteger(ownershipMetadata.durationDays, 1, 36500, 30),
+            renewalRunes = math.max(0, math.floor(tonumber(ownershipMetadata.renewalRunes) or 0)),
+            expiresAt = expiresAt
+        } or nil
     }
 end
 
@@ -216,16 +231,19 @@ local function playerProperties(citizenid)
     local rows = MySQL.query.await(([=[
         SELECT property.*, ownership.id AS ownership_id,
                ownership.citizenid AS owner_citizenid, ownership.acquisition,
-               ownership.expires_at, 'owner' AS access_role
+               ownership.expires_at, ownership.metadata AS ownership_metadata,
+               'owner' AS access_role
         FROM ob_property_ownerships ownership
         INNER JOIN ob_properties property ON property.id = ownership.property_id
-        WHERE ownership.citizenid = ? AND %s
+        WHERE ownership.citizenid = ?
+          AND (%s OR (ownership.acquisition = 'vip' AND ownership.expires_at IS NOT NULL))
 
         UNION ALL
 
         SELECT property.*, ownership.id AS ownership_id,
                ownership.citizenid AS owner_citizenid, ownership.acquisition,
-               ownership.expires_at, access.role AS access_role
+               ownership.expires_at, ownership.metadata AS ownership_metadata,
+               access.role AS access_role
         FROM ob_property_access access
         INNER JOIN ob_property_ownerships ownership ON ownership.id = access.ownership_id
         INNER JOIN ob_properties property ON property.id = ownership.property_id
@@ -392,6 +410,114 @@ local function grantProperty(citizenid, propertyIdentifier, options)
     end)
 end
 
+local function getVipRental(citizenid, ownershipId)
+    citizenid = trim(citizenid)
+    ownershipId = tonumber(ownershipId)
+    if citizenid == '' or not ownershipId or not databaseReady then return nil end
+
+    local row = MySQL.single.await([[
+        SELECT ownership.id, ownership.property_id, ownership.citizenid, ownership.expires_at,
+               ownership.metadata, property.property_key, property.label, property.vip_tier,
+               property.ownership_mode, property.status
+        FROM ob_property_ownerships ownership
+        INNER JOIN ob_properties property ON property.id = ownership.property_id
+        WHERE ownership.id = ? AND ownership.citizenid = ?
+          AND ownership.acquisition = 'vip' AND ownership.expires_at IS NOT NULL
+        LIMIT 1
+    ]], { ownershipId, citizenid })
+    if not row then return nil end
+
+    local metadata = decode(row.metadata, {})
+    local expiresAt = tonumber(row.expires_at)
+    return {
+        managed = true,
+        active = expiresAt and expiresAt > os.time() or false,
+        expired = not expiresAt or expiresAt <= os.time(),
+        ownershipId = tonumber(row.id),
+        propertyId = tonumber(row.property_id),
+        propertyKey = tostring(row.property_key),
+        propertyLabel = tostring(row.label),
+        ownershipMode = tostring(row.ownership_mode),
+        vip = trim(metadata.vip or row.vip_tier):lower(),
+        tier = trim(metadata.tier or row.vip_tier):lower(),
+        durationDays = boundedInteger(metadata.durationDays, 1, 36500, 30),
+        renewalRunes = math.max(0, math.floor(tonumber(metadata.renewalRunes) or 0)),
+        expiresAt = expiresAt,
+        status = tostring(row.status)
+    }
+end
+
+local function extendVipProperty(citizenid, ownershipId, durationDays)
+    local rental = getVipRental(citizenid, ownershipId)
+    if not rental then return { ok = false, error = 'rental_not_found' } end
+    durationDays = boundedInteger(durationDays or rental.durationDays, 1, 36500, 30)
+
+    return acquirePropertyLock(rental.propertyId, function()
+        rental = getVipRental(citizenid, ownershipId)
+        if not rental then return { ok = false, error = 'rental_not_found' } end
+        if rental.status ~= 'available' then return { ok = false, error = 'property_unavailable' } end
+
+        if rental.ownershipMode == 'unique' then
+            local occupiedByOther = MySQL.scalar.await(([=[
+                SELECT 1 FROM ob_property_ownerships ownership
+                WHERE ownership.property_id = ? AND ownership.citizenid <> ? AND %s
+                LIMIT 1
+            ]=]):format(ACTIVE_OWNER_SQL), { rental.propertyId, citizenid })
+            if occupiedByOther then return { ok = false, error = 'property_unavailable' } end
+        end
+
+        local expiresAt = math.max(os.time(), tonumber(rental.expiresAt) or 0) + durationDays * 86400
+        local affected = MySQL.update.await([[
+            UPDATE ob_property_ownerships
+            SET expires_at = ?
+            WHERE id = ? AND citizenid = ? AND expires_at = ? AND acquisition = 'vip'
+        ]], { expiresAt, rental.ownershipId, citizenid, rental.expiresAt }) or 0
+        if affected ~= 1 then return { ok = false, error = 'renewal_failed' } end
+
+        local audited, auditError = pcall(audit, 'ob_vip', 'renew_vip', rental.propertyId, citizenid, {
+            ownershipId = rental.ownershipId,
+            previousExpiresAt = rental.expiresAt,
+            expiresAt = expiresAt,
+            durationDays = durationDays
+        })
+        if not audited then debugLog(('Falha ao auditar renovacao VIP: %s'):format(auditError)) end
+        broadcastProperties()
+        local updated = getVipRental(citizenid, ownershipId)
+        updated.ok = true
+        return updated
+    end)
+end
+
+local function grantVipTierProperty(citizenid, vip, durationDays, metadata)
+    vip = trim(vip):lower()
+    if vip == '' then return { ok = false, error = 'invalid_vip_tier' } end
+    metadata = type(metadata) == 'table' and clone(metadata) or {}
+    metadata.vip = trim(metadata.vip or vip):lower()
+    metadata.tier = vip
+    metadata.durationDays = boundedInteger(durationDays or metadata.durationDays, 1, 36500, 30)
+    metadata.renewalRunes = math.max(0, math.floor(tonumber(metadata.renewalRunes) or 0))
+
+    local rows = MySQL.query.await([[
+        SELECT property_key
+        FROM ob_properties
+        WHERE status = 'available' AND is_starter = 0 AND type = 'house'
+          AND vip_tier IS NOT NULL
+          AND FIND_IN_SET(?, REPLACE(LOWER(vip_tier), ' ', '')) > 0
+        ORDER BY ownership_mode = 'instanced' DESC, id ASC
+    ]], { vip }) or {}
+
+    for _, row in ipairs(rows) do
+        local result = grantProperty(citizenid, row.property_key, {
+            acquisition = 'vip',
+            durationDays = metadata.durationDays,
+            metadata = metadata,
+            actor = 'ob_vip'
+        })
+        if result and result.ok then return result end
+    end
+    return { ok = false, error = 'vip_property_unavailable' }
+end
+
 local function forceSessionExit(playerSource, reason)
     local session = sessions[playerSource]
     if not session then return end
@@ -535,6 +661,16 @@ local function entranceOptions(source, propertyIdentifier)
     end
 
     local access = resolveAccess(citizenid, property.id)
+    local expiredRental
+    if not access then
+        local ownershipId = MySQL.scalar.await([[
+            SELECT id FROM ob_property_ownerships
+            WHERE property_id = ? AND citizenid = ? AND acquisition = 'vip'
+              AND expires_at IS NOT NULL AND expires_at <= UNIX_TIMESTAMP()
+            LIMIT 1
+        ]], { property.id, citizenid })
+        if ownershipId then expiredRental = getVipRental(citizenid, ownershipId) end
+    end
     local maximum = boundedInteger(Config.Visitors.maxResidentsListed, 1, 100, 40)
     local rows = MySQL.query.await(([=[
         SELECT ownership.id, ownership.citizenid, players.charinfo
@@ -565,6 +701,7 @@ local function entranceOptions(source, propertyIdentifier)
             ownershipId = tonumber(access.id),
             role = tostring(access.access_role)
         } or nil,
+        expiredRental = expiredRental,
         owners = owners
     }
 end
@@ -834,6 +971,9 @@ local function saveProperty(source, payload)
         return { ok = false, error = 'invalid_key' }
     end
     if #label < 3 or #label > 80 then return { ok = false, error = 'invalid_label' } end
+    if presetKey == '' or not (Config.Interiors and Config.Interiors[presetKey]) then
+        return { ok = false, error = 'invalid_model' }
+    end
     if not entrance then return { ok = false, error = 'invalid_entrance' } end
     if not interior or not interior.entry or not interior.exit or not interior.stash then
         return { ok = false, error = 'invalid_interior' }
@@ -845,7 +985,6 @@ local function saveProperty(source, payload)
     if account ~= 'cash' and account ~= 'bank' then account = Config.Purchase.defaultAccount or 'bank' end
     local gallery = safeGallery(payload.gallery)
     local vipTier = trim(payload.vipTier):lower()
-    if vipTier == '' then vipTier = nil end
     local status = payload.status == 'disabled' and 'disabled' or 'available'
     local actorCitizen = getCitizenId(source) or ('source:%s'):format(source)
     local params = {
@@ -856,7 +995,7 @@ local function saveProperty(source, payload)
         description,
         price,
         account,
-        not vipTier and asBoolean(payload.purchasable) and 1 or 0,
+        vipTier == '' and asBoolean(payload.purchasable) and 1 or 0,
         asBoolean(payload.starter) and 1 or 0,
         asBoolean(payload.listed) and 1 or 0,
         status,
@@ -875,13 +1014,14 @@ local function saveProperty(source, payload)
             UPDATE ob_properties SET
                 property_key = ?, type = ?, ownership_mode = ?, label = ?, description = ?,
                 price = ?, payment_account = ?, purchasable = ?, is_starter = ?, is_listed = ?,
-                status = ?, vip_tier = ?, preset_key = ?, entrance = ?, interior = ?, gallery = ?,
+                status = ?, vip_tier = NULLIF(?, ''), preset_key = ?, entrance = ?, interior = ?, gallery = ?,
                 stash_slots = ?, stash_weight = ?
             WHERE id = ?
         ]], params)
         if not ok then
-            debugLog(changed)
-            return { ok = false, error = 'duplicate_key' }
+            print(('^1[%s]^7 Falha ao atualizar o imovel %s: %s'):format(RESOURCE, tostring(id), tostring(changed)))
+            local databaseError = tostring(changed):lower()
+            return { ok = false, error = databaseError:find('duplicate', 1, true) and 'duplicate_key' or 'save_failed' }
         end
         changed = changed or 0
         if changed < 1 and not getProperty(id) then return { ok = false, error = 'property_not_found' } end
@@ -892,17 +1032,25 @@ local function saveProperty(source, payload)
                 (property_key, type, ownership_mode, label, description, price, payment_account,
                  purchasable, is_starter, is_listed, status, vip_tier, preset_key, entrance,
                  interior, gallery, stash_slots, stash_weight, created_by)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULLIF(?, ''), ?, ?, ?, ?, ?, ?, ?)
         ]], params)
         if not ok then
-            debugLog(inserted)
-            return { ok = false, error = 'duplicate_key' }
+            print(('^1[%s]^7 Falha ao criar o imovel %s: %s'):format(RESOURCE, key, tostring(inserted)))
+            local databaseError = tostring(inserted):lower()
+            return { ok = false, error = databaseError:find('duplicate', 1, true) and 'duplicate_key' or 'save_failed' }
         end
         id = tonumber(inserted)
     end
 
     local property = getProperty(id)
-    audit(actorCitizen, 'save_property', id, nil, { key = key })
+    if not property or property.presetKey ~= presetKey then
+        print(('^1[%s]^7 Modelo nao persistido no imovel %s. Esperado: %s; recebido: %s'):format(
+            RESOURCE,
+            tostring(id), presetKey, property and property.presetKey or 'nil'
+        ))
+        return { ok = false, error = 'save_failed' }
+    end
+    audit(actorCitizen, 'save_property', id, nil, { key = key, presetKey = presetKey })
     broadcastProperties()
     return { ok = true, property = property }
 end
@@ -1215,6 +1363,14 @@ lib.callback.register('ob_housing:server:request', function(source, action, data
     if action == 'listAccess' then return listAccess(source, data.ownershipId) end
     if action == 'grantAccess' then return grantAccess(source, data.ownershipId, data.citizenid, data.role) end
     if action == 'revokeAccess' then return revokeAccess(source, data.accessId) end
+    if action == 'renewProperty' then
+        if GetResourceState('ob_vip') ~= 'started' then return { ok = false, error = 'vip_unavailable' } end
+        local called, success, result = pcall(function()
+            return exports.ob_vip:RenewProperty(source, data.ownershipId)
+        end)
+        if not called then return { ok = false, error = 'renewal_failed' } end
+        return result or { ok = success == true }
+    end
     if action == 'entranceOptions' then return entranceOptions(source, data.propertyId) end
     if action == 'ringBell' then return ringBell(source, data.propertyId, data.ownershipId) end
     if action == 'enter' then return enterProperty(source, data.propertyId, false, data.inviteToken) end
@@ -1305,6 +1461,53 @@ local schema = {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci]]
 }
 
+local function ensurePropertyModelColumn()
+    local column = MySQL.single.await([[
+        SELECT IS_NULLABLE AS nullable
+        FROM information_schema.COLUMNS
+        WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'ob_properties' AND COLUMN_NAME = 'preset_key'
+        LIMIT 1
+    ]])
+    local added = not column
+    if added then
+        MySQL.query.await('ALTER TABLE ob_properties ADD COLUMN preset_key VARCHAR(64) NULL')
+    end
+
+    local fallback = trim(Config.StarterApartment and Config.StarterApartment.interior)
+    if fallback == '' or not (Config.Interiors and Config.Interiors[fallback]) then
+        fallback = ''
+        for key in pairs(Config.Interiors or {}) do
+            if fallback == '' or key < fallback then fallback = key end
+        end
+    end
+    if fallback == '' then error('Nenhum modelo foi configurado em Config.Interiors.') end
+
+    local rows = MySQL.query.await('SELECT id, preset_key, interior FROM ob_properties') or {}
+    for _, row in ipairs(rows) do
+        local presetKey = trim(row.preset_key)
+        if presetKey == '' or not Config.Interiors[presetKey] then
+            local storedInterior = decode(row.interior, {})
+            local matched
+            for key, preset in pairs(Config.Interiors) do
+                if storedInterior.exportName and storedInterior.exportName == preset.exportName
+                    and (not storedInterior.provider or storedInterior.provider == preset.provider)
+                then
+                    matched = key
+                    break
+                end
+            end
+            MySQL.update.await('UPDATE ob_properties SET preset_key = ? WHERE id = ?', {
+                matched or fallback,
+                row.id
+            })
+        end
+    end
+
+    if added or tostring(column and column.nullable):upper() == 'YES' then
+        MySQL.query.await('ALTER TABLE ob_properties MODIFY COLUMN preset_key VARCHAR(64) NOT NULL')
+    end
+end
+
 local function seedStarterApartment()
     local starter = Config.StarterApartment
     if not starter or starter.enabled == false then return end
@@ -1344,6 +1547,7 @@ end
 
 MySQL.ready(function()
     for _, query in ipairs(schema) do MySQL.query.await(query) end
+    ensurePropertyModelColumn()
     seedStarterApartment()
     databaseReady = true
     registerInventoryHook()
@@ -1444,6 +1648,7 @@ AddEventHandler('onResourceStop', function(resourceName)
 end)
 
 exports('GrantProperty', grantProperty)
+exports('GrantVipTierProperty', grantVipTierProperty)
 exports('GrantVipProperty', function(citizenid, propertyKey, vip, durationDays, metadata)
     metadata = type(metadata) == 'table' and clone(metadata) or {}
     metadata.vip = trim(vip):lower()
@@ -1454,6 +1659,8 @@ exports('GrantVipProperty', function(citizenid, propertyKey, vip, durationDays, 
         actor = 'ob_vip'
     })
 end)
+exports('GetVipRental', getVipRental)
+exports('ExtendVipProperty', extendVipProperty)
 exports('RevokeProperty', revokeProperty)
 exports('HasProperty', function(citizenid, propertyIdentifier)
     local property = getProperty(propertyIdentifier)

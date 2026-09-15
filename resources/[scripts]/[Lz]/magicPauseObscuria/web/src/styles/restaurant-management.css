@@ -511,6 +511,27 @@
   height: 13px;
 }
 
+.restaurant-presentation-editor {
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #493d50;
+  background: #151119;
+}
+
+.restaurant-presentation-editor > header { margin-bottom: 8px; }
+.restaurant-presentation-editor > header small, .restaurant-presentation-editor > header strong { display: block; }
+.restaurant-presentation-editor > header small { color: #a77bc1; font-size: 8px; text-transform: uppercase; }
+.restaurant-presentation-editor > header strong { margin-top: 2px; font-size: 11px; }
+.restaurant-presentation-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; }
+.restaurant-presentation-options button { display: grid; min-width: 0; min-height: 50px; grid-template-columns: 38px minmax(0, 1fr); align-items: center; gap: 7px; padding: 5px; border: 1px solid #403746; border-radius: 4px; color: #aaa0ae; text-align: left; background: #1a161e; }
+.restaurant-presentation-options button:hover { border-color: #77568a; color: #eee4f2; }
+.restaurant-presentation-options button.active { border-color: #9567ad; color: #fff; background: #302438; box-shadow: inset 0 -2px #9162a9; }
+.restaurant-presentation-options button > span { display: grid; width: 36px; height: 36px; place-items: center; overflow: hidden; color: #bd9dcb; background: #0e0b10; }
+.restaurant-presentation-options button img { width: 100%; height: 100%; object-fit: contain; }
+.restaurant-presentation-options button b, .restaurant-presentation-options button small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.restaurant-presentation-options button b { font-size: 9px; }
+.restaurant-presentation-options button small { margin-top: 2px; color: #817887; font-size: 8px; }
+
 .restaurant-craft-flow {
   margin: 10px 0;
   padding: 10px;

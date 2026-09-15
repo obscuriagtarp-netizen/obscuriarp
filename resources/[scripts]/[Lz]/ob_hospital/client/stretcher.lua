@@ -2,6 +2,9 @@ local registered = {}
 local pushing
 local patientNetId
 local pushTextVisible = false
+local pushingBaseZ
+local pushingPedBaseZ
+local pushingCurrentZ
 
 local function showPushText()
     if pushTextVisible then return end
@@ -57,11 +60,16 @@ end
 local function stopPushing()
     local stretcher = pushing
     pushing = nil
+    pushingBaseZ = nil
+    pushingPedBaseZ = nil
+    pushingCurrentZ = nil
     stopPushAnimation()
     hidePushText()
 
     if not stretcher or not DoesEntityExist(stretcher) then return end
     requestControl(stretcher)
+    local netId = NetworkGetNetworkIdFromEntity(stretcher)
+    if netId and netId ~= 0 then SetNetworkIdCanMigrate(netId, true) end
     DetachEntity(stretcher, true, true)
     PlaceObjectOnGroundProperly(stretcher)
     SetEntityCollision(stretcher, true, true)
@@ -82,14 +90,37 @@ local function updatePushingPosition(ped, stretcher)
     local offset = Config.Stretcher.pushOffset
     local target = GetOffsetFromEntityInWorldCoords(ped, offset.x, offset.y, offset.z)
     local pedCoords = GetEntityCoords(ped)
-    local foundGround, groundZ = GetGroundZFor_3dCoord(target.x, target.y, pedCoords.z + 2.0, false)
-    local targetZ = foundGround and groundZ + (Config.Stretcher.pushGroundOffset or 0.0) or target.z
+    local stretcherCoords = GetEntityCoords(stretcher)
+
+    if not pushingBaseZ then
+        pushingBaseZ = stretcherCoords.z
+        pushingPedBaseZ = pedCoords.z
+        pushingCurrentZ = stretcherCoords.z
+    end
+
+    local desiredZ = pushingBaseZ + (pedCoords.z - pushingPedBaseZ)
+    local maxStep = Config.Stretcher.pushVerticalStep or 0.04
+    local difference = desiredZ - pushingCurrentZ
+
+    if difference > maxStep then
+        difference = maxStep
+    elseif difference < -maxStep then
+        difference = -maxStep
+    elseif math.abs(difference) < 0.002 then
+        difference = 0.0
+    end
+
+    pushingCurrentZ = pushingCurrentZ + difference
     local rotation = Config.Stretcher.pushRotation
 
-    SetEntityCoordsNoOffset(stretcher, target.x, target.y, targetZ, false, false, false)
+    -- Preserve collision with patients and other players, but never with the pusher.
+    SetEntityNoCollisionEntity(stretcher, ped, true)
+    SetEntityNoCollisionEntity(ped, stretcher, true)
+    SetEntityCoordsNoOffset(stretcher, target.x, target.y, pushingCurrentZ, false, false, false)
     SetEntityRotation(stretcher, rotation.x, rotation.y, GetEntityHeading(ped) + rotation.z, 2, true)
     SetEntityVelocity(stretcher, 0.0, 0.0, 0.0)
-    SetEntityCollision(stretcher, true, true)
+    SetEntityNoCollisionEntity(stretcher, ped, true)
+    SetEntityNoCollisionEntity(ped, stretcher, true)
 end
 
 local function closestPlayer(maxDistance)
@@ -124,9 +155,17 @@ local function registerTarget(entity)
                 if pushing then stopPushing() end
                 if not requestControl(data.entity) then return end
                 DetachEntity(data.entity, true, true)
+                SetEntityCollision(data.entity, true, true)
                 FreezeEntityPosition(data.entity, true)
+                local netId = NetworkGetNetworkIdFromEntity(data.entity)
+                if netId and netId ~= 0 then SetNetworkIdCanMigrate(netId, false) end
                 pushing = data.entity
-                updatePushingPosition(PlayerPedId(), data.entity)
+                local ped = PlayerPedId()
+                local stretcherCoords = GetEntityCoords(data.entity)
+                pushingBaseZ = stretcherCoords.z
+                pushingPedBaseZ = GetEntityCoords(ped).z
+                pushingCurrentZ = stretcherCoords.z
+                updatePushingPosition(ped, data.entity)
                 playPushAnimation()
                 showPushText()
             end
@@ -244,15 +283,27 @@ RegisterNetEvent('ob_hospital:client:setOnStretcher', function(netId, enabled)
         SetEntityCoords(ped, coords.x, coords.y, coords.z + 0.15, false, false, false, false)
         return
     end
-    local object = NetworkGetEntityFromNetworkId(tonumber(netId) or 0)
-    if object == 0 then return end
+    local numericNetId = tonumber(netId) or 0
+    local object = NetworkGetEntityFromNetworkId(numericNetId)
+    local timeout = GetGameTimer() + 2000
+
+    while object == 0 and GetGameTimer() < timeout do
+        Wait(50)
+        object = NetworkGetEntityFromNetworkId(numericNetId)
+    end
+
+    if object == 0 or not DoesEntityExist(object) then
+        exports.qbx_core:Notify('A maca não carregou para o paciente.', 'error')
+        return
+    end
+
     patientNetId = netId
     lib.requestAnimDict('anim@gangops@morgue@table@', 10000)
     AttachEntityToEntity(
         ped, object, 0,
         Config.Stretcher.patientOffset.x, Config.Stretcher.patientOffset.y, Config.Stretcher.patientOffset.z,
         Config.Stretcher.patientRotation.x, Config.Stretcher.patientRotation.y, Config.Stretcher.patientRotation.z,
-        false, false, false, false, 2, true
+        false, false, false, true, 2, true
     )
     TaskPlayAnim(ped, 'anim@gangops@morgue@table@', 'body_search', 8.0, -8.0, -1, 1, 0.0, false, false, false)
 end)
@@ -314,9 +365,12 @@ end)
 AddEventHandler('onClientResourceStop', function(resource)
     if resource ~= GetCurrentResourceName() then return end
 
-    pushing = nil
-    stopPushAnimation()
-    hidePushText()
+    if pushing then
+        stopPushing()
+    else
+        stopPushAnimation()
+        hidePushText()
+    end
 
     if patientNetId then
         patientNetId = nil

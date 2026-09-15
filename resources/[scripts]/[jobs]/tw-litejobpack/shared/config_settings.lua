@@ -24,6 +24,14 @@ Config.LockWeaponsOnJob = false        -- true = disable weapons (firing + melee
 Config.BreakSessionFirstPerson = false -- true = force first person during break sessions | false = any camera angle
 Config.PaymentNotifications = true     -- true = show money-related notifications (e.g. "+$80 cleaned") | false = silence them
 
+-- Sends the XP earned in jobs to the daily Battle Pass mission.
+-- The daily limit remains controlled by magicPauseObscuria.
+Config.BattlePassIntegration = {
+    enabled = true,
+    resource = "magicPauseObscuria",
+    xpMultiplier = 0.15,
+}
+
 Config.QualitySystem = {
     enabled = false,        -- true = items have quality tiers (Common/Rare/etc.) | false = no quality system
 
@@ -410,12 +418,6 @@ Config.startJobFunction = {
 Config.endJobFunction = {
     enabled = false, -- true = enable global end function for ALL jobs | false = skip
     func = function(source, ownerIdentifier, jobId, lobbyMoney, playerMoney, lobbyAmount, playerAmount)
-        print(('[tw-litejobpack][endJobFunction] src=%s owner=%s job=%s | lobbyMoney=$%s playerMoney=$%s | lobbyAmount=%s playerAmount=%s')
-            :format(tostring(source), tostring(ownerIdentifier), tostring(jobId),
-                tostring(lobbyMoney), tostring(playerMoney),
-                tostring(lobbyAmount), tostring(playerAmount)))
-        -- Example: Add job limit after completion
-        -- exports['santosvibe-utility']:AddJobLimit(source, jobId, 1)
     end,
 }
 
